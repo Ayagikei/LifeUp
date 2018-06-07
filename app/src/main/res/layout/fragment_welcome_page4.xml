@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="#d81b60"
+                android:onClick="enterMainActivity"
                 android:text="开始人升"
                 android:textColor="#FFFFFF" />
         </LinearLayout>

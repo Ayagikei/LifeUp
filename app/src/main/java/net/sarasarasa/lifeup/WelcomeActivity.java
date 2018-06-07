@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -85,8 +86,15 @@ public class WelcomeActivity extends AppCompatActivity {
         });
 
 
+
         //  StatusBarUtils.setWindowStatusBarColor(this,R.color.colorAccent);
 
+    }
+
+    public void enterMainActivity(View view) {
+        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
@@ -213,7 +221,6 @@ public class WelcomeActivity extends AppCompatActivity {
         public void destroyItem(ViewGroup container, int position, Object object) {
             //super.destroyItem(container, position, object);
         }
-
 
     }
 }
