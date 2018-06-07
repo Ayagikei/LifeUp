@@ -20,11 +20,9 @@ import me.relex.circleindicator.CircleIndicator;
 public class WelcomeActivity extends AppCompatActivity {
 
 
+    private static final int PAGE_NUMBER = 4;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     private WelcomeFragment welcomeFragment[];
-
-
     private ViewPager mViewPager;
 
     @Override
@@ -42,8 +40,9 @@ public class WelcomeActivity extends AppCompatActivity {
         indicator.setViewPager(mViewPager);
 
 
-        welcomeFragment = new WelcomeFragment[3];
-        for (int i = 0; i < 3; i++)
+        //初始化生成4个fragments，并且保存起来
+        welcomeFragment = new WelcomeFragment[PAGE_NUMBER];
+        for (int i = 0; i < PAGE_NUMBER; i++)
             welcomeFragment[i] = WelcomeFragment.newInstance(i + 1);
 
 
@@ -59,13 +58,15 @@ public class WelcomeActivity extends AppCompatActivity {
                 ArgbEvaluator evaluator = new ArgbEvaluator(); // ARGB求值器
                 int evaluate = 0x00FFFFFF; // 初始默认颜色（透明白）
                 if (position == 0) {
-                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF4FC3F7, 0XFF9575CD); // 根据positionOffset和第0页~第1页的颜色转换范围取颜色值
+                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF4FC3F7, 0XFFE4542F); // 根据positionOffset和第0页~第1页的颜色转换范围取颜色值
                 } else if (position == 1) {
-                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF9575CD, 0XFFFFFFFF); // 根据positionOffset和第1页~第2页的颜色转换范围取颜色值
+                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFFE4542F, 0XFF9575CD); // 根据positionOffset和第1页~第2页的颜色转换范围取颜色值
+                } else if (position == 2) {
+                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF9575CD, 0XFFFFFFFF); // 根据positionOffset和第2页~第3页的颜色转换范围取颜色值
                 } else {
                     evaluate = 0XFFFFFFFF; // 最终第3页的颜色
                 }
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < PAGE_NUMBER; i++) {
                     if (welcomeFragment[i] != null && welcomeFragment[i].rootView != null)
                         welcomeFragment[i].rootView.setBackgroundColor(evaluate);
                 }
@@ -142,11 +143,17 @@ public class WelcomeActivity extends AppCompatActivity {
                 case 2:
                     rootView = inflater.inflate(R.layout.fragment_welcome_page2, container, false);
                     animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
-                    animationViews.setAnimation(R.raw.trophy, LottieAnimationView.CacheStrategy.None);
+                    animationViews.setAnimation(R.raw.animated_graph, LottieAnimationView.CacheStrategy.None);
                     animationViews.playAnimation();
                     break;
                 case 3:
                     rootView = inflater.inflate(R.layout.fragment_welcome_page3, container, false);
+                    animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
+                    animationViews.setAnimation(R.raw.trophy, LottieAnimationView.CacheStrategy.None);
+                    animationViews.playAnimation();
+                    break;
+                case 4:
+                    rootView = inflater.inflate(R.layout.fragment_welcome_page4, container, false);
                     animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
                     animationViews.setAnimation(R.raw.floating_cloud, LottieAnimationView.CacheStrategy.None);
                     animationViews.playAnimation();
@@ -199,8 +206,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return PAGE_NUMBER;
         }
 
         @Override

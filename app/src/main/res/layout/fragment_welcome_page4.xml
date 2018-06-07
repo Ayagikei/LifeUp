@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#43CD9A"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     android:paddingTop="25dp"
     tools:context="net.sarasarasa.lifeup.WelcomeActivity$WelcomeFragment">
@@ -14,29 +14,52 @@
         android:id="@+id/animation_view"
         android:layout_width="350dp"
         android:layout_height="350dp"
+
         android:layout_gravity="center"
         android:layout_marginTop="35dp"
-
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/animated_graph" />
+        app:lottie_rawRes="@raw/floating_cloud" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        android:text="量化人生"
+        android:text="加入云端"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="24sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="如果你的人生是一场游戏...\n如果你的各种属性能用数字来衡量..."
+        android:text="在线分享你的日程、人生。\n 加入在线团队，共同完成待办事项。\n 一起约图书馆、约跑步、约人升！"
         android:textAlignment="center"
-        android:textColor="#FFFFFF" />
+        android:textColor="?android:attr/textColorSecondary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/title_bar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/welcome_btn"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#d81b60"
+                android:text="开始人升"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>
