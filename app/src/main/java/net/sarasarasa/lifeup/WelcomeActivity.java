@@ -9,8 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,12 +16,12 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import me.relex.circleindicator.CircleIndicator;
 
-public class WelcomeActivity extends AppCompatActivity {
 
+public class WelcomeActivity extends AppCompatActivity {
 
     private static final int PAGE_NUMBER = 4;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private WelcomeFragment welcomeFragment[];
+    private WelcomeFragment arrWelcomeFragment[];
     private ViewPager mViewPager;
 
     @Override
@@ -32,25 +30,25 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
 
+        //设置FargmentManager、ViewPager和CircleIndicator
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
+        mViewPager = findViewById(R.id.container);
+        CircleIndicator indicator = findViewById(R.id.indicator);
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         indicator.setViewPager(mViewPager);
 
 
         //初始化生成4个fragments，并且保存起来
-        welcomeFragment = new WelcomeFragment[PAGE_NUMBER];
+        arrWelcomeFragment = new WelcomeFragment[PAGE_NUMBER];
         for (int i = 0; i < PAGE_NUMBER; i++)
-            welcomeFragment[i] = WelcomeFragment.newInstance(i + 1);
+            arrWelcomeFragment[i] = WelcomeFragment.newInstance(i);
 
-
+        //ViewPager添加onPageChangeListener，实现颜色渐变效果
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             /**
              * ViewPager滑动回调方法
-             * @param position 页签[0 ~ 2]
+             * @param position 页签[0 ~ 3
              * @param positionOffset 页百分比偏移[0F ~ 1F]
              * @param positionOffsetPixels 页像素偏移[0 ~ ViewPager的宽度]
              */
@@ -67,11 +65,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 } else {
                     evaluate = 0XFFFFFFFF; // 最终第3页的颜色
                 }
+
+                //找到Fargment元素设置背景色
                 for (int i = 0; i < PAGE_NUMBER; i++) {
-                    if (welcomeFragment[i] != null && welcomeFragment[i].rootView != null)
-                        welcomeFragment[i].rootView.setBackgroundColor(evaluate);
+                    if (arrWelcomeFragment[i] != null && arrWelcomeFragment[i].getView() != null) {
+                        arrWelcomeFragment[i].getView().setBackgroundColor(evaluate);
+                    }
                 }
-                ((View) mViewPager.getParent()).setBackgroundColor(evaluate); // 为ViewPager的父容器设置背景色
             }
 
             @Override
@@ -85,12 +85,13 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-
-
-        //  StatusBarUtils.setWindowStatusBarColor(this,R.color.colorAccent);
-
     }
 
+    /**
+     * 按钮事件响应，进入下一个活动
+     *
+     * @param view
+     */
     public void enterMainActivity(View view) {
         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
         startActivity(intent);
@@ -98,35 +99,26 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_welcome, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
     public static class WelcomeFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final int[] arrFragment =
+                {R.layout.fragment_welcome_page1, R.layout.fragment_welcome_page2, R.layout.fragment_welcome_page3, R.layout.fragment_welcome_page4};
+        private static final int[] arrAnimation =
+                {R.raw.done, R.raw.animated_graph, R.raw.trophy, R.raw.floating_cloud};
         protected boolean isCreate = false;
-        View rootView;
+        private View rootView;
+
 
         public WelcomeFragment() {
         }
 
-
+        /**
+         * 创建 WelcomeFragment 实例
+         *
+         * @param sectionNumber 第几页
+         * @return WelcomeFragment
+         */
         public static WelcomeFragment newInstance(int sectionNumber) {
             WelcomeFragment fragment = new WelcomeFragment();
             Bundle args = new Bundle();
@@ -139,60 +131,54 @@ public class WelcomeActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            LottieAnimationView animationViews;
+            LottieAnimationView animationViews = null;
+            int iPage = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-                case 1:
-                    rootView = inflater.inflate(R.layout.fragment_welcome_page1, container, false);
-                    animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
-                    animationViews.setAnimation(R.raw.done, LottieAnimationView.CacheStrategy.None);
-                    animationViews.playAnimation();
-                    break;
-                case 2:
-                    rootView = inflater.inflate(R.layout.fragment_welcome_page2, container, false);
-                    animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
-                    animationViews.setAnimation(R.raw.animated_graph, LottieAnimationView.CacheStrategy.None);
-                    animationViews.playAnimation();
-                    break;
-                case 3:
-                    rootView = inflater.inflate(R.layout.fragment_welcome_page3, container, false);
-                    animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
-                    animationViews.setAnimation(R.raw.trophy, LottieAnimationView.CacheStrategy.None);
-                    animationViews.playAnimation();
-                    break;
-                case 4:
-                    rootView = inflater.inflate(R.layout.fragment_welcome_page4, container, false);
-                    animationViews = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
-                    animationViews.setAnimation(R.raw.floating_cloud, LottieAnimationView.CacheStrategy.None);
-                    animationViews.playAnimation();
-                    break;
-                default:
-                    rootView = inflater.inflate(R.layout.fragment_welcome_page1, container, false);
+            rootView = inflater.inflate(arrFragment[iPage], container, false);
+            animationViews = rootView.findViewById(R.id.animation_view);
+            animationViews.setAnimation(arrAnimation[iPage], LottieAnimationView.CacheStrategy.None);
+
+            if (iPage == 0) {
+                animationViews.playAnimation();
             }
 
             isCreate = true;
-
             return rootView;
+
+
         }
 
 
+        /**
+         * 通过 Fargment 的可见性控制动画的播放与暂停
+         *
+         * @param isVisibleToUser
+         */
         @Override
         public void setUserVisibleHint(boolean isVisibleToUser) {
             super.setUserVisibleHint(isVisibleToUser);
             LottieAnimationView animationView = null;
 
             if (rootView != null) {
-                animationView = (LottieAnimationView) rootView.findViewById(R.id.animation_view);
-                if (animationView != null)
-                    if (isVisibleToUser && isCreate) {
-                        animationView.playAnimation();
-                    } else {
-                        animationView.cancelAnimation();
-                        animationView.setFrame(0);
-                    }
+                animationView = rootView.findViewById(R.id.animation_view);
             }
+
+            if (animationView != null) {
+                if (isVisibleToUser && isCreate) {
+                    //相当于onResume
+                    animationView.playAnimation();
+                } else {
+                    //相当于onPause
+                    animationView.cancelAnimation();
+                    animationView.setFrame(0);
+                }
+            }
+
         }
 
+        public View getView() {
+            return rootView;
+        }
 
     }
 
@@ -206,9 +192,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            mCurrentPrimaryItem = welcomeFragment[position];
+            // 获取相应页面的 Fragment 实例
+            mCurrentPrimaryItem = arrWelcomeFragment[position];
             return mCurrentPrimaryItem;
         }
 
@@ -219,6 +204,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
+            //重写方法让其不会销毁已经创建的实例
             //super.destroyItem(container, position, object);
         }
 
