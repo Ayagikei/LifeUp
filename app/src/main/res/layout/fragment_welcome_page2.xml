@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        android:text="量化人生"
+        android:text="@string/page2_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="#FFFFFF"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="如果你的人生是一场游戏...\n如果你的各种属性能用数字来衡量..."
+        android:text="@string/page2_content"
         android:textAlignment="center"
         android:textColor="#FFFFFF" />
 

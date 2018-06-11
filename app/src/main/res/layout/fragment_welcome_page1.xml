@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        android:text="待办事项"
+        android:text="@string/page1_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="#FFFFFF"
@@ -35,7 +35,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="记下待办事项，设定紧迫程度、困难程度。\n 并尝试去完成。"
+        android:text="@string/page1_content"
         android:textAlignment="center"
         android:textColor="#FFFFFF" />
 

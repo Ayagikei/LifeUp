@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        android:text="获得奖励"
+        android:text="@string/page3_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="#FFFFFF"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="通过完成待办事项，提升你的各项属性。\n最终获取各项成就，提升你的人生等级。"
+        android:text="@string/page3_content"
         android:textAlignment="center"
         android:textColor="#FFFFFF" />
 

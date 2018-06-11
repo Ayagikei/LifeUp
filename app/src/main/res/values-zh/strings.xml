@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">人升</string>
+    <string name="title_home">告示板</string>
+    <string name="title_dashboard">属性</string>
+    <string name="title_notifications">社区</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- Welcome Activity -->
+    <string name="page1_title">待办事项</string>
+    <string name="page1_content">记下待办事项，设定紧迫程度、困难程度。\n 并尝试去完成。</string>
+    <string name="page2_title">量化人生</string>
+    <string name="page2_content">如果你的人生是一场游戏...\n如果你的各种属性能用数字来衡量...</string>
+    <string name="page3_title">获得奖励</string>
+    <string name="page3_content">通过完成待办事项，提升你的各项属性。\n最终获取各项成就，提升你的人生等级。</string>
+    <string name="page4_title">加入云端</string>
+    <string name="page4_content">在线分享你的日程、人生。\n 加入在线团队，共同完成待办事项。\n 一起约图书馆、约跑步、约人升！</string>
+    <string name="page4_btn">开始人升</string>
+</resources>

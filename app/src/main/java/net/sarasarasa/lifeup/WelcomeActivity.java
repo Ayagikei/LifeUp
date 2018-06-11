@@ -34,7 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = findViewById(R.id.container);
         CircleIndicator indicator = findViewById(R.id.indicator);
-        mViewPager.setOffscreenPageLimit(0);
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         indicator.setViewPager(mViewPager);
 

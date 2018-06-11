@@ -7,4 +7,15 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- Welcome Activity -->
+    <string name="page1_title">TO-DO LIST</string>
+    <string name="page1_content">Write down your to-do list.\nSet urgency and difficulty.\nAnd try to complete them.</string>
+    <string name="page2_title">QUANTIFY LIFE</string>
+    <string name="page2_content">What if your life is a game...\nWhat if your attributes can be measured by numbers...</string>
+    <string name="page3_title">EARNING REWARDS</string>
+    <string name="page3_content">Level up your attributes by complete your to-do list.\nGain kinds of achievements and finally level up your life.</string>
+    <string name="page4_title">JOIN THE CLOUD</string>
+    <string name="page4_content">Share your daily and your life online.\nJoin the online team to finish tasks together.</string>
+    <string name="page4_btn">START LIFE UP</string>
 </resources>

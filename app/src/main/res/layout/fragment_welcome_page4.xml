@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        android:text="加入云端"
+        android:text="@string/page4_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="#000000"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="在线分享你的日程、人生。\n 加入在线团队，共同完成待办事项。\n 一起约图书馆、约跑步、约人升！"
+        android:text="@string/page4_content"
         android:textAlignment="center"
         android:textColor="?android:attr/textColorSecondary" />
 
@@ -57,7 +57,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="#d81b60"
                 android:onClick="enterMainActivity"
-                android:text="开始人升"
+                android:text="@string/page4_btn"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
