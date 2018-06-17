@@ -22,16 +22,18 @@
         app:lottie_rawRes="@raw/floating_cloud" />
 
     <TextView
+        android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
         android:text="@string/page4_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="24sp" />
 
     <TextView
+        android:id="@+id/content_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/page4_content"
@@ -58,7 +60,8 @@
                 android:background="#d81b60"
                 android:onClick="enterMainActivity"
                 android:text="@string/page4_btn"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 

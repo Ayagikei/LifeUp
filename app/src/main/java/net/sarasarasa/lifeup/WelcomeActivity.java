@@ -11,8 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+
+import net.sarasarasa.lifeup.utils.DensityUtil;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -20,9 +25,13 @@ import me.relex.circleindicator.CircleIndicator;
 public class WelcomeActivity extends AppCompatActivity {
 
     private static final int PAGE_NUMBER = 4;
+    private static final int PAGE_COLOR[] =
+            {0XFF4FC3F7, 0XFFE4542F, 0XFF9575CD, 0XFFFFFFFF};
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private WelcomeFragment arrWelcomeFragment[];
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +66,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 ArgbEvaluator evaluator = new ArgbEvaluator(); // ARGB求值器
                 int evaluate = 0x00FFFFFF; // 初始默认颜色（透明白）
                 if (position == 0) {
-                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF4FC3F7, 0XFFE4542F); // 根据positionOffset和第0页~第1页的颜色转换范围取颜色值
+                    evaluate = (Integer) evaluator.evaluate(positionOffset, PAGE_COLOR[0], PAGE_COLOR[1]); // 根据positionOffset和第0页~第1页的颜色转换范围取颜色值
                 } else if (position == 1) {
-                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFFE4542F, 0XFF9575CD); // 根据positionOffset和第1页~第2页的颜色转换范围取颜色值
+                    evaluate = (Integer) evaluator.evaluate(positionOffset, PAGE_COLOR[1], PAGE_COLOR[2]); // 根据positionOffset和第1页~第2页的颜色转换范围取颜色值
                 } else if (position == 2) {
-                    evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF9575CD, 0XFFFFFFFF); // 根据positionOffset和第2页~第3页的颜色转换范围取颜色值
+                    evaluate = (Integer) evaluator.evaluate(positionOffset, PAGE_COLOR[2], PAGE_COLOR[3]); // 根据positionOffset和第2页~第3页的颜色转换范围取颜色值
                 } else {
-                    evaluate = 0XFFFFFFFF; // 最终第3页的颜色
+                    evaluate = PAGE_COLOR[3]; // 最终第3页的颜色
                 }
 
                 //找到Fargment元素设置背景色
@@ -102,10 +111,12 @@ public class WelcomeActivity extends AppCompatActivity {
     public static class WelcomeFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static final int[] arrFragment =
-                {R.layout.fragment_welcome_page1, R.layout.fragment_welcome_page2, R.layout.fragment_welcome_page3, R.layout.fragment_welcome_page4};
         private static final int[] arrAnimation =
                 {R.raw.done, R.raw.animated_graph, R.raw.trophy, R.raw.floating_cloud};
+        private static final int[] arrTitleText =
+                {R.string.page1_title, R.string.page2_title, R.string.page3_title, R.string.page4_title};
+        private static final int[] arrContentText =
+                {R.string.page1_content, R.string.page2_content, R.string.page3_content, R.string.page4_content};
         protected boolean isCreate = false;
         private View rootView;
 
@@ -134,17 +145,40 @@ public class WelcomeActivity extends AppCompatActivity {
             LottieAnimationView animationViews = null;
             int iPage = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            rootView = inflater.inflate(arrFragment[iPage], container, false);
+            //rootView = inflater.inflate(arrFragment[iPage], container, false);
+            rootView = inflater.inflate(R.layout.fragment_welcome_page, container, false);
+
+            //根据页面设置动画、文本、背景颜色
             animationViews = rootView.findViewById(R.id.animation_view);
             animationViews.setAnimation(arrAnimation[iPage], LottieAnimationView.CacheStrategy.None);
+            TextView titleTextView = rootView.findViewById(R.id.title_text);
+            titleTextView.setText(arrTitleText[iPage]);
+            TextView contentTextView = rootView.findViewById(R.id.content_text);
+            contentTextView.setText(arrContentText[iPage]);
+            LinearLayout linearLayout = rootView.findViewById(R.id.linearLayout);
+            linearLayout.setBackgroundColor(PAGE_COLOR[iPage]);
 
+
+            Button button = rootView.findViewById(R.id.welcome_btn);
+
+
+            //针对各个界面进行异化处理
+            //第一个页面在创建后不会执行setUserVisibleHint方法，所以要手动播放动画。
             if (iPage == 0) {
+                animationViews.setPadding(DensityUtil.dp2px(this.getContext(), 25), 0, 0, 0);
                 animationViews.playAnimation();
             }
 
+            if (iPage == 3) {
+                titleTextView.setTextColor(0XFF000000);
+                button.setVisibility(View.VISIBLE);
+            } else {
+                contentTextView.setTextColor(0XFFFFFFFF);
+            }
+
+
             isCreate = true;
             return rootView;
-
 
         }
 
