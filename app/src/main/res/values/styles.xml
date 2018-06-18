@@ -21,6 +21,11 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.PreViewTranslucentTheme" parent="AppTheme.TranslucentTheme">
+        <item name="android:background">#FF4FC3F7</item>
     </style>
 
 

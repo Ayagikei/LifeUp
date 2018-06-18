@@ -12,7 +12,7 @@
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.TranslucentTheme">
+            android:theme="@style/AppTheme.PreViewTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
