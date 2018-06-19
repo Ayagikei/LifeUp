@@ -24,8 +24,8 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.PreViewTranslucentTheme" parent="AppTheme.TranslucentTheme">
-        <item name="android:background">#FF4FC3F7</item>
+    <style name="AppTheme.SplashTheme" parent="AppTheme.TranslucentTheme">
+        <item name="android:background">@drawable/splash_layers</item>
     </style>
 
 

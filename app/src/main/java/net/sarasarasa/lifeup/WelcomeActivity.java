@@ -28,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private static final int PAGE_COLOR[] =
             {0XFF4FC3F7, 0XFFE4542F, 0XFF9575CD, 0XFFFFFFFF};
 
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private WelcomeFragment arrWelcomeFragment[];
     private ViewPager mViewPager;
