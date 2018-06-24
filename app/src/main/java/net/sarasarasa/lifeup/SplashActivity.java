@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
             editor.commit();
         } else {
             //否则，进入主页面
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, Main2Activity.class);
             startActivity(intent);
             finish();
         }
