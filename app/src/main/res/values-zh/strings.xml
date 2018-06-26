@@ -6,7 +6,7 @@
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main">Main2Activity</string>
 
     <!-- Welcome Activity -->
     <string name="page1_title">待办事项</string>

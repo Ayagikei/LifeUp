@@ -27,10 +27,10 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
             editor.putBoolean("isFirst", false);
-            editor.commit();
+            editor.apply();
         } else {
             //否则，进入主页面
-            Intent intent = new Intent(this, Main2Activity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
