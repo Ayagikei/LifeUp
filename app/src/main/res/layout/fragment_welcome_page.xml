@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:paddingTop="25dp"
-    tools:context="net.sarasarasa.lifeup.WelcomeActivity$WelcomeFragment">
+    tools:context="net.sarasarasa.lifeup.activities.WelcomeActivity$WelcomeFragment">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"

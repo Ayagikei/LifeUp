@@ -1,4 +1,4 @@
-package net.sarasarasa.lifeup;
+package net.sarasarasa.lifeup.activities;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import net.sarasarasa.lifeup.R;
 import net.sarasarasa.lifeup.utils.DensityUtil;
 
 import me.relex.circleindicator.CircleIndicator;

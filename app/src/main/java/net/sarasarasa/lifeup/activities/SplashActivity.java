@@ -1,4 +1,4 @@
-package net.sarasarasa.lifeup;
+package net.sarasarasa.lifeup.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
