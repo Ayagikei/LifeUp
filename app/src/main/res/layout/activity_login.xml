@@ -60,7 +60,7 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="登陆以体验更多功能"
+                    android:text="@string/login_welcome"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="#03A9F4"
                     android:textSize="24sp"
@@ -93,7 +93,6 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_password"
                         android:imeActionId="6"
-                        android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -108,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@color/colorPrimary"
-                    android:text="登陆"
+                    android:text="@string/login_signIn"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -119,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="还没有账号？点击这里注册！"
+                    android:text="@string/login_signUp"
                     android:textAlignment="textEnd"
                     android:textColor="@android:color/darker_gray" />
 
@@ -144,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp"
                         android:layout_marginStart="3dp"
-                        android:text="或者"
+                        android:text="@string/login_or"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/divider_right"
                         app:layout_constraintStart_toStartOf="@id/divider_left"
@@ -174,7 +173,7 @@
                     android:drawablePadding="72dp"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
-                    android:text="使用易班登陆"
+                    android:text="@string/login_viaYiban"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
