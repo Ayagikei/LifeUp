@@ -17,7 +17,6 @@ import android.provider.ContactsContract
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
@@ -38,7 +37,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         setSupportActionBar(login_toolbar)
 
         // Set up the login form.
@@ -55,6 +53,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+
 
     }
 
@@ -299,13 +298,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+/*    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.home -> {
+            android.R.id.home -> {
                 finish()
             }
         }
 
         return true
-    }
+    }*/
 }
