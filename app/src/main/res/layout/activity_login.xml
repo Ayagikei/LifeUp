@@ -8,10 +8,12 @@
     android:orientation="vertical"
     tools:context="net.sarasarasa.lifeup.activities.LoginActivity">
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.Main">
+
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/login_toolbar"
@@ -47,15 +49,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <LinearLayout
                 android:id="@+id/phone_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="登陆以体验更多功能"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#03A9F4"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp">
 
                     <AutoCompleteTextView
                         android:id="@+id/phone"
@@ -101,7 +115,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/tw_signUp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -112,7 +126,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="192dp">
+                    android:layout_marginTop="128dp">
 
                     <View
                         android:id="@+id/divider_left"
@@ -155,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#388E3C"
+                    android:background="@color/yiban_btn"
                     android:drawableLeft="@drawable/ic_yibanlogo"
                     android:drawablePadding="72dp"
                     android:gravity="center_vertical"

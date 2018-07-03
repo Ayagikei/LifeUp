@@ -35,7 +35,7 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.Main"
+            android:theme="@style/AppTheme.Login"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
     </application>
 
