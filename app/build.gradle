@@ -29,18 +29,19 @@ android {
 configurations {
     cleanedAnnotations
     compile.exclude group: 'org.jetbrains' , module:'annotations'
+    compile.exclude group: 'com.android.support' , module:'constraint-layout'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.airbnb.android:lottie:2.5.4'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    api 'com.airbnb.android:lottie:2.5.4'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'me.relex:circleindicator:1.2.2@aar'
-    implementation 'com.jeff:settingitem:1.0'
-    implementation 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
+    api 'me.relex:circleindicator:1.2.2@aar'
+    api 'com.jeff:settingitem:1.0'
+    api 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
 }
