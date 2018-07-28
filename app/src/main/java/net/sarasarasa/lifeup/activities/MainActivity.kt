@@ -68,7 +68,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_settings -> {
-
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_about -> {
 

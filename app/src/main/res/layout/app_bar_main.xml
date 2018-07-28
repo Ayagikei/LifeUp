@@ -26,11 +26,21 @@
         android:id="@+id/include"
         layout="@layout/content_main" />
 
-    <android.support.design.widget.BottomNavigationView
+    <!--    <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground"
+            app:layout_anchor="@+id/include"
+            app:layout_anchorGravity="bottom|center"
+            app:menu="@menu/navigation" />-->
+
+    <com.wakehao.bar.BottomNavigationBar
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
+        app:fragmentContainerId="@id/fragment_container"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center"
         app:menu="@menu/navigation" />
