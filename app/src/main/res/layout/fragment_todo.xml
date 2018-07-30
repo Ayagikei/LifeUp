@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context=".fragment.TodoFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -20,7 +21,7 @@
             android:layout_marginTop="16dp"
             app:cardBackgroundColor="#e500d1c6"
             app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
+            app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -76,28 +77,124 @@
         </android.support.v7.widget.CardView>
 
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/TodolistCardView"
-            android:layout_width="330dp"
+        <!-- TODO: 重新设计合理的ID -->
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:minHeight="64dp"
-            app:cardBackgroundColor="#e500d1c6"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
+
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mainCardView">
 
-            <ImageView
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/color_main_progressbar" />
+                android:layout_height="wrap_content">
 
-        </android.support.v7.widget.CardView>
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
 
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/TodolistCardView"
+                        android:layout_width="340dp"
+                        android:layout_height="116dp"
+                        android:layout_marginTop="8dp"
+                        android:minHeight="64dp"
+                        app:cardBackgroundColor="#FFF"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TodolistHeaderCardView">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="24dp"
+                                android:text="单词背诵"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="#8BC34A"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="19dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="8dp"
+                                android:text="每天背单词50个"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+                        </android.support.constraint.ConstraintLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/TodolistHeaderCardView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:cardBackgroundColor="#8BC34A"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="6dp"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/textView7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:paddingBottom="2dp"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingTop="2dp"
+                                android:text="重复任务—每日"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                </android.support.constraint.ConstraintLayout>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_gravity="center"
+                    android:onClick="play"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="false"
+                    app:lottie_rawRes="@raw/checked_done" />
+
+            </android.support.constraint.ConstraintLayout>
+        </FrameLayout> <!-- end of one to-do item -->
 
     </android.support.constraint.ConstraintLayout>
+
 
 </FrameLayout>

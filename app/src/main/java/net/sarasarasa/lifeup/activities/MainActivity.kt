@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.airbnb.lottie.LottieAnimationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import net.sarasarasa.lifeup.R
@@ -83,5 +84,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun login(view: View) {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    fun play(view: View) {
+        if (view is LottieAnimationView) {
+            view.playAnimation()
+        }
     }
 }
