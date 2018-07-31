@@ -7,8 +7,6 @@
     android:background="@color/background_color"
     tools:context=".fragment.TodoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
@@ -102,7 +100,7 @@
                     <android.support.v7.widget.CardView
                         android:id="@+id/TodolistCardView"
                         android:layout_width="340dp"
-                        android:layout_height="116dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:minHeight="64dp"
                         app:cardBackgroundColor="#FFF"
@@ -123,7 +121,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="24dp"
-                                android:text="单词背诵"
+                                android:text="背诵单词"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                 android:textColor="#8BC34A"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -131,14 +129,67 @@
 
                             <TextView
                                 android:id="@+id/textView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="19dp"
+                                android:layout_width="256dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="4dp"
                                 android:text="每天背单词50个"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="24dp"
+                                android:src="@drawable/ic_abbr_learning"
+                                app:layout_constraintStart_toEndOf="@+id/textView5"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="24dp"
+                                android:src="@drawable/ic_abbr_endurance"
+                                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView4"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="24dp"
+                                android:src="@drawable/ic_abbr_charm"
+                                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/ic_award_exp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="4dp"
+                                android:text="325经验值"
+                                android:textColor="#FF9100"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/imageView5"
                                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
@@ -181,9 +232,10 @@
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/animation_view"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
                     android:onClick="play"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
