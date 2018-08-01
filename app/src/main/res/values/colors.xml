@@ -4,9 +4,9 @@
     <color name="colorPrimaryDark">#03A9F4</color>
     <color name="colorMenuItemBackground">#0277BD</color>
     <color name="colorAccent">#ff4081</color>
-    <color name="colorAccent2">#E040FB</color>
+    <color name="colorAccent2">#e040fb</color>
     <color name="background_color">#f2f2f2</color>
     <color name="white">#ffffff</color>
-    <color name="blue">#03A9F4</color>
+    <color name="blue">#03a9f4</color>
     <color name="yiban_btn">#FF5722</color>
 </resources>

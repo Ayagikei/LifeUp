@@ -77,10 +77,11 @@
 
         <!-- TODO: 重新设计合理的ID -->
         <FrameLayout
+            android:id="@+id/frameLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
 
-            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mainCardView">
@@ -235,7 +236,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:onClick="play"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -246,7 +247,10 @@
             </android.support.constraint.ConstraintLayout>
         </FrameLayout> <!-- end of one to-do item -->
 
+
+        <!-- beginning of the status -->
+        <!-- end of the status -->
+
+
     </android.support.constraint.ConstraintLayout>
-
-
 </FrameLayout>
