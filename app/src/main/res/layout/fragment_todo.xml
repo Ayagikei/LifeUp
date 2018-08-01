@@ -100,7 +100,7 @@
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/TodolistCardView"
-                        android:layout_width="340dp"
+                        android:layout_width="350dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:minHeight="64dp"
