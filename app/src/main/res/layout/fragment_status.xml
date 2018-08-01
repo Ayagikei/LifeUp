@@ -18,17 +18,90 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/mainCardView"
+            android:layout_width="340dp"
+            android:layout_height="128dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="#e500d1c6"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/color_status_card" />
+
+            <com.doublewave.DoubleWaveView
+                android:id="@+id/waveView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:peakValue="3dp"
+                app:speedOne="3"
+                app:speedTwo="2"
+                app:waveColor="#33FFFFFF"
+                app:waveHeight="78dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="人生等级"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="如今你一共完成了30个待办事项！"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="286dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:max="100"
+                    android:progress="99"
+                    android:progressTint="#D6FFFFFF"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:id="@+id/mainCardViewstatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
             app:contentPadding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/mainCardView">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -57,9 +130,9 @@
 
                 <com.daimajia.numberprogressbar.NumberProgressBar
                     android:id="@+id/npb_strength"
+                    style="@style/NumberProgressBar_Funny_Orange"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +171,7 @@
                     android:text="LV100"
                     android:textColor="@android:color/holo_blue_bright"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/tw_strengthName"
+                    app:layout_constraintStart_toEndOf="@+id/tw_learningName"
                     app:layout_constraintTop_toTopOf="@+id/iv_strengthIcon" />
 
                 <ImageView
@@ -134,7 +207,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tw_learningLevel" />
 
                 <TextView
-                    android:id="@+id/tw_strengthName"
+                    android:id="@+id/tw_learningName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -152,7 +225,7 @@
                     android:text="LV99"
                     android:textColor="@android:color/holo_blue_bright"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/tw_strengthName"
+                    app:layout_constraintStart_toEndOf="@+id/tw_learningName"
                     app:layout_constraintTop_toTopOf="@+id/iv_learningIcon" />
 
                 <ImageView
@@ -166,9 +239,9 @@
 
                 <com.daimajia.numberprogressbar.NumberProgressBar
                     android:id="@+id/npb_charm"
+                    style="@style/NumberProgressBar_Passing_Green"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/npb_learning"
@@ -274,9 +347,9 @@
 
                 <com.daimajia.numberprogressbar.NumberProgressBar
                     android:id="@+id/npb_vitality"
+                    style="@style/NumberProgressBar_Beauty_Red"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/npb_endurance"
@@ -328,9 +401,9 @@
 
                 <com.daimajia.numberprogressbar.NumberProgressBar
                     android:id="@+id/npb_creative"
+                    style="@style/NumberProgressBar_Relax_Blue"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/npb_vitality"

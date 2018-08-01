@@ -10,7 +10,9 @@ import net.sarasarasa.lifeup.R
 class TodoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_todo, null)
+        var view = inflater.inflate(R.layout.fragment_todo, null)
+
+        return view;
     }
 
 
