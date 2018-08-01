@@ -45,4 +45,5 @@ dependencies {
     api 'com.jeff:settingitem:1.0'
     api 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
     implementation 'com.android.support:cardview-v7:27.1.1'
+    api 'com.daimajia.numberprogressbar:library:1.4@aar'
 }

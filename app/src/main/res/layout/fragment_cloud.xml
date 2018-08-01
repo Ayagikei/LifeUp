@@ -35,7 +35,7 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/iv_learningIcon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
@@ -45,7 +45,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ProgressBar
-                    android:id="@+id/progressBarstatus"
+                    android:id="@+id/npb_learning"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="216dp"
                     android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                     android:progressTint="@color/blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView6"
+                    app:layout_constraintStart_toEndOf="@+id/iv_learningIcon"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -66,8 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="250/500"
-                    app:layout_constraintStart_toEndOf="@+id/progressBarstatus"
-                    app:layout_constraintTop_toTopOf="@+id/progressBarstatus" />
+                    app:layout_constraintStart_toEndOf="@+id/npb_learning"
+                    app:layout_constraintTop_toTopOf="@+id/npb_learning" />
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>
