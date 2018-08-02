@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         app:fragmentContainerId="@id/fragment_container"
+        android:fitsSystemWindows="true"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center"
         app:menu="@menu/navigation" />
