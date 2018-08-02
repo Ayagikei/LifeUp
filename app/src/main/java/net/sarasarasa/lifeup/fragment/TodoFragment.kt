@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.datas.ToDo
 import java.util.*
@@ -25,6 +26,8 @@ class TodoFragment : Fragment() {
         mAdapter.setHeaderView(getHeaderView())
         mRecyclerView.layoutManager = LinearLayoutManager(view.context)
         mRecyclerView.adapter = mAdapter
+        //设置toolbar
+        (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
 
         return view;
     }

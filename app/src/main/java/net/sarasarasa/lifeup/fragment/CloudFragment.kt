@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_comm.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.MainActivity
 
 class CloudFragment : Fragment() {
 
@@ -19,7 +20,12 @@ class CloudFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, mContainer: ViewGroup?, savedInstanceState: Bundle?): View? {
 
 
+
         val view = inflater.inflate(R.layout.fragment_cloud, null)
+
+        //设置toolbar
+        (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(childFragmentManager)
