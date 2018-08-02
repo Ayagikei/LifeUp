@@ -5,16 +5,13 @@
     android:layout_height="wrap_content">
 
 
-    <!-- TODO: 重新设计合理的ID -->
     <FrameLayout
-        android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainCardView">
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,7 +56,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textView6"
+                            android:id="@+id/tw_content"
                             android:layout_width="256dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
@@ -68,10 +65,10 @@
                             android:text="每天背单词50个"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                            app:layout_constraintTop_toBottomOf="@+id/iv_expIcon" />
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/iv_iconSkillFrist"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="8dp"
@@ -81,27 +78,27 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
-                            android:id="@+id/imageView3"
+                            android:id="@+id/iv_iconSkillSecond"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="4dp"
                             android:layout_marginTop="24dp"
                             android:src="@drawable/ic_abbr_endurance"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
+                            app:layout_constraintStart_toEndOf="@+id/iv_iconSkillFrist"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
-                            android:id="@+id/imageView4"
+                            android:id="@+id/iv_iconSkillThird"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="4dp"
                             android:layout_marginTop="24dp"
                             android:src="@drawable/ic_abbr_charm"
-                            app:layout_constraintStart_toEndOf="@+id/imageView3"
+                            app:layout_constraintStart_toEndOf="@+id/iv_iconSkillSecond"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
-                            android:id="@+id/imageView5"
+                            android:id="@+id/iv_expIcon"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_marginStart="16dp"
@@ -111,7 +108,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/tw_name" />
 
                         <TextView
-                            android:id="@+id/textView10"
+                            android:id="@+id/tv_exp"
                             android:layout_width="wrap_content"
                             android:layout_height="16dp"
                             android:layout_marginStart="2dp"
@@ -120,7 +117,7 @@
                             android:textColor="#FF9100"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/imageView5"
+                            app:layout_constraintStart_toEndOf="@+id/iv_expIcon"
                             app:layout_constraintTop_toBottomOf="@+id/tw_name" />
 
 
@@ -145,7 +142,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/textView7"
+                            android:id="@+id/tv_headerText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -162,7 +159,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animation_view"
+                android:id="@+id/av_checkBtn"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"

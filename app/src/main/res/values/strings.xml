@@ -40,6 +40,4 @@
     <string name="login_or">or</string>
     <string name="login_viaYiban">SIGN IN WITH YIBAN</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
