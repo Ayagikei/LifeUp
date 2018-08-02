@@ -39,5 +39,10 @@
     <string name="login_signUp">You don\'t hava an account yet? Sign Up here!</string>
     <string name="login_or">or</string>
     <string name="login_viaYiban">SIGN IN WITH YIBAN</string>
+    <string name="title_activity_comm">CommActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>
