@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,9 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_todo.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.datas.ToDo
@@ -32,8 +33,8 @@ class TodoFragment : Fragment() {
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
 
         view.fab.setOnClickListener {
-            // TODO:修改事件响应
-            Toast.makeText(view.context, "Click Fab", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.context, AddToDoItemActivity::class.java)
+            startActivity(intent)
         }
 
         return view;

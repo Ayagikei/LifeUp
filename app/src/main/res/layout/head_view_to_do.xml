@@ -6,12 +6,13 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/mainCardView"
-        android:layout_width="340dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="360dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="8dp"
         app:cardBackgroundColor="#e500d1c6"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
