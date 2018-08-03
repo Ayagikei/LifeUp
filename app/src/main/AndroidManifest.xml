@@ -47,14 +47,6 @@
             android:label="设置"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.Login" />
-        <activity
-            android:name=".CommActivity"
-            android:label="@string/title_activity_comm"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import kotlinx.android.synthetic.main.fragment_todo.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
@@ -28,6 +30,11 @@ class TodoFragment : Fragment() {
         mRecyclerView.adapter = mAdapter
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+
+        view.fab.setOnClickListener {
+            // TODO:修改事件响应
+            Toast.makeText(view.context, "Click Fab", Toast.LENGTH_SHORT).show()
+        }
 
         return view;
     }
