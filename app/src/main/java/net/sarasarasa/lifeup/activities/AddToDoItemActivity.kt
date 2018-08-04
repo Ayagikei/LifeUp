@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import com.jaygoo.widget.OnRangeChangedListener
+import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
@@ -15,7 +19,8 @@ import java.util.*
 
 class AddToDoItemActivity : AppCompatActivity() {
 
-    var iCheckedItemIndex = 0;
+    private var iCheckedItemIndex = 0;
+    private var seekBar1 = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +28,46 @@ class AddToDoItemActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        iCheckedItemIndex = 0;
+        iCheckedItemIndex = 0
         initDDDL()
         initRepeater()
+        initSeekBar()
 
+        // TODO:将表单转换为对象
+
+
+    }
+
+    private fun initSeekBar() {
+        sb_urgence.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(view: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
+                //四个刻度对应的数值为0，33,66,100
+                seekBar1 = leftValue.toInt()
+            }
+
+            override fun onStartTrackingTouch(view: RangeSeekBar, isLeft: Boolean) {
+                //start tracking touch
+            }
+
+            override fun onStopTrackingTouch(view: RangeSeekBar, isLeft: Boolean) {
+                //stop tracking touch
+            }
+        })
+
+        sb_difficulty.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(view: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
+                //四个刻度对应的数值为0，33,66,100
+                seekBar1 = leftValue.toInt()
+            }
+
+            override fun onStartTrackingTouch(view: RangeSeekBar, isLeft: Boolean) {
+                //start tracking touch
+            }
+
+            override fun onStopTrackingTouch(view: RangeSeekBar, isLeft: Boolean) {
+                //stop tracking touch
+            }
+        })
     }
 
     private fun initDDDL() {
@@ -36,7 +77,9 @@ class AddToDoItemActivity : AppCompatActivity() {
                 showDatePickerDialog()
         }
 
-        dDDL.setOnClickListener { showDatePickerDialog(); }
+        dDDL.setOnClickListener {
+            showDatePickerDialog();
+        }
     }
 
     private fun initRepeater() {
@@ -74,5 +117,17 @@ class AddToDoItemActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }).create()
         dialog.show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_add_to_do_item, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_finish -> true
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

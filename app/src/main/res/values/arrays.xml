@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="wordsArray">
+        <item>Lv1</item>
+        <item>Lv2</item>
+        <item>Lv3</item>
+        <item>Lv4</item>
+    </string-array>
+
+</resources>

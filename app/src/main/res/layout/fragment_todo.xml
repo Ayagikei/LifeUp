@@ -36,7 +36,6 @@
 
     </LinearLayout>
 
-    <!-- TODO:添加响应，更改图标 -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
