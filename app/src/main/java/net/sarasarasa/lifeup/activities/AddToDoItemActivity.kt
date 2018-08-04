@@ -19,8 +19,8 @@ import java.util.*
 
 class AddToDoItemActivity : AppCompatActivity() {
 
-    private var iCheckedItemIndex = 0;
-    private var seekBar1 = 0;
+    private var iCheckedItemIndex = 0
+    private var seekBar1 = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,19 +71,19 @@ class AddToDoItemActivity : AppCompatActivity() {
     }
 
     private fun initDDDL() {
-        dDDL.inputType = InputType.TYPE_NULL;
+        dDDL.inputType = InputType.TYPE_NULL
         dDDL.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showDatePickerDialog()
         }
 
         dDDL.setOnClickListener {
-            showDatePickerDialog();
+            showDatePickerDialog()
         }
     }
 
     private fun initRepeater() {
-        et_repeat.inputType = InputType.TYPE_NULL;
+        et_repeat.inputType = InputType.TYPE_NULL
         et_repeat.setText("不重复")
         et_repeat.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
@@ -100,7 +100,7 @@ class AddToDoItemActivity : AppCompatActivity() {
         val c = Calendar.getInstance()
         DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             // TODO Auto-generated method stub
-            dDDL.setText("${year.toString()}/${monthOfYear + 1}/$dayOfMonth")
+            dDDL.setText("$year/${monthOfYear + 1}/$dayOfMonth")
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show()
     }
 

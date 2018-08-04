@@ -18,10 +18,5 @@ class StatusFragment : Fragment() {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
 
 }

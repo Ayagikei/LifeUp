@@ -37,7 +37,7 @@ class TodoFragment : Fragment() {
             startActivity(intent)
         }
 
-        return view;
+        return view
     }
 
     private fun genData(): List<ToDo> {

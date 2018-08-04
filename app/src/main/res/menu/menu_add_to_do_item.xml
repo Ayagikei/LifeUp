@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.sarasarasa.lifeup.activities.AddToDoItemActivity">
+    <item
+        android:id="@+id/action_finish"
+        android:icon="@drawable/ic_done_white_24dp"
+        android:orderInCategory="100"
+        android:title="完成"
+        app:showAsAction="always" />
+</menu>
