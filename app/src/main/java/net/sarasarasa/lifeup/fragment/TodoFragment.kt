@@ -45,7 +45,7 @@ class TodoFragment : Fragment() {
         val random = Random()
         for (i in 0..9) {
             val name = random.nextInt(10).toString()
-            val todo = ToDo(name, "content", false)
+            val todo = ToDo(name, "content", false, null, null, null, null, null, null)
             list.add(todo)
         }
         return list
