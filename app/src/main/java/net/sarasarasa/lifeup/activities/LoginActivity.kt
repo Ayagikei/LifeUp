@@ -5,6 +5,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.app.LoaderManager.LoaderCallbacks
+import android.content.Context
 import android.content.CursorLoader
 import android.content.Loader
 import android.content.pm.PackageManager
@@ -21,6 +22,9 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import cn.smssdk.EventHandler
+import cn.smssdk.SMSSDK
+import cn.smssdk.gui.RegisterPage
 import kotlinx.android.synthetic.main.activity_login.*
 import net.sarasarasa.lifeup.R
 import java.util.*
@@ -307,4 +311,29 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         return true
     }*/
+
+    fun signUp(view: View) {
+        sendCode(this);
+    }
+
+    /** Mob短信验证集成 **/
+    fun sendCode(context: Context) {
+        val page = RegisterPage()
+        //如果使用我们的ui，没有申请模板编号的情况下需传null
+        page.setTempCode(null)
+        page.setRegisterCallback(object : EventHandler() {
+            override fun afterEvent(event: Int, result: Int, data: Any) {
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    // 处理成功的结果
+                    val phoneMap = data as HashMap<String, Any>
+                    val country = phoneMap["country"] as String // 国家代码，如“86”
+                    val phone = phoneMap["phone"] as String // 手机号码，如“13800138000”
+                    // TODO 利用国家代码和手机号码进行后续的操作
+                } else {
+                    // TODO 处理错误的结果
+                }
+            }
+        })
+        page.show(context)
+    }
 }

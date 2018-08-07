@@ -5,6 +5,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.mob.sdk'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -51,4 +53,10 @@ dependencies {
     api 'com.xiaosong520:doublewaveview:1.0.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
     api 'com.github.Jay-Goo:RangeSeekBar:v2.0.4'
+}
+
+MobSDK {
+    appKey ""
+    appSecret ""
+    SMSSDK {}
 }
