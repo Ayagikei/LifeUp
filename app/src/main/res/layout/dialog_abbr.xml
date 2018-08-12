@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_first"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.daimajia.numberprogressbar.NumberProgressBar
+            android:id="@+id/npb_first"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@+id/tw_levelFirst"
+            app:layout_constraintTop_toTopOf="@+id/tw_levelFirst"
+            app:progress_current="80"
+            app:progress_max="100"
+            app:progress_reached_bar_height="5.0dp"
+            app:progress_unreached_bar_height="2.5dp" />
+
+        <TextView
+            android:id="@+id/tw_expFirst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250/500"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tw_levelFirst"
+            app:layout_constraintTop_toBottomOf="@+id/tw_levelFirst" />
+
+        <TextView
+            android:id="@+id/tw_levelFirst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="LV99"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/tw_nameFirst"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconFirst" />
+
+        <TextView
+            android:id="@+id/tw_nameFirst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="学识"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconFirst"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconFirst" />
+
+        <ImageView
+            android:id="@+id/iv_iconFirst"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_learning"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_sec"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_first">
+
+        <com.daimajia.numberprogressbar.NumberProgressBar
+            android:id="@+id/npb_Sec"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@+id/tw_levelSec"
+            app:layout_constraintTop_toTopOf="@+id/tw_levelSec"
+            app:progress_current="80"
+            app:progress_max="100"
+            app:progress_reached_bar_height="5.0dp"
+            app:progress_unreached_bar_height="2.5dp" />
+
+        <TextView
+            android:id="@+id/tw_expSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250/500"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tw_levelSec"
+            app:layout_constraintTop_toBottomOf="@+id/tw_levelSec" />
+
+        <TextView
+            android:id="@+id/tw_levelSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="LV99"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/tw_learningName2"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconSec" />
+
+        <TextView
+            android:id="@+id/tw_learningName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="学识"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconSec"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconSec" />
+
+        <ImageView
+            android:id="@+id/iv_iconSec"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_learning"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_thr"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_sec">
+
+        <com.daimajia.numberprogressbar.NumberProgressBar
+            android:id="@+id/npb_thr"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@+id/tw_levelThr"
+            app:layout_constraintTop_toTopOf="@+id/tw_levelThr"
+            app:progress_current="80"
+            app:progress_max="100"
+            app:progress_reached_bar_height="5.0dp"
+            app:progress_unreached_bar_height="2.5dp" />
+
+        <TextView
+            android:id="@+id/tw_expThr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250/500"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tw_levelThr"
+            app:layout_constraintTop_toBottomOf="@+id/tw_levelThr" />
+
+        <TextView
+            android:id="@+id/tw_levelThr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="LV99"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/tw_nameThr"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconThr" />
+
+        <TextView
+            android:id="@+id/tw_nameThr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="学识"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconThr"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconThr" />
+
+        <ImageView
+            android:id="@+id/iv_iconThr"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_learning"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>
