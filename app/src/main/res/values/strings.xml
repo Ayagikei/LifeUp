@@ -44,5 +44,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_add_to_do_item">Add To DO ITEM</string>
+    <string name="title_activity_add_team_item">新建团队</string>
 
 </resources>

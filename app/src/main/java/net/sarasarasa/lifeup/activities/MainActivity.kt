@@ -20,6 +20,9 @@ import net.sarasarasa.lifeup.R
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    var dialogView: View? = null
+    var dialog: AlertDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -70,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Handle the camera action
             }
             R.id.nav_history -> {
-                showDialogLifeup()
+                showDialogLifeUp()
             }
             R.id.nav_achievement -> {
 
@@ -80,7 +83,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_about -> {
-
+                val intent = Intent(this, AddTeamActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -101,11 +105,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 override fun onAnimationEnd(p0: Animator?) {
-                    showDialogAbbr(view)
+                    showDialogAbbr()
                 }
 
                 override fun onAnimationCancel(p0: Animator?) {
-                    showDialogAbbr(view)
+                    showDialogAbbr()
                 }
 
                 override fun onAnimationStart(p0: Animator?) {
@@ -116,27 +120,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun showDialogAbbr(view: View) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_abbr, null)
-        val dialog = AlertDialog.Builder(this).create()
+    private fun showDialogAbbr() {
+        if (dialog != null)
+            return
+
+        dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_abbr, null)
+        dialog = AlertDialog.Builder(this).create()
 
         with(dialog) {
-            setTitle("你获得了经验值")
-            setIcon(R.drawable.ic_award_exp)
-            setButton(AlertDialog.BUTTON_POSITIVE, "确定") { _, _ -> dismiss() }
-            setView(dialogView)
-            show()
+            this?.setTitle("你获得了经验值")
+            this?.setIcon(R.drawable.ic_award_exp)
+            this?.setButton(AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                dismiss()
+                dialog = null
+            }
+            this?.setView(dialogView)
+            this?.show()
         }
     }
 
-    fun showDialogLifeup() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_lifeup, null)
-        val dialog = AlertDialog.Builder(this).create()
+    private fun showDialogLifeUp() {
+        if (dialog != null)
+            return
+
+        dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_lifeup, null)
+        dialog = AlertDialog.Builder(this).create()
 
         with(dialog) {
-            setButton(AlertDialog.BUTTON_POSITIVE, "确定") { _, _ -> dismiss() }
-            setView(dialogView)
-            show()
+            this?.setButton(AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                dismiss()
+                dialog = null
+            }
+            this?.setView(dialogView)
+            this?.show()
         }
     }
 }
