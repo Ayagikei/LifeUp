@@ -70,13 +70,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                // Handle the camera action
+                val intent = Intent(this, TeamActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_history -> {
                 showDialogLifeUp()
             }
             R.id.nav_achievement -> {
-
+                val intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingActivity::class.java)
