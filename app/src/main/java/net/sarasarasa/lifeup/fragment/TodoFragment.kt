@@ -14,8 +14,8 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
-import net.sarasarasa.lifeup.datas.ToDo
-import java.util.*
+import net.sarasarasa.lifeup.datas.TaskData
+import org.litepal.LitePal
 
 class TodoFragment : Fragment() {
 
@@ -40,15 +40,11 @@ class TodoFragment : Fragment() {
         return view
     }
 
-    private fun genData(): List<ToDo> {
-        val list = ArrayList<ToDo>()
-        val random = Random()
-        for (i in 0..9) {
-            val name = random.nextInt(10).toString()
-            val todo = ToDo(name, "content", false, null, null, null, null, null, null)
-            list.add(todo)
-        }
-        return list
+    private fun genData(): List<TaskData> {
+        var taskData = TaskData("学习日语", "每天背20个假名", null, null, null, null, 0, 0, null, false, 0)
+        taskData.save()
+
+        return LitePal.findAll(TaskData::class.java)
     }
 
     private fun getHeaderView(): View {

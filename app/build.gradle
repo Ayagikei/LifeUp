@@ -53,6 +53,7 @@ dependencies {
     api 'com.xiaosong520:doublewaveview:1.0.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
     api 'com.github.Jay-Goo:RangeSeekBar:v2.0.4'
+    api 'org.litepal.android:core:2.0.0'
 }
 
 MobSDK {
