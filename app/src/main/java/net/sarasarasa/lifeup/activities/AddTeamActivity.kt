@@ -13,19 +13,24 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import java.util.*
 
 
 class AddTeamActivity : AppCompatActivity() {
 
+    private val todoService = TodoServiceImpl()
     private var iCheckedItemIndex = 0
-    private var seekBar1 = 0
-    private var arrSkillBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
+    private var iUrgency = 0
+    private var iDifficulty = 0
+    private var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
     private val _selectedCnt = 0
     private val _strengthIndex = 1
@@ -63,6 +68,7 @@ class AddTeamActivity : AppCompatActivity() {
         cm.setSaturation(0f) // 设置饱和度
         val grayColorFilter = ColorMatrixColorFilter(cm)
 
+
         iv_strength.colorFilter = grayColorFilter // 如果想恢复彩色显示，设置为null即可
         iv_learning.colorFilter = grayColorFilter
         iv_charm.colorFilter = grayColorFilter
@@ -83,7 +89,7 @@ class AddTeamActivity : AppCompatActivity() {
         }
 
         //当前选中的话
-        if (arrSkillBtn[index] == _selected) {
+        if (arrAbbrBtn[index] == _selected) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) // 设置饱和度
             val grayColorFilter = ColorMatrixColorFilter(cm)
@@ -91,17 +97,17 @@ class AddTeamActivity : AppCompatActivity() {
             if (view is ImageView)
                 view.colorFilter = grayColorFilter
 
-            arrSkillBtn[index] = _unselected
-            arrSkillBtn[_selectedCnt]--
+            arrAbbrBtn[index] = _unselected
+            arrAbbrBtn[_selectedCnt]--
         } else {
             //不能选择超过3个
-            if (arrSkillBtn[_selectedCnt] < _maxSelectable) {
+            if (arrAbbrBtn[_selectedCnt] < _maxSelectable) {
                 //当前没有选中，恢复颜色
                 if (view is ImageView)
                     view.colorFilter = null
 
-                arrSkillBtn[index] = _selected
-                arrSkillBtn[_selectedCnt]++
+                arrAbbrBtn[index] = _selected
+                arrAbbrBtn[_selectedCnt]++
             }
         }
     }
@@ -110,7 +116,7 @@ class AddTeamActivity : AppCompatActivity() {
         sb_urgence.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
                 //四个刻度对应的数值为0，33,66,100
-                seekBar1 = leftValue.toInt()
+                iUrgency = leftValue.toInt()
             }
 
             override fun onStartTrackingTouch(view: RangeSeekBar, isLeft: Boolean) {
@@ -125,7 +131,7 @@ class AddTeamActivity : AppCompatActivity() {
         sb_difficulty.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
                 //四个刻度对应的数值为0，33,66,100
-                seekBar1 = leftValue.toInt()
+                iDifficulty = leftValue.toInt()
             }
 
             override fun onStartTrackingTouch(view: RangeSeekBar, isLeft: Boolean) {
@@ -195,8 +201,9 @@ class AddTeamActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_finish -> {
-                if (check())
+                if (check()) {
                     addItem()
+                }
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -204,7 +211,64 @@ class AddTeamActivity : AppCompatActivity() {
     }
 
     private fun addItem() {
-        // TODO:将表单转换为对象
+        Toast.makeText(baseContext, "addItem()", Toast.LENGTH_LONG).show()
+
+        // 将表单转换为对象
+        val content = til_toDoText.editText?.text.toString()
+        val remark = til_remark.editText?.text.toString()
+        // TODO:转换为Date类型
+        val taskDeadline = til_deadLine.editText?.text.toString()
+        val taskUrgencyLevel = when (iUrgency) {
+            0 -> 0
+            33 -> 1
+            66 -> 2
+            100 -> 3
+            else -> 0
+        }
+        val taskDifficultyLevel = when (iDifficulty) {
+            0 -> 0
+            33 -> 1
+            66 -> 2
+            100 -> 3
+            else -> 0
+        }
+        val taskShared = switch1.isChecked
+        val relatedAttribute = arrayOf<String>()
+
+        for (i in arrAbbrBtn.indices) {
+            if (i == 0) continue
+            if (arrAbbrBtn[i] == _selected) {
+                val strRes = when (i) {
+                    _strengthIndex -> "strength"
+                    _learningIndex -> "learning"
+                    _charmIndex -> "charm"
+                    _enduranceIndex -> "endurance"
+                    _vitalityIndex -> "vitality"
+                    _creativeIndex -> "creative"
+                    else -> ""
+                }
+                relatedAttribute[relatedAttribute.size] = strRes
+            }
+        }
+
+        val taskModel = TaskModel(
+                content,
+                remark,
+                null,
+                relatedAttribute.getOrElse(0) { "" },
+                relatedAttribute.getOrElse(1) { "" },
+                relatedAttribute.getOrElse(2) { "" },
+                taskUrgencyLevel,
+                taskDifficultyLevel,
+                null,
+                taskShared,
+                null
+        )
+
+        Toast.makeText(baseContext, taskModel.toString(), Toast.LENGTH_LONG).show()
+
+        todoService.addTodoItem(taskModel)
+
     }
 
     private fun check(): Boolean {
@@ -215,6 +279,7 @@ class AddTeamActivity : AppCompatActivity() {
             isAllCheckPassed = false
         }
 
+        Toast.makeText(baseContext, isAllCheckPassed.toString(), Toast.LENGTH_SHORT).show()
         return isAllCheckPassed
     }
 }
