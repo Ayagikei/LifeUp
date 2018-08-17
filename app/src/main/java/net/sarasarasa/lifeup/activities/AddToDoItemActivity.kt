@@ -24,25 +24,25 @@ import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import java.util.*
 
 
-class AddToDoItemActivity : AppCompatActivity() {
+open class AddToDoItemActivity : AppCompatActivity() {
 
-    private val todoService = TodoServiceImpl()
-    private var iCheckedItemIndex = 0
-    private var iUrgency = 0
-    private var iDifficulty = 0
-    private var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
+    protected val todoService = TodoServiceImpl()
+    protected var iCheckedItemIndex = 0
+    protected var iUrgency = 0
+    protected var iDifficulty = 0
+    protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
-    private val _selectedCnt = 0
-    private val _strengthIndex = 1
-    private val _learningIndex = 2
-    private val _charmIndex = 3
-    private val _enduranceIndex = 4
-    private val _vitalityIndex = 5
-    private val _creativeIndex = 6
-    private val _maxSelectable = 3
+    protected val _selectedCnt = 0
+    protected val _strengthIndex = 1
+    protected val _learningIndex = 2
+    protected val _charmIndex = 3
+    protected val _enduranceIndex = 4
+    protected val _vitalityIndex = 5
+    protected val _creativeIndex = 6
+    protected val _maxSelectable = 3
 
-    private val _selected = 1
-    private val _unselected = 0
+    protected val _selected = 1
+    protected val _unselected = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

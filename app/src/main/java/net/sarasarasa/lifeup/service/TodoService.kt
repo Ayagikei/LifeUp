@@ -12,6 +12,8 @@ interface TodoService {
 
     fun getTodoList(): List<TaskModel>
 
+    fun getATodoItem(id: Long): TaskModel?
+
     fun finishTodoItem(id: Long?): Boolean
 
 

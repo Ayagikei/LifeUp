@@ -47,5 +47,6 @@
     <string name="title_activity_add_team_item">新建团队</string>
     <string name="title_activity_team">团队详细信息</string>
     <string name="title_activity_user">用户详细信息</string>
+    <string name="title_activity_edit_to_do_item">编辑待办事项</string>
 
 </resources>

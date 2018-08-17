@@ -8,7 +8,7 @@ import net.sarasarasa.lifeup.models.TaskModel
 class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter<TaskModel, BaseViewHolder>(layoutResId, data) {
 
     override fun convert(helper: BaseViewHolder, item: TaskModel) {
-        helper.setText(R.id.tw_name, item.content).setIsRecyclable(false)
+        helper.setText(R.id.tw_name, item.content).setText(R.id.tw_contentTitle, item.remark)
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.*
 
 class TodoServiceImpl : TodoService {
 
+
     private val todoDAO = TodoDAO()
 
     override fun addTodoItem(taskModel: TaskModel) {
@@ -47,6 +48,10 @@ class TodoServiceImpl : TodoService {
 
     override fun getTodoList(): List<TaskModel> {
         return todoDAO.findAllTodoItem()
+    }
+
+    override fun getATodoItem(id: Long): TaskModel? {
+        return todoDAO.findATodoItem(id)
     }
 
     override fun finishTodoItem(id: Long?): Boolean {
