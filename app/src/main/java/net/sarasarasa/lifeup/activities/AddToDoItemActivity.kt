@@ -19,6 +19,8 @@ import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.constants.AddToDoItemConstants
+import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import java.util.*
@@ -32,17 +34,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     protected var iDifficulty = 0
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
-    protected val _selectedCnt = 0
-    protected val _strengthIndex = 1
-    protected val _learningIndex = 2
-    protected val _charmIndex = 3
-    protected val _enduranceIndex = 4
-    protected val _vitalityIndex = 5
-    protected val _creativeIndex = 6
-    protected val _maxSelectable = 3
 
-    protected val _selected = 1
-    protected val _unselected = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,19 +69,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
         iv_creative.colorFilter = grayColorFilter
     }
 
+
+    /** 属性按钮选择的相关响应 **/
     fun switchBtn(view: View) {
-        val index = when (view.id) {
-            R.id.iv_strength -> _strengthIndex
-            R.id.iv_learning -> _learningIndex
-            R.id.iv_charm -> _charmIndex
-            R.id.iv_endurance -> _enduranceIndex
-            R.id.iv_vitality -> _vitalityIndex
-            R.id.iv_creative -> _creativeIndex
-            else -> return
-        }
+        val index = TodoItemConverter.viewToIndex(view)
 
         //当前选中的话
-        if (arrAbbrBtn[index] == _selected) {
+        if (arrAbbrBtn[index] == AddToDoItemConstants.SELECTED) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) // 设置饱和度
             val grayColorFilter = ColorMatrixColorFilter(cm)
@@ -97,21 +83,22 @@ open class AddToDoItemActivity : AppCompatActivity() {
             if (view is ImageView)
                 view.colorFilter = grayColorFilter
 
-            arrAbbrBtn[index] = _unselected
-            arrAbbrBtn[_selectedCnt]--
+            arrAbbrBtn[index] = AddToDoItemConstants.UNSELECTED
+            arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT]--
         } else {
             //不能选择超过3个
-            if (arrAbbrBtn[_selectedCnt] < _maxSelectable) {
+            if (arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT] < AddToDoItemConstants.MAX_SELECTABLE_NUM) {
                 //当前没有选中，恢复颜色
                 if (view is ImageView)
                     view.colorFilter = null
 
-                arrAbbrBtn[index] = _selected
-                arrAbbrBtn[_selectedCnt]++
+                arrAbbrBtn[index] = AddToDoItemConstants.SELECTED
+                arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT]++
             }
         }
     }
 
+    /** 初始化奖励设置的两个SeekBar **/
     private fun initSeekBar() {
         sb_urgence.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
@@ -130,7 +117,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         sb_difficulty.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
-                //四个刻度对应的数值为0，33,66,100
+                //四个刻度对应的数值为0，33,66,99
                 iDifficulty = leftValue.toInt()
             }
 
@@ -144,6 +131,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         })
     }
 
+    /** 初始化日期选择 **/
     private fun initDDDL() {
         dDDL.inputType = InputType.TYPE_NULL
         dDDL.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -156,6 +144,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
     }
 
+    /** 初始化重复频次选择 **/
     private fun initRepeater() {
         et_repeat.inputType = InputType.TYPE_NULL
         et_repeat.setText("不重复")
@@ -210,6 +199,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
     }
 
+    /** 创建新待办事项的响应 **/
     private fun addItem() {
         // 将表单转换为对象
         val content = til_toDoText.editText?.text.toString()
@@ -220,14 +210,14 @@ open class AddToDoItemActivity : AppCompatActivity() {
             0 -> 0
             33 -> 1
             66 -> 2
-            100 -> 3
+            99 -> 3
             else -> 0
         }
         val taskDifficultyLevel = when (iDifficulty) {
             0 -> 0
             33 -> 1
             66 -> 2
-            100 -> 3
+            99 -> 3
             else -> 0
         }
         val taskShared = switch1.isChecked
@@ -235,16 +225,8 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         for (i in arrAbbrBtn.indices) {
             if (i == 0) continue
-            if (arrAbbrBtn[i] == _selected) {
-                val strRes = when (i) {
-                    _strengthIndex -> "strength"
-                    _learningIndex -> "learning"
-                    _charmIndex -> "charm"
-                    _enduranceIndex -> "endurance"
-                    _vitalityIndex -> "vitality"
-                    _creativeIndex -> "creative"
-                    else -> ""
-                }
+            if (arrAbbrBtn[i] == AddToDoItemConstants.SELECTED) {
+                val strRes = TodoItemConverter.indexToString(i)
                 relatedAttribute = relatedAttribute.plusElement(strRes)
             }
         }
@@ -266,8 +248,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
         Toast.makeText(baseContext, taskModel.toString(), Toast.LENGTH_LONG).show()
         todoService.addTodoItem(taskModel)
 
+        //结束这个Activity
+        finish()
     }
 
+    /** 提交前对表单进行检测 **/
     private fun check(): Boolean {
         var isAllCheckPassed = true
 
