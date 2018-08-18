@@ -12,8 +12,8 @@ class TodoDAO {
         return LitePal.find(TaskModel::class.java, id)?.delete()
     }
 
-    fun findAllTodoItem(): List<TaskModel> {
-        return LitePal.findAll(TaskModel::class.java)
+    fun findAllUncompletedTodoItem(): List<TaskModel> {
+        return LitePal.where("taskStatus = ?", "0").find(TaskModel::class.java)
     }
 
     fun findATodoItem(id: Long): TaskModel? {

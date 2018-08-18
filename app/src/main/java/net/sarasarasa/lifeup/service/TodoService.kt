@@ -10,11 +10,13 @@ interface TodoService {
 
     fun deleteTodoItem(id: Long?): Boolean
 
-    fun getTodoList(): List<TaskModel>
+    fun getUncompletedTodoList(): List<TaskModel>
 
     fun getATodoItem(id: Long): TaskModel?
 
     fun finishTodoItem(id: Long?): Boolean
+
+    fun giveUpTodoItem(id: Long?): Boolean
 
 
 }

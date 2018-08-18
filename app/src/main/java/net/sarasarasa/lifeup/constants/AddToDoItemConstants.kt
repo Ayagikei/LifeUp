@@ -13,5 +13,10 @@ class AddToDoItemConstants {
 
         const val SELECTED = 1
         const val UNSELECTED = 0
+
+        const val UNCOMPLETED = 0
+        const val COMPLETED = 1
+        const val GIVEUP = 2
+        const val OUT_OF_TIME = 3
     }
 }

@@ -21,6 +21,6 @@ data class TaskModel(
     var taskId: Long? = null
     var createdTime: Long = 0
     var updatedTime: Long = 0
-    var isFinished: Boolean = false
+    var taskStatus: Int = 0
 
 }

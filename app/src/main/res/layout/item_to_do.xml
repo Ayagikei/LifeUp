@@ -166,7 +166,6 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="265dp"
                 android:layout_marginTop="6dp"
-                android:onClick="play"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="false"

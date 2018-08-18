@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.service.impl
 
 import net.sarasarasa.lifeup.DAO.TodoDAO
+import net.sarasarasa.lifeup.constants.AddToDoItemConstants
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.TodoService
 import java.util.*
@@ -46,8 +47,8 @@ class TodoServiceImpl : TodoService {
         return ans > 0
     }
 
-    override fun getTodoList(): List<TaskModel> {
-        return todoDAO.findAllTodoItem()
+    override fun getUncompletedTodoList(): List<TaskModel> {
+        return todoDAO.findAllUncompletedTodoItem()
     }
 
     override fun getATodoItem(id: Long): TaskModel? {
@@ -59,7 +60,19 @@ class TodoServiceImpl : TodoService {
 
         with(todoDAO.findATodoItem(id) ?: return false)
         {
-            isFinished = true
+            taskStatus = AddToDoItemConstants.COMPLETED
+            save()
+        }
+
+        return true
+    }
+
+    override fun giveUpTodoItem(id: Long?): Boolean {
+        if (id == null) return false
+
+        with(todoDAO.findATodoItem(id) ?: return false)
+        {
+            taskStatus = AddToDoItemConstants.GIVEUP
             save()
         }
 

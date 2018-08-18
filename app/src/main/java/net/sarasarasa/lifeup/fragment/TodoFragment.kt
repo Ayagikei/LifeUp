@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.airbnb.lottie.LottieAnimationView
 import kotlinx.android.synthetic.main.fragment_todo.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
 import net.sarasarasa.lifeup.R
@@ -26,7 +28,9 @@ import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 class TodoFragment : Fragment() {
 
     private val todoService = TodoServiceImpl()
-    private val mList: MutableList<TaskModel> = todoService.getTodoList().toMutableList()
+    private val mList: MutableList<TaskModel> = todoService.getUncompletedTodoList().toMutableList()
+    private var dialogView: View? = null
+    private var dialog: AlertDialog? = null
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
@@ -93,7 +97,28 @@ class TodoFragment : Fragment() {
                         }
                         return@setOnMenuItemClickListener true
                     }
-                    R.id.give_up_item -> return@setOnMenuItemClickListener true
+                    R.id.give_up_item -> {
+                        context?.let {
+                            AlertDialog.Builder(it).setTitle("放弃")
+                                    .setMessage("你确定要放弃该待办事项吗？你会损失一些经验值。")
+                                    .setPositiveButton("确定") { _, _ ->
+                                        // 点击“确认”后的操作
+                                        todoService.giveUpTodoItem(item.id)
+
+                                        if (todoService.deleteTodoItem(item.id)) {
+                                            Toast.makeText(it, "成功放弃待办事项",
+                                                    Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(it, "放弃操作出现异常",
+                                                    Toast.LENGTH_SHORT).show()
+                                        }
+                                        refreshDataSet()
+                                    }
+                                    .setNegativeButton("取消") { _, _ ->
+                                    }.show()
+                        }
+                        return@setOnMenuItemClickListener true
+                    }
                     else -> return@setOnMenuItemClickListener true
                 }
             }
@@ -101,11 +126,74 @@ class TodoFragment : Fragment() {
             mPopupMenu.show()
             return@setOnItemLongClickListener true
         }
+
+        mAdapter.setOnItemChildClickListener { adapter, mView, position ->
+            if (mView is LottieAnimationView) {
+                mView.addAnimatorListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(p0: Animator?) {
+
+                    }
+
+                    override fun onAnimationEnd(p0: Animator?) {
+                        showDialogAbbr()
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) {
+                        showDialogAbbr()
+                    }
+
+                    override fun onAnimationStart(p0: Animator?) {
+                    }
+                })
+
+                mView.playAnimation()
+                mView.isClickable = false
+
+                val taskModel = adapter.getItem(position) as TaskModel
+                todoService.finishTodoItem(taskModel.id)
+            }
+        }
+    }
+
+    private fun showDialogAbbr() {
+        if (dialog != null)
+            return
+
+        dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_abbr, null)
+        dialog = context?.let { AlertDialog.Builder(it).create() }
+
+        with(dialog) {
+            this?.setTitle("你获得了经验值")
+            this?.setIcon(net.sarasarasa.lifeup.R.drawable.ic_award_exp)
+            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                dismiss()
+                dialog = null
+            }
+            this?.setView(dialogView)
+            this?.show()
+        }
+    }
+
+    private fun showDialogLifeUp() {
+        if (dialog != null)
+            return
+
+        dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_lifeup, null)
+        dialog = context?.let { AlertDialog.Builder(it).create() }
+
+        with(dialog) {
+            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                dismiss()
+                dialog = null
+            }
+            this?.setView(dialogView)
+            this?.show()
+        }
     }
 
     private fun refreshDataSet() {
         mList.clear()
-        mList.addAll(todoService.getTodoList())
+        mList.addAll(todoService.getUncompletedTodoList())
         mHeaderView.findViewById<TextView>(R.id.tw_finishCounter).text = "今天已经完成1个待办事项（共${mList.size}个）"
         mAdapter.notifyDataSetChanged()
     }
