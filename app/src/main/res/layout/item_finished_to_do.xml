@@ -15,11 +15,11 @@
         android:text="一起来学日语吧！"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintStart_toEndOf="@+id/iv_icon_status"
+        app:layout_constraintTop_toTopOf="@+id/iv_icon_status" />
 
     <TextView
-        android:id="@+id/tv_header"
+        android:id="@+id/tv_headerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="周期任务-每日"
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_content" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_icon_status"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"

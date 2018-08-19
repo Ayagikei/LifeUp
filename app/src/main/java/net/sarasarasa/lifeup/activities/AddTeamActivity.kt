@@ -235,6 +235,16 @@ class AddTeamActivity : AppCompatActivity() {
         val taskShared = switch1.isChecked
         val relatedAttribute = arrayOf<String>()
 
+        val taskFrequency = when (til_repeat.editText?.text.toString()) {
+            "不重复" -> 0
+            "每日" -> 1
+            "每两日" -> 2
+            "每周" -> 7
+            "每两周" -> 14
+            "每月" -> 30
+            else -> 0
+        }
+
         for (i in arrAbbrBtn.indices) {
             if (i == 0) continue
             if (arrAbbrBtn[i] == _selected) {
@@ -255,11 +265,13 @@ class AddTeamActivity : AppCompatActivity() {
                 content,
                 remark,
                 null,
+                null,
                 relatedAttribute.getOrElse(0) { "" },
                 relatedAttribute.getOrElse(1) { "" },
                 relatedAttribute.getOrElse(2) { "" },
                 taskUrgencyLevel,
                 taskDifficultyLevel,
+                taskFrequency,
                 null,
                 taskShared,
                 null

@@ -1,7 +1,7 @@
 package net.sarasarasa.lifeup.service.impl
 
 import net.sarasarasa.lifeup.DAO.TodoDAO
-import net.sarasarasa.lifeup.constants.AddToDoItemConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.TodoService
 import java.util.*
@@ -23,13 +23,15 @@ class TodoServiceImpl : TodoService {
             //复制所有输入信息
             content = taskModel.content
             remark = taskModel.remark
-            taskDeadline = taskModel.taskDeadline
+            taskExpireTime = taskModel.taskExpireTime
+            taskRemindTime = taskModel.taskRemindTime
             relatedAttribute1 = taskModel.relatedAttribute1
             relatedAttribute2 = taskModel.relatedAttribute2
             relatedAttribute3 = taskModel.relatedAttribute3
-            taskUrgencyLevel = taskModel.taskUrgencyLevel
-            taskDifficultyLevel = taskModel.taskDifficultyLevel
-            taskShared = taskModel.taskShared
+            taskUrgencyDegree = taskModel.taskUrgencyDegree
+            taskDifficultyDegree = taskModel.taskDifficultyDegree
+            taskFrequency = taskModel.taskFrequency
+            isShared = taskModel.isShared
             taskType = taskModel.taskType
 
             //更新UpdatedTime
@@ -51,6 +53,10 @@ class TodoServiceImpl : TodoService {
         return todoDAO.findAllUncompletedTodoItem()
     }
 
+    override fun getCompletedTodoList(): List<TaskModel> {
+        return todoDAO.findAllCompletedTodoItem()
+    }
+
     override fun getATodoItem(id: Long): TaskModel? {
         return todoDAO.findATodoItem(id)
     }
@@ -60,7 +66,9 @@ class TodoServiceImpl : TodoService {
 
         with(todoDAO.findATodoItem(id) ?: return false)
         {
-            taskStatus = AddToDoItemConstants.COMPLETED
+            taskStatus = ToDoItemConstants.COMPLETED
+            updatedTime = Calendar.getInstance().timeInMillis
+            endDate = Date()
             save()
         }
 
@@ -72,7 +80,9 @@ class TodoServiceImpl : TodoService {
 
         with(todoDAO.findATodoItem(id) ?: return false)
         {
-            taskStatus = AddToDoItemConstants.GIVEUP
+            taskStatus = ToDoItemConstants.GIVE_UP
+            updatedTime = Calendar.getInstance().timeInMillis
+            endDate = Date()
             save()
         }
 

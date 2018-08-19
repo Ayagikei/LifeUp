@@ -16,6 +16,10 @@ class TodoDAO {
         return LitePal.where("taskStatus = ?", "0").find(TaskModel::class.java)
     }
 
+    fun findAllCompletedTodoItem(): List<TaskModel> {
+        return LitePal.where("taskStatus != ?", "0").order("endDate desc").find(TaskModel::class.java)
+    }
+
     fun findATodoItem(id: Long): TaskModel? {
         return LitePal.find(TaskModel::class.java, id)
     }

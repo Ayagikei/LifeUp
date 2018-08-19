@@ -67,7 +67,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_history -> {
-
+                val intent = Intent(this, HistoryActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_achievement -> {
                 val intent = Intent(this, UserActivity::class.java)

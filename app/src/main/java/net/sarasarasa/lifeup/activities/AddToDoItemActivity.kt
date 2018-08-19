@@ -19,7 +19,7 @@ import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.constants.AddToDoItemConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -75,7 +75,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val index = TodoItemConverter.viewToIndex(view)
 
         //当前选中的话
-        if (arrAbbrBtn[index] == AddToDoItemConstants.SELECTED) {
+        if (arrAbbrBtn[index] == ToDoItemConstants.SELECTED) {
             val cm = ColorMatrix()
             cm.setSaturation(0f) // 设置饱和度
             val grayColorFilter = ColorMatrixColorFilter(cm)
@@ -83,17 +83,17 @@ open class AddToDoItemActivity : AppCompatActivity() {
             if (view is ImageView)
                 view.colorFilter = grayColorFilter
 
-            arrAbbrBtn[index] = AddToDoItemConstants.UNSELECTED
-            arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT]--
+            arrAbbrBtn[index] = ToDoItemConstants.UNSELECTED
+            arrAbbrBtn[ToDoItemConstants.SELECTED_CNT]--
         } else {
             //不能选择超过3个
-            if (arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT] < AddToDoItemConstants.MAX_SELECTABLE_NUM) {
+            if (arrAbbrBtn[ToDoItemConstants.SELECTED_CNT] < ToDoItemConstants.MAX_SELECTABLE_NUM) {
                 //当前没有选中，恢复颜色
                 if (view is ImageView)
                     view.colorFilter = null
 
-                arrAbbrBtn[index] = AddToDoItemConstants.SELECTED
-                arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT]++
+                arrAbbrBtn[index] = ToDoItemConstants.SELECTED
+                arrAbbrBtn[ToDoItemConstants.SELECTED_CNT]++
             }
         }
     }
@@ -223,9 +223,19 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val taskShared = switch1.isChecked
         var relatedAttribute = arrayOf<String>()
 
+        val taskFrequency = when (til_repeat.editText?.text.toString()) {
+            "不重复" -> 0
+            "每日" -> 1
+            "每两日" -> 2
+            "每周" -> 7
+            "每两周" -> 14
+            "每月" -> 30
+            else -> 0
+        }
+
         for (i in arrAbbrBtn.indices) {
             if (i == 0) continue
-            if (arrAbbrBtn[i] == AddToDoItemConstants.SELECTED) {
+            if (arrAbbrBtn[i] == ToDoItemConstants.SELECTED) {
                 val strRes = TodoItemConverter.indexToString(i)
                 relatedAttribute = relatedAttribute.plusElement(strRes)
             }
@@ -235,11 +245,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 content,
                 remark,
                 null,
+                null,
                 relatedAttribute.getOrElse(0) { "" },
                 relatedAttribute.getOrElse(1) { "" },
                 relatedAttribute.getOrElse(2) { "" },
                 taskUrgencyLevel,
                 taskDifficultyLevel,
+                taskFrequency,
                 null,
                 taskShared,
                 null

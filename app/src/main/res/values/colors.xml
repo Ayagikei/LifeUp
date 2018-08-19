@@ -9,4 +9,8 @@
     <color name="white">#ffffff</color>
     <color name="blue">#03a9f4</color>
     <color name="yiban_btn">#FF5722</color>
+    <color name="color_to_do_item_fre0">#03b1ff</color>
+    <color name="color_to_do_item_fre1">#8BC34A</color>
+    <color name="color_to_do_item_fre7">#ff3d00</color>
+    <color name="color_to_do_item_fre30">#8402ff</color>
 </resources>

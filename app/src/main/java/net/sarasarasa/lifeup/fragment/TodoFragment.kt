@@ -103,9 +103,8 @@ class TodoFragment : Fragment() {
                                     .setMessage("你确定要放弃该待办事项吗？你会损失一些经验值。")
                                     .setPositiveButton("确定") { _, _ ->
                                         // 点击“确认”后的操作
-                                        todoService.giveUpTodoItem(item.id)
 
-                                        if (todoService.deleteTodoItem(item.id)) {
+                                        if (todoService.giveUpTodoItem(item.id)) {
                                             Toast.makeText(it, "成功放弃待办事项",
                                                     Toast.LENGTH_SHORT).show()
                                         } else {

@@ -66,7 +66,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tv_header"
+                    android:id="@+id/tv_headerText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -85,8 +85,8 @@
                     android:text="LV1 初出茅庐"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@android:color/background_light"
-                    app:layout_constraintStart_toEndOf="@+id/tv_header"
-                    app:layout_constraintTop_toTopOf="@+id/tv_header" />
+                    app:layout_constraintStart_toEndOf="@+id/tv_headerText"
+                    app:layout_constraintTop_toTopOf="@+id/tv_headerText" />
 
                 <TextView
                     android:id="@+id/tv_finishCount"
@@ -111,7 +111,7 @@
                     android:progress="99"
                     android:progressTint="#D6FFFFFF"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_header" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_headerText" />
 
                 <TextView
                     android:id="@+id/tw_lifeExp"

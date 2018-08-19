@@ -5,7 +5,7 @@ import android.text.Editable
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.constants.AddToDoItemConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 
 class EditToDoItemActivity : AddToDoItemActivity() {
@@ -28,7 +28,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             checkNotNull(til_remark.editText).text = Editable.Factory.getInstance().newEditable(taskModel.remark)
 
             //还原奖励设置
-            when (taskModel.taskUrgencyLevel) {
+            when (taskModel.taskUrgencyDegree) {
                 0 -> sb_urgence.setValue(0f)
                 1 -> sb_urgence.setValue(33f)
                 2 -> sb_urgence.setValue(66f)
@@ -36,7 +36,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 else -> sb_urgence.setValue(0.0f)
             }
 
-            when (taskModel.taskDifficultyLevel) {
+            when (taskModel.taskDifficultyDegree) {
                 0 -> sb_difficulty.setValue(0.0f)
                 1 -> sb_difficulty.setValue(33f)
                 2 -> sb_difficulty.setValue(66f)
@@ -49,7 +49,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             restoreAbbrSelection(taskModel.relatedAttribute2)
             restoreAbbrSelection(taskModel.relatedAttribute3)
 
-            switch1.isChecked = taskModel.taskShared
+            switch1.isChecked = taskModel.isShared
 
         }
     }
@@ -69,7 +69,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
         //选中的[imageView]恢复彩色
         imageView.colorFilter = null
 
-        arrAbbrBtn[AddToDoItemConstants.SELECTED_CNT]++
-        arrAbbrBtn[TodoItemConverter.viewToIndex(imageView)] = AddToDoItemConstants.SELECTED
+        arrAbbrBtn[ToDoItemConstants.SELECTED_CNT]++
+        arrAbbrBtn[TodoItemConverter.viewToIndex(imageView)] = ToDoItemConstants.SELECTED
     }
 }
