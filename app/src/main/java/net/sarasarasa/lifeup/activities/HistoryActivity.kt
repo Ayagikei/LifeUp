@@ -10,6 +10,7 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.HistoryAdapter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.ToastUtils
 
 
 class HistoryActivity : AppCompatActivity() {
@@ -39,6 +40,24 @@ class HistoryActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         mRecyclerView.adapter = mAdapter
+
+        mAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val item = adapter.getItem(position) as TaskModel
+
+            when (view.id) {
+                R.id.btn_undo -> {
+                    todoService.undoFinishTodoItem(item.id)
+                    ToastUtils.showShortToast(this, "撤销成功")
+                    refreshDataSet()
+                }
+            }
+        }
+    }
+
+    private fun refreshDataSet() {
+        mList.clear()
+        mList.addAll(todoService.getCompletedTodoList())
+        mAdapter.notifyDataSetChanged()
     }
 
 }

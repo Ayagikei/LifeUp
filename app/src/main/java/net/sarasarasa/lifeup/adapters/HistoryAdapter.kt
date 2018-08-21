@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.adapters
 
+import android.text.format.DateUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
@@ -25,6 +26,10 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 .setImageResource(R.id.iv_icon_status, getStatusIconDrawable(item.taskStatus))
                 .addOnClickListener(R.id.tv_btn)
 
+        if (DateUtils.isToday(checkNotNull(item.endDate).time)) {
+            helper.setVisible(R.id.btn_undo, true)
+                    .addOnClickListener(R.id.btn_undo)
+        } else helper.setVisible(R.id.btn_undo, false)
 
     }
 

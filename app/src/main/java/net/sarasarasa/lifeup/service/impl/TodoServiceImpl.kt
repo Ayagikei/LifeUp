@@ -75,6 +75,20 @@ class TodoServiceImpl : TodoService {
         return true
     }
 
+    override fun undoFinishTodoItem(id: Long?): Boolean {
+        if (id == null) return false
+
+        with(todoDAO.findATodoItem(id) ?: return false)
+        {
+            taskStatus = ToDoItemConstants.UNCOMPLETED
+            updatedTime = Calendar.getInstance().timeInMillis
+            endDate = Date()
+            save()
+        }
+
+        return true
+    }
+
     override fun giveUpTodoItem(id: Long?): Boolean {
         if (id == null) return false
 

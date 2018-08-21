@@ -18,6 +18,8 @@ interface TodoService {
 
     fun finishTodoItem(id: Long?): Boolean
 
+    fun undoFinishTodoItem(id: Long?): Boolean
+
     fun giveUpTodoItem(id: Long?): Boolean
 
 

@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
+import android.support.constraint.ConstraintSet
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
@@ -23,6 +24,7 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.DensityUtil
 import java.util.*
 
 
@@ -33,7 +35,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
     protected var iUrgency = 0
     protected var iDifficulty = 0
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,15 +157,38 @@ open class AddToDoItemActivity : AppCompatActivity() {
         et_repeat.setOnClickListener { showRepeaterDialog(); }
     }
 
+    /** 重置期限日期 **/
+    fun finishDateReset(view: View) {
+        dDDL.setText("")
+        view.visibility = View.INVISIBLE
+        til_repeat.visibility = View.INVISIBLE
+
+        val set = ConstraintSet()
+        set.clone(layout_extra)
+        set.connect(switch1.id, ConstraintSet.TOP, til_deadLine.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
+        set.applyTo(layout_extra)
+    }
+
     /**
      * 展示日期选择对话框
      */
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
-        DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            // TODO Auto-generated method stub
+        val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             dDDL.setText("$year/${monthOfYear + 1}/$dayOfMonth")
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show()
+            til_repeat.visibility = View.VISIBLE
+            btn_ddl_reset.visibility = View.VISIBLE
+
+            //显示重复
+            val set = ConstraintSet()
+            set.clone(layout_extra)
+            set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
+            set.applyTo(layout_extra)
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+
+        datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
+        datePickerDialog.show()
+
     }
 
     /**

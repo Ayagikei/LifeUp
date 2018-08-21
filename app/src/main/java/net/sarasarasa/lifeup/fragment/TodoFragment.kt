@@ -21,6 +21,7 @@ import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.EditToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
+import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 
@@ -127,7 +128,10 @@ class TodoFragment : Fragment() {
         }
 
         mAdapter.setOnItemChildClickListener { adapter, mView, position ->
-            if (mView is LottieAnimationView) {
+            val item = adapter.getItem(position) as TaskModel
+
+            if (mView is LottieAnimationView &&
+                    item.taskStatus == ToDoItemConstants.UNCOMPLETED) {
                 mView.addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationRepeat(p0: Animator?) {
 
@@ -144,15 +148,13 @@ class TodoFragment : Fragment() {
                     override fun onAnimationStart(p0: Animator?) {
                     }
                 })
-
                 mView.playAnimation()
                 mView.isClickable = false
-
-                val taskModel = adapter.getItem(position) as TaskModel
-                todoService.finishTodoItem(taskModel.id)
+                todoService.finishTodoItem(item.id)
+            } // end of the if
             }
         }
-    }
+
 
     private fun showDialogAbbr() {
         if (dialog != null)
