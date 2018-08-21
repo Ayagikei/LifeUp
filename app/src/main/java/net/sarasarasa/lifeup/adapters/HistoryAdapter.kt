@@ -13,7 +13,7 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
 
     override fun convert(helper: BaseViewHolder, item: TaskModel) {
 
-        val timeFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss", Locale.getDefault())
         val endDate = timeFormat.format(checkNotNull(item.endDate))
 
         helper.setText(R.id.tv_content, item.content)

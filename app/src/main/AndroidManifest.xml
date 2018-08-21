@@ -102,6 +102,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".activities.YBLoginActivity"
+            android:label="@string/title_activity_YBLogin"
+            android:parentActivityName=".activities.LoginActivity"
+            android:theme="@style/AppTheme.Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

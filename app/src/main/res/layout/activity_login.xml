@@ -175,6 +175,7 @@
                     android:drawablePadding="72dp"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
+                    android:onClick="loginByYB"
                     android:text="@string/login_viaYiban"
                     android:textColor="@color/white"
                     android:textStyle="bold" />

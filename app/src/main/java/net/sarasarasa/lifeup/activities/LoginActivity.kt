@@ -7,6 +7,7 @@ import android.annotation.TargetApi
 import android.app.LoaderManager.LoaderCallbacks
 import android.content.Context
 import android.content.CursorLoader
+import android.content.Intent
 import android.content.Loader
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -311,6 +312,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         return true
     }*/
+
+    fun loginByYB(view: View) {
+        val intent = Intent(this, YBLoginActivity::class.java)
+        startActivity(intent)
+    }
 
     fun signUp(view: View) {
         sendCode(this);

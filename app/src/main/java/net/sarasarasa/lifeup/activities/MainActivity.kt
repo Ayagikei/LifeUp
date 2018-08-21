@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
     }
 
     fun initToolBar(toolbar: Toolbar) {
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                val intent = Intent(this, TeamActivity::class.java)
+                val intent = Intent(this, YBLoginActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_history -> {

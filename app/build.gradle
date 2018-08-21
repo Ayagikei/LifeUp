@@ -54,6 +54,8 @@ dependencies {
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
     api 'com.github.Jay-Goo:RangeSeekBar:v2.0.4'
     api 'org.litepal.android:core:2.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 }
 
 MobSDK {
