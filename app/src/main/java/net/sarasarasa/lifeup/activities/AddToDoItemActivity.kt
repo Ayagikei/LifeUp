@@ -21,6 +21,8 @@ import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
+import net.sarasarasa.lifeup.converter.ExpRewardConverter
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -305,17 +307,17 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         val taskUrgencyLevel = when (iUrgency) {
-            0 -> 0
-            33 -> 1
-            66 -> 2
-            99 -> 3
+            0 -> 1
+            33 -> 2
+            66 -> 3
+            99 -> 4
             else -> 0
         }
         val taskDifficultyLevel = when (iDifficulty) {
-            0 -> 0
-            33 -> 1
-            66 -> 2
-            99 -> 3
+            0 -> 1
+            33 -> 2
+            66 -> 3
+            99 -> 4
             else -> 0
         }
         val taskShared = switch1.isChecked
@@ -354,6 +356,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 taskShared,
                 null
         )
+        taskModel.expReward = ExpRewardConverter.getExpReward(arrAbbrBtn[SELECTED_CNT], taskUrgencyLevel, taskDifficultyLevel)
 
         val id = todoService.addTodoItem(taskModel)
 
@@ -373,6 +376,17 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
             til_toDoText.error = "不能为空"
+            isAllCheckPassed = false
+        }
+
+        if (arrAbbrBtn[SELECTED_CNT] == 0) {
+            ToastUtils.showShortToast(this, "你至少需要选择一个相关属性！")
+            isAllCheckPassed = false
+        }
+
+        if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
+                || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
+            ToastUtils.showShortToast(this, "提醒日期和时间必须填写完整！")
             isAllCheckPassed = false
         }
 

@@ -14,6 +14,7 @@ import java.util.*
 class TodoServiceImpl : TodoService {
 
     private val todoDAO = TodoDAO()
+    private val attributeService = AttributeServiceImpl()
 
     override fun addTodoItem(taskModel: TaskModel): Long? {
         taskModel.createdTime = Calendar.getInstance().timeInMillis
@@ -35,8 +36,13 @@ class TodoServiceImpl : TodoService {
             taskUrgencyDegree = taskModel.taskUrgencyDegree
             taskDifficultyDegree = taskModel.taskDifficultyDegree
             taskFrequency = taskModel.taskFrequency
+            userId = taskModel.userId
             isShared = taskModel.isShared
             taskType = taskModel.taskType
+            createdTime = taskModel.createdTime
+            expReward = taskModel.expReward
+            endDate = taskModel.endDate
+            taskStatus = taskModel.taskStatus
 
             //更新UpdatedTime
             updatedTime = Calendar.getInstance().timeInMillis
@@ -74,7 +80,13 @@ class TodoServiceImpl : TodoService {
             updatedTime = Calendar.getInstance().timeInMillis
             endDate = Date()
             save()
+
+            attributeService.increaseExp(this.relatedAttribute1 ?: "", this.expReward)
+            attributeService.increaseExp(this.relatedAttribute2 ?: "", this.expReward)
+            attributeService.increaseExp(this.relatedAttribute3 ?: "", this.expReward)
         }
+
+
 
         return true
     }
@@ -121,7 +133,6 @@ class TodoServiceImpl : TodoService {
 
 
     override fun getTodayFinishCount(): Int {
-
         val cal = Calendar.getInstance()
         with(cal) {
             set(Calendar.HOUR_OF_DAY, 0)

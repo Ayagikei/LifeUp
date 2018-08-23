@@ -28,6 +28,7 @@ class AttributeServiceImpl : AttributeService {
             "endurance" -> attributeModel.enduranceAttribute += exp
             "vitality" -> attributeModel.energyAttribute += exp
             "creative" -> attributeModel.creativity += exp
+            else -> return false
         }
 
         attributeModel.gradeAttribute += exp / 5

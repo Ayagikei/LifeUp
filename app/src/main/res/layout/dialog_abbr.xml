@@ -18,14 +18,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.daimajia.numberprogressbar.NumberProgressBar
-            android:id="@+id/npb_first"
+            android:id="@+id/npb_learning"
             android:layout_width="143dp"
             android:layout_height="wrap_content"
 
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toEndOf="@+id/tw_levelFirst"
-            app:layout_constraintTop_toTopOf="@+id/tw_levelFirst"
+            app:layout_constraintStart_toEndOf="@+id/tw_learningLevel"
+            app:layout_constraintTop_toTopOf="@+id/tw_learningLevel"
             app:progress_current="80"
             app:progress_max="100"
             app:progress_reached_bar_height="5.0dp"
@@ -37,11 +37,11 @@
             android:layout_height="wrap_content"
             android:text="250/500"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tw_levelFirst"
-            app:layout_constraintTop_toBottomOf="@+id/tw_levelFirst" />
+            app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
+            app:layout_constraintTop_toBottomOf="@+id/tw_learningLevel" />
 
         <TextView
-            android:id="@+id/tw_levelFirst"
+            android:id="@+id/tw_learningLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

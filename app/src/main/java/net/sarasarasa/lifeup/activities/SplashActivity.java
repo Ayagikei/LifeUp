@@ -6,7 +6,9 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import net.sarasarasa.lifeup.service.AttributeLevelService;
 import net.sarasarasa.lifeup.service.AttributeService;
+import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl;
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl;
 
 /**
@@ -16,6 +18,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl;
 public class SplashActivity extends AppCompatActivity {
 
     AttributeService attributeService = new AttributeServiceImpl();
+    AttributeLevelService attributeLevelService = new AttributeLevelServiceImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             //初始化数据
             attributeService.initAttribute();
+            attributeLevelService.initAttributeLevel();
             editor.putBoolean("isFirst", false);
             editor.apply();
 

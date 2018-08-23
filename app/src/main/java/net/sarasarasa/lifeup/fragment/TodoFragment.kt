@@ -163,7 +163,6 @@ class TodoFragment : Fragment() {
             }
         }
 
-
     private fun showDialogAbbr() {
         if (dialog != null)
             return
@@ -193,7 +192,7 @@ class TodoFragment : Fragment() {
         val levelMaxExp = 200
         val nowExp = 100
 
-        dialogView.npb_first.progress = nowExp * 100 / levelMaxExp
+        dialogView.npb_learning.progress = nowExp * 100 / levelMaxExp
         var finalProgress = (nowExp + exp) * 100 / levelMaxExp
 
         if (finalProgress >= 100) {
@@ -201,18 +200,18 @@ class TodoFragment : Fragment() {
             Thread {
                 try {
                     //先走到尾巴
-                    val toMax = dialogView.npb_first.max - dialogView.npb_first.progress
-                    while (dialogView.npb_first.progress != dialogView.npb_first.max) {
-                        activity?.runOnUiThread { dialogView?.npb_first?.incrementProgressBy(if (toMax / 20 > 0) toMax / 20 else 1) }
+                    val toMax = dialogView.npb_learning.max - dialogView.npb_learning.progress
+                    while (dialogView.npb_learning.progress != dialogView.npb_learning.max) {
+                        activity?.runOnUiThread { dialogView?.npb_learning?.incrementProgressBy(if (toMax / 20 > 0) toMax / 20 else 1) }
                         Thread.sleep(40)
                     }
-                    activity?.runOnUiThread { dialogView.npb_first.progress = 0 }
+                    activity?.runOnUiThread { dialogView.npb_learning.progress = 0 }
                     val nextMaxExp = 500
                     finalProgress = nowExp * 100 / nextMaxExp
                     Thread.sleep(40)
 
-                    while (dialogView.npb_first.progress != finalProgress) {
-                        activity?.runOnUiThread { dialogView?.npb_first?.incrementProgressBy(if (finalProgress / 30 > 0) finalProgress / 30 else 1) }
+                    while (dialogView.npb_learning.progress != finalProgress) {
+                        activity?.runOnUiThread { dialogView?.npb_learning?.incrementProgressBy(if (finalProgress / 30 > 0) finalProgress / 30 else 1) }
                         Thread.sleep(40)
                     }
 
@@ -224,9 +223,9 @@ class TodoFragment : Fragment() {
             //不需要升级
             Thread {
                 try {
-                    var progressToGo = finalProgress - dialogView.npb_first.progress
-                    while (dialogView.npb_first.progress != finalProgress) {
-                        activity?.runOnUiThread { dialogView?.npb_first?.incrementProgressBy(if (progressToGo / 30 > 0) progressToGo else 1) }
+                    var progressToGo = finalProgress - dialogView.npb_learning.progress
+                    while (dialogView.npb_learning.progress != finalProgress) {
+                        activity?.runOnUiThread { dialogView?.npb_learning?.incrementProgressBy(if (progressToGo / 30 > 0) progressToGo else 1) }
                         Thread.sleep(40)
                     }
                 } catch (e: InterruptedException) {
@@ -280,14 +279,12 @@ class TodoFragment : Fragment() {
         return view
     }
 
-
     private fun getHeaderView(): View {
         mHeaderView = layoutInflater.inflate(R.layout.head_view_to_do, null)
         refreshHeaderView(mHeaderView)
 
         return mHeaderView
     }
-
 
     override fun onResume() {
         super.onResume()
