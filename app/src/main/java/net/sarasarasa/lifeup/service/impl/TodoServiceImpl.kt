@@ -8,7 +8,6 @@ import java.util.*
 
 class TodoServiceImpl : TodoService {
 
-
     private val todoDAO = TodoDAO()
 
     override fun addTodoItem(taskModel: TaskModel) {
@@ -102,5 +101,33 @@ class TodoServiceImpl : TodoService {
 
         return true
     }
+
+    override fun getTodayTaskCount(): Int {
+
+        val cal = Calendar.getInstance()
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        val millisTime = cal.timeInMillis
+        return todoDAO.getTodayTaskCount(millisTime)
+    }
+
+
+    override fun getTodayFinishCount(): Int {
+
+        val cal = Calendar.getInstance()
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        val millisTime = cal.timeInMillis
+
+        return todoDAO.getTodayFinishCount(millisTime)
+    }
+
+
 
 }

@@ -14,7 +14,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
+import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.fragment_todo.view.*
+import kotlinx.android.synthetic.main.head_view_to_do.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
@@ -24,6 +26,9 @@ import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.DateUtil
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class TodoFragment : Fragment() {
@@ -83,7 +88,6 @@ class TodoFragment : Fragment() {
                                     .setMessage("你确定要删除该待办事项吗？你会损失一些经验值。")
                                     .setPositiveButton("确定") { _, _ ->
                                         // 点击“确认”后的操作
-
                                         if (todoService.deleteTodoItem(item.id)) {
                                             Toast.makeText(it, "成功删除待办事项",
                                                     Toast.LENGTH_SHORT).show()
@@ -150,7 +154,11 @@ class TodoFragment : Fragment() {
                 })
                 mView.playAnimation()
                 mView.isClickable = false
+
                 todoService.finishTodoItem(item.id)
+                //刷新HeaderView的进度显示
+                mList[position].taskStatus = ToDoItemConstants.COMPLETED
+                refreshHeaderView(mHeaderView)
             } // end of the if
             }
         }
@@ -172,7 +180,61 @@ class TodoFragment : Fragment() {
             }
             this?.setView(dialogView)
             this?.show()
+            this?.setOnCancelListener {
+                dismiss()
+                dialog = null
+            }
+            doProgress(dialogView as View, 200)
         }
+    }
+
+    private fun doProgress(dialogView: View, exp: Int) {
+
+        val levelMaxExp = 200
+        val nowExp = 100
+
+        dialogView.npb_first.progress = nowExp * 100 / levelMaxExp
+        var finalProgress = (nowExp + exp) * 100 / levelMaxExp
+
+        if (finalProgress >= 100) {
+            //要升级的情况
+            Thread {
+                try {
+                    //先走到尾巴
+                    val toMax = dialogView.npb_first.max - dialogView.npb_first.progress
+                    while (dialogView.npb_first.progress != dialogView.npb_first.max) {
+                        activity?.runOnUiThread { dialogView?.npb_first?.incrementProgressBy(if (toMax / 20 > 0) toMax / 20 else 1) }
+                        Thread.sleep(40)
+                    }
+                    activity?.runOnUiThread { dialogView.npb_first.progress = 0 }
+                    val nextMaxExp = 500
+                    finalProgress = nowExp * 100 / nextMaxExp
+                    Thread.sleep(40)
+
+                    while (dialogView.npb_first.progress != finalProgress) {
+                        activity?.runOnUiThread { dialogView?.npb_first?.incrementProgressBy(if (finalProgress / 30 > 0) finalProgress / 30 else 1) }
+                        Thread.sleep(40)
+                    }
+
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }.start()
+        } else {
+            //不需要升级
+            Thread {
+                try {
+                    var progressToGo = finalProgress - dialogView.npb_first.progress
+                    while (dialogView.npb_first.progress != finalProgress) {
+                        activity?.runOnUiThread { dialogView?.npb_first?.incrementProgressBy(if (progressToGo / 30 > 0) progressToGo else 1) }
+                        Thread.sleep(40)
+                    }
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }.start()
+        }
+
     }
 
     private fun showDialogLifeUp() {
@@ -195,14 +257,31 @@ class TodoFragment : Fragment() {
     private fun refreshDataSet() {
         mList.clear()
         mList.addAll(todoService.getUncompletedTodoList())
-        mHeaderView.findViewById<TextView>(R.id.tw_finishCounter).text = "今天已经完成1个待办事项（共${mList.size}个）"
+        refreshHeaderView(mHeaderView)
         mAdapter.notifyDataSetChanged()
+    }
+
+    private fun refreshHeaderView(view: View): View {
+        val finishCnt = todoService.getTodayFinishCount()
+        val taskCnt = todoService.getTodayTaskCount()
+
+        view.findViewById<TextView>(R.id.tw_finishCounter).text = "今天已经完成${finishCnt}个待办事项（共${taskCnt}个）"
+        view.pgb_lifeLevel.progress = finishCnt * 100 / taskCnt
+
+
+        val calendar = Calendar.getInstance()
+        val simpleDateFormat = SimpleDateFormat("MM月dd日", Locale.getDefault())
+        val strDate = simpleDateFormat.format(calendar.time) + DateUtil.getWeekOfDate(calendar.timeInMillis)
+        view.findViewById<TextView>(R.id.tv_headerText).text = strDate
+        mAdapter.notifyDataSetChanged()
+        return view
     }
 
 
     private fun getHeaderView(): View {
         mHeaderView = layoutInflater.inflate(R.layout.head_view_to_do, null)
-        mHeaderView.findViewById<TextView>(R.id.tw_finishCounter).text = "今天已经完成1个待办事项（共${mList.size}个）"
+        refreshHeaderView(mHeaderView)
+
         return mHeaderView
     }
 

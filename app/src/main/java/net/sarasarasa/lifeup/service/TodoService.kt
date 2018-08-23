@@ -22,5 +22,9 @@ interface TodoService {
 
     fun giveUpTodoItem(id: Long?): Boolean
 
+    fun getTodayTaskCount(): Int
+
+    fun getTodayFinishCount(): Int
+
 
 }

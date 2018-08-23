@@ -36,4 +36,22 @@ public class DateUtil {
         return param.equals(now);
     }
 
+    /**
+     * 获取当前日期是星期几
+     *
+     * @param time
+     * @return 当前日期是星期几
+     */
+    public static String getWeekOfDate(long time) {
+        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+
+        return weekDays[w];
+    }
+
 }

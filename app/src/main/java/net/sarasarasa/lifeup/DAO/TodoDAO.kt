@@ -23,4 +23,13 @@ class TodoDAO {
     fun findATodoItem(id: Long): TaskModel? {
         return LitePal.find(TaskModel::class.java, id)
     }
+
+    fun getTodayTaskCount(time: Long): Int {
+        return LitePal.where("endDate > ?", time.toString()).count(TaskModel::class.java)
+    }
+
+    fun getTodayFinishCount(time: Long): Int {
+        return LitePal.where("endDate > ? and taskStatus = ?", time.toString(), "1").count(TaskModel::class.java)
+    }
+
 }
