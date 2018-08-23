@@ -1,10 +1,11 @@
 package net.sarasarasa.lifeup.service
 
+import android.content.Context
 import net.sarasarasa.lifeup.models.TaskModel
 
 interface TodoService {
 
-    fun addTodoItem(taskModel: TaskModel)
+    fun addTodoItem(taskModel: TaskModel): Long?
 
     fun updateTodoItem(id: Long, taskModel: TaskModel): Boolean
 
@@ -26,5 +27,6 @@ interface TodoService {
 
     fun getTodayFinishCount(): Int
 
+    fun setOrUpdateAlarm(time: Long, id: Long, context: Context): Boolean
 
 }

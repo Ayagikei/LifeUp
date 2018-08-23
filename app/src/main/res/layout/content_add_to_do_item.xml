@@ -308,12 +308,32 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_remindTime"
-                    android:layout_width="match_parent"
+                    android:id="@+id/til_remindDate"
+                    android:layout_width="142dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_remindDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:freezesText="false"
+                        android:hint="提醒日期"
+                        android:inputType="date"
+                        android:singleLine="true"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_remindTime"
+                    android:layout_width="153dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/til_remindDate"
                     app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
 
                     <android.support.design.widget.TextInputEditText
@@ -323,8 +343,22 @@
                         android:freezesText="false"
                         android:hint="提醒时间"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/btn_remind_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
+                    android:onClick="finishRemindReset"
+                    android:text="重置"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
+                    app:layout_constraintTop_toTopOf="@+id/til_remindTime" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_deadLine"
@@ -333,7 +367,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til_remindTime">
+                    app:layout_constraintTop_toBottomOf="@id/til_remindDate">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/dDDL"
@@ -354,7 +388,7 @@
                     android:onClick="finishDateReset"
                     android:text="重置"
                     android:textColor="@color/colorAccent"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
                     app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
 
@@ -386,6 +420,7 @@
                     android:paddingLeft="2dp"
                     android:text="分享到社区"
                     android:textSize="18sp"
+                    android:enabled="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/til_deadLine" /> <!-- here should be til_deadLine or til_repeat -->
 

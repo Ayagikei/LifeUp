@@ -266,8 +266,11 @@ class TodoFragment : Fragment() {
         val taskCnt = todoService.getTodayTaskCount()
 
         view.findViewById<TextView>(R.id.tw_finishCounter).text = "今天已经完成${finishCnt}个待办事项（共${taskCnt}个）"
-        view.pgb_lifeLevel.progress = finishCnt * 100 / taskCnt
-
+        if (taskCnt == 0) {
+            view.pgb_lifeLevel.progress = 0
+        } else {
+            view.pgb_lifeLevel.progress = finishCnt * 100 / taskCnt
+        }
 
         val calendar = Calendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("MM月dd日", Locale.getDefault())

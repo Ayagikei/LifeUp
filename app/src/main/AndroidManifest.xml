@@ -111,6 +111,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
         </activity>
+
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            android:process=":newinst" />
     </application>
 
 </manifest>

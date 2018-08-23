@@ -4,8 +4,9 @@ import net.sarasarasa.lifeup.models.TaskModel
 import org.litepal.LitePal
 
 class TodoDAO {
-    fun saveTodoItem(taskModel: TaskModel) {
+    fun saveTodoItem(taskModel: TaskModel): Long? {
         taskModel.save()
+        return taskModel.id
     }
 
     fun deleteTodoItemById(id: Long): Int? {
@@ -24,8 +25,8 @@ class TodoDAO {
         return LitePal.find(TaskModel::class.java, id)
     }
 
-    fun getTodayTaskCount(time: Long): Int {
-        return LitePal.where("endDate > ?", time.toString()).count(TaskModel::class.java)
+    fun getUnFinishTaskCount(time: Long): Int {
+        return LitePal.where("taskStatus = ?", "0").count(TaskModel::class.java)
     }
 
     fun getTodayFinishCount(time: Long): Int {

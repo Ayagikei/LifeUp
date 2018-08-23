@@ -1,8 +1,13 @@
 package net.sarasarasa.lifeup.service.impl
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import net.sarasarasa.lifeup.DAO.TodoDAO
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
 import java.util.*
 
@@ -10,9 +15,9 @@ class TodoServiceImpl : TodoService {
 
     private val todoDAO = TodoDAO()
 
-    override fun addTodoItem(taskModel: TaskModel) {
+    override fun addTodoItem(taskModel: TaskModel): Long? {
         taskModel.createdTime = Calendar.getInstance().timeInMillis
-        todoDAO.saveTodoItem(taskModel)
+        return todoDAO.saveTodoItem(taskModel)
     }
 
     override fun updateTodoItem(id: Long, taskModel: TaskModel): Boolean {
@@ -103,7 +108,6 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun getTodayTaskCount(): Int {
-
         val cal = Calendar.getInstance()
         with(cal) {
             set(Calendar.HOUR_OF_DAY, 0)
@@ -111,7 +115,8 @@ class TodoServiceImpl : TodoService {
             set(Calendar.SECOND, 0)
         }
         val millisTime = cal.timeInMillis
-        return todoDAO.getTodayTaskCount(millisTime)
+        //总数量为未完成的+今天已经完成的
+        return todoDAO.getUnFinishTaskCount(millisTime) + getTodayFinishCount()
     }
 
 
@@ -128,6 +133,14 @@ class TodoServiceImpl : TodoService {
         return todoDAO.getTodayFinishCount(millisTime)
     }
 
+    override fun setOrUpdateAlarm(time: Long, id: Long, context: Context): Boolean {
+        val taskModel = todoDAO.findATodoItem(id) ?: return false
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+        val notificationIntent = Intent(context, AlarmReceiver::class.java)
+        val broadcast = PendingIntent.getBroadcast(context, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, broadcast)
+        return true
+    }
 }

@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -14,7 +15,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
@@ -25,6 +25,8 @@ import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DensityUtil
+import net.sarasarasa.lifeup.utils.ToastUtils
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -134,7 +136,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
     /** 初始化日期选择 **/
     private fun initDDDL() {
+        //禁用输入法输入，下同
         dDDL.inputType = InputType.TYPE_NULL
+        //第一次点击首先响应Focus，下同
         dDDL.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showDatePickerDialog()
@@ -143,6 +147,27 @@ open class AddToDoItemActivity : AppCompatActivity() {
         dDDL.setOnClickListener {
             showDatePickerDialog()
         }
+
+        et_remindDate.inputType = InputType.TYPE_NULL
+        et_remindDate.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+                showRemindDatePickerDialog()
+        }
+
+        et_remindDate.setOnClickListener {
+            showRemindDatePickerDialog()
+        }
+
+        et_remindTime.inputType = InputType.TYPE_NULL
+        et_remindTime.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus)
+                showRemindTimePickerDialog()
+        }
+
+        et_remindTime.setOnClickListener {
+            showRemindTimePickerDialog()
+        }
+
     }
 
     /** 初始化重复频次选择 **/
@@ -169,8 +194,16 @@ open class AddToDoItemActivity : AppCompatActivity() {
         set.applyTo(layout_extra)
     }
 
+    /** 重置提醒日期 **/
+    fun finishRemindReset(view: View) {
+        et_remindDate.setText("")
+        et_remindTime.setText("")
+        //使重置按钮[不可见]
+        view.visibility = View.INVISIBLE
+    }
+
     /**
-     * 展示日期选择对话框
+     * 展示期限日期选择对话框
      */
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
@@ -186,9 +219,37 @@ open class AddToDoItemActivity : AppCompatActivity() {
             set.applyTo(layout_extra)
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
-        datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
+        //最小日期限制
+        datePickerDialog.datePicker.minDate = c.timeInMillis
         datePickerDialog.show()
+    }
 
+    /**
+     * 展示提醒日期选择对话框
+     */
+    private fun showRemindDatePickerDialog() {
+        val c = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            et_remindDate.setText("$year/${monthOfYear + 1}/$dayOfMonth")
+            btn_remind_reset.visibility = View.VISIBLE
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+
+        //最小日期限制
+        datePickerDialog.datePicker.minDate = c.timeInMillis
+        datePickerDialog.show()
+    }
+
+    /**
+     * 展示提醒时间选择对话框
+     */
+    private fun showRemindTimePickerDialog() {
+        val c = Calendar.getInstance()
+        val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
+            et_remindTime.setText("${hourOfDay}:${minute}:00")
+            btn_remind_reset.visibility = View.VISIBLE
+        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
+
+        datePickerDialog.show()
     }
 
     /**
@@ -230,6 +291,19 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val remark = til_remark.editText?.text.toString()
         // TODO:转换为Date类型
         val taskDeadline = til_deadLine.editText?.text.toString()
+        var dateTaskDeadline: Date? = null
+        if (!taskDeadline.isBlank()) {
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+            dateTaskDeadline = simpleDateFormat.parse(taskDeadline)
+        }
+
+        val taskRemindDateAndTime = til_remindDate.editText?.text.toString() + " " + til_remindTime.editText?.text.toString()
+        var dateTaskRemindDateAndTime: Date? = null
+        if (!taskRemindDateAndTime.isBlank()) {
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+            dateTaskRemindDateAndTime = simpleDateFormat.parse(taskRemindDateAndTime)
+        }
+
         val taskUrgencyLevel = when (iUrgency) {
             0 -> 0
             33 -> 1
@@ -268,21 +342,26 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val taskModel = TaskModel(
                 content,
                 remark,
-                null,
-                null,
+                dateTaskDeadline,
+                dateTaskRemindDateAndTime,
                 relatedAttribute.getOrElse(0) { "" },
                 relatedAttribute.getOrElse(1) { "" },
                 relatedAttribute.getOrElse(2) { "" },
                 taskUrgencyLevel,
                 taskDifficultyLevel,
                 taskFrequency,
-                null,
+                0,
                 taskShared,
                 null
         )
 
-        Toast.makeText(baseContext, taskModel.toString(), Toast.LENGTH_LONG).show()
-        todoService.addTodoItem(taskModel)
+        val id = todoService.addTodoItem(taskModel)
+
+        //设置提醒
+        if (dateTaskRemindDateAndTime != null && id != null) {
+            todoService.setOrUpdateAlarm(dateTaskRemindDateAndTime.time, id, baseContext)
+            ToastUtils.showShortToast(this, "提醒设置成功！")
+        }
 
         //结束这个Activity
         finish()
