@@ -6,7 +6,7 @@ import org.litepal.LitePal
 class TodoDAO {
     fun saveTodoItem(taskModel: TaskModel): Long? {
         taskModel.save()
-        return taskModel.id
+        return LitePal.findLast(TaskModel::class.java).id
     }
 
     fun deleteTodoItemById(id: Long): Int? {

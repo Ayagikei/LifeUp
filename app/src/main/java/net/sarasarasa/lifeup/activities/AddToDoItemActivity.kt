@@ -278,7 +278,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_finish -> {
                 if (check()) {
-                    addItem()
+                    addItem(getItem())
                 }
                 return true
             }
@@ -287,7 +287,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     /** 创建新待办事项的响应 **/
-    private fun addItem() {
+    protected fun getItem(): TaskModel {
         // 将表单转换为对象
         val content = til_toDoText.editText?.text.toString()
         val remark = til_remark.editText?.text.toString()
@@ -357,12 +357,17 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 null
         )
         taskModel.expReward = ExpRewardConverter.getExpReward(arrAbbrBtn[SELECTED_CNT], taskUrgencyLevel, taskDifficultyLevel)
+        return taskModel
+    }
+
+    private fun addItem(taskModel: TaskModel) {
 
         val id = todoService.addTodoItem(taskModel)
 
         //设置提醒
-        if (dateTaskRemindDateAndTime != null && id != null) {
-            todoService.setOrUpdateAlarm(dateTaskRemindDateAndTime.time, id, baseContext)
+        if (taskModel.taskRemindTime != null && id != null) {
+            ToastUtils.showShortToast(this, taskModel.taskRemindTime.toString())
+            todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, applicationContext)
             ToastUtils.showShortToast(this, "提醒设置成功！")
         }
 
@@ -371,7 +376,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     /** 提交前对表单进行检测 **/
-    private fun check(): Boolean {
+    protected fun check(): Boolean {
         var isAllCheckPassed = true
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {

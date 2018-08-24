@@ -2,19 +2,24 @@ package net.sarasarasa.lifeup.activities
 
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.models.TaskModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 class EditToDoItemActivity : AddToDoItemActivity() {
+
+    var id: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
-        val id = intent.getLongExtra("id", -1)
+        id = intent.getLongExtra("id", -1)
 
         if (id != -1L) {
             initStatus(id)
@@ -43,18 +48,18 @@ class EditToDoItemActivity : AddToDoItemActivity() {
 
             //还原奖励设置
             when (taskModel.taskUrgencyDegree) {
-                0 -> sb_urgence.setValue(0f)
-                1 -> sb_urgence.setValue(33f)
-                2 -> sb_urgence.setValue(66f)
-                3 -> sb_urgence.setValue(99f)
+                1 -> sb_urgence.setValue(0f)
+                2 -> sb_urgence.setValue(33f)
+                3 -> sb_urgence.setValue(66f)
+                4 -> sb_urgence.setValue(99f)
                 else -> sb_urgence.setValue(0.0f)
             }
 
             when (taskModel.taskDifficultyDegree) {
-                0 -> sb_difficulty.setValue(0.0f)
-                1 -> sb_difficulty.setValue(33f)
-                2 -> sb_difficulty.setValue(66f)
-                3 -> sb_difficulty.setValue(99f)
+                1 -> sb_difficulty.setValue(0.0f)
+                2 -> sb_difficulty.setValue(33f)
+                3 -> sb_difficulty.setValue(66f)
+                4 -> sb_difficulty.setValue(99f)
                 else -> sb_difficulty.setValue(0.0f)
             }
 
@@ -85,5 +90,22 @@ class EditToDoItemActivity : AddToDoItemActivity() {
 
         arrAbbrBtn[ToDoItemConstants.SELECTED_CNT]++
         arrAbbrBtn[TodoItemConverter.viewToIndex(imageView)] = ToDoItemConstants.SELECTED
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_finish -> {
+                if (check()) {
+                    updateItem(getItem())
+                }
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateItem(taskModel: TaskModel) {
+        todoService.updateTodoItem(id, taskModel)
+        finish()
     }
 }

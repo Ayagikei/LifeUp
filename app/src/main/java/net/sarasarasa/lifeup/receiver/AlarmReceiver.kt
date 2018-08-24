@@ -10,6 +10,7 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 
 private const val CHANNEL_ID = "net.sarasarasa.lifeup.channelId"
@@ -17,7 +18,10 @@ private const val CHANNEL_ID = "net.sarasarasa.lifeup.channelId"
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val notificationIntent = Intent(context, MainActivity::class.java)
+        val notificationIntent = Intent(context, AddToDoItemActivity::class.java)
+
+        val id = intent.getIntExtra("id", 0)
+        val content = intent.getStringExtra("content")
 
 /*        val stackBuilder = TaskStackBuilder.create(context)
         stackBuilder.addParentStack(MainActivity::class.java)
@@ -32,7 +36,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).setAutoCancel(true)
 
         val notification = builder.setContentTitle("人升")
-                .setContentText("你还有待办事项需要完成！")
+                .setContentText("你还有待办事项需要完成：$content")
                 .setTicker("通知到来")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent).build()
@@ -55,6 +59,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
         NotificationManagerCompat.from(context).notify(0, notification)
 
-        //notificationManager.notify(0, notification)
+        notificationManager.notify(0, notification)
     }
 }

@@ -29,4 +29,6 @@ interface TodoService {
 
     fun setOrUpdateAlarm(time: Long, id: Long, context: Context): Boolean
 
+    fun repeatTask(id: Long): Boolean
+
 }

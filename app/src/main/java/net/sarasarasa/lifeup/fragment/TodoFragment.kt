@@ -178,8 +178,8 @@ class TodoFragment : Fragment() {
                 mList[position].taskStatus = ToDoItemConstants.COMPLETED
 
             } // end of the if
-            }
         }
+    }
 
     private fun showDialogAbbr(item: TaskModel) {
 
@@ -219,6 +219,10 @@ class TodoFragment : Fragment() {
         }
 
         newDialog?.show()
+    }
+
+    private fun showDialogRepeat(id: Long?) {
+        //TODO:重复的对话框
     }
 
     private fun initDialogViewData(newDialogView: View, item: TaskModel) {
@@ -264,7 +268,6 @@ class TodoFragment : Fragment() {
 
         }
     }
-
 
     private fun doProgressOrigin(dialogView: View, item: TaskModel, index: Int) {
         val relatedAttribute = when (index) {

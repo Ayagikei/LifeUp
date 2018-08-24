@@ -48,7 +48,7 @@ class TodoServiceImpl : TodoService {
             updatedTime = Calendar.getInstance().timeInMillis
         }
 
-        todoDAO.saveTodoItem(taskModel)
+        todoDAO.saveTodoItem(existTodoItem)
         return true
     }
 
@@ -145,13 +145,54 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun setOrUpdateAlarm(time: Long, id: Long, context: Context): Boolean {
-        val taskModel = todoDAO.findATodoItem(id) ?: return false
+        val taskModel = getATodoItem(id)
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val notificationIntent = Intent(context, AlarmReceiver::class.java)
+        notificationIntent.putExtra("id", taskModel?.id)
+        notificationIntent.putExtra("content", taskModel?.content)
         val broadcast = PendingIntent.getBroadcast(context, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, broadcast)
+
+        return true
+    }
+
+    override fun repeatTask(id: Long): Boolean {
+        val origin = todoDAO.findATodoItem(id) ?: return false
+
+        val taskModel = TaskModel(
+                origin.content,
+                origin.remark,
+                origin.taskExpireTime,
+                origin.taskRemindTime,
+                origin.relatedAttribute1,
+                origin.relatedAttribute2,
+                origin.relatedAttribute3,
+                origin.taskUrgencyDegree,
+                origin.taskDifficultyDegree,
+                origin.taskFrequency,
+                origin.userId,
+                origin.isShared,
+                origin.taskType
+        )
+
+        taskModel.taskId = origin.taskId
+        taskModel.createdTime = Calendar.getInstance().timeInMillis
+        taskModel.updatedTime = Calendar.getInstance().timeInMillis
+        taskModel.expReward = origin.expReward
+
+        val newExpireTime = Calendar.getInstance()
+        newExpireTime.time = origin.taskExpireTime
+        newExpireTime.add(Calendar.DATE, origin.taskFrequency)
+        taskModel.taskExpireTime = newExpireTime.time
+
+        val newRemindTime = Calendar.getInstance()
+        newRemindTime.time = origin.taskRemindTime
+        newRemindTime.add(Calendar.DATE, origin.taskFrequency)
+        taskModel.taskRemindTime = newRemindTime.time
+
         return true
     }
 }
