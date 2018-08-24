@@ -10,4 +10,5 @@ interface AttributeService {
     fun getAttributeExpByString(attribute: String): Int
 
     fun increaseExp(abbr: String, exp: Int): Boolean
+    fun decreaseExp(abbr: String, exp: Int): Boolean
 }

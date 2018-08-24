@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.os.Bundle
+import android.support.constraint.ConstraintSet
 import android.text.Editable
 import android.view.MenuItem
 import android.widget.ImageView
@@ -9,6 +10,8 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.utils.DensityUtil
+import net.sarasarasa.lifeup.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +40,12 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             if (taskModel.taskExpireTime != null) {
                 val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
                 checkNotNull(til_deadLine.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormat.format(taskModel.taskExpireTime))
+
+                //显示重复
+                val set = ConstraintSet()
+                set.clone(layout_extra)
+                set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
+                set.applyTo(layout_extra)
             }
 
             if (taskModel.taskRemindTime != null) {
@@ -62,6 +71,9 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 4 -> sb_difficulty.setValue(99f)
                 else -> sb_difficulty.setValue(0.0f)
             }
+
+            //还原频次的选择
+            checkNotNull(til_repeat.editText).text = Editable.Factory.getInstance().newEditable(TodoItemConverter.iFrequencyToString(taskModel.taskFrequency))
 
             //还原3个属性的选择
             restoreAbbrSelection(taskModel.relatedAttribute1)
@@ -105,6 +117,11 @@ class EditToDoItemActivity : AddToDoItemActivity() {
     }
 
     private fun updateItem(taskModel: TaskModel) {
+        //设置提醒
+        if (taskModel.taskRemindTime != null && id != null) {
+            todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, applicationContext)
+            ToastUtils.showShortToast(this, "提醒重设成功！")
+        }
         todoService.updateTodoItem(id, taskModel)
         finish()
     }

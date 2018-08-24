@@ -29,7 +29,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)*/
 
-        val msgIntent = Intent(context, MainActivity::class.java);
+        val msgIntent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
@@ -57,8 +57,8 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        NotificationManagerCompat.from(context).notify(0, notification)
+        NotificationManagerCompat.from(context).notify(id, notification)
 
-        notificationManager.notify(0, notification)
+        //notificationManager.notify(0, notification)
     }
 }

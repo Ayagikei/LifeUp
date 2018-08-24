@@ -100,6 +100,11 @@ class TodoServiceImpl : TodoService {
             updatedTime = Calendar.getInstance().timeInMillis
             endDate = Date()
             save()
+
+            //撤销经验
+            attributeService.decreaseExp(this.relatedAttribute1 ?: "", this.expReward)
+            attributeService.decreaseExp(this.relatedAttribute2 ?: "", this.expReward)
+            attributeService.decreaseExp(this.relatedAttribute3 ?: "", this.expReward)
         }
 
         return true
@@ -114,6 +119,11 @@ class TodoServiceImpl : TodoService {
             updatedTime = Calendar.getInstance().timeInMillis
             endDate = Date()
             save()
+
+            //放弃任务损失经验值
+            attributeService.decreaseExp(this.relatedAttribute1 ?: "", this.expReward / 5)
+            attributeService.decreaseExp(this.relatedAttribute2 ?: "", this.expReward / 5)
+            attributeService.decreaseExp(this.relatedAttribute3 ?: "", this.expReward / 5)
         }
 
         return true
@@ -152,6 +162,7 @@ class TodoServiceImpl : TodoService {
         val notificationIntent = Intent(context, AlarmReceiver::class.java)
         notificationIntent.putExtra("id", taskModel?.id)
         notificationIntent.putExtra("content", taskModel?.content)
+        notificationIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
         val broadcast = PendingIntent.getBroadcast(context, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, broadcast)
@@ -159,7 +170,8 @@ class TodoServiceImpl : TodoService {
         return true
     }
 
-    override fun repeatTask(id: Long): Boolean {
+    override fun repeatTask(id: Long?): Boolean {
+        if (id == null) return false
         val origin = todoDAO.findATodoItem(id) ?: return false
 
         val taskModel = TaskModel(
@@ -188,10 +200,14 @@ class TodoServiceImpl : TodoService {
         newExpireTime.add(Calendar.DATE, origin.taskFrequency)
         taskModel.taskExpireTime = newExpireTime.time
 
-        val newRemindTime = Calendar.getInstance()
-        newRemindTime.time = origin.taskRemindTime
-        newRemindTime.add(Calendar.DATE, origin.taskFrequency)
-        taskModel.taskRemindTime = newRemindTime.time
+        if (origin.taskRemindTime != null) {
+            val newRemindTime = Calendar.getInstance()
+            newRemindTime.time = origin.taskRemindTime
+            newRemindTime.add(Calendar.DATE, origin.taskFrequency)
+            taskModel.taskRemindTime = newRemindTime.time
+        }
+
+        taskModel.save()
 
         return true
     }

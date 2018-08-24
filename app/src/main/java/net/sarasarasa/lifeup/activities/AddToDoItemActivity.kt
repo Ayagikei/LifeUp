@@ -366,8 +366,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         //设置提醒
         if (taskModel.taskRemindTime != null && id != null) {
-            ToastUtils.showShortToast(this, taskModel.taskRemindTime.toString())
-            todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, applicationContext)
+            todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, this)
             ToastUtils.showShortToast(this, "提醒设置成功！")
         }
 

@@ -83,6 +83,10 @@ class TodoFragment : Fragment() {
                 //获得所选item
                 val item = adapter.getItem(position) as TaskModel
 
+                //如果所选Item不是未完成状态，不可长按
+                if (item.taskStatus != 0)
+                    return@setOnMenuItemClickListener true
+
                 when (menuItem.itemId) {
                     R.id.edit_item -> {
                         val intent = Intent(this.context, EditToDoItemActivity::class.java)
@@ -202,6 +206,9 @@ class TodoFragment : Fragment() {
                 threadRunning = false
                 thread?.interrupt()
                 cancel()
+
+                if (item.taskFrequency != 0)
+                    showDialogRepeat(item)
             }
             this?.setView(newDialogView)
             this?.setOnShowListener {
@@ -215,14 +222,34 @@ class TodoFragment : Fragment() {
                 threadRunning = false
                 thread?.interrupt()
                 cancel()
+
+                if (item.taskFrequency != 0)
+                    showDialogRepeat(item)
             }
         }
 
         newDialog?.show()
     }
 
-    private fun showDialogRepeat(id: Long?) {
-        //TODO:重复的对话框
+    private fun showDialogRepeat(taskModel: TaskModel) {
+        val dialog = context?.let { AlertDialog.Builder(it).create() }
+
+        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+
+        if (dialog != null)
+            with(dialog) {
+                setTitle("重复设置")
+                setMessage("要进行重复吗？\n下一次的期限时间是 ${simpleDateFormat.format(taskModel.taskExpireTime)}。")
+                setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
+                    if (taskModel.id != null)
+                        todoService.repeatTask(taskModel.id)
+                }
+                setButton(AlertDialog.BUTTON_NEGATIVE, "否") { _, _ ->
+                    dialog.cancel()
+                }
+
+                show()
+            }
     }
 
     private fun initDialogViewData(newDialogView: View, item: TaskModel) {

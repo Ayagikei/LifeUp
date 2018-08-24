@@ -112,9 +112,7 @@
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
         </activity>
 
-        <receiver
-            android:name=".receiver.AlarmReceiver"
-            android:process=":newinst" />
+        <receiver android:name=".receiver.AlarmReceiver" />
     </application>
 
 </manifest>

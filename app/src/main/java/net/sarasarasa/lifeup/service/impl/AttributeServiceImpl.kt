@@ -53,4 +53,49 @@ class AttributeServiceImpl : AttributeService {
         return attributeModel.save()
     }
 
+    override fun decreaseExp(abbr: String, exp: Int): Boolean {
+
+        val attributeModel = getAttribute()
+
+        when (abbr) {
+            "strength" -> {
+                attributeModel.strengthAttribute -= exp
+                if (attributeModel.strengthAttribute < 0)
+                    attributeModel.strengthAttribute = 0
+            }
+            "learning" -> {
+                attributeModel.knowledgeAttribute -= exp
+                if (attributeModel.knowledgeAttribute < 0)
+                    attributeModel.knowledgeAttribute = 0
+            }
+            "charm" -> {
+                attributeModel.charmAttribute -= exp
+                if (attributeModel.charmAttribute < 0)
+                    attributeModel.charmAttribute = 0
+            }
+            "endurance" -> {
+                attributeModel.enduranceAttribute -= exp
+                if (attributeModel.enduranceAttribute < 0)
+                    attributeModel.enduranceAttribute = 0
+            }
+            "vitality" -> {
+                attributeModel.energyAttribute -= exp
+                if (attributeModel.energyAttribute < 0)
+                    attributeModel.energyAttribute = 0
+            }
+            "creative" -> {
+                attributeModel.creativity -= exp
+                if (attributeModel.creativity < 0)
+                    attributeModel.creativity = 0
+            }
+            else -> return false
+        }
+
+        attributeModel.gradeAttribute -= exp / 5
+        if (attributeModel.gradeAttribute < 0)
+            attributeModel.gradeAttribute = 0
+
+        return attributeModel.save()
+    }
+
 }
