@@ -18,6 +18,18 @@ class TodoItemConverter {
             }
         }
 
+        fun strAbbrToStrTitle(string: String?): String {
+            return when (string) {
+                "strength" -> "力量"
+                "learning" -> "学识"
+                "charm" -> "魅力"
+                "endurance" -> "耐力"
+                "vitality" -> "活力"
+                "creative" -> "创造力"
+                else -> ""
+            }
+        }
+
         fun indexToString(index: Int): String {
             return when (index) {
                 ToDoItemConstants.STRENGTH_INDEX -> "strength"

@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.DAO
 
+import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MAX_LEVEL
 import net.sarasarasa.lifeup.models.AttributeLevelModel
 import org.litepal.LitePal
 
@@ -12,5 +13,10 @@ class AttributeLevelDAO {
     fun getOneByExp(exp: Int): AttributeLevelModel {
         return LitePal.where("startExpValue <= ? and endExpValue > ?", exp.toString(), exp.toString())
                 .findFirst(AttributeLevelModel::class.java)
+    }
+
+    fun getOneByLevel(level: Int): AttributeLevelModel {
+        return LitePal.where("levelNum = ?", level.toString())
+                .findFirst(AttributeLevelModel::class.java) ?: getOneByLevel(MAX_LEVEL)
     }
 }

@@ -517,7 +517,7 @@
                 android:text="LV100"
                 android:textColor="@android:color/holo_blue_bright"
                 android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@+id/tw_nameFirst"
+                app:layout_constraintStart_toEndOf="@+id/tv_nameFirst"
                 app:layout_constraintTop_toTopOf="@+id/iv_strengthIcon" />
 
             <ImageView
@@ -530,14 +530,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_strengthIcon" />
 
             <com.daimajia.numberprogressbar.NumberProgressBar
-                android:id="@+id/npb_learning"
+                android:id="@+id/npb_first"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/npb_strength"
-                app:layout_constraintTop_toTopOf="@+id/tw_learningLevel"
+                app:layout_constraintTop_toTopOf="@+id/tv_levelFirst"
                 app:progress_current="80"
                 app:progress_max="100"
                 app:progress_reached_bar_height="5.0dp"
@@ -549,11 +549,11 @@
                 android:layout_height="wrap_content"
                 android:text="250/500"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
-                app:layout_constraintTop_toBottomOf="@+id/tw_learningLevel" />
+                app:layout_constraintStart_toStartOf="@+id/tv_levelFirst"
+                app:layout_constraintTop_toBottomOf="@+id/tv_levelFirst" />
 
             <TextView
-                android:id="@+id/tw_nameFirst"
+                android:id="@+id/tv_nameFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -563,7 +563,7 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_iconFirst" />
 
             <TextView
-                android:id="@+id/tw_learningLevel"
+                android:id="@+id/tv_levelFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -571,7 +571,7 @@
                 android:text="LV99"
                 android:textColor="@android:color/holo_blue_bright"
                 android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@+id/tw_nameFirst"
+                app:layout_constraintStart_toEndOf="@+id/tv_nameFirst"
                 app:layout_constraintTop_toTopOf="@+id/iv_iconFirst" />
 
             <ImageView
@@ -590,7 +590,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/npb_learning"
+                app:layout_constraintStart_toStartOf="@+id/npb_first"
                 app:layout_constraintTop_toTopOf="@+id/tw_charmLevel"
                 app:progress_current="80"
                 app:progress_max="100"
@@ -603,7 +603,7 @@
                 android:layout_height="wrap_content"
                 android:text="250/500"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
+                app:layout_constraintStart_toStartOf="@+id/tv_levelFirst"
                 app:layout_constraintTop_toBottomOf="@+id/tw_charmLevel" />
 
             <TextView
@@ -657,7 +657,7 @@
                 android:layout_height="wrap_content"
                 android:text="250/500"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
+                app:layout_constraintStart_toStartOf="@+id/tv_levelFirst"
                 app:layout_constraintTop_toBottomOf="@+id/tw_enduranceLevel" />
 
             <TextView
@@ -711,7 +711,7 @@
                 android:layout_height="wrap_content"
                 android:text="250/500"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
+                app:layout_constraintStart_toStartOf="@+id/tv_levelFirst"
                 app:layout_constraintTop_toBottomOf="@+id/tw_vitalityLevel" />
 
             <TextView
@@ -765,7 +765,7 @@
                 android:layout_height="wrap_content"
                 android:text="250/500"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
+                app:layout_constraintStart_toStartOf="@+id/tv_levelFirst"
                 app:layout_constraintTop_toBottomOf="@+id/tw_creativeLevel" />
 
             <TextView

@@ -21,6 +21,7 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
+                android:animationCache="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -166,7 +167,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="265dp"
                 android:layout_marginTop="6dp"
-                app:lottie_cacheStrategy="strong"
+                app:lottie_cacheStrategy="none"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="false"

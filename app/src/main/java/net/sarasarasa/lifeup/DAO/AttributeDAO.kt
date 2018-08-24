@@ -9,7 +9,7 @@ class AttributeDAO {
         attributeModel.save()
     }
 
-    fun getFirstAttribute(): AttributeModel {
+    fun getFirstAttribute(): AttributeModel? {
         return LitePal.findFirst(AttributeModel::class.java)
     }
 }

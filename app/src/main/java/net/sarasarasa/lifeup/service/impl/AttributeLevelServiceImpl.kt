@@ -16,21 +16,24 @@ class AttributeLevelServiceImpl : AttributeLevelService {
         AttributeLevelModel(4, 2500, 5000).save()
         AttributeLevelModel(5, 5000, 7500).save()
         AttributeLevelModel(6, 7500, 10000).save()
-        AttributeLevelModel(7, 10000, 15000).save()
-        AttributeLevelModel(8, 15000, 20000).save()
+        AttributeLevelModel(7, 10000, 12500).save()
+        AttributeLevelModel(8, 12500, 15000).save()
 
         var levelNum = 9
         while (levelNum <= 30) {
-            AttributeLevelModel(levelNum, 20000 + 15000 * levelNum - 9, 20000 + 15000 * levelNum - 8).save()
+            AttributeLevelModel(levelNum, 15000 + 2500 * (levelNum - 9), 15000 + 2500 * (levelNum - 8)).save()
             levelNum++
         }
 
         Log.i("initLevel", "initLevel")
     }
 
-    override fun getAttributeLevel(exp: Int): AttributeLevelModel {
+    override fun getAttributeLevelByExp(exp: Int): AttributeLevelModel {
         return attributeLevelDAO.getOneByExp(exp)
     }
 
+    override fun getAttributeLevelByLevel(level: Int): AttributeLevelModel {
+        return attributeLevelDAO.getOneByLevel(level)
+    }
 
 }

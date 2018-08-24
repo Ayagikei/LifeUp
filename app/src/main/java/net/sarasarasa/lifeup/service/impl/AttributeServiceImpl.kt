@@ -14,7 +14,24 @@ class AttributeServiceImpl : AttributeService {
     }
 
     override fun getAttribute(): AttributeModel {
-        return attributeDAO.getFirstAttribute()
+        val ret = attributeDAO.getFirstAttribute()
+        if (ret == null) {
+            initAttribute()
+            return getAttribute()
+        }
+        return ret
+    }
+
+    override fun getAttributeExpByString(attribute: String): Int {
+        return when (attribute) {
+            "strength" -> getAttribute().strengthAttribute
+            "learning" -> getAttribute().knowledgeAttribute
+            "charm" -> getAttribute().charmAttribute
+            "endurance" -> getAttribute().enduranceAttribute
+            "vitality" -> getAttribute().energyAttribute
+            "creative" -> getAttribute().creativity
+            else -> return -1
+        }
     }
 
     override fun increaseExp(abbr: String, exp: Int): Boolean {

@@ -7,5 +7,7 @@ interface AttributeService {
 
     fun getAttribute(): AttributeModel
 
+    fun getAttributeExpByString(attribute: String): Int
+
     fun increaseExp(abbr: String, exp: Int): Boolean
 }

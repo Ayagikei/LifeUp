@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,10 @@ import net.sarasarasa.lifeup.activities.EditToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
+import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
+import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DateUtil
 import java.text.SimpleDateFormat
@@ -34,9 +38,13 @@ import java.util.*
 class TodoFragment : Fragment() {
 
     private val todoService = TodoServiceImpl()
+    private val attributeService = AttributeServiceImpl()
+    private val attributeLevelService = AttributeLevelServiceImpl()
     private val mList: MutableList<TaskModel> = todoService.getUncompletedTodoList().toMutableList()
     private var dialogView: View? = null
     private var dialog: AlertDialog? = null
+    private var thread: Thread? = null
+    private var threadRunning: Boolean = false
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
@@ -133,105 +141,221 @@ class TodoFragment : Fragment() {
 
         mAdapter.setOnItemChildClickListener { adapter, mView, position ->
             val item = adapter.getItem(position) as TaskModel
+            var isEverShowDialog = false
 
             if (mView is LottieAnimationView &&
                     item.taskStatus == ToDoItemConstants.UNCOMPLETED) {
+
                 mView.addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationRepeat(p0: Animator?) {
 
                     }
 
                     override fun onAnimationEnd(p0: Animator?) {
-                        showDialogAbbr()
+                        if (!isEverShowDialog) {
+                            showDialogAbbr(item)
+                            isEverShowDialog = true
+                        }
+                        //refreshHeaderView(mHeaderView)
                     }
 
                     override fun onAnimationCancel(p0: Animator?) {
-                        showDialogAbbr()
+                        if (!isEverShowDialog) {
+                            showDialogAbbr(item)
+                            isEverShowDialog = true
+                        }
                     }
 
                     override fun onAnimationStart(p0: Animator?) {
+
                     }
                 })
                 mView.playAnimation()
-                mView.isClickable = false
 
+                mView.isClickable = false
                 todoService.finishTodoItem(item.id)
                 //刷新HeaderView的进度显示
                 mList[position].taskStatus = ToDoItemConstants.COMPLETED
-                refreshHeaderView(mHeaderView)
+
             } // end of the if
             }
         }
 
-    private fun showDialogAbbr() {
-        if (dialog != null)
+    private fun showDialogAbbr(item: TaskModel) {
+
+        Log.e("dialog", "执行了一次？")
+
+        if (dialog != null || item.relatedAttribute1.isNullOrBlank())
             return
 
-        dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_abbr, null)
-        dialog = context?.let { AlertDialog.Builder(it).create() }
+        val newDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_abbr, null)
+        val newDialog = context?.let { AlertDialog.Builder(it).create() }
+        initDialogViewData(newDialogView, item)
 
-        with(dialog) {
+        if (checkNotNull(newDialog?.isShowing)) return
+
+
+        with(newDialog) {
             this?.setTitle("你获得了经验值")
             this?.setIcon(net.sarasarasa.lifeup.R.drawable.ic_award_exp)
             this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
-                dismiss()
-                dialog = null
+                threadRunning = false
+                thread?.interrupt()
+                cancel()
             }
-            this?.setView(dialogView)
-            this?.show()
+            this?.setView(newDialogView)
+            this?.setOnShowListener {
+                threadRunning = true
+                doProgressOrigin(newDialogView, item, 1)
+                doProgressOrigin(newDialogView, item, 2)
+                doProgressOrigin(newDialogView, item, 3)
+            }
+
             this?.setOnCancelListener {
-                dismiss()
-                dialog = null
+                threadRunning = false
+                thread?.interrupt()
+                cancel()
             }
-            doProgress(dialogView as View, 200)
+        }
+
+        newDialog?.show()
+    }
+
+    private fun initDialogViewData(newDialogView: View, item: TaskModel) {
+
+        //属性现在的总经验值
+        var attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute1
+                ?: "")
+        //等到前等级
+        var attributeLevelBefore = attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+
+        //第一个属性值必定存在
+        newDialogView.iv_iconFirst.setImageResource(TodoItemConverter.strAbbrToDrawableId(item.relatedAttribute1))
+        newDialogView.tv_nameFirst.text = TodoItemConverter.strAbbrToStrTitle(item.relatedAttribute1)
+        newDialogView.tv_levelFirst.text = "LV${attributeLevelBefore.levelNum}"
+
+
+
+        if (item.relatedAttribute2.isNullOrBlank()) {
+            newDialogView.constraintLayout_sec.visibility = View.GONE
+
+        } else {
+            attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute2
+                    ?: "")
+            attributeLevelBefore = attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+
+            newDialogView.iv_iconSec.setImageResource(TodoItemConverter.strAbbrToDrawableId(item.relatedAttribute2))
+            newDialogView.tv_nameSec.text = TodoItemConverter.strAbbrToStrTitle(item.relatedAttribute2)
+            newDialogView.tv_levelSec.text = "LV${attributeLevelBefore.levelNum}"
+
+        }
+
+        if (item.relatedAttribute3.isNullOrBlank()) {
+            newDialogView.constraintLayout_thr.visibility = View.GONE
+        } else {
+            attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute3
+                    ?: "")
+            attributeLevelBefore = attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+
+            newDialogView.iv_iconThr.setImageResource(TodoItemConverter.strAbbrToDrawableId(item.relatedAttribute3))
+            newDialogView.tv_nameThr.text = TodoItemConverter.strAbbrToStrTitle(item.relatedAttribute3)
+            newDialogView.tv_levelThr.text = "LV${attributeLevelBefore.levelNum}"
+
+
         }
     }
 
-    private fun doProgress(dialogView: View, exp: Int) {
 
-        val levelMaxExp = 200
-        val nowExp = 100
+    private fun doProgressOrigin(dialogView: View, item: TaskModel, index: Int) {
+        val relatedAttribute = when (index) {
+            1 -> item.relatedAttribute1
+            2 -> item.relatedAttribute2
+            3 -> item.relatedAttribute3
+            else -> return
+        }
 
-        dialogView.npb_learning.progress = nowExp * 100 / levelMaxExp
-        var finalProgress = (nowExp + exp) * 100 / levelMaxExp
+        if (relatedAttribute.isNullOrBlank()) return
+
+        //完成前的
+        val nowExpTotal = when (index) {
+            1 -> attributeService.getAttributeExpByString(relatedAttribute ?: "") - item.expReward
+            2 -> attributeService.getAttributeExpByString(item.relatedAttribute2
+                    ?: "") - item.expReward
+            3 -> attributeService.getAttributeExpByString(item.relatedAttribute3
+                    ?: "") - item.expReward
+            else -> return
+        }
+
+
+        var nowExp = nowExpTotal - attributeLevelService.getAttributeLevelByExp(nowExpTotal).startExpValue
+        val levelMaxExp = attributeLevelService.getAttributeLevelByExp(nowExpTotal).endExpValue - attributeLevelService.getAttributeLevelByExp(nowExpTotal).startExpValue
+
+        val progressBar = when (index) {
+            1 -> dialogView.npb_first
+            2 -> dialogView.npb_Sec
+            3 -> dialogView.npb_thr
+            else -> return
+        }
+
+        progressBar.progress = nowExp * 100 / levelMaxExp
+        var finalProgress = (nowExp + item.expReward) * 100 / levelMaxExp
+
 
         if (finalProgress >= 100) {
             //要升级的情况
-            Thread {
+            thread = Thread {
                 try {
                     //先走到尾巴
-                    val toMax = dialogView.npb_learning.max - dialogView.npb_learning.progress
-                    while (dialogView.npb_learning.progress != dialogView.npb_learning.max) {
-                        activity?.runOnUiThread { dialogView?.npb_learning?.incrementProgressBy(if (toMax / 20 > 0) toMax / 20 else 1) }
+                    val toMax = progressBar.max - progressBar.progress
+                    while (threadRunning == true && progressBar.progress != progressBar.max) {
+                        activity?.runOnUiThread { progressBar.incrementProgressBy(if (toMax / 20 > 0) toMax / 20 else 1) }
                         Thread.sleep(40)
                     }
-                    activity?.runOnUiThread { dialogView.npb_learning.progress = 0 }
-                    val nextMaxExp = 500
+
+                    //升级，进度条重置为0
+                    val newLevelModel = attributeLevelService.getAttributeLevelByExp(nowExpTotal + item.expReward)
+                    val textViewLevel = when (index) {
+                        1 -> dialogView.tv_levelFirst
+                        2 -> dialogView.tv_levelSec
+                        3 -> dialogView.tv_expThr
+                        else -> return@Thread
+                    }
+                    activity?.runOnUiThread {
+                        progressBar.progress = 0
+                        textViewLevel.text = "LV${newLevelModel.levelNum}"
+                    }
+
+                    nowExp = nowExpTotal + item.expReward - newLevelModel.startExpValue
+                    val nextMaxExpTotal = newLevelModel.endExpValue
+                    val nextMaxExp = newLevelModel.endExpValue - newLevelModel.startExpValue
                     finalProgress = nowExp * 100 / nextMaxExp
                     Thread.sleep(40)
 
-                    while (dialogView.npb_learning.progress != finalProgress) {
-                        activity?.runOnUiThread { dialogView?.npb_learning?.incrementProgressBy(if (finalProgress / 30 > 0) finalProgress / 30 else 1) }
+                    while (threadRunning == true && progressBar.progress != finalProgress) {
+                        activity?.runOnUiThread { progressBar.incrementProgressBy(if (finalProgress / 30 > 0) finalProgress / 30 else 1) }
                         Thread.sleep(40)
                     }
 
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
-            }.start()
+            }
+            thread?.start()
         } else {
             //不需要升级
-            Thread {
+            thread = Thread {
                 try {
-                    var progressToGo = finalProgress - dialogView.npb_learning.progress
-                    while (dialogView.npb_learning.progress != finalProgress) {
-                        activity?.runOnUiThread { dialogView?.npb_learning?.incrementProgressBy(if (progressToGo / 30 > 0) progressToGo else 1) }
+                    var progressToGo = finalProgress - progressBar.progress
+
+                    while (threadRunning == true && progressBar.progress != finalProgress) {
+                        activity?.runOnUiThread { progressBar.incrementProgressBy(if (progressToGo / 30 > 0) progressToGo / 30 else 1) }
                         Thread.sleep(40)
                     }
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
-            }.start()
+            }
+            thread?.start()
         }
 
     }
@@ -288,14 +412,12 @@ class TodoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Toast.makeText(context, "onResume() 刷新mAdapter", Toast.LENGTH_LONG).show()
         refreshDataSet()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            Toast.makeText(context, "onHiddenChanged", Toast.LENGTH_LONG).show()
             refreshDataSet()
         }
     }

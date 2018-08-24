@@ -39,41 +39,41 @@ class StatusFragment : Fragment() {
     fun initData(view: View) {
         val attribute = attributeService.getAttribute()
         var exp = attribute.strengthAttribute
-        var levelModel = attributeLevelService.getAttributeLevel(exp)
+        var levelModel = attributeLevelService.getAttributeLevelByExp(exp)
 
-        view.tw_strengthExp.text = "${exp}/${levelModel.endExpValue}"
+        view.tw_strengthExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
         view.tw_strengthLevel.text = "LV${levelModel.levelNum}"
-        view.npb_strength.progress = exp * 100 / levelModel.endExpValue
+        view.npb_strength.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
         exp = attribute.knowledgeAttribute
-        levelModel = attributeLevelService.getAttributeLevel(exp)
-        view.tw_learningExp.text = "${exp}/${levelModel.endExpValue}"
-        view.tw_learningLevel.text = "LV${levelModel.levelNum}"
-        view.npb_learning.progress = exp * 100 / levelModel.endExpValue
+        levelModel = attributeLevelService.getAttributeLevelByExp(exp)
+        view.tw_learningExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
+        view.tv_levelFirst.text = "LV${levelModel.levelNum}"
+        view.npb_first.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
         exp = attribute.charmAttribute
-        levelModel = attributeLevelService.getAttributeLevel(exp)
-        view.tw_charmExp.text = "${exp}/${levelModel.endExpValue}"
+        levelModel = attributeLevelService.getAttributeLevelByExp(exp)
+        view.tw_charmExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
         view.tw_charmLevel.text = "LV${levelModel.levelNum}"
-        view.npb_charm.progress = exp * 100 / levelModel.endExpValue
+        view.npb_charm.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
         exp = attribute.enduranceAttribute
-        levelModel = attributeLevelService.getAttributeLevel(exp)
-        view.tw_enduranceExp.text = "${exp}/${levelModel.endExpValue}"
+        levelModel = attributeLevelService.getAttributeLevelByExp(exp)
+        view.tw_enduranceExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
         view.tw_enduranceLevel.text = "LV${levelModel.levelNum}"
-        view.npb_endurance.progress = exp * 100 / levelModel.endExpValue
+        view.npb_endurance.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
         exp = attribute.energyAttribute
-        levelModel = attributeLevelService.getAttributeLevel(exp)
-        view.tw_vitalityExp.text = "${exp}/${levelModel.endExpValue}"
+        levelModel = attributeLevelService.getAttributeLevelByExp(exp)
+        view.tw_vitalityExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
         view.tw_vitalityLevel.text = "LV${levelModel.levelNum}"
-        view.npb_vitality.progress = exp * 100 / levelModel.endExpValue
+        view.npb_vitality.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
         exp = attribute.creativity
-        levelModel = attributeLevelService.getAttributeLevel(exp)
-        view.tw_creativeExp.text = "${exp}/${levelModel.endExpValue}"
+        levelModel = attributeLevelService.getAttributeLevelByExp(exp)
+        view.tw_creativeExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
         view.tw_creativeLevel.text = "LV${levelModel.levelNum}"
-        view.npb_creative.progress = exp * 100 / levelModel.endExpValue
+        view.npb_creative.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
     }
 
 

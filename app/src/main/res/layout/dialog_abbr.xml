@@ -18,42 +18,43 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.daimajia.numberprogressbar.NumberProgressBar
-            android:id="@+id/npb_learning"
+            android:id="@+id/npb_first"
             android:layout_width="143dp"
             android:layout_height="wrap_content"
 
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toEndOf="@+id/tw_learningLevel"
-            app:layout_constraintTop_toTopOf="@+id/tw_learningLevel"
+            app:layout_constraintStart_toEndOf="@+id/tv_levelFirst"
+            app:layout_constraintTop_toTopOf="@+id/tv_levelFirst"
             app:progress_current="80"
             app:progress_max="100"
             app:progress_reached_bar_height="5.0dp"
             app:progress_unreached_bar_height="2.5dp" />
 
         <TextView
-            android:id="@+id/tw_expFirst"
+            android:id="@+id/tv_expFirst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="250/500"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tw_learningLevel"
-            app:layout_constraintTop_toBottomOf="@+id/tw_learningLevel" />
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/tv_levelFirst"
+            app:layout_constraintTop_toBottomOf="@+id/tv_levelFirst" />
 
         <TextView
-            android:id="@+id/tw_learningLevel"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_levelFirst"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:text="LV99"
             android:textColor="@android:color/holo_blue_bright"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/tw_nameFirst"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameFirst"
             app:layout_constraintTop_toTopOf="@+id/iv_iconFirst" />
 
         <TextView
-            android:id="@+id/tw_nameFirst"
+            android:id="@+id/tv_nameFirst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -91,36 +92,37 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toEndOf="@+id/tw_levelSec"
-            app:layout_constraintTop_toTopOf="@+id/tw_levelSec"
+            app:layout_constraintStart_toEndOf="@+id/tv_levelSec"
+            app:layout_constraintTop_toTopOf="@+id/tv_levelSec"
             app:progress_current="80"
             app:progress_max="100"
             app:progress_reached_bar_height="5.0dp"
             app:progress_unreached_bar_height="2.5dp" />
 
         <TextView
-            android:id="@+id/tw_expSec"
+            android:id="@+id/tv_expSec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="250/500"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tw_levelSec"
-            app:layout_constraintTop_toBottomOf="@+id/tw_levelSec" />
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/tv_levelSec"
+            app:layout_constraintTop_toBottomOf="@+id/tv_levelSec" />
 
         <TextView
-            android:id="@+id/tw_levelSec"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_levelSec"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:text="LV99"
             android:textColor="@android:color/holo_blue_bright"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/tw_learningName2"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameSec"
             app:layout_constraintTop_toTopOf="@+id/iv_iconSec" />
 
         <TextView
-            android:id="@+id/tw_learningName2"
+            android:id="@+id/tv_nameSec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -158,36 +160,37 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toEndOf="@+id/tw_levelThr"
-            app:layout_constraintTop_toTopOf="@+id/tw_levelThr"
+            app:layout_constraintStart_toEndOf="@+id/tv_levelThr"
+            app:layout_constraintTop_toTopOf="@+id/tv_levelThr"
             app:progress_current="80"
             app:progress_max="100"
             app:progress_reached_bar_height="5.0dp"
             app:progress_unreached_bar_height="2.5dp" />
 
         <TextView
-            android:id="@+id/tw_expThr"
+            android:id="@+id/tv_expThr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="250/500"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tw_levelThr"
-            app:layout_constraintTop_toBottomOf="@+id/tw_levelThr" />
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/tv_levelThr"
+            app:layout_constraintTop_toBottomOf="@+id/tv_levelThr" />
 
         <TextView
-            android:id="@+id/tw_levelThr"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_levelThr"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:text="LV99"
             android:textColor="@android:color/holo_blue_bright"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/tw_nameThr"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameThr"
             app:layout_constraintTop_toTopOf="@+id/iv_iconThr" />
 
         <TextView
-            android:id="@+id/tw_nameThr"
+            android:id="@+id/tv_nameThr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
