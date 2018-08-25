@@ -10,11 +10,13 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
+import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 
 class StatusFragment : Fragment() {
 
     val attributeLevelService = AttributeLevelServiceImpl()
     val attributeService = AttributeServiceImpl()
+    val todoService = TodoServiceImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_status, null)
@@ -24,11 +26,13 @@ class StatusFragment : Fragment() {
         return view
     }
 
+    /** 刷新数据 **/
     override fun onResume() {
         super.onResume()
         initData(view ?: return)
     }
 
+    /** 刷新数据 **/
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
@@ -36,7 +40,12 @@ class StatusFragment : Fragment() {
         }
     }
 
+    /** 设置各项数据 **/
     fun initData(view: View) {
+        /** TODO：优化
+         **可以每一组内部的view设置为相同的id，仅外部不同，仅传一个外部view参数即获得所有view的方法来优化此方法。
+         **/
+
         val attribute = attributeService.getAttribute()
         var exp = attribute.strengthAttribute
         var levelModel = attributeLevelService.getAttributeLevelByExp(exp)
@@ -74,6 +83,14 @@ class StatusFragment : Fragment() {
         view.tw_creativeExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
         view.tw_creativeLevel.text = "LV${levelModel.levelNum}"
         view.npb_creative.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
+
+        exp = attribute.gradeAttribute
+        levelModel = attributeLevelService.getAttributeLevelByExp(exp)
+        view.tv_lifeExp.text = "${exp - levelModel.startExpValue}/${levelModel.endExpValue - levelModel.startExpValue}"
+        view.tv_lifeLevel.text = "LV${levelModel.levelNum}"
+        view.pgb_lifeLevel.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
+
+        view.tv_finishCount.text = "到目前为止，你一共完成了${todoService.getFinishCount()}个待办事项！\n继续努力！"
     }
 
 

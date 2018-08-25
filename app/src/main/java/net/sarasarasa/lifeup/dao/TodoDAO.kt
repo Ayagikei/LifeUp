@@ -1,4 +1,4 @@
-package net.sarasarasa.lifeup.DAO
+package net.sarasarasa.lifeup.dao
 
 import net.sarasarasa.lifeup.models.TaskModel
 import org.litepal.LitePal
@@ -31,6 +31,14 @@ class TodoDAO {
 
     fun getTodayFinishCount(time: Long): Int {
         return LitePal.where("endDate > ? and taskStatus = ?", time.toString(), "1").count(TaskModel::class.java)
+    }
+
+    fun getOverdueItems(time: Long): List<TaskModel> {
+        return LitePal.where("taskExpireTime <= ? and taskStatus = ?", time.toString(), "0").find(TaskModel::class.java)
+    }
+
+    fun getFinishCount(): Int {
+        return LitePal.where("taskStatus = ?", "1").count(TaskModel::class.java)
     }
 
 }

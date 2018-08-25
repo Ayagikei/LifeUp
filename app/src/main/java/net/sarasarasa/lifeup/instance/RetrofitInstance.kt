@@ -8,11 +8,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitInstance() {
     companion object {
-        private var gson: Gson = GsonBuilder()
+        var gson: Gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss")
                 .create()
 
-        private val retrofitInstance = Retrofit.Builder().baseUrl("http://").addConverterFactory(GsonConverterFactory.create(gson)).build()
+        private val retrofitInstance = Retrofit.Builder().baseUrl("").addConverterFactory(GsonConverterFactory.create(gson)).build()
 
 
         fun getInstance(): Retrofit {

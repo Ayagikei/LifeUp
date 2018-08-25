@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +30,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DateUtil
+import net.sarasarasa.lifeup.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,19 +69,32 @@ class TodoFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
+        //检查逾期情况
+        if (todoService.checkAndUpdateOverdueTask()) {
+            val mContext = context
+            if (mContext != null)
+                ToastUtils.showLongToast(mContext, "你有代办事项逾期了！请前往[历史]查看。")
+        }
+
         mRecyclerView = view.findViewById(R.id.rv)
         mAdapter = ToDoItemAdapter(R.layout.item_to_do, mList)
         mAdapter.setHeaderView(getHeaderView())
+
+        if (mList.size == 0)
+            mAdapter.setFooterView(getFootView(), 0)
+
+        //mAdapter.setFooterView(getFootView())
         mRecyclerView.layoutManager = LinearLayoutManager(view.context)
         mRecyclerView.adapter = mAdapter
 
         //设置长按Item的长按事件
         mAdapter.setOnItemLongClickListener { adapter, mView, position ->
+            //获得所选item
+            val item = adapter.getItem(position) as TaskModel
             val mPopupMenu = PopupMenu(mView.context, mView.av_checkBtn)
             mPopupMenu.menuInflater.inflate(R.menu.menu_to_do_item, mPopupMenu.menu)
             mPopupMenu.setOnMenuItemClickListener { menuItem ->
-                //获得所选item
-                val item = adapter.getItem(position) as TaskModel
+
 
                 //如果所选Item不是未完成状态，不可长按
                 if (item.taskStatus != 0)
@@ -139,7 +152,8 @@ class TodoFragment : Fragment() {
                 }
             }
 
-            mPopupMenu.show()
+            if (item.taskStatus == 0)
+                mPopupMenu.show()
             return@setOnItemLongClickListener true
         }
 
@@ -178,6 +192,10 @@ class TodoFragment : Fragment() {
 
                 mView.isClickable = false
                 todoService.finishTodoItem(item.id)
+
+                val activity = checkNotNull(context) as MainActivity
+                activity.syncData()
+
                 //刷新HeaderView的进度显示
                 mList[position].taskStatus = ToDoItemConstants.COMPLETED
 
@@ -186,8 +204,6 @@ class TodoFragment : Fragment() {
     }
 
     private fun showDialogAbbr(item: TaskModel) {
-
-        Log.e("dialog", "执行了一次？")
 
         if (dialog != null || item.relatedAttribute1.isNullOrBlank())
             return
@@ -203,12 +219,7 @@ class TodoFragment : Fragment() {
             this?.setTitle("你获得了经验值")
             this?.setIcon(net.sarasarasa.lifeup.R.drawable.ic_award_exp)
             this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
-                threadRunning = false
-                thread?.interrupt()
                 cancel()
-
-                if (item.taskFrequency != 0)
-                    showDialogRepeat(item)
             }
             this?.setView(newDialogView)
             this?.setOnShowListener {
@@ -235,14 +246,21 @@ class TodoFragment : Fragment() {
         val dialog = context?.let { AlertDialog.Builder(it).create() }
 
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+        val calendar = Calendar.getInstance()
+        calendar.time = taskModel.taskExpireTime
+        if (taskModel.taskFrequency != 30)
+            calendar.add(Calendar.DATE, taskModel.taskFrequency)
+        else calendar.add(Calendar.MONTH, 1)
 
         if (dialog != null)
             with(dialog) {
                 setTitle("重复设置")
-                setMessage("要进行重复吗？\n下一次的期限时间是 ${simpleDateFormat.format(taskModel.taskExpireTime)}。")
+                setMessage("要进行重复吗？\n下一次的期限时间是 ${simpleDateFormat.format(calendar.time)}。")
                 setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
                     if (taskModel.id != null)
                         todoService.repeatTask(taskModel.id)
+                    refreshDataSet()
+                    dialog.cancel()
                 }
                 setButton(AlertDialog.BUTTON_NEGATIVE, "否") { _, _ ->
                     dialog.cancel()
@@ -408,9 +426,21 @@ class TodoFragment : Fragment() {
     }
 
     private fun refreshDataSet() {
+        //检查并更新逾期情况
+        if (todoService.checkAndUpdateOverdueTask()) {
+            val mContext = context
+            if (mContext != null)
+                ToastUtils.showLongToast(mContext, "你有代办事项逾期了！请前往[历史]查看。")
+        }
+
         mList.clear()
         mList.addAll(todoService.getUncompletedTodoList())
         refreshHeaderView(mHeaderView)
+
+        if (mList.size == 0) {
+            mAdapter.setFooterView(getFootView())
+        } else mAdapter.removeAllFooterView()
+
         mAdapter.notifyDataSetChanged()
     }
 
@@ -438,6 +468,10 @@ class TodoFragment : Fragment() {
         refreshHeaderView(mHeaderView)
 
         return mHeaderView
+    }
+
+    private fun getFootView(): View {
+        return layoutInflater.inflate(R.layout.foot_view_to_do, null)
     }
 
     override fun onResume() {

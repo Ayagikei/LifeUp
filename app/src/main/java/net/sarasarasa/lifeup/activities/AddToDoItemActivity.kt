@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -395,5 +396,22 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         return isAllCheckPassed
+    }
+
+    fun showDialogAttribution(view: View) {
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_abbr_desc, null)
+        val dialog = AlertDialog.Builder(this).create()
+
+        with(dialog) {
+            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                cancel()
+            }
+            this?.setView(dialogView)
+            dialog.window.setLayout(DensityUtil.dp2px(this@AddToDoItemActivity, 300f),
+                    DensityUtil.dp2px(this@AddToDoItemActivity, 270f))
+
+            this?.show()
+        }
     }
 }

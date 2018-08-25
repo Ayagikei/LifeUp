@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="270dp">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_first"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_levelFirst"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="可以提升身体素质和健康的待办事项，如跑步、游泳等。"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nameFirst"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameFirst"
+            app:layout_constraintTop_toTopOf="@+id/tv_nameFirst" />
+
+        <TextView
+            android:id="@+id/tv_nameFirst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="力量"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconFirst"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconFirst" />
+
+        <ImageView
+            android:id="@+id/iv_iconFirst"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_strength"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_sec"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="48dp">
+
+        <TextView
+            android:id="@+id/tv_levelSec"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="LV99"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nameSec"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameSec"
+            app:layout_constraintTop_toTopOf="@+id/tv_nameSec"
+            tools:text="可以提升自我知识储备的待办事项，如读书等。" />
+
+        <TextView
+            android:id="@+id/tv_nameSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="学识"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconSec"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconSec" />
+
+        <ImageView
+            android:id="@+id/iv_iconSec"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_learning"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_thr"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="88dp">
+
+        <TextView
+            android:id="@+id/tv_levelThr"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="可以增长自身魅力的待办事项，如交际等。"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nameThr"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameThr"
+            app:layout_constraintTop_toTopOf="@+id/tv_nameThr" />
+
+        <TextView
+            android:id="@+id/tv_nameThr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="魅力"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconThr"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconThr" />
+
+        <ImageView
+            android:id="@+id/iv_iconThr"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_charm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_four"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_thr">
+
+        <TextView
+            android:id="@+id/tv_levelFour"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="可以增强你耐力的待办事项。"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nameFour"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameFour"
+            app:layout_constraintTop_toTopOf="@+id/tv_nameFour" />
+
+        <TextView
+            android:id="@+id/tv_nameFour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="耐力"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconFour"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconFour" />
+
+        <ImageView
+            android:id="@+id/iv_iconFour"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_endurance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_fif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_four">
+
+        <TextView
+            android:id="@+id/tv_levelFif"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="LV99"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nameFif"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameFif"
+            app:layout_constraintTop_toTopOf="@+id/tv_nameFif"
+            tools:text="可以提升你的活力，对周围环境造成积极影响的待办事项。" />
+
+        <TextView
+            android:id="@+id/tv_nameFif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="活力"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconFif"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconFif" />
+
+        <ImageView
+            android:id="@+id/iv_iconFif"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_vitality"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_Six"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_fif">
+
+        <TextView
+            android:id="@+id/tv_levelSix"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="可以提升自己创造力的待办事项，比如DIY等。"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nameSix"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameSix"
+            app:layout_constraintTop_toTopOf="@+id/tv_nameSix" />
+
+        <TextView
+            android:id="@+id/tv_nameSix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="创造"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconSix"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconSix" />
+
+        <ImageView
+            android:id="@+id/iv_iconSix"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_abbr_creative"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

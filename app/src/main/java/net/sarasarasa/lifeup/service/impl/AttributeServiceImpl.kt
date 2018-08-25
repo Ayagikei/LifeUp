@@ -1,8 +1,9 @@
 package net.sarasarasa.lifeup.service.impl
 
-import net.sarasarasa.lifeup.DAO.AttributeDAO
+import net.sarasarasa.lifeup.dao.AttributeDAO
 import net.sarasarasa.lifeup.models.AttributeModel
 import net.sarasarasa.lifeup.service.AttributeService
+import net.sarasarasa.lifeup.vo.AttributionVO
 
 class AttributeServiceImpl : AttributeService {
 
@@ -96,6 +97,22 @@ class AttributeServiceImpl : AttributeService {
             attributeModel.gradeAttribute = 0
 
         return attributeModel.save()
+    }
+
+    override fun getAttributeVO(): AttributionVO {
+        val attributeModel = getAttribute()
+        val attributionVO = AttributionVO()
+        with(attributionVO) {
+            attributionVO.userExp = attributeModel.gradeAttribute
+            attributionVO.attributeStrength = attributeModel.strengthAttribute
+            attributionVO.attributeKnowledge = attributeModel.knowledgeAttribute
+            attributionVO.attributeCharm = attributeModel.charmAttribute
+            attributionVO.attributeEndurance = attributeModel.enduranceAttribute
+            attributionVO.attributeEnergy = attributeModel.energyAttribute
+            attributionVO.attributeCreativity = attributeModel.creativity
+        }
+
+        return attributionVO
     }
 
 }

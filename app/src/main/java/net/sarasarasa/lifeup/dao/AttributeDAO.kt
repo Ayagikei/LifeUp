@@ -1,4 +1,4 @@
-package net.sarasarasa.lifeup.DAO
+package net.sarasarasa.lifeup.dao
 
 import net.sarasarasa.lifeup.models.AttributeModel
 import org.litepal.LitePal

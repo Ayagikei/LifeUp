@@ -1,4 +1,4 @@
-package net.sarasarasa.lifeup.DAO
+package net.sarasarasa.lifeup.dao
 
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MAX_LEVEL
 import net.sarasarasa.lifeup.models.AttributeLevelModel

@@ -55,11 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="我们建立这个团队是为了一起学习日语，共同进步！"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/iv_avatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginStart="16dp"
@@ -70,7 +70,7 @@
                 app:srcCompat="@drawable/ic_team_fujisan" />
 
             <TextView
-                android:id="@+id/textView_userName"
+                android:id="@+id/tv_userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -78,17 +78,17 @@
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="团队一句话描述"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
 
             <TextView
-                android:id="@+id/textView_userDesc"
+                android:id="@+id/tv_userDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="组织者：UserName"
-                app:layout_constraintStart_toStartOf="@+id/textView_userName"
-                app:layout_constraintTop_toBottomOf="@+id/textView_userName" />
+                app:layout_constraintStart_toStartOf="@+id/tv_userName"
+                app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_dot"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/iv_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/textView_userDesc2" />
 
             <TextView

@@ -10,4 +10,6 @@ data class AttributeModel(var gradeAttribute: Int,
                           var energyAttribute: Int,
                           var creativity: Int) : LitePalSupport() {
     var id: Long? = null
+
+
 }

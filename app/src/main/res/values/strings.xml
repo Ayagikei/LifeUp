@@ -50,5 +50,6 @@
     <string name="title_activity_edit_to_do_item">编辑待办事项</string>
     <string name="title_activity_history">历史</string>
     <string name="title_activity_YBLogin">易班授权登陆</string>
+    <string name="title_activity_profile">修改个人信息</string>
 
 </resources>

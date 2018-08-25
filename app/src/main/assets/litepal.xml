@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="LifeUpDB"></dbname>
-    <version value="9"></version>
+    <version value="10"></version>
 
     <list>
         <mapping class="net.sarasarasa.lifeup.models.TaskModel" />
         <mapping class="net.sarasarasa.lifeup.models.AttributeModel" />
         <mapping class="net.sarasarasa.lifeup.models.AttributeLevelModel" />
+        <mapping class="net.sarasarasa.lifeup.models.UserModel" />
     </list>
 </litepal>

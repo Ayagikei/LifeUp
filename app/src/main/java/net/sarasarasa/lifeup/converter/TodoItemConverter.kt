@@ -25,7 +25,7 @@ class TodoItemConverter {
                 "charm" -> "魅力"
                 "endurance" -> "耐力"
                 "vitality" -> "活力"
-                "creative" -> "创造力"
+                "creative" -> "创造"
                 else -> ""
             }
         }

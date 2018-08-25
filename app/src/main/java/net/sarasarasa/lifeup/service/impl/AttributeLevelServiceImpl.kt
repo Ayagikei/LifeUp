@@ -1,7 +1,7 @@
 package net.sarasarasa.lifeup.service.impl
 
 import android.util.Log
-import net.sarasarasa.lifeup.DAO.AttributeLevelDAO
+import net.sarasarasa.lifeup.dao.AttributeLevelDAO
 import net.sarasarasa.lifeup.models.AttributeLevelModel
 import net.sarasarasa.lifeup.service.AttributeLevelService
 

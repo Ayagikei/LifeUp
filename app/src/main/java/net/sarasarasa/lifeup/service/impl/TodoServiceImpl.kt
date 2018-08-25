@@ -4,8 +4,8 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import net.sarasarasa.lifeup.DAO.TodoDAO
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
+import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
@@ -154,6 +154,10 @@ class TodoServiceImpl : TodoService {
         return todoDAO.getTodayFinishCount(millisTime)
     }
 
+    override fun getFinishCount(): Int {
+        return todoDAO.getFinishCount()
+    }
+
     override fun setOrUpdateAlarm(time: Long, id: Long, context: Context): Boolean {
         val taskModel = getATodoItem(id)
 
@@ -211,4 +215,28 @@ class TodoServiceImpl : TodoService {
 
         return true
     }
+
+    override fun checkAndUpdateOverdueTask(): Boolean {
+        //期限当天不算逾期，第二天才算，此处做处理
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, -1)
+
+        val list = todoDAO.getOverdueItems(calendar.timeInMillis)
+        return if (list.isEmpty()) false
+        else {
+            for (e in list) {
+                e.taskStatus = ToDoItemConstants.OUT_OF_DATE
+                e.endDate = Calendar.getInstance().time
+                e.updatedTime = Calendar.getInstance().timeInMillis
+                e.save()
+
+                //经验值惩罚
+                attributeService.decreaseExp(e.relatedAttribute1 ?: "", e.expReward / 5)
+                attributeService.decreaseExp(e.relatedAttribute2 ?: "", e.expReward / 5)
+                attributeService.decreaseExp(e.relatedAttribute3 ?: "", e.expReward / 5)
+            }
+            true
+        }
+    }
+
 }
