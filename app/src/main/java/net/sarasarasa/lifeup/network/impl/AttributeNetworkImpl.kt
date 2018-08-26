@@ -52,19 +52,19 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                         Log.i("LifeUp 属性模块", "[获取用户属性]请求成功：${attributionVO}")
 
                         val attributeModel = attributeService.getAttribute()
-                        val gradeRemote = attributionVO.userGrade
+                        val gradeRemote = attributionVO.userExp
                         if (gradeRemote != null && gradeRemote > attributeModel.gradeAttribute) {
 
-                            attributeModel.copy(gradeRemote,
-                                    attributionVO.attributeStrength
-                                            ?: attributeModel.strengthAttribute,
-                                    attributionVO.attributeKnowledge
-                                            ?: attributeModel.knowledgeAttribute,
-                                    attributionVO.attributeCharm ?: attributeModel.charmAttribute,
-                                    attributionVO.attributeEndurance
-                                            ?: attributeModel.enduranceAttribute,
-                                    attributionVO.attributeEnergy ?: attributeModel.energyAttribute,
-                                    attributionVO.attributeCreativity ?: attributeModel.creativity)
+                            with(attributeModel) {
+                                gradeAttribute = attributionVO.userExp ?: gradeAttribute
+                                strengthAttribute = attributionVO.attributeStrength ?: strengthAttribute
+                                knowledgeAttribute = attributionVO.attributeKnowledge ?: knowledgeAttribute
+                                charmAttribute = attributionVO.attributeCharm ?: charmAttribute
+                                enduranceAttribute = attributionVO.attributeEndurance ?: enduranceAttribute
+                                energyAttribute = attributionVO.attributeEnergy ?: energyAttribute
+                                creativity = attributionVO.attributeCreativity ?: creativity
+                            }
+
                             attributeModel.save()
 
                             Log.i("LifeUp 属性模块", "[更新本地属性]操作成功：${attributeModel}")

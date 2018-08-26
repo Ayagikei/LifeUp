@@ -83,14 +83,12 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         sv_sex.setOnItemViewClick {
-            inputDialog(sv_address)
+            showSexDialog()
         }
     }
 
-    /**
-     * 展示重复频次选择对话框
-     */
-    private fun showRepeaterDialog() {
+
+    private fun showSexDialog() {
         val checkindex = profileVO.userSex ?: 2
         val items = arrayOf("女", "男", "保密")
 
@@ -101,6 +99,7 @@ class ProfileActivity : AppCompatActivity() {
                         "男" -> 1
                         else -> 2
                     }
+                    sv_sex.setItemText(items[index])
                     dialog.dismiss()
                 }).create()
         dialog.show()

@@ -34,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
             finish();
+
             //初始化数据
             attributeService.initAttribute();
             attributeLevelService.initAttributeLevel();

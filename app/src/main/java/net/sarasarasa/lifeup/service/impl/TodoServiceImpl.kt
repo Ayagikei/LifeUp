@@ -158,6 +158,14 @@ class TodoServiceImpl : TodoService {
         return todoDAO.getFinishCount()
     }
 
+    override fun getGiveUpCount(): Int {
+        return todoDAO.getGiveUpCount()
+    }
+
+    override fun getOverdueCount(): Int {
+        return todoDAO.getOverdueCount()
+    }
+
     override fun setOrUpdateAlarm(time: Long, id: Long, context: Context): Boolean {
         val taskModel = getATodoItem(id)
 

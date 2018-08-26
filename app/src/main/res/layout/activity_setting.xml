@@ -39,10 +39,11 @@
         android:background="#ccc" />
 
     <com.jeff.settingitem.SettingView
+        android:id="@+id/setting_item_logout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:item_background="@drawable/selector_item"
-        app:item_text="语言设置"
+        app:item_text="退出登陆"
         app:show_dot="false"
         app:show_left_icon="false"
         app:text_color="#000"

@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -400,18 +399,24 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
     fun showDialogAttribution(view: View) {
 
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_abbr_desc, null)
-        val dialog = AlertDialog.Builder(this).create()
+
+        val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle("属性值介绍").create()
+        //val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_abbr_desc, null)
 
         with(dialog) {
             this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
                 cancel()
             }
-            this?.setView(dialogView)
-            dialog.window.setLayout(DensityUtil.dp2px(this@AddToDoItemActivity, 300f),
-                    DensityUtil.dp2px(this@AddToDoItemActivity, 270f))
-
             this?.show()
+
+/*            val displayRectangle = Rect()
+            val window = this.getWindow()
+            window.decorView.getWindowVisibleDisplayFrame(displayRectangle)
+            val iWidth = (displayRectangle.width() * 0.8f).toInt()
+            val iHeight = (displayRectangle.height() * 0.6f).toInt()
+            dialog.window.setLayout(iWidth, iHeight)*/
+
+
         }
     }
 }

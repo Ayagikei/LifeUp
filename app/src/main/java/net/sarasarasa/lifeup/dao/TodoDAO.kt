@@ -41,4 +41,12 @@ class TodoDAO {
         return LitePal.where("taskStatus = ?", "1").count(TaskModel::class.java)
     }
 
+    fun getGiveUpCount(): Int {
+        return LitePal.where("taskStatus = ?", "3").count(TaskModel::class.java)
+    }
+
+    fun getOverdueCount(): Int {
+        return LitePal.where("taskStatus = ?", "2").count(TaskModel::class.java)
+    }
+
 }

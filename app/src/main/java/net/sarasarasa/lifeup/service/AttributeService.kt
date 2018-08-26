@@ -15,4 +15,5 @@ interface AttributeService {
     fun decreaseExp(abbr: String, exp: Int): Boolean
 
     fun getAttributeVO(): AttributionVO
+    fun getTotalAttrExp(): Int
 }

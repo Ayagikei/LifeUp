@@ -9,8 +9,9 @@ class AttributeServiceImpl : AttributeService {
 
     private val attributeDAO = AttributeDAO()
 
+
     override fun initAttribute() {
-        val attributeModel = AttributeModel(1, 0, 0, 0, 0, 0, 0)
+        val attributeModel = AttributeModel(0, 0, 0, 0, 0, 0, 0)
         attributeDAO.saveAttribute(attributeModel)
     }
 
@@ -113,6 +114,16 @@ class AttributeServiceImpl : AttributeService {
         }
 
         return attributionVO
+    }
+
+    override fun getTotalAttrExp(): Int {
+        val attributeModel = getAttribute()
+        return attributeModel.strengthAttribute +
+                attributeModel.charmAttribute +
+                attributeModel.knowledgeAttribute +
+                attributeModel.energyAttribute +
+                attributeModel.enduranceAttribute +
+                attributeModel.creativity
     }
 
 }

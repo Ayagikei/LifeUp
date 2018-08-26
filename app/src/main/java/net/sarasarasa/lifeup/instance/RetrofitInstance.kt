@@ -14,7 +14,6 @@ class RetrofitInstance() {
 
         private val retrofitInstance = Retrofit.Builder().baseUrl("").addConverterFactory(GsonConverterFactory.create(gson)).build()
 
-
         fun getInstance(): Retrofit {
             return retrofitInstance
         }

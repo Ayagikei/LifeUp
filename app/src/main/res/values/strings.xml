@@ -51,5 +51,6 @@
     <string name="title_activity_history">历史</string>
     <string name="title_activity_YBLogin">易班授权登陆</string>
     <string name="title_activity_profile">修改个人信息</string>
+    <string name="title_activity_user_mine">我的资料</string>
 
 </resources>

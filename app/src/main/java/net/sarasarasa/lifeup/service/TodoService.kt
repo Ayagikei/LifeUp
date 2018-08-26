@@ -41,7 +41,7 @@ interface TodoService {
     /** 获取今天完成的事项的[Int]计数 **/
     fun getTodayFinishCount(): Int
 
-    /** 获取所有完成的事项和未完成事项的[Int]计数 **/
+    /** 获取所有完成的事项的[Int]计数 **/
     fun getFinishCount(): Int
 
     /** 在[time:Long]时间设置内容为[id: Long]的事项的内容的提醒 **/
@@ -55,4 +55,7 @@ interface TodoService {
      * 返回[Boolean]代表是否有逾期的待办事项 **/
     fun checkAndUpdateOverdueTask(): Boolean
 
+    fun getGiveUpCount(): Int
+
+    fun getOverdueCount(): Int
 }

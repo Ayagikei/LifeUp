@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity
 import com.jeff.settingitem.SettingView
 import kotlinx.android.synthetic.main.activity_setting.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.ToastUtils
 
 
 class SettingActivity : AppCompatActivity() {
+
+    val userService = UserServiceImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +27,12 @@ class SettingActivity : AppCompatActivity() {
             val intent = Intent(this, WelcomeActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+
+        setting_item_logout.setOnItemViewClick {
+            userService.saveToken("")
+            ToastUtils.showShortToast(this, "退出成功")
         }
 
     }

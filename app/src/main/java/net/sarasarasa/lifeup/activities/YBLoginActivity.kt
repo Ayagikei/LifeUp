@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.activities
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -61,6 +62,9 @@ class YBLoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+            else -> {
+
+            }
 
         }
 
@@ -82,13 +86,30 @@ class YBLoginActivity : AppCompatActivity() {
         loginNetworkImpl.getYBLoginUrl()
 
         with(webView) {
-            settings.javaScriptEnabled = true;
+            settings.javaScriptEnabled = true
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
 
             webViewClient = object : WebViewClient() {
 
+                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+
+                    if (url != null)
+                        if (url.toString().contains("net.sarasarasa.lifeup/redirect?code=")) {
+                            Toast.makeText(context, "授权成功，正在注册信息", Toast.LENGTH_LONG).show()
+
+                            val uri = Uri.parse(url)
+                            Log.e("CODE", uri.getQueryParameter("code"))
+                            loginNetworkImpl.getYBLoginInfo(uri.getQueryParameter("code"))
+
+                            return true
+                        }
+
+                    return true
+                }
+
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                    Log.e("URL", request?.url.toString())
+
+                    Log.e("ErrorTest", request?.url.toString())
 
                     if (request != null)
                         if (request.url.toString().contains("net.sarasarasa.lifeup/redirect?code=")) {
@@ -104,11 +125,11 @@ class YBLoginActivity : AppCompatActivity() {
                     return true
                 }
 
-                override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
                 }
 
-                override fun onPageFinished(view: WebView, url: String) {
+                override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                 }
             }

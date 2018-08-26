@@ -196,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="相关技能（请选择1~3个）"
+                    android:text="相关属性（请选择1~3个）"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -273,8 +273,8 @@
 
                 <ImageView
                     android:id="@+id/imageView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginEnd="8dp"
                     android:onClick="showDialogAttribution"
                     app:layout_constraintBottom_toBottomOf="@+id/tw_skills"
