@@ -122,6 +122,29 @@
                             app:layout_constraintStart_toEndOf="@+id/iv_expIcon"
                             app:layout_constraintTop_toBottomOf="@+id/tw_name" />
 
+                        <ImageView
+                            android:id="@+id/iv_timeIcon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="5dp"
+                            android:src="@drawable/ic_time"
+                            app:layout_constraintStart_toEndOf="@+id/tv_exp"
+                            app:layout_constraintTop_toBottomOf="@+id/tw_name" />
+
+                        <TextView
+                            android:id="@+id/tv_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="4dp"
+                            android:text="2018/9/3"
+                            android:textColor="#FF8A80"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/iv_timeIcon"
+                            app:layout_constraintTop_toBottomOf="@+id/tw_name" />
+
 
                     </android.support.constraint.ConstraintLayout>
 
@@ -167,10 +190,10 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="265dp"
                 android:layout_marginTop="6dp"
-                app:lottie_cacheStrategy="none"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="false"
+                app:lottie_cacheStrategy="none"
                 app:lottie_loop="false"
                 app:lottie_rawRes="@raw/checked_done" />
 

@@ -22,17 +22,12 @@
       </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JVM 1.6" useProjectSettings="false">
+      <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
         <compilerSettings />
         <compilerArguments>
-          <option name="destination" value="$MODULE_DIR$/build/tmp/kotlin-classes/debug" />
-          <option name="noStdlib" value="true" />
-          <option name="noReflect" value="true" />
-          <option name="moduleName" value="app_debug" />
-          <option name="addCompilerBuiltIns" value="true" />
-          <option name="loadBuiltInsFromDependencies" value="true" />
+          <option name="jvmTarget" value="1.8" />
           <option name="languageVersion" value="1.2" />
-          <option name="apiVersion" value="1.2" />
+          <option name="apiVersion" value="1.1" />
           <option name="pluginOptions">
             <array>
               <option value="plugin:org.jetbrains.kotlin.android:experimental=false" />
@@ -41,9 +36,7 @@
             </array>
           </option>
           <option name="pluginClasspaths">
-            <array>
-              <option value="F:/Cache/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.2.51/1755c607e5fabf4ba949ef626c73fc7421d35123/kotlin-android-extensions-1.2.51.jar" />
-            </array>
+            <array />
           </option>
         </compilerArguments>
       </configuration>
@@ -136,72 +129,73 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/split-apk" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/splits-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/kotlin" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-v4-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement-15.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: android.arch.lifecycle:common:1.1.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.mob:MobCommons:2018.0816.1650@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.Jay-Goo:RangeSeekBar-v2.0.4" level="project" />
-    <orderEntry type="library" name="Gradle: com.jeff:settingitem-1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.4.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:recyclerview-v7-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.CymChad:BaseRecyclerViewAdapterHelper-2.9.31" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-media-compat-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-core-ui-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-1.1.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.8.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: cn.smssdk:ShortMessageSDKGUI-3.2.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.14.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains:annotations-java5:15.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-fragment-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.xiaosong520:doublewaveview-1.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: android.arch.core:runtime-1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:design-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-solver:1.1.2@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-gson:2.4.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:gifdecoder-4.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-15.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime-1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:transition-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.airbnb.android:lottie-2.6.0-beta19" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-plus-15.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.51@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-annotations:27.1.1@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.andkulikov:transitionseverywhere-1.7.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.litepal.android:core-2.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:cardview-v7-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-compat-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.2.51@jar" level="project" />
-    <orderEntry type="library" name="Gradle: android.arch.lifecycle:viewmodel-1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:glide-4.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base-15.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: me.relex:circleindicator-1.2.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.mob:MobTools:2018.0813.1036@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.51@jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12@jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.51@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.10.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.mob:MobGUI:2018.0813.1036@jar" level="project" />
-    <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-core-1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.8.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.daimajia.numberprogressbar:library-1.4" level="project" />
-    <orderEntry type="library" name="Gradle: com.mob:SDKWrapper:2018.0801.1824@jar" level="project" />
-    <orderEntry type="library" name="Gradle: android.arch.core:common:1.1.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-audience-15.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: cn.smssdk:SMSSDK-3.2.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.chen.wakehao.library:bottom-navigation-bar-1.0.0" level="project" />
+    <orderEntry type="library" name="com.squareup.okhttp3:okhttp:3.10.0@jar" level="project" />
+    <orderEntry type="library" name="com.squareup.okio:okio:1.14.0@jar" level="project" />
+    <orderEntry type="library" name="org.litepal.android:core-2.0.0" level="project" />
+    <orderEntry type="library" name="com.android.support:appcompat-v7-27.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:design-27.1.1" level="project" />
+    <orderEntry type="library" name="__local_aars__:D.\GitHub\LifeUp\app\libs\open_sdk_r6019_lite.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:transition-27.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:recyclerview-v7-27.1.1" level="project" />
+    <orderEntry type="library" name="cn.smssdk:SMSSDK-3.2.1.1" level="project" />
+    <orderEntry type="library" name="com.xiaosong520:doublewaveview-1.0.1" level="project" />
+    <orderEntry type="library" name="com.github.bumptech.glide:glide-4.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-basement-15.0.1" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.8.2@jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="org.hamcrest:hamcrest-core:1.3@jar" level="project" />
+    <orderEntry type="library" name="com.chen.wakehao.library:bottom-navigation-bar-1.0.0" level="project" />
+    <orderEntry type="library" name="com.github.Jay-Goo:RangeSeekBar-v2.0.4" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib:1.2.51@jar" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:viewmodel-1.1.0" level="project" />
+    <orderEntry type="library" name="com.mob:MobTools:2018.0813.1036@jar" level="project" />
+    <orderEntry type="library" name="com.airbnb.android:lottie-2.6.0-beta19" level="project" />
+    <orderEntry type="library" name="com.github.bumptech.glide:gifdecoder-4.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-utils-27.1.1" level="project" />
+    <orderEntry type="library" name="com.github.CymChad:BaseRecyclerViewAdapterHelper-2.9.31" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-audience-15.0.1" level="project" />
+    <orderEntry type="library" name="me.relex:circleindicator-1.2.2" level="project" />
+    <orderEntry type="library" name="com.android.support:support-annotations:27.1.1@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:animated-vector-drawable-27.1.1" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-base-15.0.1" level="project" />
+    <orderEntry type="library" name="com.mob:MobCommons:2018.0816.1650@jar" level="project" />
+    <orderEntry type="library" name="org.jetbrains:annotations-java5:15.0@jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit:junit:4.12@jar" level="project" />
+    <orderEntry type="library" name="com.mob:MobGUI:2018.0813.1036@jar" level="project" />
+    <orderEntry type="library" name="android.arch.core:common:1.1.0@jar" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.51@jar" level="project" />
+    <orderEntry type="library" name="com.github.bumptech.glide:disklrucache:4.8.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-plus-15.0.1" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.1.2" level="project" />
+    <orderEntry type="library" name="com.jeff:settingitem-1.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-vector-drawable-27.1.1" level="project" />
+    <orderEntry type="library" name="com.andkulikov:transitionseverywhere-1.7.0" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:runtime-1.1.0" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:common:1.1.0@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:cardview-v7-27.1.1" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tasks-15.0.1" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib-common:1.2.51@jar" level="project" />
+    <orderEntry type="library" name="com.squareup.retrofit2:retrofit:2.4.0@jar" level="project" />
+    <orderEntry type="library" name="com.github.bumptech.glide:annotations:4.8.0@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-ui-27.1.1" level="project" />
+    <orderEntry type="library" name="com.squareup.retrofit2:converter-gson:2.4.0@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-compat-27.1.1" level="project" />
+    <orderEntry type="library" name="com.mob:SDKWrapper:2018.0801.1824@jar" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:livedata-core-1.1.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-fragment-27.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:support-media-compat-27.1.1" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.51@jar" level="project" />
+    <orderEntry type="library" name="com.daimajia.numberprogressbar:library-1.4" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.1.2@jar" level="project" />
+    <orderEntry type="library" name="cn.smssdk:ShortMessageSDKGUI-3.2.1.1" level="project" />
+    <orderEntry type="library" name="android.arch.core:runtime-1.1.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-v4-27.1.1" level="project" />
   </component>
 </module>

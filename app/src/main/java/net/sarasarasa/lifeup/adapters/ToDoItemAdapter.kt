@@ -9,6 +9,8 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter<TaskModel, BaseViewHolder>(layoutResId, data) {
@@ -29,6 +31,15 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
         //设置频次标识的颜色
         helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
 
+        if (item.taskExpireTime != null) {
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+            helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime))
+                    .setVisible(R.id.iv_timeIcon, true)
+                    .setVisible(R.id.tv_time, true)
+        } else {
+            helper.setVisible(R.id.iv_timeIcon, false)
+                    .setVisible(R.id.tv_time, false)
+        }
 
 
             with(helper.getView<LottieAnimationView>(R.id.av_checkBtn)) {

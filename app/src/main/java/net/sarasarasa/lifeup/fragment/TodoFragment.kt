@@ -245,7 +245,7 @@ class TodoFragment : Fragment() {
     private fun showDialogRepeat(taskModel: TaskModel) {
         val dialog = context?.let { AlertDialog.Builder(it).create() }
 
-        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
         val calendar = Calendar.getInstance()
         calendar.time = taskModel.taskExpireTime
         if (taskModel.taskFrequency != 30)
@@ -255,7 +255,7 @@ class TodoFragment : Fragment() {
         if (dialog != null)
             with(dialog) {
                 setTitle("重复设置")
-                setMessage("要进行重复吗？\n下一次的期限时间是 ${simpleDateFormat.format(calendar.time)}。")
+                setMessage("要进行重复吗？\n下一次的期限日期是 ${simpleDateFormat.format(calendar.time)}。")
                 setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
                     if (taskModel.id != null)
                         todoService.repeatTask(taskModel.id)
