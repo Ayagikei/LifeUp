@@ -6,11 +6,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class RetrofitInstance() {
+class RetrofitInstance {
     companion object {
         var gson: Gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss")
                 .create()
+
 
         private val retrofitInstance = Retrofit.Builder().baseUrl("").addConverterFactory(GsonConverterFactory.create(gson)).build()
 

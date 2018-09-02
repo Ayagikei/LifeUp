@@ -19,4 +19,6 @@ interface UserService {
 
     /** 将[ProfileVO]里的个人信息保存到本地 **/
     fun saveMine(profileVO: ProfileVO)
+
+    fun clearMine()
 }

@@ -55,7 +55,6 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         })
     }
 
-
     fun updateUserProfile(profileVO: ProfileVO) {
         Log.i("LifeUp 登陆模块", "执行[更新用户信息]操作")
 

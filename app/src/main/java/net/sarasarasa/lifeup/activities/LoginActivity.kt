@@ -15,36 +15,95 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.ContactsContract
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.text.TextUtils
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import cn.smssdk.EventHandler
 import cn.smssdk.SMSSDK
 import cn.smssdk.gui.RegisterPage
+import com.tencent.connect.UserInfo
+import com.tencent.connect.common.Constants
+import com.tencent.tauth.IUiListener
+import com.tencent.tauth.Tencent
+import com.tencent.tauth.UiError
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.dialog_sign_up.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
+import net.sarasarasa.lifeup.constants.AttributeConstants
+import net.sarasarasa.lifeup.constants.LoginConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.instance.RetrofitInstance.Companion.gson
+import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
+import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
+import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
+import net.sarasarasa.lifeup.utils.MD5Util
+import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.vo.QQLoginVO
+import net.sarasarasa.lifeup.vo.QQUserInfoVO
+import net.sarasarasa.lifeup.vo.SignUpVO
 import java.util.*
 
 /**
  * A login screen that offers login via email/password.
  */
 class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
+
+    private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+        when (msg.what) {
+            LoginConstants.MSG_QQ_LOGIN_SUCCESS -> {
+                userNetworkImpl.getUserProfile()
+            }
+            LoginConstants.MSG_GET_PROFILE_SUCCESS -> {
+                attributeNetworkImpl.getAttribute()
+            }
+            NetworkConstants.INVAILD_TOKEN -> {
+                ToastUtils.showShortToast(this, "授权失效，请重试")
+            }
+            AttributeConstants.MSG_ATTR_GET_FAILED -> {
+                ToastUtils.showShortToast(this, "获取信息失败，请重试")
+            }
+            AttributeConstants.MSG_ATTR_GET_SUCCESS -> {
+                ToastUtils.showShortToast(this, "登录成功")
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            LoginConstants.MSG_PHONE_REGISTER_SUCCESS -> {
+                userNetworkImpl.getUserProfile()
+            }
+            else -> {
+                if (msg.obj != null)
+                    ToastUtils.showShortToast(this, msg.obj.toString())
+            }
+
+        }
+
+        return@Callback true
+    }
+
+
     private var mAuthTask: UserLoginTask? = null
+    private val mTencent = Tencent.createInstance("101492659", LifeUpApplication.getLifeUpApplication())
+    private val loginUiListener = LoginUiListener()
+    private val getUserInfoListener = GetUserInfoUiListener()
+    private val userNetworkImpl = UserNetworkImpl(uiHandler)
+    private val attributeNetworkImpl = AttributeNetworkImpl(uiHandler)
+    private val loginNetworkImpl = LoginNetworkImpl(uiHandler)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         setSupportActionBar(login_toolbar)
 
-        // Set up the login form.
+/*        // Set up the login form.
         populateAutoComplete()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -52,7 +111,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 return@OnEditorActionListener true
             }
             false
-        })
+        })*/
 
         email_sign_in_button.setOnClickListener { attemptLogin() }
 
@@ -100,15 +159,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private fun attemptLogin() {
-        if (mAuthTask != null) {
-            return
-        }
 
         // Reset errors.
         phone.error = null
@@ -118,38 +169,17 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         val emailStr = phone.text.toString()
         val passwordStr = password.text.toString()
 
-        var cancel = false
-        var focusView: View? = null
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
-            password.error = getString(R.string.error_invalid_password)
-            focusView = password
-            cancel = true
+        val signUpVO = SignUpVO()
+
+        with(signUpVO) {
+            authIdentifier = emailStr
+            accessToken = MD5Util.encryption("lIFEuP" + passwordStr)
+            authType = "phone"
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(emailStr)) {
-            phone.error = getString(R.string.error_field_required)
-            focusView = phone
-            cancel = true
-        } else if (!isEmailValid(emailStr)) {
-            phone.error = getString(R.string.error_invalid_email)
-            focusView = phone
-            cancel = true
-        }
+        loginNetworkImpl.loginByPhone(signUpVO)
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView?.requestFocus()
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr)
-            mAuthTask!!.execute(null as Void?)
-        }
     }
 
     private fun isEmailValid(email: String): Boolean {
@@ -318,8 +348,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         startActivity(intent)
     }
 
+    fun loginByQQ(view: View) {
+
+        mTencent.login(this, "get_user_info", loginUiListener)
+    }
+
     fun signUp(view: View) {
-        sendCode(this);
+        sendCode(this)
     }
 
     /** Mob短信验证集成 **/
@@ -335,11 +370,118 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                     val country = phoneMap["country"] as String // 国家代码，如“86”
                     val phone = phoneMap["phone"] as String // 手机号码，如“13800138000”
                     // TODO 利用国家代码和手机号码进行后续的操作
+
+                    inputDialog(phone)
+
+
                 } else {
                     // TODO 处理错误的结果
                 }
             }
         })
         page.show(context)
+    }
+
+    private fun inputDialog(phone: String) {
+
+        val builder = AlertDialog.Builder(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog_sign_up, null)
+
+        with(builder) {
+            setTitle("设置基本信息")
+
+            setView(view)
+
+            setPositiveButton("确定") { _, _ ->
+                val signUpVO = SignUpVO()
+
+                with(signUpVO) {
+                    nickName = view.til_nickname.editText?.text.toString()
+                    accessToken = MD5Util.encryption("lIFEuP" + view.til_password.editText?.text.toString())
+                    authIdentifier = phone
+                    authType = "phone"
+                }
+
+                loginNetworkImpl.registerByPhone(signUpVO)
+            }
+
+            show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        Tencent.onActivityResultData(requestCode, resultCode, data, loginUiListener)
+
+        if (requestCode == Constants.REQUEST_API) {
+            if (resultCode == Constants.REQUEST_QQ_SHARE ||
+                    resultCode == Constants.REQUEST_QZONE_SHARE ||
+                    resultCode == Constants.REQUEST_OLD_SHARE) {
+                Tencent.handleResultData(data, getUserInfoListener)
+            }
+        }
+    }
+
+    fun tencentGetUserInfo() {
+        //尝试获取信息
+        val userInfo = UserInfo(this, mTencent.qqToken)
+        userInfo.getUserInfo(getUserInfoListener)
+    }
+
+
+    inner class LoginUiListener : IUiListener {
+        override fun onComplete(p0: Any?) {
+            ToastUtils.showShortToast(this@LoginActivity, "授权成功，正在获取注册信息")
+
+            //取得token和openid
+            val res = gson.fromJson(p0.toString(), QQLoginVO::class.java)
+            Log.i("json", res.toString())
+            mTencent.setAccessToken(res.access_token, res.expires_time.toString())
+            mTencent.openId = res.openid.toString()
+
+            //进行获取信息操作
+            tencentGetUserInfo()
+        }
+
+        override fun onCancel() {
+            ToastUtils.showShortToast(this@LoginActivity, "授权登录取消")
+        }
+
+        override fun onError(p0: UiError?) {
+            ToastUtils.showShortToast(this@LoginActivity, "授权登录出现异常，请稍后再试。")
+        }
+
+    }
+
+    inner class GetUserInfoUiListener : IUiListener {
+        override fun onComplete(p0: Any?) {
+            val res = gson.fromJson(p0.toString(), QQUserInfoVO::class.java)
+
+            val signUpVO = SignUpVO()
+            with(signUpVO) {
+                authIdentifier = mTencent.openId
+                authType = "qq"
+                nickName = res.nickname
+                userAddress = res.city
+                userHead = res.figureurl_2
+                userSex = when (res.gender) {
+                    "女" -> 0
+                    "男" -> 1
+                    else -> 2
+                }
+            }
+
+            loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
+        }
+
+        override fun onCancel() {
+            ToastUtils.showShortToast(this@LoginActivity, "授权登录取消")
+        }
+
+        override fun onError(p0: UiError?) {
+            ToastUtils.showShortToast(this@LoginActivity, "授权登录出现异常，请稍后再试。")
+        }
+
     }
 }

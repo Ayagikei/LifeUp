@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun login() {
         if (userService.getToken().isBlank()) {
-            val intent = Intent(this, YBLoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (!mine.userHead.isNullOrBlank())
             Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(headLayout.iv_avatar) {
                 override fun setResource(resource: Bitmap?) {
-                    val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@MainActivity.getResources(), resource)
+                    val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@MainActivity.resources, resource)
                     circularBitmapDrawable.isCircular = true
                     headLayout.iv_avatar.setImageDrawable(circularBitmapDrawable)
                 }

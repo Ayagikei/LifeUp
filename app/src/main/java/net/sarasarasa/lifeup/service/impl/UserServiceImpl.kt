@@ -36,7 +36,20 @@ class UserServiceImpl : UserService {
         return getMine().token
     }
 
+    override fun clearMine() {
+        val mine = getMine()
+        mine.createTime = null
+        mine.nickName = ""
+        mine.userHead = ""
+        mine.userSex = 2
+        mine.userAddress = ""
+        mine.phone = ""
+        mine.save()
+    }
+
     override fun saveMine(profileVO: ProfileVO) {
+        clearMine()
+
         val mine = getMine()
         mine.createTime = profileVO.createTime
         mine.nickName = profileVO.nickName
