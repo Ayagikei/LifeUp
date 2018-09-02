@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import java.text.SimpleDateFormat
@@ -27,10 +28,15 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 .setImageResource(R.id.iv_icon_status, getStatusIconDrawable(item.taskStatus))
                 .addOnClickListener(R.id.tv_btn)
 
-        if (DateUtils.isToday(checkNotNull(item.endDate).time)) {
+        if (DateUtils.isToday(checkNotNull(item.endDate).time)
+                || item.taskFrequency == 0
+                || item.taskStatus == ToDoItemConstants.COMPLETED) {
+
             helper.setVisible(R.id.btn_undo, true)
                     .addOnClickListener(R.id.btn_undo)
-        } else helper.setVisible(R.id.btn_undo, false)
+        } else {
+            helper.setVisible(R.id.btn_undo, false)
+        }
 
     }
 

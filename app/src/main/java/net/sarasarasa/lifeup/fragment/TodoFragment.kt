@@ -160,6 +160,14 @@ class TodoFragment : Fragment() {
         mAdapter.setOnItemChildClickListener { adapter, mView, position ->
             val item = adapter.getItem(position) as TaskModel
             var isEverShowDialog = false
+            val cal = Calendar.getInstance()
+
+            if (cal.timeInMillis < item.startTime.time) {
+                context?.let {
+                    ToastUtils.showShortToast(it, "该待办事项尚未到开始时间！")
+                }
+                return@setOnItemChildClickListener
+            }
 
             if (mView is LottieAnimationView &&
                     item.taskStatus == ToDoItemConstants.UNCOMPLETED) {

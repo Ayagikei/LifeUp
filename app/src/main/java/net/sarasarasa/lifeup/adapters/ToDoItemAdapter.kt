@@ -17,6 +17,9 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
     override fun convert(helper: BaseViewHolder, item: TaskModel) {
 
+        val cal = Calendar.getInstance()
+        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+
 
         helper.setText(R.id.tw_name, item.content)
                 .setText(R.id.tw_contentTitle, item.remark)
@@ -25,31 +28,46 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
                 .setImageResource(R.id.iv_iconSkillFrist, getAbbrIconDrawable(item.relatedAttribute1))
                 .setImageResource(R.id.iv_iconSkillSecond, getAbbrIconDrawable(item.relatedAttribute2))
                 .setImageResource(R.id.iv_iconSkillThird, getAbbrIconDrawable(item.relatedAttribute3))
-                .setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
                 .addOnClickListener(R.id.av_checkBtn)
 
-        //设置频次标识的颜色
-        helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
+        if (cal.timeInMillis < item.startTime.time) {
+            //还没到开始时间的时候
+            with(helper) {
+                getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getUnableColor())
+                setTextColor(R.id.tw_name, getUnableColor())
+                setTextColor(R.id.tv_time, getUnableColor())
+                setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "开始")
+                setVisible(R.id.iv_timeIcon, true)
+                setVisible(R.id.tv_time, true)
+            }
 
-        if (item.taskExpireTime != null) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-            helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime))
-                    .setVisible(R.id.iv_timeIcon, true)
-                    .setVisible(R.id.tv_time, true)
+
         } else {
-            helper.setVisible(R.id.iv_timeIcon, false)
-                    .setVisible(R.id.tv_time, false)
+            //设置频次标识的颜色
+            helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
+            helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
+
+            if (item.taskExpireTime != null) {
+                helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "期限")
+                        .setVisible(R.id.iv_timeIcon, true)
+                        .setVisible(R.id.tv_time, true)
+            } else {
+                helper.setVisible(R.id.iv_timeIcon, false)
+                        .setVisible(R.id.tv_time, false)
+            }
         }
 
 
-            with(helper.getView<LottieAnimationView>(R.id.av_checkBtn)) {
-                if (item.taskStatus == ToDoItemConstants.COMPLETED) {
-                    progress = 1.0f
-                    isClickable = false
-                } else if (item.taskStatus == ToDoItemConstants.UNCOMPLETED) {
-                    progress = 0.0f
-                }
+
+
+        with(helper.getView<LottieAnimationView>(R.id.av_checkBtn)) {
+            if (item.taskStatus == ToDoItemConstants.COMPLETED) {
+                progress = 1.0f
+                isClickable = false
+            } else if (item.taskStatus == ToDoItemConstants.UNCOMPLETED) {
+                progress = 0.0f
             }
+        }
 
 
     }
@@ -62,6 +80,10 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
     /** 根据[taskFrequency: String]获得[color]主题色 **/
     private fun getThemeColor(taskFrequency: Int): Int {
         return ContextCompat.getColor(mContext, TodoItemConverter.strFrequencyToColorId(taskFrequency))
+    }
+
+    private fun getUnableColor(): Int {
+        return ContextCompat.getColor(mContext, R.color.color_to_do_item_unable)
     }
 
 

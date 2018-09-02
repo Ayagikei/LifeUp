@@ -24,6 +24,7 @@ data class TaskModel(
     var createdTime: Long = 0
     var updatedTime: Long = 0
     var expReward: Int = 0
+    var startTime: Date = Date()
     var endDate: Date? = null
     var taskStatus: Int = 0
 

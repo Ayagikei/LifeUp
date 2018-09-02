@@ -356,6 +356,15 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 taskShared,
                 null
         )
+
+        //设置默认开始时间为当天0点
+        val cal = Calendar.getInstance()
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+
         taskModel.expReward = ExpRewardConverter.getExpReward(arrAbbrBtn[SELECTED_CNT], taskUrgencyLevel, taskDifficultyLevel)
         return taskModel
     }
@@ -398,24 +407,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     fun showDialogAttribution(view: View) {
-
-
         val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle("属性值介绍").create()
-        //val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_abbr_desc, null)
 
         with(dialog) {
-            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
                 cancel()
             }
-            this?.show()
-
-/*            val displayRectangle = Rect()
-            val window = this.getWindow()
-            window.decorView.getWindowVisibleDisplayFrame(displayRectangle)
-            val iWidth = (displayRectangle.width() * 0.8f).toInt()
-            val iHeight = (displayRectangle.height() * 0.6f).toInt()
-            dialog.window.setLayout(iWidth, iHeight)*/
-
+            this.show()
 
         }
     }

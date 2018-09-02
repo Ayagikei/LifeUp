@@ -13,4 +13,5 @@
     <color name="color_to_do_item_fre1">#8BC34A</color>
     <color name="color_to_do_item_fre7">#ff3d00</color>
     <color name="color_to_do_item_fre30">#9728ff</color>
+    <color name="color_to_do_item_unable">#90CAF9</color>
 </resources>

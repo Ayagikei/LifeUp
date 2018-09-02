@@ -212,6 +212,11 @@ class TodoServiceImpl : TodoService {
         newExpireTime.add(Calendar.DATE, origin.taskFrequency)
         taskModel.taskExpireTime = newExpireTime.time
 
+        val newStartTime = Calendar.getInstance()
+        newStartTime.time = origin.startTime
+        newStartTime.add(Calendar.DATE, origin.taskFrequency)
+        taskModel.startTime = newStartTime.time
+
         if (origin.taskRemindTime != null) {
             val newRemindTime = Calendar.getInstance()
             newRemindTime.time = origin.taskRemindTime
