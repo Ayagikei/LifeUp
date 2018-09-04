@@ -181,8 +181,9 @@ class TodoFragment : Fragment() {
                         if (!isEverShowDialog) {
                             showDialogAbbr(item)
                             isEverShowDialog = true
+                            refreshHeaderView(mHeaderView)
                         }
-                        //refreshHeaderView(mHeaderView)
+
                     }
 
                     override fun onAnimationCancel(p0: Animator?) {

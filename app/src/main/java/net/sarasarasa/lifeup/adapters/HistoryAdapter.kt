@@ -29,8 +29,8 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 .addOnClickListener(R.id.tv_btn)
 
         if (DateUtils.isToday(checkNotNull(item.endDate).time)
-                || item.taskFrequency == 0
-                || item.taskStatus == ToDoItemConstants.COMPLETED) {
+                && item.taskFrequency == 0
+                && item.taskStatus == ToDoItemConstants.COMPLETED) {
 
             helper.setVisible(R.id.btn_undo, true)
                     .addOnClickListener(R.id.btn_undo)
