@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.android.synthetic.main.foot_view_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.HistoryAdapter
 import net.sarasarasa.lifeup.models.TaskModel
@@ -52,12 +54,20 @@ class HistoryActivity : AppCompatActivity() {
                 }
             }
         }
+        mAdapter.emptyView = getEmptyView()
     }
 
     private fun refreshDataSet() {
         mList.clear()
         mList.addAll(todoService.getCompletedTodoList())
         mAdapter.notifyDataSetChanged()
+    }
+
+
+    private fun getEmptyView(): View {
+        val view = layoutInflater.inflate(R.layout.foot_view_to_do, null)
+        view.textView11.text = "没有已经完成的待办事项，添加一些吧"
+        return view
     }
 
 }

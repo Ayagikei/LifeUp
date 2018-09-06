@@ -13,7 +13,7 @@ class RetrofitInstance {
                 .create()
 
 
-        private val retrofitInstance = Retrofit.Builder().baseUrl("http://172.16.33.155:8080").addConverterFactory(GsonConverterFactory.create(gson)).build()
+        private val retrofitInstance = Retrofit.Builder().baseUrl("").addConverterFactory(GsonConverterFactory.create(gson)).build()
 
         fun getInstance(): Retrofit {
             return retrofitInstance
