@@ -2,9 +2,8 @@
 
 ![](https://img.shields.io/badge/license-Apache%202-blue.svg) ![](https://img.shields.io/badge/platform-android-green.svg) 
 
-![](screenshots\header.png)
-
-**《人升》**是一款旨在实现「人生游戏化」的待办事项手机应用。
+![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/header.png?raw=true)
+《人升》是一款旨在实现「人生游戏化」的待办事项手机应用。
 
 在待办事项的基础上，我们加入了人生数值化的属性体系、等级体系等，并且打算以这种方式激励用户的使用激情。
 
