@@ -70,7 +70,7 @@ class ProfileActivity : AppCompatActivity() {
         sv_address.setItemText("居住地（学校）:" + mine.userAddress)
         sv_sex.setItemText("性别：" + UserConverter.iSexTostrSex(mine.userSex))
         //sv_phone.setItemText("手机号：" + mine.phone)
-        profileVO.nickName = mine.nickName
+        profileVO.nickname = mine.nickName
         profileVO.userAddress = mine.userAddress
         profileVO.userSex = mine.userSex
 
@@ -122,7 +122,7 @@ class ProfileActivity : AppCompatActivity() {
             setPositiveButton("确定") { _, _ ->
                 val text = when (view.id) {
                     R.id.sv_nickname -> {
-                        profileVO.nickName = editText.text.toString()
+                        profileVO.nickname = editText.text.toString()
                         "昵称:" + editText.text.toString()
                     }
                     R.id.sv_address -> {

@@ -64,7 +64,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
             <TextView
-                android:id="@+id/textView_userDesc2"
+                android:id="@+id/tv_teamDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

@@ -22,8 +22,8 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
 
         helper.setText(R.id.tw_name, item.content)
-                .setText(R.id.tw_contentTitle, item.remark)
-                .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToString(item.taskFrequency))
+                .setText(R.id.tv_startDateTitle, item.remark)
+                .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(item.taskFrequency))
                 .setText(R.id.tv_exp, "${item.expReward}经验值")
                 .setImageResource(R.id.iv_iconSkillFrist, getAbbrIconDrawable(item.relatedAttribute1))
                 .setImageResource(R.id.iv_iconSkillSecond, getAbbrIconDrawable(item.relatedAttribute2))

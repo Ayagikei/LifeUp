@@ -37,6 +37,8 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
             override fun onResponse(call: Call<ResultVO<String>>, response: Response<ResultVO<String>>) {
                 val url = response.body()?.data
 
+                Log.i("LifeUp", response.message())
+
                 val message = Message()
                 message.what = LoginConstants.MSG_URL_SUCCESS
                 message.obj = url

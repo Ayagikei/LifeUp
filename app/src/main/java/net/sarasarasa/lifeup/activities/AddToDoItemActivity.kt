@@ -160,13 +160,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
             showRemindDatePickerDialog()
         }
 
-        et_remindTime.inputType = InputType.TYPE_NULL
-        et_remindTime.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        et_startTime.inputType = InputType.TYPE_NULL
+        et_startTime.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showRemindTimePickerDialog()
         }
 
-        et_remindTime.setOnClickListener {
+        et_startTime.setOnClickListener {
             showRemindTimePickerDialog()
         }
 
@@ -199,7 +199,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     /** 重置提醒日期 **/
     fun finishRemindReset(view: View) {
         et_remindDate.setText("")
-        et_remindTime.setText("")
+        et_startTime.setText("")
         //使重置按钮[不可见]
         view.visibility = View.INVISIBLE
     }
@@ -247,7 +247,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     private fun showRemindTimePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
-            et_remindTime.setText("${hourOfDay}:${minute}:00")
+            et_startTime.setText("${hourOfDay}:${minute}:00")
             btn_remind_reset.visibility = View.VISIBLE
         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
 

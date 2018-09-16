@@ -19,10 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -33,14 +32,11 @@
                 <data android:scheme="tencent101492659" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
@@ -152,7 +148,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".activities.TeamMemberActivity"
+            android:label="@string/title_activity_team_member"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.MainActivity" />
+        </activity>
+
         <receiver android:name=".receiver.AlarmReceiver" />
+
     </application>
 
 </manifest>

@@ -43,7 +43,7 @@ class UserMineActivity : AppCompatActivity() {
         tv_userDesc.text = mine.userAddress ?: "登陆以获得更优质的体验"
         val attributeModel = attributeService.getAttribute()
         val level = attributeLevelService.getAttributeLevelByExp(attributeModel.gradeAttribute).levelNum
-        textView_userDesc2.text = "人生等级：LV$level"
+        tv_teamDesc.text = "人生等级：LV$level"
 
         tv_finishCnt.text = "完成了${todoService.getFinishCount()}个待办事项"
         tv_giveupcnt.text = "放弃了${todoService.getGiveUpCount()}个待办事项"
@@ -56,7 +56,7 @@ class UserMineActivity : AppCompatActivity() {
         if (!mine.userHead.isNullOrBlank())
             Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_avatar) {
                 override fun setResource(resource: Bitmap?) {
-                    val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@UserMineActivity.getResources(), resource)
+                    val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@UserMineActivity.resources, resource)
                     circularBitmapDrawable.isCircular = true
                     iv_avatar.setImageDrawable(circularBitmapDrawable)
                 }

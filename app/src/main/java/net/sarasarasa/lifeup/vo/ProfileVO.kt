@@ -6,7 +6,7 @@ class ProfileVO {
 
     var createTime: String? = null
 
-    var nickName: String? = null
+    var nickname: String? = null
 
     var phone: String? = null
 
@@ -22,7 +22,7 @@ class ProfileVO {
 
 
     override fun toString(): String {
-        return "ProfileVO(authTypes=$authTypes, createTime=$createTime, nickName=$nickName, phone=$phone, userAddress=$userAddress, userHead=$userHead, userId=$userId, userSex=$userSex, userStatus=$userStatus)"
+        return "ProfileVO(authTypes=$authTypes, createTime=$createTime, nickName=$nickname, phone=$phone, userAddress=$userAddress, userHead=$userHead, userId=$userId, userSex=$userSex, userStatus=$userStatus)"
     }
 
 

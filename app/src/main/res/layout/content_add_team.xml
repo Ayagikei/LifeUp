@@ -7,7 +7,7 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.AddToDoItemActivity"
-    tools:showIn="@layout/activity_add_to_do_item">
+    tools:showIn="@layout/activity_add_team">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cw_teamBasic"
+            android:id="@+id/cw_basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -36,96 +36,10 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tw_teamBasicHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="团队信息"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_teamName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:errorEnabled="true"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tw_teamBasicHeader">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="团队名称"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_teamRemark"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/til_teamName">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="团队描述" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til_teamRemark">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/et_avatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:freezesText="false"
-                        android:hint="团队头像选择"
-                        android:inputType="date"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
-
-
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cw_basic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp"
-            app:contentPadding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cw_teamBasic">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
                     android:id="@+id/tw_basicHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="基础信息"
+                    android:text="团队基础信息"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +58,7 @@
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="待办事项"
+                        android:hint="团队待办事项"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -160,7 +74,7 @@
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="备注" />
+                        android:hint="团队描述" />
                 </android.support.design.widget.TextInputLayout>
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
@@ -191,7 +105,7 @@
                     android:id="@+id/tw_abbrHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="奖励设置"
+                    android:text="团队奖励设置"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -222,6 +136,7 @@
                     app:rsb_indicator_padding_left="10dp"
                     app:rsb_indicator_padding_right="10dp"
                     app:rsb_indicator_show_mode="alwaysShow"
+                    app:rsb_max="99.0"
                     app:rsb_mode="single"
                     app:rsb_progress_color="#ffffbb33"
                     app:rsb_progress_default_color="@color/rsbColorThumbPressed"
@@ -260,6 +175,7 @@
                     app:rsb_indicator_padding_left="10dp"
                     app:rsb_indicator_padding_right="10dp"
                     app:rsb_indicator_show_mode="alwaysShow"
+                    app:rsb_max="99.0"
                     app:rsb_mode="single"
                     app:rsb_progress_color="#ffffbb33"
                     app:rsb_progress_default_color="@color/rsbColorThumbPressed"
@@ -280,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="相关技能（请选择1~3个）"
+                    android:text="相关属性（请选择1~3个）"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -355,6 +271,17 @@
                         app:srcCompat="@drawable/ic_abbr_creative" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="showDialogAttribution"
+                    app:layout_constraintBottom_toBottomOf="@+id/tw_skills"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tw_skills"
+                    app:srcCompat="@drawable/ic_question" />
+
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
@@ -376,6 +303,7 @@
             app:layout_constraintTop_toBottomOf="@id/cw_basic">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout_extra"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -391,8 +319,8 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_deadLine"
-                    android:layout_width="match_parent"
+                    android:id="@+id/til_remindDate"
+                    android:layout_width="98dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -400,14 +328,87 @@
                     app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
 
                     <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_remindDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:freezesText="false"
+                        android:hint="开始日期"
+                        android:inputType="date"
+                        android:singleLine="true"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_remindTime"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/til_remindDate"
+                    app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_startTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:freezesText="false"
+                        android:hint="首次开始时间"
+                        android:inputType="date"
+                        android:singleLine="true"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_startTimeEnd"
+                    android:layout_width="104dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/til_remindTime"
+                    app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_startTimeEnd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:freezesText="false"
+                        android:hint="首次结束时间"
+                        android:inputType="date"
+                        android:singleLine="true"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_deadLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_remindDate">
+
+                    <android.support.design.widget.TextInputEditText
                         android:id="@+id/dDDL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
-                        android:hint="完成期限（可选）"
+                        android:hint="团队截止加入日期"
                         android:inputType="date"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/btn_ddl_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="24dp"
+                    android:onClick="finishDateReset"
+                    android:text="重置"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
+                    app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_repeat"
@@ -415,18 +416,20 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/til_deadLine">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/et_repeat"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:freezesText="false"
+                        android:layout_height="match_parent"
                         android:hint="重复频次"
                         android:inputType="date"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
+
+                <!-- here should be til_deadLine or til_repeat -->
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>

@@ -54,7 +54,7 @@ class TodoItemConverter {
             }
         }
 
-        fun iFrequencyToString(taskFrequency: Int): String {
+        fun iFrequencyToTitleString(taskFrequency: Int): String {
             return when (taskFrequency) {
                 0 -> "单次任务"
                 1 -> "周期任务-每日"
@@ -65,6 +65,19 @@ class TodoItemConverter {
                 else -> ""
             }
         }
+
+        fun iFrequencyToNormalString(taskFrequency: Int?): String {
+            return when (taskFrequency) {
+                0 -> "单词"
+                1 -> "每日"
+                2 -> "-每两日"
+                7 -> "每周"
+                14 -> "每两周"
+                30 -> "每月"
+                else -> ""
+            }
+        }
+
 
         fun strStatusToDrawableId(status: Int): Int {
             return when (status) {

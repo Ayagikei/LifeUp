@@ -21,11 +21,11 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
 
         helper.setText(R.id.tv_content, item.content)
                 .setText(R.id.tv_btn, endDate)
-                .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToString(item.taskFrequency))
+                .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(item.taskFrequency))
                 .setImageResource(R.id.iv_iconSkillFrist, getAbbrIconDrawable(item.relatedAttribute1))
                 .setImageResource(R.id.iv_iconSkillSecond, getAbbrIconDrawable(item.relatedAttribute2))
                 .setImageResource(R.id.iv_iconSkillThird, getAbbrIconDrawable(item.relatedAttribute3))
-                .setImageResource(R.id.iv_icon_status, getStatusIconDrawable(item.taskStatus))
+                .setImageResource(R.id.iv_avatar, getStatusIconDrawable(item.taskStatus))
                 .addOnClickListener(R.id.tv_btn)
 
         if (DateUtils.isToday(checkNotNull(item.endDate).time)

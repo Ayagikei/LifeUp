@@ -47,7 +47,7 @@
         android:clickable="true"
         app:backgroundTint="@color/blue"
         app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add_d" />
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -14,7 +14,6 @@ interface LoginNetwork {
     @POST("/auth/yb/login")
     fun getYBLoginInfo(@Field("code") code: String): Call<ResultVO<String>>
 
-
     @POST("/auth/qq/login")
     fun loginOrSignUpByQQ(@Body signUpVO: SignUpVO): Call<ResultVO<String>>
 

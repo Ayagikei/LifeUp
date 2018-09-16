@@ -52,7 +52,7 @@ class UserServiceImpl : UserService {
 
         val mine = getMine()
         mine.createTime = profileVO.createTime
-        mine.nickName = profileVO.nickName
+        mine.nickName = profileVO.nickname
         mine.userHead = profileVO.userHead
         mine.userSex = profileVO.userSex ?: 2
         mine.userAddress = profileVO.userAddress

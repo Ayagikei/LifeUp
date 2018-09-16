@@ -73,7 +73,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             }
 
             //还原频次的选择
-            checkNotNull(til_repeat.editText).text = Editable.Factory.getInstance().newEditable(TodoItemConverter.iFrequencyToString(taskModel.taskFrequency))
+            checkNotNull(til_repeat.editText).text = Editable.Factory.getInstance().newEditable(TodoItemConverter.iFrequencyToTitleString(taskModel.taskFrequency))
 
             //还原3个属性的选择
             restoreAbbrSelection(taskModel.relatedAttribute1)

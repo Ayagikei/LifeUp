@@ -15,8 +15,8 @@
         android:text="一起来学日语吧！"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_icon_status"
-        app:layout_constraintTop_toTopOf="@+id/iv_icon_status" />
+        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
 
     <TextView
         android:id="@+id/tv_headerText"
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_content" />
 
     <ImageView
-        android:id="@+id/iv_icon_status"
+        android:id="@+id/iv_avatar"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
@@ -90,8 +90,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/iv_icon_status"
-        app:layout_constraintStart_toStartOf="@+id/iv_icon_status"
-        app:layout_constraintTop_toBottomOf="@+id/iv_icon_status" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
+        app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
 </android.support.constraint.ConstraintLayout>

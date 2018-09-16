@@ -348,7 +348,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/et_remindTime"
+                        android:id="@+id/et_startTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
