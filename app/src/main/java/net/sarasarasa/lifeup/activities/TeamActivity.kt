@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
@@ -134,6 +135,12 @@ class TeamActivity : AppCompatActivity() {
 
     private fun initView() {
         initRecyclerView()
+
+        btn_members.setOnClickListener {
+            val intent = Intent(this, TeamMemberActivity::class.java)
+            intent.putExtra("teamId", mTeamId)
+            startActivity(intent)
+        }
 
 /*        rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         rootView.swipe_refresh_layout.setOnRefreshListener {

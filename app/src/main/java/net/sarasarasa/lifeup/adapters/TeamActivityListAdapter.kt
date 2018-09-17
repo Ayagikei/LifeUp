@@ -25,7 +25,7 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
 
         helper.setText(R.id.tv_headerText, item.nickname)
                 .setText(R.id.tv_date, timeFormat.format(item.createTime))
-                .setText(R.id.tv_content, item.userActivity)
+                .setText(R.id.tv_nickname, item.userActivity)
                 .setVisible(R.id.tv_remark, false)
                 .setImageResource(R.id.iv_icon, getIconDrawable(item.activityIcon))
                 .setText(R.id.tv_remark, "")

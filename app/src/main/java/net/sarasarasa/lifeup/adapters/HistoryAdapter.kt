@@ -19,7 +19,7 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
 
         val endDate = timeFormat.format(checkNotNull(item.endDate))
 
-        helper.setText(R.id.tv_content, item.content)
+        helper.setText(R.id.tv_nickname, item.content)
                 .setText(R.id.tv_btn, endDate)
                 .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(item.taskFrequency))
                 .setImageResource(R.id.iv_iconSkillFrist, getAbbrIconDrawable(item.relatedAttribute1))

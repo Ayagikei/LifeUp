@@ -53,13 +53,11 @@ class TeamListFragment : Fragment() {
         return@Callback true
     }
 
+
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
-
-
     private val mList: MutableList<TeamListVO> = ArrayList<TeamListVO>().toMutableList()
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: TeamListAdapter
-
     private var currentPage = 0L
     private var totalPage: Long? = null
 

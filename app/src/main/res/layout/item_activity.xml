@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/ic_team_fujisan" />
 
         <TextView
-            android:id="@+id/tv_content"
+            android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -65,8 +65,8 @@
             android:maxLines="4"
             android:maxWidth="261dp"
             android:text="这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述"
-            app:layout_constraintStart_toStartOf="@+id/tv_content"
-            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+            app:layout_constraintStart_toStartOf="@+id/tv_nickname"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
         <View
             android:id="@+id/divider"

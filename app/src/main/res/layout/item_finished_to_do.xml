@@ -7,7 +7,7 @@
     <!-- 图标出处 http://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.d9df05512&cid=11179 -->
 
     <TextView
-        android:id="@+id/tv_content"
+        android:id="@+id/tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:text="周期任务-每日"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_content"
-        app:layout_constraintStart_toStartOf="@+id/tv_content" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_nickname"
+        app:layout_constraintStart_toStartOf="@+id/tv_nickname" />
 
     <ImageView
         android:id="@+id/iv_iconSkillFrist"
@@ -33,8 +33,8 @@
         android:layout_height="24dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/ic_abbr_learning"
-        app:layout_constraintStart_toStartOf="@+id/tv_content"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+        app:layout_constraintStart_toStartOf="@+id/tv_nickname"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
     <ImageView
         android:id="@+id/iv_iconSkillSecond"
@@ -66,7 +66,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_content" />
+        app:layout_constraintTop_toTopOf="@+id/tv_nickname" />
 
     <ImageView
         android:id="@+id/iv_avatar"
