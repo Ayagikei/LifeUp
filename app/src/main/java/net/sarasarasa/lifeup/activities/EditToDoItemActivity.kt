@@ -120,7 +120,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
         //设置提醒
         if (taskModel.taskRemindTime != null && id != null) {
             todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, applicationContext)
-            ToastUtils.showShortToast(this, "提醒重设成功！")
+            ToastUtils.showShortToast("提醒重设成功！")
         }
         todoService.updateTodoItem(id, taskModel)
         finish()

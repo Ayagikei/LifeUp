@@ -19,18 +19,12 @@ class TeamDetailVO {
     var owner: ProfileVO? = null
     var teamHead: String? = null
     var memberAmount: Int? = null
+    var isMember: Int? = null
 
 
     override fun toString(): String {
-        return "TeamDetailVO(completeTime=$completeTime, createTime=$createTime, rewardAttrs=$rewardAttrs, rewardExp=$rewardExp, startDate=$startDate, nextStartTime=$nextStartTime, nextEndTime=$nextEndTime, teamDesc=$teamDesc, teamFreq=$teamFreq, teamId=$teamId, teamStatus=$teamStatus, teamTitle=$teamTitle, userId=$userId, owner=$owner, teamHead=$teamHead, memberAmount=$memberAmount)"
+        return "TeamDetailVO(completeTime=$completeTime, createTime=$createTime, rewardAttrs=$rewardAttrs, rewardExp=$rewardExp, startDate=$startDate, nextStartTime=$nextStartTime, nextEndTime=$nextEndTime, teamDesc=$teamDesc, teamFreq=$teamFreq, teamId=$teamId, teamStatus=$teamStatus, teamTitle=$teamTitle, userId=$userId, owner=$owner, teamHead=$teamHead, memberAmount=$memberAmount, isMember=$isMember)"
     }
 
-
-/*    inner class Time{
-        var hour: Int? = null
-        var minute: Int? = null
-        var nano: Int? = null
-        var second: Int? = null
-    }*/
 
 }

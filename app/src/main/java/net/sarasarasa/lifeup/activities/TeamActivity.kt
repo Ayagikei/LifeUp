@@ -32,14 +32,17 @@ class TeamActivity : AppCompatActivity() {
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
-                ToastUtils.showShortToast(this, "授权失效，请重试")
+                ToastUtils.showShortToast("授权失效，请重试")
             }
             200 -> {
-                ToastUtils.showShortToast(this, "查询成功")
+                ToastUtils.showShortToast("查询成功")
                 if (msg.obj != null) {
                     val teamDetailVO = msg.obj as TeamDetailVO
                     initData(teamDetailVO)
                 }
+            }
+            211 -> {
+                ToastUtils.showShortToast("加入成功")
             }
             400 -> {
                 if (msg.obj != null) {
@@ -58,7 +61,7 @@ class TeamActivity : AppCompatActivity() {
             }
             else -> {
                 if (msg.obj != null)
-                    ToastUtils.showShortToast(this, msg.obj.toString())
+                    ToastUtils.showShortToast(msg.obj.toString())
             }
 
         }
@@ -105,8 +108,29 @@ class TeamActivity : AppCompatActivity() {
         tv_userDesc.text = "创建者：${teamDetailVO.owner?.nickname}"
         btn_members.setText("成员 | " + teamDetailVO.memberAmount)
 
-        tv_startDateText.text = dateFormat.format(teamDetailVO.nextStartTime)
-        tv_finishTimeText.text = "${timeFormat.format(teamDetailVO.nextStartTime)} - ${timeFormat.format(teamDetailVO.nextEndTime)}"
+        if (teamDetailVO.isMember != 0) {
+            btn_joinTeam.isEnabled = false
+            btn_joinTeam.setText("已加入")
+        } else {
+            btn_joinTeam.setOnClickListener {
+                teamNetworkImpl.joinTheTeam(teamDetailVO)
+                btn_joinTeam.isEnabled = false
+                btn_joinTeam.setText("已加入")
+            }
+        }
+
+        if (teamDetailVO.nextStartTime != null && teamDetailVO.nextEndTime != null) {
+            tv_startDateText.text = dateFormat.format(teamDetailVO.nextStartTime)
+            tv_finishTimeText.text = "${timeFormat.format(teamDetailVO.nextStartTime
+                    ?: "已经结束")} - ${timeFormat.format(teamDetailVO.nextEndTime ?: "")}"
+        } else {
+            tv_startDateText.text = "已经结束"
+            tv_finishTimeText.text = "已经结束"
+
+            btn_joinTeam.isEnabled = false
+            btn_joinTeam.setText("已结束")
+        }
+
         iv_iconSkillFrist.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(0)))
         iv_iconSkillSecond.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(1)))
         iv_iconSkillThird.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(2)))
@@ -141,6 +165,7 @@ class TeamActivity : AppCompatActivity() {
             intent.putExtra("teamId", mTeamId)
             startActivity(intent)
         }
+
 
 /*        rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         rootView.swipe_refresh_layout.setOnRefreshListener {

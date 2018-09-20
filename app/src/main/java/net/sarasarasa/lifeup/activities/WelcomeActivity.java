@@ -168,7 +168,7 @@ public class WelcomeActivity extends AppCompatActivity {
             //针对各个界面进行异化处理
             //第一个页面在创建后不会执行setUserVisibleHint方法，所以要手动播放动画。
             if (iPage == 0) {
-                animationViews.setPadding(DensityUtil.dp2px(this.getContext(), 25), 0, 0, 0);
+                animationViews.setPadding(DensityUtil.Companion.dp2px(this.getContext(), 25), 0, 0, 0);
                 animationViews.playAnimation();
             }
 

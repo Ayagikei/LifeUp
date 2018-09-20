@@ -23,9 +23,9 @@ class ProfileActivity : AppCompatActivity() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
         when (msg.what) {
-            UserConstants.MSG_UPDATE_FAILED -> ToastUtils.showShortToast(this, "网络错误，请稍后重试。")
+            UserConstants.MSG_UPDATE_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
             UserConstants.MSG_UPDATE_SUCCESS -> {
-                ToastUtils.showShortToast(this, "修改成功")
+                ToastUtils.showShortToast("修改成功")
                 finish()
             }
         }

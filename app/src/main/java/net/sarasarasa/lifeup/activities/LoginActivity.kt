@@ -22,6 +22,8 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import cn.smssdk.EventHandler
@@ -45,6 +47,7 @@ import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.utils.MD5Util
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.vo.MobVO
 import net.sarasarasa.lifeup.vo.QQLoginVO
 import net.sarasarasa.lifeup.vo.QQUserInfoVO
 import net.sarasarasa.lifeup.vo.SignUpVO
@@ -64,13 +67,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVAILD_TOKEN -> {
-                ToastUtils.showShortToast(this, "授权失效，请重试")
+                ToastUtils.showShortToast("授权失效，请重试")
             }
             AttributeConstants.MSG_ATTR_GET_FAILED -> {
-                ToastUtils.showShortToast(this, "获取信息失败，请重试")
+                ToastUtils.showShortToast("获取信息失败，请重试")
             }
             AttributeConstants.MSG_ATTR_GET_SUCCESS -> {
-                ToastUtils.showShortToast(this, "登录成功")
+                ToastUtils.showShortToast("登录成功")
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -80,7 +83,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             }
             else -> {
                 if (msg.obj != null)
-                    ToastUtils.showShortToast(this, msg.obj.toString())
+                    ToastUtils.showShortToast(msg.obj.toString())
             }
 
         }
@@ -354,11 +357,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     fun signUp(view: View) {
-        sendCode(this)
+        sendCode(this, false)
     }
 
+
     /** Mob短信验证集成 **/
-    fun sendCode(context: Context) {
+    fun sendCode(context: Context, isLoginBySMS: Boolean) {
         val page = RegisterPage()
         //如果使用我们的ui，没有申请模板编号的情况下需传null
         page.setTempCode(null)
@@ -369,9 +373,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                     val phoneMap = data as HashMap<String, Any>
                     val country = phoneMap["country"] as String // 国家代码，如“86”
                     val phone = phoneMap["phone"] as String // 手机号码，如“13800138000”
+
                     // TODO 利用国家代码和手机号码进行后续的操作
 
-                    inputDialog(phone)
+                    if (isLoginBySMS) {
+                        val mobVO = MobVO()
+                        //mobVO.code = page.contentView.findViewById<>()
+                    } else inputDialog(phone)
 
 
                 } else {
@@ -432,7 +440,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     inner class LoginUiListener : IUiListener {
         override fun onComplete(p0: Any?) {
-            ToastUtils.showShortToast(this@LoginActivity, "授权成功，正在获取注册信息")
+            ToastUtils.showShortToast("授权成功，正在获取注册信息")
 
             //取得token和openid
             val res = gson.fromJson(p0.toString(), QQLoginVO::class.java)
@@ -445,11 +453,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onCancel() {
-            ToastUtils.showShortToast(this@LoginActivity, "授权登录取消")
+            ToastUtils.showShortToast("授权登录取消")
         }
 
         override fun onError(p0: UiError?) {
-            ToastUtils.showShortToast(this@LoginActivity, "授权登录出现异常，请稍后再试。")
+            ToastUtils.showShortToast("授权登录出现异常，请稍后再试。")
         }
 
     }
@@ -476,12 +484,27 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onCancel() {
-            ToastUtils.showShortToast(this@LoginActivity, "授权登录取消")
+            ToastUtils.showShortToast("授权登录取消")
         }
 
         override fun onError(p0: UiError?) {
-            ToastUtils.showShortToast(this@LoginActivity, "授权登录出现异常，请稍后再试。")
+            ToastUtils.showShortToast("授权登录出现异常，请稍后再试。")
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_login, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_login_by_sms -> {
+
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }

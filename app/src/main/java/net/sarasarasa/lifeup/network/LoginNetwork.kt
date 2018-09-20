@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.network
 
+import net.sarasarasa.lifeup.vo.MobVO
 import net.sarasarasa.lifeup.vo.ResultVO
 import net.sarasarasa.lifeup.vo.SignUpVO
 import retrofit2.Call
@@ -13,6 +14,9 @@ interface LoginNetwork {
     @FormUrlEncoded
     @POST("/auth/yb/login")
     fun getYBLoginInfo(@Field("code") code: String): Call<ResultVO<String>>
+
+    @POST("/auth/code/login")
+    fun loginOrSignUpBySMS(@Body mobVO: MobVO): Call<ResultVO<String>>
 
     @POST("/auth/qq/login")
     fun loginOrSignUpByQQ(@Body signUpVO: SignUpVO): Call<ResultVO<String>>

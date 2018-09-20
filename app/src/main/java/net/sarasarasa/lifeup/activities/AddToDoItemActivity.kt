@@ -291,7 +291,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         // 将表单转换为对象
         val content = til_toDoText.editText?.text.toString()
         val remark = til_remark.editText?.text.toString()
-        // TODO:转换为Date类型
+        // 转换为Date类型
         val taskDeadline = til_deadLine.editText?.text.toString()
         var dateTaskDeadline: Date? = null
         if (!taskDeadline.isBlank()) {
@@ -376,7 +376,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         //设置提醒
         if (taskModel.taskRemindTime != null && id != null) {
             todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, this)
-            ToastUtils.showShortToast(this, "提醒设置成功！")
+            ToastUtils.showShortToast("提醒设置成功！")
         }
 
         //结束这个Activity
@@ -393,13 +393,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         if (arrAbbrBtn[SELECTED_CNT] == 0) {
-            ToastUtils.showShortToast(this, "你至少需要选择一个相关属性！")
+            ToastUtils.showShortToast("你至少需要选择一个相关属性！")
             isAllCheckPassed = false
         }
 
         if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
-            ToastUtils.showShortToast(this, "提醒日期和时间必须填写完整！")
+            ToastUtils.showShortToast("提醒日期和时间必须填写完整！")
             isAllCheckPassed = false
         }
 

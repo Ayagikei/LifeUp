@@ -9,6 +9,7 @@ import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
+import net.sarasarasa.lifeup.vo.TeamTaskVO
 import java.util.*
 
 class TodoServiceImpl : TodoService {
@@ -137,8 +138,16 @@ class TodoServiceImpl : TodoService {
             set(Calendar.SECOND, 0)
         }
         val millisTime = cal.timeInMillis
-        //总数量为未完成的+今天已经完成的
-        return todoDAO.getUnFinishTaskCount(millisTime) + getTodayFinishCount()
+
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+        }
+        val lastSecOfThisDay = cal.timeInMillis
+
+        //总数量为未完成的+今天已经完成的-今天未开始的任务
+        return todoDAO.getUnFinishTaskCount(millisTime) + getTodayFinishCount() - todoDAO.getUnStartedTaskCount(lastSecOfThisDay)
     }
 
 
@@ -252,4 +261,48 @@ class TodoServiceImpl : TodoService {
         }
     }
 
+
+    /** 加入或创建团队的时候调用 **/
+    override fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO): Boolean {
+        val teamId: Long = teamTaskVO.teamId ?: -1L
+
+        if (teamId == -1L)
+            return false
+
+        //查看是否能找到
+        val taskModel = todoDAO.getOneTeamTaskById(teamId, teamTaskVO.teamRecordId)
+
+        //不存在时，新增
+        if (taskModel == null) {
+            val newTaskModel = TaskModel(
+                    teamTaskVO.teamTitle ?: "",
+                    "",
+                    teamTaskVO.nextEndTime,
+                    null,
+                    teamTaskVO.rewardAttrs[0],
+                    teamTaskVO.rewardAttrs[1],
+                    teamTaskVO.rewardAttrs[2],
+                    0,
+                    0,
+                    teamTaskVO.teamFreq ?: 0,
+                    -1,
+                    false,
+                    null
+            )
+
+            with(newTaskModel) {
+                newTaskModel.teamId = teamTaskVO.teamId ?: -1
+                startTime = teamTaskVO.nextStartTime ?: Date()
+                endTime = teamTaskVO.nextEndTime ?: Date()
+                expReward = teamTaskVO.rewardExp ?: 0
+            }
+
+            newTaskModel.save()
+
+            return true
+        }
+
+
+        return false
+    }
 }

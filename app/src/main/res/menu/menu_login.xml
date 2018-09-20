@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.sarasarasa.lifeup.activities.AddToDoItemActivity">
+    <item
+        android:id="@+id/action_login_by_sms"
+        android:orderInCategory="100"
+        android:title="短信验证"
+        app:showAsAction="always" />
+</menu>

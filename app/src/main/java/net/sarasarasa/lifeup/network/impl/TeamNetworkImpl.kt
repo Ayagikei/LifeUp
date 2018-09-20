@@ -6,7 +6,9 @@ import android.util.Log
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.TeamNetwork
+import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.vo.*
 import retrofit2.Call
@@ -16,6 +18,7 @@ import retrofit2.Response
 class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
     val userService = UserServiceImpl()
+    val todoService = TodoServiceImpl()
 
     fun getTeamList(pageVO: PageVO<TeamListVO>) {
         Log.i("LifeUp 团队模块", "执行[查询团队列表]操作")
@@ -167,6 +170,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.what = 200
                     val teamTaskVO = responseBody?.data
                     message.obj = teamTaskVO
+
+                    if (teamTaskVO != null) {
+                        todoService.addOrUpdateTeamTask(teamTaskVO)
+                    }
+
                     Log.i("LifeUp 团队模块", "[新建团队]请求成功：${teamTaskVO}")
                 }
                 uiHandler.handleMessage(message)
@@ -202,6 +210,90 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     val teamDetailVO = responseBody?.data
                     message.obj = teamDetailVO
                     Log.i("LifeUp 团队模块", "[团队信息]请求成功：${teamDetailVO}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+
+    fun joinTheTeam(teamDetailVO: TeamDetailVO) {
+        Log.i("LifeUp 团队模块", "执行[加入团队]操作")
+
+        val network = retrofit.create(TeamNetwork::class.java)
+        Log.i("Token", userService.getToken())
+        val call = network.joinTheTeam(userService.getToken(), teamDetailVO.teamId ?: -1)
+
+        call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
+            override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[加入团队]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[加入团队]请求失败：错误或失效TOKEN")
+                    message.what = NetworkConstants.INVAILD_TOKEN
+                } else {
+                    message.what = 211
+                    val teamTaskVO = responseBody?.data
+                    message.obj = teamTaskVO
+
+                    if (teamTaskVO != null) {
+                        todoService.addOrUpdateTeamTask(teamTaskVO)
+                    }
+
+                    Log.i("LifeUp 团队模块", "[加入团队]请求成功：${teamTaskVO}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+
+    fun finishTeamTask(item: TaskModel, activityVO: ActivityVO) {
+
+        Log.i("LifeUp 团队模块", "执行[完成团队事项]操作")
+
+        val network = retrofit.create(TeamNetwork::class.java)
+        Log.i("Token", userService.getToken())
+        val call = network.finishTeamTask(userService.getToken(), item.teamId, activityVO)
+
+        call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
+            override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[完成团队事项]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[完成团队事项]请求失败：错误或失效TOKEN")
+                    message.what = NetworkConstants.INVAILD_TOKEN
+                } else {
+                    message.what = 566
+                    val teamTaskVO = responseBody?.data
+
+                    if (teamTaskVO != null) {
+                        //完成事项
+                        todoService.finishTodoItem(item.id)
+
+                        //添加新的事项
+                        todoService.addOrUpdateTeamTask(teamTaskVO)
+                    }
+
+                    Log.i("LifeUp 团队模块", "[完成团队事项]请求成功：${teamTaskVO}")
                 }
                 uiHandler.handleMessage(message)
             }

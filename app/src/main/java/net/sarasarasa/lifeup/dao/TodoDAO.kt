@@ -29,6 +29,11 @@ class TodoDAO {
         return LitePal.where("taskStatus = ?", "0").count(TaskModel::class.java)
     }
 
+    /** time应为当天最后一秒 **/
+    fun getUnStartedTaskCount(time: Long): Int {
+        return LitePal.where("taskStatus = ? and startTime>?", "0", time.toString()).count(TaskModel::class.java)
+    }
+
     fun getTodayFinishCount(time: Long): Int {
         return LitePal.where("endDate > ? and taskStatus = ?", time.toString(), "1").count(TaskModel::class.java)
     }
@@ -47,6 +52,13 @@ class TodoDAO {
 
     fun getOverdueCount(): Int {
         return LitePal.where("taskStatus = ?", "2").count(TaskModel::class.java)
+    }
+
+    fun getOneTeamTaskById(teamId: Long, teamRecordId: Long): TaskModel? {
+        if (teamId == -1L || teamRecordId == -1L)
+            return null
+
+        return LitePal.where("teamId = ? and teamRecordId = ?", teamId.toString(), teamRecordId.toString()).findFirst(TaskModel::class.java)
     }
 
 }

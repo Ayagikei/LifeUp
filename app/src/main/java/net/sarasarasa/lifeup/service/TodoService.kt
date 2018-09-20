@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.service
 
 import android.content.Context
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.vo.TeamTaskVO
 
 interface TodoService {
 
@@ -58,4 +59,6 @@ interface TodoService {
     fun getGiveUpCount(): Int
 
     fun getOverdueCount(): Int
+
+    fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO): Boolean
 }

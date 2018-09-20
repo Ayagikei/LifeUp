@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.fragment
 import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
@@ -23,20 +25,46 @@ import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.EditToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
+import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.vo.ActivityVO
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class TodoFragment : Fragment() {
 
+    private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+        when (msg.what) {
+            NetworkConstants.INVAILD_TOKEN -> {
+                this.context?.let { ToastUtils.showShortToast("请重新登陆") }
+            }
+            566 -> {
+                //团队事项完成
+                refreshDataSet()
+                this.context?.let { ToastUtils.showShortToast("成功完成事项") }
+            }
+            else -> {
+                refreshDataSet()
+
+                if (msg.obj != null)
+                    this.context?.let { ToastUtils.showShortToast(msg.obj.toString()) }
+            }
+
+        }
+
+        return@Callback true
+    }
+
+    private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
     private val todoService = TodoServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private val attributeLevelService = AttributeLevelServiceImpl()
@@ -73,7 +101,7 @@ class TodoFragment : Fragment() {
         if (todoService.checkAndUpdateOverdueTask()) {
             val mContext = context
             if (mContext != null)
-                ToastUtils.showLongToast(mContext, "你有代办事项逾期了！请前往[历史]查看。")
+                ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
 
         mRecyclerView = view.findViewById(R.id.rv)
@@ -164,7 +192,14 @@ class TodoFragment : Fragment() {
 
             if (cal.timeInMillis < item.startTime.time) {
                 context?.let {
-                    ToastUtils.showShortToast(it, "该待办事项尚未到开始时间！")
+                    ToastUtils.showShortToast("该待办事项尚未到开始时间！")
+                }
+                return@setOnItemChildClickListener
+            }
+
+            if (cal.timeInMillis > item.endTime.time) {
+                context?.let {
+                    ToastUtils.showShortToast("该待办事项已经逾期！")
                 }
                 return@setOnItemChildClickListener
             }
@@ -198,9 +233,12 @@ class TodoFragment : Fragment() {
                     }
                 })
                 mView.playAnimation()
-
                 mView.isClickable = false
-                todoService.finishTodoItem(item.id)
+
+                //如果不是团队事项，这里就可以处理业务逻辑
+                if (item.teamId != -1L) {
+                    todoService.finishTodoItem(item.id)
+                }
 
                 val activity = checkNotNull(context) as MainActivity
                 activity.syncData()
@@ -243,8 +281,14 @@ class TodoFragment : Fragment() {
                 thread?.interrupt()
                 cancel()
 
-                if (item.taskFrequency != 0)
+                //本地事项才显示重复对话框
+                if (item.taskFrequency != 0 && item.teamId == -1L)
                     showDialogRepeat(item)
+
+                //非本地事项显示动态对话框
+                if (item.teamId != -1L) {
+                    showDialogActivity(item)
+                }
             }
         }
 
@@ -434,12 +478,39 @@ class TodoFragment : Fragment() {
         }
     }
 
+    private fun showDialogActivity(taskModel: TaskModel) {
+        val editText = EditText(context)
+        val activityVO = ActivityVO()
+        val builder = context?.let { AlertDialog.Builder(it) }
+
+        val title = "动态"
+
+        if (builder != null)
+            with(builder) {
+                setTitle(title)
+
+                setView(editText)
+
+                setPositiveButton("发表") { _, _ ->
+                    //发表动态请求
+
+                    activityVO.activity = editText.text.toString()
+                    teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                }
+                setNegativeButton("取消") { _, _ ->
+                    teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                }
+
+                show()
+            }
+    }
+
     private fun refreshDataSet() {
         //检查并更新逾期情况
         if (todoService.checkAndUpdateOverdueTask()) {
             val mContext = context
             if (mContext != null)
-                ToastUtils.showLongToast(mContext, "你有代办事项逾期了！请前往[历史]查看。")
+                ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
 
         mList.clear()

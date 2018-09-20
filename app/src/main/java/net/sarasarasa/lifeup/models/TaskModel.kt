@@ -25,7 +25,12 @@ data class TaskModel(
     var updatedTime: Long = 0
     var expReward: Int = 0
     var startTime: Date = Date()
+    var endTime: Date = Date()
+
+    //事项完成、放弃、预期的日期
     var endDate: Date? = null
     var taskStatus: Int = 0
+    var teamId: Long = -1
+    var teamRecordId: Long = -1
 
 }

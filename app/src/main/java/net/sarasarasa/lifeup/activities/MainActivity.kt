@@ -33,12 +33,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
         when (msg.what) {
-            AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast(this, "网络错误，请稍后重试。")
+            AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
             AttributeConstants.MSG_ATTR_UPDATE_SUCCESS -> {
-                //ToastUtils.showShortToast(this, "数据已同步到云端")
+                //ToastUtils.showShortToast("数据已同步到云端")
             }
             NetworkConstants.INVAILD_TOKEN -> {
-                ToastUtils.showShortToast(this, "授权失效，请重新登陆。")
+                ToastUtils.showShortToast("授权失效，请重新登陆。")
                 userService.saveToken("")
                 val intent = Intent(this, YBLoginActivity::class.java)
                 startActivity(intent)
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             VersionConstants.MSG_NO_NEW_VERSION -> {
-                ToastUtils.showShortToast(this, "现在是最新版本了！")
+                ToastUtils.showShortToast("现在是最新版本了！")
             }
         }
 

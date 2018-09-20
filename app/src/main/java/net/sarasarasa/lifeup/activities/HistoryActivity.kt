@@ -49,7 +49,7 @@ class HistoryActivity : AppCompatActivity() {
             when (view.id) {
                 R.id.btn_undo -> {
                     todoService.undoFinishTodoItem(item.id)
-                    ToastUtils.showShortToast(this, "撤销成功")
+                    ToastUtils.showShortToast("撤销成功")
                     refreshDataSet()
                 }
             }

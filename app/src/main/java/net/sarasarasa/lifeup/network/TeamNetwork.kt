@@ -21,4 +21,10 @@ interface TeamNetwork {
     @GET("/teams/{teamId}")
     fun getTeamDetail(@Header("AUTHENTICITY_TOKEN") token: String, @Path("teamId") teamId: Long): Call<ResultVO<TeamDetailVO>>
 
+    @POST("/teams/{teamId}")
+    fun joinTheTeam(@Header("AUTHENTICITY_TOKEN") token: String, @Path("teamId") teamId: Long): Call<ResultVO<TeamTaskVO>>
+
+    @POST("/teams/{teamId}/sign")
+    fun finishTeamTask(@Header("AUTHENTICITY_TOKEN") token: String, @Path("teamId") teamId: Long, @Body activityVO: ActivityVO): Call<ResultVO<TeamTaskVO>>
+
 }

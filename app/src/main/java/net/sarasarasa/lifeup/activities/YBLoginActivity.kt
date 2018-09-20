@@ -1,7 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -32,32 +31,32 @@ class YBLoginActivity : AppCompatActivity() {
             LoginConstants.MSG_URL_SUCCESS -> this.webView.loadUrl(msg.obj as String)
             LoginConstants.MSG_URL_FAILED -> {
                 layout_error.visibility = View.VISIBLE
-                ToastUtils.showShortToast(this, "加载失败，请检查你的网络！")
+                ToastUtils.showShortToast("加载失败，请检查你的网络！")
             }
             LoginConstants.MSG_YB_LOGIN_SUCCESS -> {
                 userNetworkImpl.getUserProfile()
             }
             LoginConstants.MSG_YB_LOGIN_FAILED -> {
-                ToastUtils.showShortToast(this, "出现错误：" + msg.obj as String)
+                ToastUtils.showShortToast("出现错误：" + msg.obj as String)
                 this.webView.reload()
             }
             LoginConstants.MSG_YB_LOGIN_CONNECT_FAILED -> {
-                ToastUtils.showShortToast(this, "注册失败，请重试")
+                ToastUtils.showShortToast("注册失败，请重试")
                 this.webView.reload()
             }
             LoginConstants.MSG_GET_PROFILE_SUCCESS -> {
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVAILD_TOKEN -> {
-                ToastUtils.showShortToast(this, "授权失效，请重试")
+                ToastUtils.showShortToast("授权失效，请重试")
                 this.webView.reload()
             }
             AttributeConstants.MSG_ATTR_GET_FAILED -> {
-                ToastUtils.showShortToast(this, "获取信息失败，请重试")
+                ToastUtils.showShortToast("获取信息失败，请重试")
                 this.webView.reload()
             }
             AttributeConstants.MSG_ATTR_GET_SUCCESS -> {
-                ToastUtils.showShortToast(this, "登陆成功")
+                ToastUtils.showShortToast("登陆成功")
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -125,13 +124,6 @@ class YBLoginActivity : AppCompatActivity() {
                     return true
                 }
 
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                }
-
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-                }
             }
 
         }

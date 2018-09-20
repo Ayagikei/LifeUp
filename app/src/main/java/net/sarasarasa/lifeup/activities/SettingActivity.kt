@@ -32,7 +32,7 @@ class SettingActivity : AppCompatActivity() {
 
         setting_item_logout.setOnItemViewClick {
             userService.saveToken("")
-            ToastUtils.showShortToast(this, "退出成功")
+            ToastUtils.showShortToast("退出成功")
         }
 
     }

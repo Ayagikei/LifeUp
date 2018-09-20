@@ -43,10 +43,10 @@ open class AddTeamActivity : AppCompatActivity() {
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
-                ToastUtils.showShortToast(this, "授权失效，请重试")
+                ToastUtils.showShortToast("授权失效，请重试")
             }
             200 -> {
-                ToastUtils.showShortToast(this, "新建团队成功")
+                ToastUtils.showShortToast("新建团队成功")
                 val teamTaskVO = msg.obj as TeamTaskVO
                 val intent = Intent(this, TeamActivity::class.java)
                 intent.putExtra("teamId", teamTaskVO.teamId)
@@ -55,7 +55,7 @@ open class AddTeamActivity : AppCompatActivity() {
             }
             else -> {
                 if (msg.obj != null)
-                    ToastUtils.showShortToast(this, msg.obj.toString())
+                    ToastUtils.showShortToast(msg.obj.toString())
             }
 
         }
@@ -411,7 +411,7 @@ open class AddTeamActivity : AppCompatActivity() {
         //设置提醒
         if (taskModel.taskRemindTime != null && id != null) {
             todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, this)
-            ToastUtils.showShortToast(this, "提醒设置成功！")
+            ToastUtils.showShortToast("提醒设置成功！")
         }
 
         //结束这个Activity
@@ -428,13 +428,13 @@ open class AddTeamActivity : AppCompatActivity() {
         }
 
         if (arrAbbrBtn[SELECTED_CNT] == 0) {
-            ToastUtils.showShortToast(this, "你至少需要选择一个相关属性！")
+            ToastUtils.showShortToast("你至少需要选择一个相关属性！")
             isAllCheckPassed = false
         }
 
         if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
-            ToastUtils.showShortToast(this, "提醒日期和时间必须填写完整！")
+            ToastUtils.showShortToast("提醒日期和时间必须填写完整！")
             isAllCheckPassed = false
         }
 
