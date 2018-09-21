@@ -66,6 +66,7 @@ dependencies {
     implementation files('libs/open_sdk_r6019_lite.jar')
     implementation 'com.github.medyo:fancybuttons:1.9.0'
     implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
 }
 
 MobSDK {

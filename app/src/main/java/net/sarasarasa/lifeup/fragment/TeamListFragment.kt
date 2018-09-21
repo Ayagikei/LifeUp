@@ -17,14 +17,20 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddTeamActivity
 import net.sarasarasa.lifeup.activities.TeamActivity
 import net.sarasarasa.lifeup.adapters.TeamListAdapter
+import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
+import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamListVO
 
 class TeamListFragment : Fragment() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
             }
@@ -42,6 +48,14 @@ class TeamListFragment : Fragment() {
 
                     setNewData(list.toMutableList())
                 }
+            }
+            AttributeConstants.MSG_CONNECT_FAILED -> {
+                if (swipe_refresh_layout.isRefreshing)
+                    swipe_refresh_layout.isRefreshing = false
+
+                mAdapter.loadMoreFail()
+
+                ToastUtils.showShortToast("网络错误，请稍后重试。")
             }
             else -> {
                 if (msg.obj != null) {
@@ -69,6 +83,7 @@ class TeamListFragment : Fragment() {
 
 
         initView(rootView)
+        activity?.let { LoadingDialogUtils.show(it) }
         return rootView
     }
 

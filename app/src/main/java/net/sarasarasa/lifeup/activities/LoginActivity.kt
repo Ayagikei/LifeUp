@@ -45,6 +45,7 @@ import net.sarasarasa.lifeup.instance.RetrofitInstance.Companion.gson
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
 import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.MD5Util
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.MobVO
@@ -59,11 +60,16 @@ import java.util.*
 class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             LoginConstants.MSG_QQ_LOGIN_SUCCESS -> {
+                LoadingDialogUtils.show(this@LoginActivity)
                 userNetworkImpl.getUserProfile()
             }
             LoginConstants.MSG_GET_PROFILE_SUCCESS -> {
+                LoadingDialogUtils.show(this@LoginActivity)
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVAILD_TOKEN -> {
@@ -79,6 +85,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 finish()
             }
             LoginConstants.MSG_PHONE_REGISTER_SUCCESS -> {
+                LoadingDialogUtils.show(this@LoginActivity)
                 userNetworkImpl.getUserProfile()
             }
             else -> {
@@ -181,6 +188,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             authType = "phone"
         }
 
+        LoadingDialogUtils.show(this@LoginActivity)
         loginNetworkImpl.loginByPhone(signUpVO)
 
     }
@@ -352,7 +360,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     fun loginByQQ(view: View) {
-
         mTencent.login(this, "get_user_info", loginUiListener)
     }
 
@@ -380,6 +387,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                         val mobVO = MobVO()
                         mobVO.phone = phone
                         mobVO.zone = country
+
+                        LoadingDialogUtils.show(this@LoginActivity)
                         loginNetworkImpl.loginOrSignUpBySMS(mobVO)
                         //mobVO.code = page.contentView.findViewById<>()
                     } else inputDialog(phone)
@@ -413,6 +422,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                     authType = "phone"
                 }
 
+                LoadingDialogUtils.show(this@LoginActivity)
                 loginNetworkImpl.registerByPhone(signUpVO)
             }
 
@@ -483,6 +493,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 }
             }
 
+            LoadingDialogUtils.show(this@LoginActivity)
             loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
         }
 

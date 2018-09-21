@@ -16,7 +16,6 @@ class LifeUpApplication : Application() {
         ToastUtils.init(this)
         DensityUtil.init(this)
         instance = this
-
     }
 
     companion object {

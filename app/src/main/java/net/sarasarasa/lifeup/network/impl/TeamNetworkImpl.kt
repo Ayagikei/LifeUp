@@ -21,7 +21,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     val todoService = TodoServiceImpl()
 
     fun getTeamList(pageVO: PageVO<TeamListVO>) {
-        Log.i("LifeUp 团队模块", "执行[查询团队列表]操作")
+        Log.i("LifeUp 团队模块", "执行[查询团队列表]操作" + userService.getToken())
 
         val network = retrofit.create(TeamNetwork::class.java)
         val currentPage = pageVO.currentPage ?: 0
@@ -29,6 +29,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
         if (currentPage == 0L || size == 0L)
             return
+
 
         val call = network.getTeamList(userService.getToken(), currentPage, size)
 

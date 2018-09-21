@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -11,11 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_comm.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.LoginActivity
 import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 
 class CloudFragment : Fragment() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private val userService = UserServiceImpl()
 
     override fun onCreateView(inflater: LayoutInflater, mContainer: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -52,10 +56,13 @@ class CloudFragment : Fragment() {
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position == 0) {
+            if (userService.getToken().isEmpty()) {
+                return PlaceholderFragment.newInstance(position + 1, true)
+            } else if (position == 0) {
                 return TeamListFragment()
             }
-            return PlaceholderFragment.newInstance(position + 1)
+
+            return PlaceholderFragment.newInstance(position + 1, false)
         }
 
         override fun getCount(): Int {
@@ -72,7 +79,21 @@ class CloudFragment : Fragment() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_comm, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
+
+            arguments?.let {
+                if (it.getBoolean("isWithoutToken")) {
+                    rootView.tv_error2.text = "您需要登陆才能使用本功能！\n点击此处登陆！"
+                    rootView.setOnClickListener {
+                        val intent = Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                } else {
+                    rootView.tv_error2.text = "本功能未开放！"
+                }
+            }
+
+
+            //rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
             return rootView
         }
 
@@ -87,10 +108,12 @@ class CloudFragment : Fragment() {
              * Returns a new instance of this fragment for the given section
              * number.
              */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
+            fun newInstance(sectionNumber: Int, isWithoutToken: Boolean): PlaceholderFragment {
                 val fragment = PlaceholderFragment()
                 val args = Bundle()
                 args.putInt(ARG_SECTION_NUMBER, sectionNumber)
+                args.putBoolean("isWithoutToken", isWithoutToken)
+
                 fragment.arguments = args
                 return fragment
             }

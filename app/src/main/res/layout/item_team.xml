@@ -18,29 +18,31 @@
         android:clickable="true">
 
 
-    <ImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="66dp"
-        android:layout_height="71dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_team_fujisan" />
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_team_fujisan" />
 
-    <TextView
-        android:id="@+id/tv_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:text="一起来学日语吧！"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/tv_headerText" />
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="261dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="一起来学日语吧！"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_headerText" />
 
     <TextView
         android:id="@+id/tv_headerText"
@@ -60,9 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="5"
             android:maxWidth="261dp"
             android:text="这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/tv_nickname"
             app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 

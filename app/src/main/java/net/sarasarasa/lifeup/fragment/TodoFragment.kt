@@ -34,6 +34,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DateUtil
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.ActivityVO
 import java.text.SimpleDateFormat
@@ -43,6 +44,9 @@ import java.util.*
 class TodoFragment : Fragment() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
                 this.context?.let { ToastUtils.showShortToast("请重新登陆") }

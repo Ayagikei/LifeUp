@@ -30,14 +30,14 @@
 
         <TextView
             android:id="@+id/tv_nickname"
-            android:layout_width="wrap_content"
+            android:layout_width="283dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="What"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             app:layout_constraintStart_toEndOf="@+id/iv_avatar"
             app:layout_constraintTop_toTopOf="@+id/iv_icon" />
@@ -62,9 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:maxLines="4"
+            android:maxLines="6"
             android:maxWidth="261dp"
             android:text="这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述这是团队描述"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/tv_nickname"
             app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
@@ -82,6 +83,7 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="2018/9/15"

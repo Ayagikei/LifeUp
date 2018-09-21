@@ -33,10 +33,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
                 android:text="我们建立这个团队是为了一起学习日语，共同进步！"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView11"
                 app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
             <ImageView
@@ -50,12 +52,24 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_team_fujisan" />
 
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:background="#ededed"
+                app:layout_constraintBottom_toTopOf="@+id/tv_teamDesc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
+
             <TextView
                 android:id="@+id/tv_userName"
-                android:layout_width="wrap_content"
+                android:layout_width="238dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="团队一句话描述"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -66,25 +80,26 @@
             <TextView
                 android:id="@+id/tv_userDesc"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:layout_marginTop="8dp"
                 android:text="组织者：UserName"
-                app:layout_constraintStart_toStartOf="@+id/tv_userName"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView10"
                 app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
 
             <mehdi.sakout.fancybuttons.FancyButton
                 android:id="@+id/btn_members"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
+                android:layout_width="156dp"
+                android:layout_height="38dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="8dp"
                 android:clickable="true"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_joinTeam"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/divider2"
                 app:layout_constraintTop_toTopOf="@+id/btn_joinTeam"
                 fancy:fb_borderColor="@color/blue"
                 fancy:fb_borderWidth="1dp"
@@ -98,14 +113,14 @@
                 android:id="@+id/btn_joinTeam"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/divider2"
                 app:layout_constraintTop_toBottomOf="@+id/tv_teamDesc"
                 fancy:fb_borderColor="@color/blue"
                 fancy:fb_borderWidth="1dp"
@@ -114,6 +129,25 @@
                 fancy:fb_radius="6dp"
                 fancy:fb_text="加入"
                 fancy:fb_textColor="#FFF" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_userDesc"
+                app:layout_constraintStart_toStartOf="@+id/tv_userName"
+                app:layout_constraintTop_toTopOf="@+id/tv_userDesc"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/ic_man" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="26dp"
+                app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
+                app:srcCompat="@drawable/ic_remark" />
 
         </android.support.constraint.ConstraintLayout>
 

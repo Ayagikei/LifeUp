@@ -25,6 +25,7 @@ import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
 import net.sarasarasa.lifeup.network.impl.VersionNetworkImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.VersionUtil
 
@@ -32,6 +33,9 @@ import net.sarasarasa.lifeup.utils.VersionUtil
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
             AttributeConstants.MSG_ATTR_UPDATE_SUCCESS -> {
@@ -157,7 +161,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headLayout.iv_avatar.setOnClickListener { login() }
         when {
             mine.userAddress == null -> headLayout.tv_userDesc.text = "请点击上方头像登陆"
-            userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress} \n 授权失效，请重新登陆。"
+            userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress}\n授权失效，请重新登陆。"
             else -> {
                 headLayout.tv_userDesc.text = mine.userAddress
                 headLayout.iv_avatar.setOnClickListener { openUserMine() }

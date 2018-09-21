@@ -12,12 +12,16 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamMemberListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamMembaerListVO
 
 class TeamMemberActivity : AppCompatActivity() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
             }

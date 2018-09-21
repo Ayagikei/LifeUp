@@ -31,6 +31,7 @@ import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.TeamTaskVO
 import net.sarasarasa.lifeup.vo.TeamVO
@@ -41,6 +42,9 @@ import java.util.*
 open class AddTeamActivity : AppCompatActivity() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")

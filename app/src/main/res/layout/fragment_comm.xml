@@ -29,6 +29,7 @@
         android:layout_marginStart="8dp"
         android:clickable="true"
         android:text="本功能暂未开放！"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

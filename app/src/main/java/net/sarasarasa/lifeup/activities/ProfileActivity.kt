@@ -15,6 +15,7 @@ import net.sarasarasa.lifeup.constants.UserConstants
 import net.sarasarasa.lifeup.converter.UserConverter
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.ProfileVO
 
@@ -22,6 +23,9 @@ import net.sarasarasa.lifeup.vo.ProfileVO
 class ProfileActivity : AppCompatActivity() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             UserConstants.MSG_UPDATE_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
             UserConstants.MSG_UPDATE_SUCCESS -> {

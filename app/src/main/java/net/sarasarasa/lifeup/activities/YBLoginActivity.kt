@@ -20,6 +20,7 @@ import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
 import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 
 
@@ -27,6 +28,9 @@ class YBLoginActivity : AppCompatActivity() {
 
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             LoginConstants.MSG_URL_SUCCESS -> this.webView.loadUrl(msg.obj as String)
             LoginConstants.MSG_URL_FAILED -> {
@@ -34,6 +38,7 @@ class YBLoginActivity : AppCompatActivity() {
                 ToastUtils.showShortToast("加载失败，请检查你的网络！")
             }
             LoginConstants.MSG_YB_LOGIN_SUCCESS -> {
+                LoadingDialogUtils.show(this@YBLoginActivity)
                 userNetworkImpl.getUserProfile()
             }
             LoginConstants.MSG_YB_LOGIN_FAILED -> {
@@ -45,6 +50,7 @@ class YBLoginActivity : AppCompatActivity() {
                 this.webView.reload()
             }
             LoginConstants.MSG_GET_PROFILE_SUCCESS -> {
+                LoadingDialogUtils.show(this@YBLoginActivity)
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVAILD_TOKEN -> {
@@ -82,6 +88,7 @@ class YBLoginActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
+        LoadingDialogUtils.show(this)
         loginNetworkImpl.getYBLoginUrl()
 
         with(webView) {
@@ -98,6 +105,8 @@ class YBLoginActivity : AppCompatActivity() {
 
                             val uri = Uri.parse(url)
                             Log.e("CODE", uri.getQueryParameter("code"))
+
+                            LoadingDialogUtils.show(this@YBLoginActivity)
                             loginNetworkImpl.getYBLoginInfo(uri.getQueryParameter("code"))
 
                             return true
@@ -115,6 +124,8 @@ class YBLoginActivity : AppCompatActivity() {
                             Toast.makeText(context, "授权成功，正在注册信息", Toast.LENGTH_LONG).show()
 
                             Log.e("CODE", request.url.getQueryParameter("code"))
+
+                            LoadingDialogUtils.show(this@YBLoginActivity)
                             loginNetworkImpl.getYBLoginInfo(request.url.getQueryParameter("code"))
 
                             return true

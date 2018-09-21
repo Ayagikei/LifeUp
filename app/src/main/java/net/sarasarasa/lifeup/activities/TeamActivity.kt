@@ -20,6 +20,7 @@ import net.sarasarasa.lifeup.adapters.TeamActivityListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamActivityListVO
@@ -30,12 +31,14 @@ import java.util.*
 class TeamActivity : AppCompatActivity() {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        LoadingDialogUtils.dismiss()
+
         when (msg.what) {
             NetworkConstants.INVAILD_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
             }
             200 -> {
-                ToastUtils.showShortToast("查询成功")
                 if (msg.obj != null) {
                     val teamDetailVO = msg.obj as TeamDetailVO
                     initData(teamDetailVO)
@@ -88,8 +91,10 @@ class TeamActivity : AppCompatActivity() {
 
         val teamId = intent.getLongExtra("teamId", -1)
 
-        if (teamId != -1L)
+        if (teamId != -1L) {
+            LoadingDialogUtils.show(this)
             teamNetworkImpl.getTeamDetail(teamId)
+        }
 
         mTeamId = teamId
 
@@ -105,7 +110,7 @@ class TeamActivity : AppCompatActivity() {
         // TODO:实现所有数据的填充
         tv_userName.text = teamDetailVO.teamTitle
         tv_teamDesc.text = teamDetailVO.teamDesc
-        tv_userDesc.text = "创建者：${teamDetailVO.owner?.nickname}"
+        tv_userDesc.text = "${teamDetailVO.owner?.nickname}"
         btn_members.setText("成员 | " + teamDetailVO.memberAmount)
 
         if (teamDetailVO.isMember != 0) {
