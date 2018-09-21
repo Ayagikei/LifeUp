@@ -378,6 +378,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
                     if (isLoginBySMS) {
                         val mobVO = MobVO()
+                        mobVO.phone = phone
+                        mobVO.zone = country
+                        loginNetworkImpl.loginOrSignUpBySMS(mobVO)
                         //mobVO.code = page.contentView.findViewById<>()
                     } else inputDialog(phone)
 
@@ -501,7 +504,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_login_by_sms -> {
-
+                sendCode(this, true)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

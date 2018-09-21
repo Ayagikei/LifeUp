@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_achievement -> {
-                val intent = Intent(this, AddTeamActivity::class.java)
+                val intent = Intent(this, UserMineActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_settings -> {

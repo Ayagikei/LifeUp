@@ -11,9 +11,9 @@ import retrofit2.http.PUT
 interface UserNetwork {
 
     @GET("/user/profile")
-    fun getUserProfile(@Header("AUTHENTICITY_TOKEN") token: String): Call<ResultVO<ProfileVO>>
+    fun getUserProfile(@Header("authenticity-token") token: String): Call<ResultVO<ProfileVO>>
 
     @PUT("/user/profile")
-    fun updateUserProfile(@Header("AUTHENTICITY_TOKEN") token: String, @Body profileVO: ProfileVO): Call<ResultVO<ProfileVO>>
+    fun updateUserProfile(@Header("authenticity-token") token: String, @Body profileVO: ProfileVO): Call<ResultVO<ProfileVO>>
 
 }

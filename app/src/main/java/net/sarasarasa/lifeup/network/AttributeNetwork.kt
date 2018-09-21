@@ -11,9 +11,9 @@ import retrofit2.http.POST
 interface AttributeNetwork {
 
     @GET("/user/attribute")
-    fun getAttribute(@Header("AUTHENTICITY_TOKEN") token: String): Call<ResultVO<AttributionVO>>
+    fun getAttribute(@Header("authenticity-token") token: String): Call<ResultVO<AttributionVO>>
 
     @POST("/user/attribute")
-    fun updateAttribute(@Header("AUTHENTICITY_TOKEN") token: String, @Body attributionVO: AttributionVO): Call<ResultVO<AttributionVO>>
+    fun updateAttribute(@Header("authenticity-token") token: String, @Body attributionVO: AttributionVO): Call<ResultVO<AttributionVO>>
 
 }

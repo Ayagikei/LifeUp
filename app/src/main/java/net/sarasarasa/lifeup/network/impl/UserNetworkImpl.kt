@@ -21,9 +21,11 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     val userService = UserServiceImpl()
 
     fun getUserProfile() {
-        Log.i("LifeUp 用户模块", "执行[获取用户信息]操作")
+        Log.i("LifeUp 用户模块", "执行[获取用户信息]操作 Token = " + userService.getToken())
 
         val network = retrofit.create(UserNetwork::class.java)
+
+
         val call = network.getUserProfile(userService.getToken())
 
         call.enqueue(object : Callback<ResultVO<ProfileVO>> {
@@ -36,6 +38,8 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<ProfileVO>>, response: Response<ResultVO<ProfileVO>>) {
                 val responseBody = response.body()
+
+                Log.i("LifeUp 用户模块", "[获取用户信息]请求成功：" + responseBody?.msg)
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {

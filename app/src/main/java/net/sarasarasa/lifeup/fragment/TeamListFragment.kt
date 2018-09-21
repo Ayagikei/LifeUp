@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.AddTeamActivity
 import net.sarasarasa.lifeup.activities.TeamActivity
 import net.sarasarasa.lifeup.adapters.TeamListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
@@ -80,6 +81,11 @@ class TeamListFragment : Fragment() {
             mAdapter.data.clear()
             mAdapter.setEnableLoadMore(false)
             getNewList()
+        }
+
+        rootView.fab.setOnClickListener {
+            val intent = Intent(this.context, AddTeamActivity::class.java)
+            startActivity(intent)
         }
     }
 
