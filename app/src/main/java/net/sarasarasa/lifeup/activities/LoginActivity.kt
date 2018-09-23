@@ -416,7 +416,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 val signUpVO = SignUpVO()
 
                 with(signUpVO) {
-                    nickName = view.til_nickname.editText?.text.toString()
+                    nickname = view.til_nickname.editText?.text.toString()
                     accessToken = MD5Util.encryption("lIFEuP" + view.til_password.editText?.text.toString())
                     authIdentifier = phone
                     authType = "phone"
@@ -483,7 +483,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             with(signUpVO) {
                 authIdentifier = mTencent.openId
                 authType = "qq"
-                nickName = res.nickname
+                nickname = res.nickname
                 userAddress = res.city
                 userHead = res.figureurl_2
                 userSex = when (res.gender) {

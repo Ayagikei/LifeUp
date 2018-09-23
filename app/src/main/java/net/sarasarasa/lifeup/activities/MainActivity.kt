@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
@@ -27,7 +28,6 @@ import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
-import net.sarasarasa.lifeup.utils.VersionUtil
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -122,15 +122,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_achievement -> {
-                val intent = Intent(this, UserMineActivity::class.java)
-                startActivity(intent)
+                ToastUtils.showShortToast("此功能暂不可用！")
             }
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_about -> {
-                versionNetworkImpl.checkUpdate(VersionUtil.getLocalVersion(applicationContext))
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -150,6 +150,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
     }
 
+    fun openProfile(view: View) {
+        val intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openHistory(view: View) {
+        val intent = Intent(this, HistoryActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openWelcome(view: View) {
+        val intent = Intent(this, WelcomeActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openSetting(view: View) {
+        val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -164,7 +184,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress}\n授权失效，请重新登陆。"
             else -> {
                 headLayout.tv_userDesc.text = mine.userAddress
-                headLayout.iv_avatar.setOnClickListener { openUserMine() }
+                headLayout.iv_avatar.setOnClickListener {
+                    ToastUtils.showShortToast(mine.nickName + "，祝你生活美满！")
+                }
             }
         }
 
@@ -186,5 +208,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             attributeNetworkImpl.updateAttribute(attributeService.getAttributeVO())
         }
     }
+
 
 }

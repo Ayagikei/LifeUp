@@ -19,7 +19,7 @@
 
 
         <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btn_joinTeam"
+            android:id="@+id/btn_sign_next"
             android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Name"
+            android:text="  "
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/iv_avatar"
@@ -72,7 +72,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:maxWidth="261dp"
-            android:text="文字文字"
+            android:text="  "
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
             app:layout_constraintStart_toStartOf="@+id/tv_nickname"

@@ -54,15 +54,32 @@ class TodoItemConverter {
             }
         }
 
+
         fun iFrequencyToTitleString(taskFrequency: Int): String {
-            return when (taskFrequency) {
-                0 -> "单次任务"
-                1 -> "周期任务-每日"
-                2 -> "周期任务-每两日"
-                7 -> "周期任务-每周"
-                14 -> "周期任务-每两周"
-                30 -> "周期任务-每月"
-                else -> ""
+            return iFrequencyToTitleString(false, taskFrequency)
+        }
+
+        fun iFrequencyToTitleString(isTeamTask: Boolean, taskFrequency: Int): String {
+            if (isTeamTask) {
+                return when (taskFrequency) {
+                    0 -> "团队任务-单次"
+                    1 -> "团队任务-每日"
+                    2 -> "团队任务-每两日"
+                    7 -> "团队任务-每周"
+                    14 -> "团队任务-每两周"
+                    30 -> "团队任务-每月"
+                    else -> ""
+                }
+            } else {
+                return when (taskFrequency) {
+                    0 -> "单次任务"
+                    1 -> "周期任务-每日"
+                    2 -> "周期任务-每两日"
+                    7 -> "周期任务-每周"
+                    14 -> "周期任务-每两周"
+                    30 -> "周期任务-每月"
+                    else -> ""
+                }
             }
         }
 

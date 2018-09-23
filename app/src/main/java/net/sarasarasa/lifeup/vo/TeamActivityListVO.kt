@@ -13,6 +13,6 @@ class TeamActivityListVO {
     var nickname: String? = null
     var userHead: String? = null
     var createTime: Date? = null
-
+    var teamTitle: String? = null
 
 }

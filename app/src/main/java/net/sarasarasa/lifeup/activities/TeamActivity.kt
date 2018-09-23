@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
@@ -18,6 +20,9 @@ import kotlinx.android.synthetic.main.content_team.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamActivityListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_ACTIVITIES_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_DETAIL_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_JOIN_TEAM_SUCCESS
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
@@ -38,16 +43,16 @@ class TeamActivity : AppCompatActivity() {
             NetworkConstants.INVAILD_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
             }
-            200 -> {
+            MSG_GET_TEAM_DETAIL_SUCCESS -> {
                 if (msg.obj != null) {
                     val teamDetailVO = msg.obj as TeamDetailVO
                     initData(teamDetailVO)
                 }
             }
-            211 -> {
+            MSG_JOIN_TEAM_SUCCESS -> {
                 ToastUtils.showShortToast("加入成功")
             }
-            400 -> {
+            MSG_GET_TEAM_ACTIVITIES_SUCCESS -> {
                 if (msg.obj != null) {
                     val pageVO = msg.obj as PageVO<*>
                     val list = pageVO.list as List<TeamActivityListVO>
@@ -61,6 +66,10 @@ class TeamActivity : AppCompatActivity() {
 
                     setNewData(list.toMutableList())
                 }
+            }
+            885 -> {
+                if (msg.obj != null)
+                    ToastUtils.showShortToast(msg.obj.toString())
             }
             else -> {
                 if (msg.obj != null)
@@ -107,20 +116,30 @@ class TeamActivity : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
-        // TODO:实现所有数据的填充
         tv_userName.text = teamDetailVO.teamTitle
         tv_teamDesc.text = teamDetailVO.teamDesc
         tv_userDesc.text = "${teamDetailVO.owner?.nickname}"
         btn_members.setText("成员 | " + teamDetailVO.memberAmount)
 
         if (teamDetailVO.isMember != 0) {
-            btn_joinTeam.isEnabled = false
-            btn_joinTeam.setText("已加入")
+            btn_sign_next.setOnClickListener {
+                teamNetworkImpl.getNextTeamTask(mTeamId)
+                it.isEnabled = false
+            }
+            btn_sign_next.isEnabled = true
+
         } else {
-            btn_joinTeam.setOnClickListener {
+            btn_sign_next.isEnabled = false
+        }
+
+        if (teamDetailVO.isMember != 0) {
+            btn_join.isEnabled = false
+            btn_join.setText("已加入")
+        } else {
+            btn_join.setOnClickListener {
                 teamNetworkImpl.joinTheTeam(teamDetailVO)
-                btn_joinTeam.isEnabled = false
-                btn_joinTeam.setText("已加入")
+                btn_join.isEnabled = false
+                btn_join.setText("已加入")
             }
         }
 
@@ -132,8 +151,8 @@ class TeamActivity : AppCompatActivity() {
             tv_startDateText.text = "已经结束"
             tv_finishTimeText.text = "已经结束"
 
-            btn_joinTeam.isEnabled = false
-            btn_joinTeam.setText("已结束")
+            btn_sign_next.isEnabled = false
+            btn_sign_next.setText("已结束")
         }
 
         iv_iconSkillFrist.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(0)))
@@ -223,4 +242,30 @@ class TeamActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_team, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_report -> {
+                ToastUtils.showShortToast("举报成功！")
+                return true
+            }
+            R.id.action_quit -> {
+                ToastUtils.showShortToast("此功能暂不可用！")
+                return true
+            }
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+
+        }
+        return true
+    }
+
+
 }

@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.models.TaskModel
@@ -223,6 +224,9 @@ class TodoServiceImpl : TodoService {
 
         val newStartTime = Calendar.getInstance()
         newStartTime.time = origin.startTime
+        newStartTime.set(Calendar.HOUR_OF_DAY, 0)
+        newStartTime.set(Calendar.MINUTE, 0)
+        newStartTime.set(Calendar.SECOND, 0)
         newStartTime.add(Calendar.DATE, origin.taskFrequency)
         taskModel.startTime = newStartTime.time
 
@@ -244,6 +248,7 @@ class TodoServiceImpl : TodoService {
         calendar.add(Calendar.DATE, -1)
 
         val list = todoDAO.getOverdueItems(calendar.timeInMillis)
+
         return if (list.isEmpty()) false
         else {
             for (e in list) {
@@ -271,13 +276,19 @@ class TodoServiceImpl : TodoService {
 
         //查看是否能找到
         val taskModel = todoDAO.getOneTeamTaskById(teamId, teamTaskVO.teamRecordId)
+        Log.i("findTaskModel", taskModel.toString())
+
+        val expireTime = teamTaskVO.nextEndTime
+        val cal = Calendar.getInstance()
+        cal.time = expireTime
+        cal.add(Calendar.DATE, 0)
 
         //不存在时，新增
         if (taskModel == null) {
             val newTaskModel = TaskModel(
                     teamTaskVO.teamTitle ?: "",
                     "",
-                    teamTaskVO.nextEndTime,
+                    cal.time,
                     null,
                     teamTaskVO.rewardAttrs[0],
                     teamTaskVO.rewardAttrs[1],
@@ -295,6 +306,7 @@ class TodoServiceImpl : TodoService {
                 startTime = teamTaskVO.nextStartTime ?: Date()
                 endTime = teamTaskVO.nextEndTime ?: Date()
                 expReward = teamTaskVO.rewardExp ?: 0
+                teamRecordId = teamTaskVO.teamRecordId
             }
 
             newTaskModel.save()

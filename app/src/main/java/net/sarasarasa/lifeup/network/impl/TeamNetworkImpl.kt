@@ -258,6 +258,49 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     }
 
 
+    fun getNextTeamTask(teamId: Long) {
+
+        Log.i("LifeUp 团队模块", "执行[领取团队事项]操作")
+
+        val network = retrofit.create(TeamNetwork::class.java)
+        Log.i("Token", userService.getToken())
+        val call = network.getNextTeamTask(userService.getToken(), teamId)
+
+        call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
+            override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[领取团队事项]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[领取团队事项]请求失败：错误或失效TOKEN")
+                    message.what = NetworkConstants.INVAILD_TOKEN
+                } else {
+                    message.what = 885
+                    val teamTaskVO = responseBody?.data
+
+                    if (teamTaskVO != null) {
+                        //添加新的事项
+                        if (todoService.addOrUpdateTeamTask(teamTaskVO))
+                            message.obj = "成功领取事项"
+                        else message.obj = "事项已领取，请在事项逾期的情况下领取！"
+                    }
+
+                    Log.i("LifeUp 团队模块", "[领取团队事项]请求成功：${teamTaskVO}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+
     fun finishTeamTask(item: TaskModel, activityVO: ActivityVO) {
 
         Log.i("LifeUp 团队模块", "执行[完成团队事项]操作")

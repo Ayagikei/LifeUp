@@ -1,12 +1,8 @@
 package net.sarasarasa.lifeup.network
 
-import net.sarasarasa.lifeup.vo.ProfileVO
-import net.sarasarasa.lifeup.vo.ResultVO
+import net.sarasarasa.lifeup.vo.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface UserNetwork {
 
@@ -16,4 +12,21 @@ interface UserNetwork {
     @PUT("/user/profile")
     fun updateUserProfile(@Header("authenticity-token") token: String, @Body profileVO: ProfileVO): Call<ResultVO<ProfileVO>>
 
+    @GET("/user/{userId}/activities")
+    fun getUserActivities(@Header("authenticity-token") token: String, @Path("userId") userId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>
+
+    @GET("/user/activities")
+    fun getMineUserActivities(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>
+
+    @GET("/user/{userId}/detail")
+    fun getUserDetail(@Header("authenticity-token") token: String, @Path("userId") userId: Long): Call<ResultVO<UserDetailVO>>
+
+    @GET("/user/detail")
+    fun getMineUserDetail(@Header("authenticity-token") token: String): Call<ResultVO<UserDetailVO>>
+
+    @GET("/user/{userId}/teams")
+    fun getUserTeamList(@Header("authenticity-token") token: String, @Path("userId") userId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamListVO>>>
+
+    @GET("/user/teams")
+    fun getUserTeamList(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamListVO>>>
 }

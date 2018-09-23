@@ -13,8 +13,8 @@ android {
         applicationId "net.sarasarasa.lifeup"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 5
-        versionName "v1.21"
+        versionCode 6
+        versionName "v1.22"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.github.medyo:fancybuttons:1.9.0'
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
+    implementation 'com.github.medyo:android-about-page:1.2.4'
 }
 
 MobSDK {

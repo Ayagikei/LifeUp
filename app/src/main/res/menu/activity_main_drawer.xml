@@ -17,7 +17,7 @@
         <item
             android:id="@+id/nav_achievement"
             android:icon="@drawable/ic_stars_black_24dp"
-            android:title="个人信息" />
+            android:title="成就" />
     </group>
 
     <group
@@ -30,7 +30,7 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_info_black_24dp"
-            android:title="检测更新" />
+            android:title="关于" />
     </group>
 
 </menu>

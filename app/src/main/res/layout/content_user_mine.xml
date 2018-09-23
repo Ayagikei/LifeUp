@@ -1,298 +1,352 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/mainCardView"
-        android:layout_width="340dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="16dp"
-        app:cardBackgroundColor="#ffffff"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
+
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_btn_edit_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                android:onClick="openProfile"
-                android:text="修改个人信息"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/blue"
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#ededed"
+                app:layout_constraintBottom_toTopOf="@+id/tv_teamDesc"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_userName" />
-
-            <TextView
-                android:id="@+id/tv_teamDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="人生等级：Lv.1 初出茅庐"
-                android:textColor="@color/colorAccent"
-                app:layout_constraintStart_toStartOf="@+id/tv_userDesc"
-                app:layout_constraintTop_toBottomOf="@+id/tv_userDesc" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_followAmountDesc" />
 
             <ImageView
                 android:id="@+id/iv_avatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:paddingTop="16dp"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@drawable/ic_team_fujisan" />
 
             <TextView
                 android:id="@+id/tv_userName"
-                android:layout_width="wrap_content"
+                android:layout_width="182dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="昵称"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                 app:layout_constraintStart_toEndOf="@+id/iv_avatar"
                 app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
 
             <TextView
-                android:id="@+id/tv_userDesc"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_finishAmount"
+                android:layout_width="77dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="居住地（学校）："
-                app:layout_constraintStart_toStartOf="@+id/tv_userName"
-                app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/activityCardViewActivity"
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
-        app:contentPadding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainCardView">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tw_activityHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="动态"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_btn_viewAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:onClick="openHistory"
-                android:text="查看"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/blue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/tw_activityHeader">
-
-            </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/mainCardViewstatus"
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="16dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
-        app:contentPadding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityCardViewActivity">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_dot"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="使用人生365天"
-                android:textColor="@color/smssdk_black"
-                android:visibility="invisible"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/ic_dot"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-            <TextView
-                android:id="@+id/tv_attrExp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:text="属性总经验值："
-                android:textColor="@color/smssdk_black"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/ic_dot"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
-            <TextView
-                android:id="@+id/tv_lifeExp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:text="人生总经验值："
-                android:textColor="@color/smssdk_black"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/ic_dot"
+                android:text="23"
+                android:textAlignment="center"
+                android:textColor="@color/blue"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tw_abbrHeader" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
             <TextView
-                android:id="@+id/tv_finishCnt"
+                android:id="@+id/tv_teamAmountDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:text="完成了168个待办事项"
-                android:textColor="@color/smssdk_black"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                android:layout_marginTop="4dp"
+                android:text="完成"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_finishAmount"
+                app:layout_constraintStart_toStartOf="@+id/tv_finishAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_finishAmount" />
 
             <TextView
-                android:id="@+id/tv_giveupcnt"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_overdueAmount"
+                android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:text="放弃了n个待办事项"
-                android:textColor="@color/smssdk_black"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+                android:text="24"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_red_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_finishAmount" />
 
-            <ImageView
-                android:id="@+id/imageView5"
+            <TextView
+                android:id="@+id/tv_followAmountDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/ic_dot"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                android:text="逾期"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_overdueAmount"
+                app:layout_constraintStart_toStartOf="@+id/tv_overdueAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_finishAmount" />
 
             <TextView
-                android:id="@+id/tv_overduecnt"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_giveupAmount"
+                android:layout_width="77dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:text="逾期了n个待办事项"
-                android:textColor="@color/smssdk_black"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                android:layout_marginEnd="32dp"
+                android:text="42"
+                android:textAlignment="center"
+                android:textColor="?android:attr/colorMultiSelectHighlight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_finishAmount" />
 
-            <ImageView
-                android:id="@+id/imageView4"
+            <TextView
+                android:id="@+id/tv_fansAmountDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/ic_dot"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                android:text="放弃"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_giveupAmount"
+                app:layout_constraintStart_toStartOf="@+id/tv_giveupAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_finishAmount" />
+
 
             <TextView
-                android:id="@+id/tw_abbrHeader"
+                android:id="@+id/tv_expAmount"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:text="42"
+                android:textAlignment="center"
+                android:textColor="@color/smssdk_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+            <TextView
+                android:id="@+id/tv_expAmountDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="统计"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="4dp"
+                android:text="总经验值"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_expAmount"
+                app:layout_constraintHorizontal_bias="0.509"
+                app:layout_constraintStart_toStartOf="@+id/tv_expAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_expAmount" />
 
+            <TextView
+                android:id="@+id/tv_lifeExpAmount"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
+                android:text="42"
+                android:textAlignment="center"
+                android:textColor="@color/smssdk_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+            <TextView
+                android:id="@+id/tv_lifeExpAmountDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="人升经验值"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_lifeExpAmount"
+                app:layout_constraintHorizontal_bias="0.509"
+                app:layout_constraintStart_toStartOf="@+id/tv_lifeExpAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_expAmount" />
 
         </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/mainCardViewstatus" />
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:layout_marginTop="8dp"
+            android:background="#FFF"
+            android:minHeight="340dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_main">
+
+
+            <ImageView
+                android:id="@+id/iv_home"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="16dp"
+                android:onClick="openProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_btn_home" />
+
+            <TextView
+                android:id="@+id/tv_home"
+                android:layout_width="48dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="4dp"
+                android:text="我的主页"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_home"
+                app:layout_constraintStart_toStartOf="@+id/iv_home"
+                app:layout_constraintTop_toBottomOf="@+id/iv_home" />
+
+
+            <ImageView
+                android:id="@+id/iv_history"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="176dp"
+                android:layout_marginTop="16dp"
+                android:onClick="openHistory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_btn_history" />
+
+            <TextView
+                android:id="@+id/tv_history"
+                android:layout_width="48dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="4dp"
+                android:text="我的历史"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_history"
+                app:layout_constraintStart_toStartOf="@+id/iv_history"
+                app:layout_constraintTop_toBottomOf="@+id/iv_history" />
+        </android.support.constraint.ConstraintLayout>
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:layout_marginTop="8dp"
+            android:background="#FFF"
+            android:minHeight="340dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+
+            <ImageView
+                android:id="@+id/iv_welcome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="16dp"
+                android:onClick="openWelcome"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_btn_welcome" />
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:layout_width="48dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="4dp"
+                android:text="引导页"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_welcome"
+                app:layout_constraintStart_toStartOf="@+id/iv_welcome"
+                app:layout_constraintTop_toBottomOf="@+id/iv_welcome" />
+
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="176dp"
+                android:layout_marginTop="16dp"
+                android:onClick="openSetting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_btn_setting" />
+
+            <TextView
+                android:id="@+id/tv_setting"
+                android:layout_width="48dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="4dp"
+                android:text="设置"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_setting"
+                app:layout_constraintStart_toStartOf="@+id/iv_setting"
+                app:layout_constraintTop_toBottomOf="@+id/iv_setting" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="我是有底线的"
+            android:textAlignment="center"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="64dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintEnd_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="64dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>

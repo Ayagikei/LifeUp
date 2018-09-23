@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.sarasarasa.lifeup.activities.TeamActivity">
+    <item
+        android:id="@+id/action_report"
+        android:orderInCategory="100"
+        android:title="举报"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_quit"
+        android:orderInCategory="200"
+        android:title="退出"
+        app:showAsAction="never" />
+</menu>

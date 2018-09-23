@@ -1,12 +1,6 @@
 package net.sarasarasa.lifeup.adapters
 
-import android.graphics.Bitmap
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
-import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
@@ -16,15 +10,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) : BaseQuickAdapter<TeamActivityListVO, BaseViewHolder>(layoutResId, data) {
+class UserActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) : BaseQuickAdapter<TeamActivityListVO, BaseViewHolder>(layoutResId, data) {
 
     override fun convert(helper: BaseViewHolder, item: TeamActivityListVO) {
 
         val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
 
-        helper.setText(R.id.tv_headerText, item.nickname)
-                .setText(R.id.tv_date, timeFormat.format(item.createTime))
+        helper.setText(R.id.tv_date, timeFormat.format(item.createTime))
                 .setImageResource(R.id.iv_icon, getIconDrawable(item.activityIcon))
 
 
@@ -42,24 +35,12 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
         }
 
 
-/*        if(item.teamTitle.isNullOrEmpty()){
-            helper.setVisible(R.id.tv_teamTitle,false)
+        if (item.teamTitle.isNullOrEmpty()) {
+            helper.setVisible(R.id.tv_teamTitle, false)
+        } else {
+            helper.setVisible(R.id.tv_teamTitle, true)
+            helper.setText(R.id.tv_teamTitle, "「${item.teamTitle}」团队")
         }
-        else{
-            helper.setVisible(R.id.tv_teamTitle,true)
-            helper.setText(R.id.tv_teamTitle,"「${item.teamTitle}」团队")
-        }*/
-
-        //设置头像
-        val ivAvatar = helper.getView<ImageView>(R.id.iv_avatar)
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
-        Glide.with(mContext).asBitmap().load(item.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(ivAvatar) {
-            override fun setResource(resource: Bitmap?) {
-                val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(mContext.resources, resource)
-                circularBitmapDrawable.isCircular = true
-                ivAvatar.setImageDrawable(circularBitmapDrawable)
-            }
-        })
 
 
     }

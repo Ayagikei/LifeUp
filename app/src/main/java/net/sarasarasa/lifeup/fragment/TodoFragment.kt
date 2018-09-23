@@ -128,8 +128,8 @@ class TodoFragment : Fragment() {
             mPopupMenu.setOnMenuItemClickListener { menuItem ->
 
 
-                //如果所选Item不是未完成状态，不可长按
-                if (item.taskStatus != 0)
+                //如果所选Item不是未完成状态或是团队事项，不可长按
+                if (item.taskStatus != 0 || item.teamId != -1L)
                     return@setOnMenuItemClickListener true
 
                 when (menuItem.itemId) {
@@ -201,9 +201,9 @@ class TodoFragment : Fragment() {
                 return@setOnItemChildClickListener
             }
 
-            if (cal.timeInMillis > item.endTime.time) {
+            if (item.teamId != -1L && cal.timeInMillis > item.endTime.time) {
                 context?.let {
-                    ToastUtils.showShortToast("该待办事项已经逾期！")
+                    ToastUtils.showShortToast("该待办事项已经过了签到时间段！")
                 }
                 return@setOnItemChildClickListener
             }
@@ -240,7 +240,7 @@ class TodoFragment : Fragment() {
                 mView.isClickable = false
 
                 //如果不是团队事项，这里就可以处理业务逻辑
-                if (item.teamId != -1L) {
+                if (item.teamId == -1L) {
                     todoService.finishTodoItem(item.id)
                 }
 

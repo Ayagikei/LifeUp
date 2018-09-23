@@ -12,6 +12,9 @@ interface TeamNetwork {
     @GET("/teams/{teamId}/members")
     fun getTeamMembers(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
 
+    @DELETE("/teams/{teamId}/members/quit")
+    fun quitTeam(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
+
     @GET("/teams/{teamId}/records")
     fun getTeamActivity(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>
 
@@ -23,6 +26,9 @@ interface TeamNetwork {
 
     @POST("/teams/{teamId}")
     fun joinTheTeam(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long): Call<ResultVO<TeamTaskVO>>
+
+    @GET("/teams/{teamId}/next_sign")
+    fun getNextTeamTask(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long): Call<ResultVO<TeamTaskVO>>
 
     @POST("/teams/{teamId}/sign")
     fun finishTeamTask(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long, @Body activityVO: ActivityVO): Call<ResultVO<TeamTaskVO>>

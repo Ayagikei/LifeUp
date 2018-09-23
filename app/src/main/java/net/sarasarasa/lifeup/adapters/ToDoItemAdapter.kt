@@ -19,11 +19,16 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
         val cal = Calendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        val dateAndTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+        val isTeamTask = when (item.teamId) {
+            -1L -> false
+            else -> true
+        }
 
 
         helper.setText(R.id.tw_name, item.content)
                 .setText(R.id.tv_startDateTitle, item.remark)
-                .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(item.taskFrequency))
+                .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(isTeamTask, item.taskFrequency))
                 .setText(R.id.tv_exp, "${item.expReward}经验值")
                 .setImageResource(R.id.iv_iconSkillFrist, getAbbrIconDrawable(item.relatedAttribute1))
                 .setImageResource(R.id.iv_iconSkillSecond, getAbbrIconDrawable(item.relatedAttribute2))
@@ -36,28 +41,27 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
                 getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getUnableColor())
                 setTextColor(R.id.tw_name, getUnableColor())
                 setTextColor(R.id.tv_time, getUnableColor())
-                setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "开始")
+                setText(R.id.tv_time, dateAndTimeFormat.format(item.startTime) + "开始")
                 setVisible(R.id.iv_timeIcon, true)
                 setVisible(R.id.tv_time, true)
             }
-
-
         } else {
             //设置频次标识的颜色
             helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
             helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
 
             if (item.taskExpireTime != null) {
-                helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "期限")
-                        .setVisible(R.id.iv_timeIcon, true)
+                if (item.teamId != -1L) {
+                    helper.setText(R.id.tv_time, dateAndTimeFormat.format(item.endTime) + "期限")
+                } else helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "期限")
+
+                helper.setVisible(R.id.iv_timeIcon, true)
                         .setVisible(R.id.tv_time, true)
             } else {
                 helper.setVisible(R.id.iv_timeIcon, false)
                         .setVisible(R.id.tv_time, false)
             }
         }
-
-
 
 
         with(helper.getView<LottieAnimationView>(R.id.av_checkBtn)) {

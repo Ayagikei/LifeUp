@@ -13,10 +13,8 @@ class TeamTaskVO {
     var teamFreq: Int? = null
 
 
-
-
     override fun toString(): String {
-        return "TeamTaskVO(nextEndTime=$nextEndTime, nextStartTime=$nextStartTime, teamId=$teamId, teamTitle=$teamTitle)"
+        return "TeamTaskVO(nextEndTime=$nextEndTime, nextStartTime=$nextStartTime, teamId=$teamId, teamRecordId=$teamRecordId, teamTitle=$teamTitle, rewardAttrs=$rewardAttrs, rewardExp=$rewardExp, teamFreq=$teamFreq)"
     }
 
 }

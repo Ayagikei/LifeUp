@@ -8,7 +8,7 @@ class SignUpVO {
 
     var authType: String? = null
 
-    var nickName: String? = null
+    var nickname: String? = null
 
     var userAddress: String? = null
 

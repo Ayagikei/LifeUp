@@ -26,6 +26,12 @@ class TeamMemberListAdapter(layoutResId: Int, data: List<TeamMembaerListVO>) : B
         helper.setText(R.id.tv_nickname, item.nickname)
                 .setText(R.id.tv_remark, timeFormat.format(item.createTime) + "加入")
 
+        if (item.isFollow == -1) {
+            helper.setVisible(R.id.btn_sign_next, false)
+        } else {
+            helper.setVisible(R.id.btn_sign_next, true)
+        }
+
         //设置头像
         val ivAvatar = helper.getView<ImageView>(R.id.iv_avatar)
         val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
