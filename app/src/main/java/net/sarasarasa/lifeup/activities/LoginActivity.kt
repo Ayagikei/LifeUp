@@ -39,8 +39,10 @@ import kotlinx.android.synthetic.main.dialog_sign_up.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.AttributeConstants
-import net.sarasarasa.lifeup.constants.LoginConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_PROFILE_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_PHONE_REGISTER_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_QQ_LOGIN_SUCCESS
 import net.sarasarasa.lifeup.instance.RetrofitInstance.Companion.gson
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
 import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
@@ -64,15 +66,15 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            LoginConstants.MSG_QQ_LOGIN_SUCCESS -> {
+            MSG_QQ_LOGIN_SUCCESS -> {
                 LoadingDialogUtils.show(this@LoginActivity)
                 userNetworkImpl.getUserProfile()
             }
-            LoginConstants.MSG_GET_PROFILE_SUCCESS -> {
+            MSG_GET_PROFILE_SUCCESS -> {
                 LoadingDialogUtils.show(this@LoginActivity)
                 attributeNetworkImpl.getAttribute()
             }
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
             }
             AttributeConstants.MSG_ATTR_GET_FAILED -> {
@@ -84,7 +86,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 startActivity(intent)
                 finish()
             }
-            LoginConstants.MSG_PHONE_REGISTER_SUCCESS -> {
+            MSG_PHONE_REGISTER_SUCCESS -> {
                 LoadingDialogUtils.show(this@LoginActivity)
                 userNetworkImpl.getUserProfile()
             }

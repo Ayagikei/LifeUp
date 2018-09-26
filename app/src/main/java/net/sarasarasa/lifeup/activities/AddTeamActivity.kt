@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_add_team.*
 import kotlinx.android.synthetic.main.content_add_team.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
 import net.sarasarasa.lifeup.converter.ExpRewardConverter
@@ -46,10 +47,10 @@ open class AddTeamActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
             }
-            200 -> {
+            MSG_ADD_TEAM_SUCCESS -> {
                 ToastUtils.showShortToast("新建团队成功")
                 val teamTaskVO = msg.obj as TeamTaskVO
                 val intent = Intent(this, TeamActivity::class.java)
@@ -61,7 +62,6 @@ open class AddTeamActivity : AppCompatActivity() {
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
             }
-
         }
 
         return@Callback true

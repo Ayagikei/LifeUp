@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
@@ -13,8 +12,10 @@ import kotlinx.android.synthetic.main.activity_user_team.*
 import kotlinx.android.synthetic.main.foot_view_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamListAdapter
+import net.sarasarasa.lifeup.base.RecyclerViewNoBugLinearLayoutManager
 import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_TEAM_LIST_SUCCESS
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
@@ -29,9 +30,9 @@ class UserTeamActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
             }
-            888 -> {
+            MSG_GET_USER_TEAM_LIST_SUCCESS -> {
                 if (msg.obj != null) {
                     val pageVO = msg.obj as PageVO<*>
                     val list = pageVO.list as List<TeamListVO>
@@ -109,7 +110,7 @@ class UserTeamActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         mRecyclerView = rv
         mAdapter = TeamListAdapter(R.layout.item_team, mList)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mRecyclerView.layoutManager = RecyclerViewNoBugLinearLayoutManager(this)
         //mRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         mRecyclerView.adapter = mAdapter
         getNewList()

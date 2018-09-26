@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference
 class ToastUtils {
     companion object {
 
-        lateinit var contextReference: WeakReference<Context>
+        private lateinit var contextReference: WeakReference<Context>
 
         fun init(context: Context) {
             this.contextReference = WeakReference(context)

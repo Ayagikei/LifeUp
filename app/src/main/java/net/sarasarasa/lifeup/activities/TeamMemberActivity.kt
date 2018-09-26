@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_team_member.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamMemberListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_MEMBER_LIST_SUCCESS
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.vo.PageVO
@@ -25,17 +26,19 @@ class TeamMemberActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
             }
-            113 -> {
+            MSG_GET_TEAM_MEMBER_LIST_SUCCESS -> {
                 if (msg.obj != null) {
                     val pageVO = msg.obj as PageVO<*>
                     val list = pageVO.list as List<TeamMembaerListVO>
 
                     totalPage = pageVO.totalPage
 
-                    if (swipe_refresh_layout.isRefreshing)
+                    if (swipe_refresh_layout.isRefreshing) {
                         swipe_refresh_layout.isRefreshing = false
+                        mAdapter.data.clear()
+                    }
 
                     mAdapter.setEnableLoadMore(true)
 
@@ -89,7 +92,7 @@ class TeamMemberActivity : AppCompatActivity() {
         swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
-            mAdapter.data.clear()
+
             mAdapter.setEnableLoadMore(false)
             getNewList()
         }

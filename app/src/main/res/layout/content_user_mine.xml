@@ -178,7 +178,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="人升经验值"
+                android:text="人生经验值"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/tv_lifeExpAmount"
@@ -215,7 +215,7 @@
 
             <TextView
                 android:id="@+id/tv_home"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="17dp"
                 android:layout_marginTop="4dp"
                 android:text="我的主页"
@@ -240,7 +240,7 @@
 
             <TextView
                 android:id="@+id/tv_history"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="17dp"
                 android:layout_marginTop="4dp"
                 android:text="我的历史"
@@ -279,7 +279,7 @@
 
             <TextView
                 android:id="@+id/tv_welcome"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="17dp"
                 android:layout_marginTop="4dp"
                 android:text="引导页"

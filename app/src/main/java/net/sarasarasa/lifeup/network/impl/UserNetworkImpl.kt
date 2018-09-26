@@ -5,10 +5,16 @@ import android.os.Message
 import android.util.Log
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants
-import net.sarasarasa.lifeup.constants.LoginConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_CONNECT_FAILED
-import net.sarasarasa.lifeup.constants.UserConstants.Companion.MSG_UPDATE_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_PROFILE_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_ACTIVITIES_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_DETAIL_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_TEAM_LIST_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_PROFILE_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_CONNECT_FAILED
+import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.USER_ME
 import net.sarasarasa.lifeup.network.UserNetwork
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.vo.*
@@ -19,12 +25,10 @@ import retrofit2.Response
 class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
     val userService = UserServiceImpl()
+    val network: UserNetwork = retrofit.create(UserNetwork::class.java)
 
     fun getUserProfile() {
         Log.i("LifeUp 用户模块", "执行[获取用户信息]操作 Token = " + userService.getToken())
-
-        val network = retrofit.create(UserNetwork::class.java)
-
 
         val call = network.getUserProfile(userService.getToken())
 
@@ -32,7 +36,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
             override fun onFailure(call: Call<ResultVO<ProfileVO>>?, t: Throwable?) {
                 Log.e("LifeUp 用户模块", "[获取用户信息]返回错误: ${t.toString()}")
                 val message = Message()
-                message.what = LoginConstants.MSG_YB_LOGIN_CONNECT_FAILED
+                message.what = MSG_YB_LOGIN_CONNECT_FAILED
                 uiHandler.handleMessage(message)
             }
 
@@ -42,13 +46,13 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.i("LifeUp 用户模块", "[获取用户信息]请求成功：" + responseBody?.msg)
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[获取用户信息]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                     message.obj = responseBody.msg
 
                 } else {
-                    message.what = LoginConstants.MSG_GET_PROFILE_SUCCESS
+                    message.what = MSG_GET_PROFILE_SUCCESS
                     val profileVO = responseBody?.data
                     Log.i("LifeUp 用户模块", "[获取用户信息]请求成功：${profileVO}")
                     if (profileVO != null)
@@ -62,7 +66,6 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun updateUserProfile(profileVO: ProfileVO) {
         Log.i("LifeUp 登陆模块", "执行[更新用户信息]操作")
 
-        val network = retrofit.create(UserNetwork::class.java)
         val call = network.updateUserProfile(userService.getToken(), profileVO)
 
         call.enqueue(object : Callback<ResultVO<ProfileVO>> {
@@ -77,13 +80,13 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val responseBody = response.body()
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[更新用户信息]请求失败：错误或失效TOKEN")
                     message.what = MSG_UPDATE_FAILED
                     message.obj = responseBody.msg
                 } else {
 
-                    message.what = 266
+                    message.what = MSG_UPDATE_PROFILE_SUCCESS
                     val profileVO = responseBody?.data
                     Log.i("LifeUp 用户模块", "[更新用户信息]请求成功：${profileVO}")
                     if (profileVO != null)
@@ -98,7 +101,6 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun getUserActivities(pageVO: PageVO<TeamActivityListVO>, userId: Long) {
         Log.i("LifeUp 团队模块", "执行[查询团队列表]操作" + userService.getToken())
 
-        val network = retrofit.create(UserNetwork::class.java)
         val currentPage = pageVO.currentPage ?: 1
         val size = pageVO.size ?: 0
 
@@ -107,7 +109,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
 
         val call = when (userId) {
-            -1L -> network.getMineUserActivities(userService.getToken(), currentPage, size)
+            USER_ME -> network.getMineUserActivities(userService.getToken(), currentPage, size)
             else -> network.getUserActivities(userService.getToken(), userId, currentPage, size)
         }
 
@@ -125,11 +127,11 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户动态列表]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 333
+                    message.what = MSG_GET_USER_ACTIVITIES_SUCCESS
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 用户模块", "[查询用户动态列表]请求成功：${list}")
@@ -143,10 +145,8 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun getUserDetail(userId: Long) {
         Log.i("LifeUp 用户模块", "执行[查询用户详情]操作")
 
-        val network = retrofit.create(UserNetwork::class.java)
-
         val call = when (userId) {
-            -1L -> network.getMineUserDetail(userService.getToken())
+            USER_ME -> network.getMineUserDetail(userService.getToken())
             else -> network.getUserDetail(userService.getToken(), userId)
         }
 
@@ -162,13 +162,13 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val responseBody = response.body()
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户详情]请求失败：错误或失效TOKEN")
                     message.what = MSG_UPDATE_FAILED
                     message.obj = responseBody.msg
                 } else {
 
-                    message.what = 334
+                    message.what = MSG_GET_USER_DETAIL_SUCCESS
                     val userDetailVO = responseBody?.data
                     Log.i("LifeUp 用户模块", "[查询用户详情]请求成功：${userDetailVO}")
                     message.obj = userDetailVO
@@ -182,7 +182,6 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun getUserTeamList(pageVO: PageVO<TeamListVO>, userId: Long) {
         Log.i("LifeUp 用户模块", "执行[查询用户加入团队列表]操作" + userService.getToken())
 
-        val network = retrofit.create(UserNetwork::class.java)
         val currentPage = pageVO.currentPage ?: 0
         val size = pageVO.size ?: 0
 
@@ -191,7 +190,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
 
         val call = when (userId) {
-            -1L -> network.getUserTeamList(userService.getToken(), currentPage, size)
+            USER_ME -> network.getUserTeamList(userService.getToken(), currentPage, size)
             else -> network.getUserTeamList(userService.getToken(), userId, currentPage, size)
         }
 
@@ -210,11 +209,11 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户加入团队列表]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 888
+                    message.what = MSG_GET_USER_TEAM_LIST_SUCCESS
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 用户模块", "[查询用户加入团队列表]请求成功：${list}")

@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.foot_view_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.UserActivityListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_ACTIVITIES_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_DETAIL_SUCCESS
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.fragment.TeamListFragment
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
@@ -44,16 +46,16 @@ class UserActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
             }
-            334 -> {
+            MSG_GET_USER_DETAIL_SUCCESS -> {
                 if (msg.obj != null) {
                     val userDetailVO = msg.obj as UserDetailVO
                     initData(userDetailVO)
                 }
             }
-            333 -> {
+            MSG_GET_USER_ACTIVITIES_SUCCESS -> {
                 if (msg.obj != null) {
                     val pageVO = msg.obj as PageVO<*>
                     val list = pageVO.list as List<TeamActivityListVO>

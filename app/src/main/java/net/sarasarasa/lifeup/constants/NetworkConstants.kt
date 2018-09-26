@@ -3,11 +3,35 @@ package net.sarasarasa.lifeup.constants
 class NetworkConstants {
     companion object {
         const val MSG_CONNECT_FAILED = 10
-        const val INVAILD_TOKEN = 500203
+        const val INVALID_TOKEN = 500203
 
+
+        const val MSG_URL_FAILED = 0
+        const val MSG_URL_SUCCESS = 1
+        const val MSG_YB_LOGIN_SUCCESS = 2
+        const val MSG_YB_LOGIN_FAILED = 3
+        const val MSG_YB_LOGIN_CONNECT_FAILED = 4
+        const val MSG_GET_PROFILE_SUCCESS = 5
+        const val MSG_QQ_LOGIN_SUCCESS = 6
+        const val MSG_PHONE_REGISTER_SUCCESS = 7
+
+        const val MSG_UPDATE_FAILED = 264
+        const val MSG_UPDATE_SUCCESS = 265
+        const val MSG_UPDATE_PROFILE_SUCCESS = 266
+        const val MSG_GET_USER_ACTIVITIES_SUCCESS = 333
+        const val MSG_GET_USER_DETAIL_SUCCESS = 334
+        const val MSG_GET_USER_TEAM_LIST_SUCCESS = 888
+
+        const val MSG_GET_TEAM_LIST_SUCCESS = 300
         const val MSG_GET_TEAM_DETAIL_SUCCESS = 200
+        const val MSG_ADD_TEAM_SUCCESS = 201
         const val MSG_JOIN_TEAM_SUCCESS = 211
         const val MSG_GET_TEAM_ACTIVITIES_SUCCESS = 400
+        const val MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS = 885
+
+        const val MSG_GET_TEAM_MEMBER_LIST_SUCCESS = 113
+
+        const val MSG_FINISH_TEAM_TASK = 566
 
     }
 }

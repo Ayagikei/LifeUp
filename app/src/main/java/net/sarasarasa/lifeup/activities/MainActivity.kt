@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             AttributeConstants.MSG_ATTR_UPDATE_SUCCESS -> {
                 //ToastUtils.showShortToast("数据已同步到云端")
             }
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重新登陆。")
                 userService.saveToken("")
                 val intent = Intent(this, YBLoginActivity::class.java)

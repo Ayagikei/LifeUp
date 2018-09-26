@@ -21,11 +21,11 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
     val attributeService = AttributeServiceImpl()
     val userService = UserServiceImpl()
+    val network: AttributeNetwork = retrofit.create(AttributeNetwork::class.java)
 
     fun getAttribute() {
         Log.i("LifeUp 属性模块", "执行[获取用户属性]操作")
 
-        val network = retrofit.create(AttributeNetwork::class.java)
         val call = network.getAttribute(userService.getToken())
 
         call.enqueue(object : Callback<ResultVO<AttributionVO>> {
@@ -40,9 +40,9 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val responseBody = response.body()
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 属性模块", "[获取用户属性]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
 
                 } else {
                     message.what = MSG_ATTR_GET_SUCCESS
@@ -66,7 +66,6 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                             }
 
                             attributeModel.save()
-
                             Log.i("LifeUp 属性模块", "[更新本地属性]操作成功：${attributeModel}")
                         }
                     }
@@ -80,7 +79,6 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun updateAttribute(attributionVO: AttributionVO) {
         Log.i("LifeUp 属性模块", "执行[更新用户属性]操作")
 
-        val network = retrofit.create(AttributeNetwork::class.java)
         val call = network.updateAttribute(userService.getToken(), attributionVO)
 
         call.enqueue(object : Callback<ResultVO<AttributionVO>> {
@@ -95,9 +93,9 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val responseBody = response.body()
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 属性模块", "[更新用户属性]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_ATTR_UPDATE_SUCCESS
                     val attributionVO = responseBody?.data

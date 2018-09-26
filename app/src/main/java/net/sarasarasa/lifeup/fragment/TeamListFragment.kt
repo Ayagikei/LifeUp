@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +16,10 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddTeamActivity
 import net.sarasarasa.lifeup.activities.TeamActivity
 import net.sarasarasa.lifeup.adapters.TeamListAdapter
+import net.sarasarasa.lifeup.base.RecyclerViewNoBugLinearLayoutManager
 import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_LIST_SUCCESS
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
@@ -32,21 +33,25 @@ class TeamListFragment : Fragment() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
             }
-            300 -> {
+            MSG_GET_TEAM_LIST_SUCCESS -> {
                 if (msg.obj != null) {
                     val pageVO = msg.obj as PageVO<*>
                     val list = pageVO.list as List<TeamListVO>
 
                     totalPage = pageVO.totalPage
 
-                    if (swipe_refresh_layout.isRefreshing)
+                    if (swipe_refresh_layout.isRefreshing) {
                         swipe_refresh_layout.isRefreshing = false
-
-                    mAdapter.setEnableLoadMore(true)
+                        mAdapter.data.clear()
+                    }
 
                     setNewData(list.toMutableList())
+
+                    swipe_refresh_layout.isEnabled = true
+                    mAdapter.setEnableLoadMore(true)
+                    mAdapter.notifyDataSetChanged()
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {
@@ -60,6 +65,8 @@ class TeamListFragment : Fragment() {
             else -> {
                 if (msg.obj != null) {
                     mAdapter.loadMoreFail()
+
+                    swipe_refresh_layout.isEnabled = true
                 }
             }
 
@@ -93,7 +100,6 @@ class TeamListFragment : Fragment() {
         rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         rootView.swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
-            mAdapter.data.clear()
             mAdapter.setEnableLoadMore(false)
             getNewList()
         }
@@ -107,11 +113,14 @@ class TeamListFragment : Fragment() {
     private fun initRecyclerView(rootView: View) {
         mRecyclerView = rootView.rv
         mAdapter = TeamListAdapter(R.layout.item_team, mList)
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
+        mRecyclerView.layoutManager = RecyclerViewNoBugLinearLayoutManager(context)
         //mRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         mRecyclerView.adapter = mAdapter
         getNewList()
-        mAdapter.setOnLoadMoreListener({ getNewList() }, mRecyclerView)
+        mAdapter.setOnLoadMoreListener({
+            getNewList()
+            swipe_refresh_layout.isEnabled = false
+        }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(false)
         mAdapter.setOnItemClickListener { adapter, view, position ->

@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.content_team.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamActivityListAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_DETAIL_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_JOIN_TEAM_SUCCESS
@@ -40,7 +41,7 @@ class TeamActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
             }
             MSG_GET_TEAM_DETAIL_SUCCESS -> {
@@ -67,7 +68,7 @@ class TeamActivity : AppCompatActivity() {
                     setNewData(list.toMutableList())
                 }
             }
-            885 -> {
+            MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS -> {
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
             }
@@ -121,27 +122,46 @@ class TeamActivity : AppCompatActivity() {
         tv_userDesc.text = "${teamDetailVO.owner?.nickname}"
         btn_members.setText("成员 | " + teamDetailVO.memberAmount)
 
-        if (teamDetailVO.isMember != 0) {
-            btn_sign_next.setOnClickListener {
-                teamNetworkImpl.getNextTeamTask(mTeamId)
-                it.isEnabled = false
-            }
-            btn_sign_next.isEnabled = true
+        val nowCal = Calendar.getInstance()
+        val ddl = Calendar.getInstance()
+        ddl.time = teamDetailVO.startDate
+        ddl.add(Calendar.DATE, 1)
+        ddl.set(Calendar.HOUR_OF_DAY, 0)
+        ddl.set(Calendar.MINUTE, 0)
+        ddl.set(Calendar.SECOND, 0)
 
-        } else {
-            btn_sign_next.isEnabled = false
-        }
-
-        if (teamDetailVO.isMember != 0) {
+        if (nowCal.after(ddl)) {
             btn_join.isEnabled = false
-            btn_join.setText("已加入")
+            btn_join.setText("已截止")
         } else {
-            btn_join.setOnClickListener {
-                teamNetworkImpl.joinTheTeam(teamDetailVO)
+
+            if (teamDetailVO.isMember != 0) {
+                btn_sign_next.setOnClickListener {
+                    teamNetworkImpl.getNextTeamTask(mTeamId)
+                    it.isEnabled = false
+                }
+                btn_sign_next.isEnabled = true
+
+            } else {
+                btn_sign_next.isEnabled = false
+            }
+
+            if (teamDetailVO.isMember != 0) {
                 btn_join.isEnabled = false
                 btn_join.setText("已加入")
+            } else {
+                btn_join.setOnClickListener {
+                    teamNetworkImpl.joinTheTeam(teamDetailVO)
+                    btn_join.isEnabled = false
+                    btn_join.setText("已加入")
+
+                    val memberAmount = teamDetailVO.memberAmount?.plus(1)
+                    btn_members.setText("成员 | " + memberAmount)
+                }
             }
+
         }
+
 
         if (teamDetailVO.nextStartTime != null && teamDetailVO.nextEndTime != null) {
             tv_startDateText.text = dateFormat.format(teamDetailVO.nextStartTime)

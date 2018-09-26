@@ -11,6 +11,9 @@ class AttributeLevelDAO {
     }
 
     fun getOneByExp(exp: Int): AttributeLevelModel {
+        if (exp < 0) {
+
+        }
         return LitePal.where("startExpValue <= ? and endExpValue > ?", exp.toString(), exp.toString())
                 .findFirst(AttributeLevelModel::class.java)
     }

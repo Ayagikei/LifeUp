@@ -26,7 +26,9 @@ import net.sarasarasa.lifeup.activities.EditToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.IS_TEAM_TASK
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
@@ -48,10 +50,10 @@ class TodoFragment : Fragment() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 this.context?.let { ToastUtils.showShortToast("请重新登陆") }
             }
-            566 -> {
+            MSG_FINISH_TEAM_TASK -> {
                 //团队事项完成
                 refreshDataSet()
                 this.context?.let { ToastUtils.showShortToast("成功完成事项") }
@@ -103,8 +105,6 @@ class TodoFragment : Fragment() {
     private fun initRecyclerView(view: View) {
         //检查逾期情况
         if (todoService.checkAndUpdateOverdueTask()) {
-            val mContext = context
-            if (mContext != null)
                 ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
 
@@ -129,7 +129,7 @@ class TodoFragment : Fragment() {
 
 
                 //如果所选Item不是未完成状态或是团队事项，不可长按
-                if (item.taskStatus != 0 || item.teamId != -1L)
+                if (item.taskStatus != 0 || item.teamId != IS_TEAM_TASK)
                     return@setOnMenuItemClickListener true
 
                 when (menuItem.itemId) {
@@ -201,7 +201,7 @@ class TodoFragment : Fragment() {
                 return@setOnItemChildClickListener
             }
 
-            if (item.teamId != -1L && cal.timeInMillis > item.endTime.time) {
+            if (item.teamId != IS_TEAM_TASK && cal.timeInMillis > item.endTime.time) {
                 context?.let {
                     ToastUtils.showShortToast("该待办事项已经过了签到时间段！")
                 }
@@ -240,7 +240,7 @@ class TodoFragment : Fragment() {
                 mView.isClickable = false
 
                 //如果不是团队事项，这里就可以处理业务逻辑
-                if (item.teamId == -1L) {
+                if (item.teamId == IS_TEAM_TASK) {
                     todoService.finishTodoItem(item.id)
                 }
 
@@ -286,11 +286,11 @@ class TodoFragment : Fragment() {
                 cancel()
 
                 //本地事项才显示重复对话框
-                if (item.taskFrequency != 0 && item.teamId == -1L)
+                if (item.taskFrequency != 0 && item.teamId == IS_TEAM_TASK)
                     showDialogRepeat(item)
 
                 //非本地事项显示动态对话框
-                if (item.teamId != -1L) {
+                if (item.teamId != IS_TEAM_TASK) {
                     showDialogActivity(item)
                 }
             }
@@ -333,7 +333,10 @@ class TodoFragment : Fragment() {
         var attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute1
                 ?: "")
         //等到前等级
-        var attributeLevelBefore = attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+        var attributeLevelBefore = when (item.teamId) {
+            IS_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+            else -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore)
+        }
 
         //第一个属性值必定存在
         newDialogView.iv_iconFirst.setImageResource(TodoItemConverter.strAbbrToDrawableId(item.relatedAttribute1))
@@ -348,7 +351,10 @@ class TodoFragment : Fragment() {
         } else {
             attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute2
                     ?: "")
-            attributeLevelBefore = attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+            attributeLevelBefore = when (item.teamId) {
+                IS_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+                else -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore)
+            }
 
             newDialogView.iv_iconSec.setImageResource(TodoItemConverter.strAbbrToDrawableId(item.relatedAttribute2))
             newDialogView.tv_nameSec.text = TodoItemConverter.strAbbrToStrTitle(item.relatedAttribute2)
@@ -361,7 +367,10 @@ class TodoFragment : Fragment() {
         } else {
             attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute3
                     ?: "")
-            attributeLevelBefore = attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+            attributeLevelBefore = when (item.teamId) {
+                IS_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+                else -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore)
+            }
 
             newDialogView.iv_iconThr.setImageResource(TodoItemConverter.strAbbrToDrawableId(item.relatedAttribute3))
             newDialogView.tv_nameThr.text = TodoItemConverter.strAbbrToStrTitle(item.relatedAttribute3)
@@ -382,7 +391,7 @@ class TodoFragment : Fragment() {
         if (relatedAttribute.isNullOrBlank()) return
 
         //完成前的
-        val nowExpTotal = when (index) {
+        var nowExpTotal = when (index) {
             1 -> attributeService.getAttributeExpByString(relatedAttribute ?: "") - item.expReward
             2 -> attributeService.getAttributeExpByString(item.relatedAttribute2
                     ?: "") - item.expReward
@@ -390,6 +399,9 @@ class TodoFragment : Fragment() {
                     ?: "") - item.expReward
             else -> return
         }
+
+        if (item.teamId != IS_TEAM_TASK)
+            nowExpTotal += item.expReward
 
 
         var nowExp = nowExpTotal - attributeLevelService.getAttributeLevelByExp(nowExpTotal).startExpValue

@@ -6,6 +6,14 @@ import android.util.Log
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_ACTIVITIES_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_DETAIL_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_LIST_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_MEMBER_LIST_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_JOIN_TEAM_SUCCESS
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -19,11 +27,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
     val userService = UserServiceImpl()
     val todoService = TodoServiceImpl()
+    val network: TeamNetwork = retrofit.create(TeamNetwork::class.java)
 
     fun getTeamList(pageVO: PageVO<TeamListVO>) {
         Log.i("LifeUp 团队模块", "执行[查询团队列表]操作" + userService.getToken())
 
-        val network = retrofit.create(TeamNetwork::class.java)
         val currentPage = pageVO.currentPage ?: 0
         val size = pageVO.size ?: 0
 
@@ -47,11 +55,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队列表]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 300
+                    message.what = MSG_GET_TEAM_LIST_SUCCESS
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队列表]请求成功：${list}")
@@ -65,7 +73,6 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun getTeamMembersList(pageVO: PageVO<TeamMembaerListVO>, teamId: Long) {
         Log.i("LifeUp 团队模块", "执行[查询团队成员列表]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
         val currentPage = pageVO.currentPage ?: 0
         val size = pageVO.size ?: 0
 
@@ -88,11 +95,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队成员列表]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 113
+                    message.what = MSG_GET_TEAM_MEMBER_LIST_SUCCESS
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队成员列表]请求成功：${list}")
@@ -105,7 +112,6 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun getTeamActivityList(pageVO: PageVO<TeamActivityListVO>, teamId: Long) {
         Log.i("LifeUp 团队模块", "执行[查询团队动态列表]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
         val currentPage = pageVO.currentPage ?: 0
         val size = pageVO.size ?: 0
 
@@ -127,12 +133,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.i("LifeUp", responseBody?.msg)
 
                 val message = Message()
-
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队动态列表]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 400
+                    message.what = MSG_GET_TEAM_ACTIVITIES_SUCCESS
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队动态列表]请求成功：${list}")
@@ -146,8 +151,6 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun addTeam(teamVO: TeamVO) {
         Log.i("LifeUp 团队模块", "执行[新建团队]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
-        Log.i("Token", userService.getToken())
         val call = network.addTeam(userService.getToken(), teamVO)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
@@ -164,11 +167,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[新建团队]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 200
+                    message.what = MSG_ADD_TEAM_SUCCESS
                     val teamTaskVO = responseBody?.data
                     message.obj = teamTaskVO
 
@@ -186,8 +189,6 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun getTeamDetail(teamId: Long) {
         Log.i("LifeUp 团队模块", "执行[团队信息]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
-        Log.i("Token", userService.getToken())
         val call = network.getTeamDetail(userService.getToken(), teamId)
 
         call.enqueue(object : Callback<ResultVO<TeamDetailVO>> {
@@ -203,11 +204,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.i("LifeUp", responseBody?.msg)
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[团队信息]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 200
+                    message.what = MSG_GET_TEAM_DETAIL_SUCCESS
                     val teamDetailVO = responseBody?.data
                     message.obj = teamDetailVO
                     Log.i("LifeUp 团队模块", "[团队信息]请求成功：${teamDetailVO}")
@@ -221,8 +222,6 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun joinTheTeam(teamDetailVO: TeamDetailVO) {
         Log.i("LifeUp 团队模块", "执行[加入团队]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
-        Log.i("Token", userService.getToken())
         val call = network.joinTheTeam(userService.getToken(), teamDetailVO.teamId ?: -1)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
@@ -238,11 +237,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.i("LifeUp", responseBody?.msg)
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[加入团队]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 211
+                    message.what = MSG_JOIN_TEAM_SUCCESS
                     val teamTaskVO = responseBody?.data
                     message.obj = teamTaskVO
 
@@ -259,11 +258,8 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
 
     fun getNextTeamTask(teamId: Long) {
-
         Log.i("LifeUp 团队模块", "执行[领取团队事项]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
-        Log.i("Token", userService.getToken())
         val call = network.getNextTeamTask(userService.getToken(), teamId)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
@@ -279,11 +275,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.i("LifeUp", responseBody?.msg)
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[领取团队事项]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 885
+                    message.what = MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
                     val teamTaskVO = responseBody?.data
 
                     if (teamTaskVO != null) {
@@ -302,11 +298,8 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
 
     fun finishTeamTask(item: TaskModel, activityVO: ActivityVO) {
-
         Log.i("LifeUp 团队模块", "执行[完成团队事项]操作")
 
-        val network = retrofit.create(TeamNetwork::class.java)
-        Log.i("Token", userService.getToken())
         val call = network.finishTeamTask(userService.getToken(), item.teamId, activityVO)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
@@ -322,17 +315,16 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.i("LifeUp", responseBody?.msg)
 
                 val message = Message()
-                if (responseBody?.code == NetworkConstants.INVAILD_TOKEN) {
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求失败：错误或失效TOKEN")
-                    message.what = NetworkConstants.INVAILD_TOKEN
+                    message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = 566
+                    message.what = MSG_FINISH_TEAM_TASK
                     val teamTaskVO = responseBody?.data
 
                     if (teamTaskVO != null) {
                         //完成事项
                         todoService.finishTodoItem(item.id)
-
                         //添加新的事项
                         todoService.addOrUpdateTeamTask(teamTaskVO)
                     }

@@ -18,5 +18,9 @@ class ToDoItemConstants {
         const val COMPLETED = 1
         const val OUT_OF_DATE = 2
         const val GIVE_UP = 3
+
+        const val IS_TEAM_TASK = -1L
+
+        const val USER_ME = -1L
     }
 }

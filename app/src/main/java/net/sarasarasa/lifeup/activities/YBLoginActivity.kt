@@ -15,8 +15,13 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_yblogin.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.AttributeConstants
-import net.sarasarasa.lifeup.constants.LoginConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_PROFILE_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_URL_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_URL_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_CONNECT_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_SUCCESS
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
 import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
@@ -32,28 +37,28 @@ class YBLoginActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            LoginConstants.MSG_URL_SUCCESS -> this.webView.loadUrl(msg.obj as String)
-            LoginConstants.MSG_URL_FAILED -> {
+            MSG_URL_SUCCESS -> this.webView.loadUrl(msg.obj as String)
+            MSG_URL_FAILED -> {
                 layout_error.visibility = View.VISIBLE
                 ToastUtils.showShortToast("加载失败，请检查你的网络！")
             }
-            LoginConstants.MSG_YB_LOGIN_SUCCESS -> {
+            MSG_YB_LOGIN_SUCCESS -> {
                 LoadingDialogUtils.show(this@YBLoginActivity)
                 userNetworkImpl.getUserProfile()
             }
-            LoginConstants.MSG_YB_LOGIN_FAILED -> {
+            MSG_YB_LOGIN_FAILED -> {
                 ToastUtils.showShortToast("出现错误：" + msg.obj as String)
                 this.webView.reload()
             }
-            LoginConstants.MSG_YB_LOGIN_CONNECT_FAILED -> {
+            MSG_YB_LOGIN_CONNECT_FAILED -> {
                 ToastUtils.showShortToast("注册失败，请重试")
                 this.webView.reload()
             }
-            LoginConstants.MSG_GET_PROFILE_SUCCESS -> {
+            MSG_GET_PROFILE_SUCCESS -> {
                 LoadingDialogUtils.show(this@YBLoginActivity)
                 attributeNetworkImpl.getAttribute()
             }
-            NetworkConstants.INVAILD_TOKEN -> {
+            NetworkConstants.INVALID_TOKEN -> {
                 ToastUtils.showShortToast("授权失效，请重试")
                 this.webView.reload()
             }

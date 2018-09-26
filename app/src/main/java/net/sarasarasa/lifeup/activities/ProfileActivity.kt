@@ -11,7 +11,8 @@ import android.widget.EditText
 import com.jeff.settingitem.SettingView
 import kotlinx.android.synthetic.main.activity_profile.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.constants.UserConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_SUCCESS
 import net.sarasarasa.lifeup.converter.UserConverter
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
@@ -27,8 +28,8 @@ class ProfileActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            UserConstants.MSG_UPDATE_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
-            UserConstants.MSG_UPDATE_SUCCESS -> {
+            MSG_UPDATE_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
+            MSG_UPDATE_SUCCESS -> {
                 ToastUtils.showShortToast("修改成功")
                 finish()
             }
@@ -38,8 +39,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     val userService = UserServiceImpl()
-    val userNetwork = UserNetworkImpl(uiHandler)
-    val profileVO = ProfileVO()
+    private val userNetwork = UserNetworkImpl(uiHandler)
+    private val profileVO = ProfileVO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

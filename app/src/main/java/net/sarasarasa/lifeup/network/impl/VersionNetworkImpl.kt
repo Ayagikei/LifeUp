@@ -16,10 +16,11 @@ import retrofit2.Response
 
 class VersionNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
+    val network: VersionNetwork = retrofit.create(VersionNetwork::class.java)
+
     fun checkUpdate(localVersion: Int) {
         Log.i("LifeUp 版本模块", "执行[检测版本]操作")
 
-        val network = retrofit.create(VersionNetwork::class.java)
         val call = network.checkUpdate()
 
         call.enqueue(object : Callback<ResultVO<VersionVO>> {
@@ -32,14 +33,11 @@ class VersionNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<VersionVO>>, response: Response<ResultVO<VersionVO>>) {
                 val responseBody = response.body()
-
                 val message = Message()
-
-
                 val versionVO = responseBody?.data
-                Log.i("LifeUp 版本模块", "[检测版本]请求成功：${versionVO}")
-
                 val remoteVersion = versionVO?.newVersion
+
+                Log.i("LifeUp 版本模块", "[检测版本]请求成功：${versionVO}")
 
 
                 if (remoteVersion != null && remoteVersion > localVersion) {
