@@ -73,7 +73,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_userName" />
 
             <TextView
-                android:id="@+id/tv_finishAmount"
+                android:id="@+id/tv_teamAmount"
                 android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -94,12 +94,12 @@
                 android:text="团队"
                 android:textAlignment="center"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_finishAmount"
-                app:layout_constraintStart_toStartOf="@+id/tv_finishAmount"
-                app:layout_constraintTop_toBottomOf="@+id/tv_finishAmount" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_teamAmount"
+                app:layout_constraintStart_toStartOf="@+id/tv_teamAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_teamAmount" />
 
             <TextView
-                android:id="@+id/tv_overdueAmount"
+                android:id="@+id/tv_followingAmount"
                 android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -108,7 +108,7 @@
                 android:textColor="@color/smssdk_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_finishAmount" />
+                app:layout_constraintTop_toTopOf="@+id/tv_teamAmount" />
 
             <TextView
                 android:id="@+id/tv_followAmountDesc"
@@ -118,12 +118,12 @@
                 android:text="关注"
                 android:textAlignment="center"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_overdueAmount"
-                app:layout_constraintStart_toStartOf="@+id/tv_overdueAmount"
-                app:layout_constraintTop_toBottomOf="@+id/tv_finishAmount" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_followingAmount"
+                app:layout_constraintStart_toStartOf="@+id/tv_followingAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_teamAmount" />
 
             <TextView
-                android:id="@+id/tv_giveupAmount"
+                android:id="@+id/tv_followerAmount"
                 android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
@@ -131,7 +131,7 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_blue_light"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_finishAmount" />
+                app:layout_constraintTop_toTopOf="@+id/tv_teamAmount" />
 
             <TextView
                 android:id="@+id/tv_fansAmountDesc"
@@ -141,9 +141,9 @@
                 android:text="粉丝"
                 android:textAlignment="center"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_giveupAmount"
-                app:layout_constraintStart_toStartOf="@+id/tv_giveupAmount"
-                app:layout_constraintTop_toBottomOf="@+id/tv_finishAmount" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_followerAmount"
+                app:layout_constraintStart_toStartOf="@+id/tv_followerAmount"
+                app:layout_constraintTop_toBottomOf="@+id/tv_teamAmount" />
 
         </android.support.constraint.ConstraintLayout>
 

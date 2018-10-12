@@ -40,9 +40,9 @@ class UserMineActivity : AppCompatActivity() {
         val attributeModel = attributeService.getAttribute()
 
         tv_userName.text = mine.nickName
-        tv_finishAmount.text = todoService.getFinishCount().toString()
-        tv_overdueAmount.text = todoService.getOverdueCount().toString()
-        tv_giveupAmount.text = todoService.getGiveUpCount().toString()
+        tv_teamAmount.text = todoService.getFinishCount().toString()
+        tv_followingAmount.text = todoService.getOverdueCount().toString()
+        tv_followerAmount.text = todoService.getGiveUpCount().toString()
 
         tv_expAmount.text = attributeService.getTotalAttrExp().toString()
         tv_lifeExpAmount.text = attributeModel.gradeAttribute.toString()

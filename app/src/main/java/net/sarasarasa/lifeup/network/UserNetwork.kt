@@ -29,4 +29,22 @@ interface UserNetwork {
 
     @GET("/user/teams")
     fun getUserTeamList(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamListVO>>>
+
+    @POST("/user/following/{userId}")
+    fun followUserById(@Header("authenticity-token") token: String, @Path("userId") userId: Long): Call<ResultVO<Any>>
+
+    @DELETE("/user/following/{userId}")
+    fun unfollowUserById(@Header("authenticity-token") token: String, @Path("userId") userId: Long): Call<ResultVO<Any>>
+
+    @GET("/user/{userId}/follower")
+    fun getUserFollower(@Header("authenticity-token") token: String, @Path("userId") userId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
+
+    @GET("/user/follower")
+    fun getUserFollower(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
+
+    @GET("/user/{userId}/following")
+    fun getUserFollowing(@Header("authenticity-token") token: String, @Path("userId") userId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
+
+    @GET("/user/following")
+    fun getUserFollowing(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
 }

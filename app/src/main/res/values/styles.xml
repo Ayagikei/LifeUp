@@ -42,5 +42,12 @@
         <item name="android:background">@drawable/splash_layers</item>
     </style>
 
+    <style name="FollowButton">
+        <!-- 点击颜色 -->
+        <item name="colorControlHighlight">#8f8f8f8f</item>
+        <!-- 背景颜色 -->
+        <item name="colorButtonNormal">@color/blue</item>
+    </style>
+
 
 </resources>

@@ -25,6 +25,8 @@ import kotlinx.android.synthetic.main.content_user.*
 import kotlinx.android.synthetic.main.foot_view_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.UserActivityListAdapter
+import net.sarasarasa.lifeup.constants.CommonConstants.Companion.FOLLOWER_MEMBER
+import net.sarasarasa.lifeup.constants.CommonConstants.Companion.FOLLOWING_MEMBER
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_DETAIL_SUCCESS
@@ -162,13 +164,27 @@ class UserActivity : AppCompatActivity() {
 
         // TODO:实现所有数据的填充
         tv_userName.text = userDetailVO.nickname
-        tv_finishAmount.text = userDetailVO.teamAmount.toString()
-        tv_overdueAmount.text = userDetailVO.followerAmount.toString()
-        tv_giveupAmount.text = userDetailVO.fansAmount.toString()
+        tv_teamAmount.text = userDetailVO.teamAmount.toString()
+        tv_followingAmount.text = userDetailVO.followingAmount.toString()
+        tv_followerAmount.text = userDetailVO.followerAmount.toString()
 
-        tv_finishAmount.setOnClickListener {
+        tv_teamAmount.setOnClickListener {
             val intent = Intent(this, UserTeamActivity::class.java)
             intent.putExtra("userId", mUserId)
+            startActivity(intent)
+        }
+
+        tv_followingAmount.setOnClickListener {
+            val intent = Intent(this, TeamMemberActivity::class.java)
+            intent.putExtra("typeId", mUserId)
+                    .putExtra("memberType", FOLLOWING_MEMBER)
+            startActivity(intent)
+        }
+
+        tv_followerAmount.setOnClickListener {
+            val intent = Intent(this, TeamMemberActivity::class.java)
+            intent.putExtra("typeId", mUserId)
+                    .putExtra("memberType", FOLLOWER_MEMBER)
             startActivity(intent)
         }
 

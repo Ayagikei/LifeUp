@@ -22,6 +22,11 @@ class NetworkConstants {
         const val MSG_GET_USER_DETAIL_SUCCESS = 334
         const val MSG_GET_USER_TEAM_LIST_SUCCESS = 888
 
+        const val MSG_FOLLOW_FAILED = 350
+        const val MSG_FOLLOW_SUCCESS = 351
+        const val MSG_UNFOLLOW_FAILED = 352
+        const val MSG_UNFOLLOW_SUCCESS = 353
+
         const val MSG_GET_TEAM_LIST_SUCCESS = 300
         const val MSG_GET_TEAM_DETAIL_SUCCESS = 200
         const val MSG_ADD_TEAM_SUCCESS = 201

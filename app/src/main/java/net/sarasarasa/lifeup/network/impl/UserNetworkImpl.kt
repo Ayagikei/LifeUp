@@ -7,10 +7,14 @@ import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_CONNECT_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FOLLOW_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FOLLOW_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_PROFILE_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_DETAIL_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_TEAM_LIST_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UNFOLLOW_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UNFOLLOW_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_PROFILE_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_CONNECT_FAILED
@@ -223,4 +227,150 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         })
     }
 
+
+    fun followUserById(userId: Long) {
+        Log.i("LifeUp 用户模块", "执行[关注用户]操作")
+
+        val call = network.followUserById(userService.getToken(), userId)
+
+        call.enqueue(object : Callback<ResultVO<Any>> {
+            override fun onFailure(call: Call<ResultVO<Any>>?, t: Throwable?) {
+                Log.e("LifeUp 用户模块", "[关注用户]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_FOLLOW_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
+                val responseBody = response.body()
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 用户模块", "[关注用户]请求失败：错误或失效TOKEN")
+                    message.what = MSG_FOLLOW_FAILED
+                    message.obj = responseBody.msg
+                } else {
+                    message.what = MSG_FOLLOW_SUCCESS
+                    Log.i("LifeUp 用户模块", "[关注用户]请求成功")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+
+    fun unfollowUserById(userId: Long) {
+        Log.i("LifeUp 用户模块", "执行[取消关注用户]操作")
+
+        val call = network.unfollowUserById(userService.getToken(), userId)
+
+        call.enqueue(object : Callback<ResultVO<Any>> {
+            override fun onFailure(call: Call<ResultVO<Any>>?, t: Throwable?) {
+                Log.e("LifeUp 用户模块", "[取消关注用户]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_UNFOLLOW_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
+                val responseBody = response.body()
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 用户模块", "[取消关注用户]请求失败：错误或失效TOKEN")
+                    message.what = MSG_UNFOLLOW_FAILED
+                    message.obj = responseBody.msg
+                } else {
+                    message.what = MSG_UNFOLLOW_SUCCESS
+                    Log.i("LifeUp 用户模块", "[取消关注用户]请求成功")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+
+    fun getUserFollower(pageVO: PageVO<TeamMembaerListVO>, userId: Long) {
+        Log.i("LifeUp 用户模块", "执行[查询用户粉丝列表]操作")
+
+        val currentPage = pageVO.currentPage ?: 0
+        val size = pageVO.size ?: 0
+
+        if (currentPage == 0L || size == 0L)
+            return
+
+        val call = when (userId) {
+            USER_ME -> network.getUserFollower(userService.getToken(), currentPage, size)
+            else -> network.getUserFollower(userService.getToken(), userId, currentPage, size)
+        }
+
+        call.enqueue(object : Callback<ResultVO<PageVO<TeamMembaerListVO>>> {
+            override fun onFailure(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>?, t: Throwable?) {
+                Log.e("LifeUp 用户模块", "[查询用户粉丝列表]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = AttributeConstants.MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 用户模块", "[查询用户粉丝列表]请求失败：错误或失效TOKEN")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+                    message.what = NetworkConstants.MSG_GET_TEAM_MEMBER_LIST_SUCCESS
+                    val list = responseBody?.data
+                    message.obj = list
+                    Log.i("LifeUp 用户模块", "[查询用户粉丝列表]请求成功：${list}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+    fun getUserFollowing(pageVO: PageVO<TeamMembaerListVO>, userId: Long) {
+        Log.i("LifeUp 用户模块", "执行[查询用户关注列表]操作")
+
+        val currentPage = pageVO.currentPage ?: 0
+        val size = pageVO.size ?: 0
+
+        if (currentPage == 0L || size == 0L)
+            return
+
+        val call = when (userId) {
+            USER_ME -> network.getUserFollowing(userService.getToken(), currentPage, size)
+            else -> network.getUserFollowing(userService.getToken(), userId, currentPage, size)
+        }
+
+        call.enqueue(object : Callback<ResultVO<PageVO<TeamMembaerListVO>>> {
+            override fun onFailure(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>?, t: Throwable?) {
+                Log.e("LifeUp 用户模块", "[查询用户关注列表]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = AttributeConstants.MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 用户模块", "[查询用户关注列表]请求失败：错误或失效TOKEN")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+                    message.what = NetworkConstants.MSG_GET_TEAM_MEMBER_LIST_SUCCESS
+                    val list = responseBody?.data
+                    message.obj = list
+                    Log.i("LifeUp 用户模块", "[查询用户关注列表]请求成功：${list}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
 }

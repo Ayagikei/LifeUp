@@ -1,7 +1,10 @@
 package net.sarasarasa.lifeup.adapters
 
 import android.graphics.Bitmap
+import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import android.support.v4.view.ViewCompat
+import android.support.v7.widget.AppCompatButton
 import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -26,11 +29,32 @@ class TeamMemberListAdapter(layoutResId: Int, data: List<TeamMembaerListVO>) : B
         helper.setText(R.id.tv_nickname, item.nickname)
                 .setText(R.id.tv_remark, timeFormat.format(item.createTime) + "加入")
 
-        if (item.isFollow == -1) {
-            helper.setVisible(R.id.btn_sign_next, false)
-        } else {
-            helper.setVisible(R.id.btn_sign_next, true)
+        when (item.isFollow) {
+            -1 -> helper.setVisible(R.id.btn_follow, false)
+            0 -> {
+                helper.setVisible(R.id.btn_follow, true)
+                val btn = helper.getView<AppCompatButton>(R.id.btn_follow)
+                btn.text = "关注"
+                val colorStateList = ContextCompat.getColorStateList(mContext, R.color.blue)
+                ViewCompat.setBackgroundTintList(btn, colorStateList)
+            }
+            1 -> {
+                helper.setVisible(R.id.btn_follow, true)
+                val btn = helper.getView<AppCompatButton>(R.id.btn_follow)
+                btn.text = "已关注"
+                val colorStateList = ContextCompat.getColorStateList(mContext, R.color.clicked_btn)
+                ViewCompat.setBackgroundTintList(btn, colorStateList)
+            }
+            2 -> {
+                helper.setVisible(R.id.btn_follow, true)
+                val btn = helper.getView<AppCompatButton>(R.id.btn_follow)
+                btn.text = "互相关注"
+                val colorStateList = ContextCompat.getColorStateList(mContext, R.color.clicked_btn)
+                ViewCompat.setBackgroundTintList(btn, colorStateList)
+            }
         }
+
+        helper.addOnClickListener(R.id.btn_follow)
 
         //设置头像
         val ivAvatar = helper.getView<ImageView>(R.id.iv_avatar)

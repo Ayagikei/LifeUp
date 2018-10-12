@@ -45,9 +45,9 @@ class MeFragment : Fragment() {
         val attributeModel = attributeService.getAttribute()
 
         rootView.tv_userName.text = mine.nickName
-        rootView.tv_finishAmount.text = todoService.getFinishCount().toString()
-        rootView.tv_overdueAmount.text = todoService.getOverdueCount().toString()
-        rootView.tv_giveupAmount.text = todoService.getGiveUpCount().toString()
+        rootView.tv_teamAmount.text = todoService.getFinishCount().toString()
+        rootView.tv_followingAmount.text = todoService.getOverdueCount().toString()
+        rootView.tv_followerAmount.text = todoService.getGiveUpCount().toString()
 
         rootView.tv_expAmount.text = attributeService.getTotalAttrExp().toString()
         rootView.tv_lifeExpAmount.text = attributeModel.gradeAttribute.toString()

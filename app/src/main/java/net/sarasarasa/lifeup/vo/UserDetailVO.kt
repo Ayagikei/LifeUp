@@ -4,7 +4,7 @@ import java.util.*
 
 class UserDetailVO {
     var createTime: Date? = null
-    var fansAmount: Int? = null
+    var followingAmount: Int? = null
     var followerAmount: Int? = null
     var nickname: String? = null
     var phone: String? = null
@@ -17,7 +17,7 @@ class UserDetailVO {
 
 
     override fun toString(): String {
-        return "UserDetailVO(createTime=$createTime, fansAmount=$fansAmount, followerAmount=$followerAmount, nickname=$nickname, phone=$phone, teamAmount=$teamAmount, userAddress=$userAddress, userHead=$userHead, userId=$userId, userSex=$userSex, userStatus=$userStatus)"
+        return "UserDetailVO(createTime=$createTime, fansAmount=$followingAmount, followerAmount=$followerAmount, nickname=$nickname, phone=$phone, teamAmount=$teamAmount, userAddress=$userAddress, userHead=$userHead, userId=$userId, userSex=$userSex, userStatus=$userStatus)"
     }
 
 

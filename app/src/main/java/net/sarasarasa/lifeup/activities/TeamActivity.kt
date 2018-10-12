@@ -206,7 +206,8 @@ class TeamActivity : AppCompatActivity() {
 
         btn_members.setOnClickListener {
             val intent = Intent(this, TeamMemberActivity::class.java)
-            intent.putExtra("teamId", mTeamId)
+            intent.putExtra("typeId", mTeamId)
+                    .putExtra("memberType", 0)
             startActivity(intent)
         }
 
