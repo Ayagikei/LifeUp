@@ -15,4 +15,10 @@ class TeamActivityListVO {
     var createTime: Date? = null
     var teamTitle: String? = null
 
+
+    override fun toString(): String {
+        return "TeamActivityListVO(activityIcon=$activityIcon, memberRecordId=$memberRecordId, teamId=$teamId, teamRecordId=$teamRecordId, userActivity=$userActivity, userId=$userId, nickname=$nickname, userHead=$userHead, createTime=$createTime, teamTitle=$teamTitle)"
+    }
+
+
 }

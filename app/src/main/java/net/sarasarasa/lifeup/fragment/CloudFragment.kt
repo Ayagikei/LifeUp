@@ -59,6 +59,7 @@ class CloudFragment : Fragment() {
             when {
                 userService.getToken().isEmpty() -> return PlaceholderFragment.newInstance(position + 1, true)
                 position == 0 -> return TeamListFragment()
+                position == 1 -> return MomentsFragment()
                 position == 2 -> return MeFragment()
                 else -> return PlaceholderFragment.newInstance(position + 1, false)
             }

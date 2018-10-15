@@ -9,6 +9,7 @@ import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_CONNECT_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FOLLOW_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FOLLOW_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_MOMENTS_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_PROFILE_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_DETAIL_SUCCESS
@@ -368,6 +369,47 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 用户模块", "[查询用户关注列表]请求成功：${list}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+
+    fun getMoments(pageVO: PageVO<TeamActivityListVO>) {
+        Log.i("LifeUp 成员模块", "执行[查询朋友圈]操作" + userService.getToken())
+
+        val currentPage = pageVO.currentPage ?: 1
+        val size = pageVO.size ?: 0
+
+        if (currentPage == 0L || size == 0L)
+            return
+
+
+        val call = network.getMoments(userService.getToken(), currentPage, size)
+
+        call.enqueue(object : Callback<ResultVO<PageVO<TeamActivityListVO>>> {
+            override fun onFailure(call: Call<ResultVO<PageVO<TeamActivityListVO>>>?, t: Throwable?) {
+                Log.e("LifeUp 用户模块", "[查询朋友圈]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = AttributeConstants.MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<PageVO<TeamActivityListVO>>>, response: Response<ResultVO<PageVO<TeamActivityListVO>>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 用户模块", "[查询朋友圈]请求失败：错误或失效TOKEN")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+                    message.what = MSG_GET_MOMENTS_SUCCESS
+                    val list = responseBody?.data
+                    message.obj = list
+                    Log.i("LifeUp 用户模块", "[查询朋友圈]请求成功：${list}")
                 }
                 uiHandler.handleMessage(message)
             }

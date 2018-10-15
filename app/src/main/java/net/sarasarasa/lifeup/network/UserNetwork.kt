@@ -47,4 +47,7 @@ interface UserNetwork {
 
     @GET("/user/following")
     fun getUserFollowing(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
+
+    @GET("/user/moments")
+    fun getMoments(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>
 }
