@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -46,7 +47,7 @@
 
             <TextView
                 android:id="@+id/tv_userName"
-                android:layout_width="182dp"
+                android:layout_width="167dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:ellipsize="end"
@@ -186,6 +187,31 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_lifeExpAmount"
                 app:layout_constraintTop_toBottomOf="@+id/tv_expAmount" />
 
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_edit_profile"
+                android:layout_width="97dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:onClick="openProfile"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
+                app:fb_borderColor="@color/blue"
+                app:fb_borderWidth="1dp"
+                app:fb_defaultColor="#FFF"
+                app:fb_focusColor="#b3b3b3"
+                app:fb_radius="3dp"
+                app:fb_text="编辑个人资料"
+                app:fb_textColor="@color/blue"
+                app:fb_textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_userName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_userName" />
+
+
         </android.support.constraint.ConstraintLayout>
 
 
@@ -208,7 +234,7 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="52dp"
                 android:layout_marginTop="16dp"
-                android:onClick="openProfile"
+                android:onClick="openUser"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_btn_home" />

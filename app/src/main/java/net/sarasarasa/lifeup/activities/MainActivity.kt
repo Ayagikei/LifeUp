@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
     }
 
-    fun openProfile(view: View) {
+    fun openUser(view: View) {
         val intent = Intent(this, UserActivity::class.java)
         startActivity(intent)
     }
@@ -167,6 +167,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun openSetting(view: View) {
         val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openProfile(view: View) {
+        val intent = Intent(this, ProfileActivity::class.java)
         startActivity(intent)
     }
 

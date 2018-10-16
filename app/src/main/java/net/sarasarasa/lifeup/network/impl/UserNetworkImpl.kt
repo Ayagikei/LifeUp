@@ -16,6 +16,8 @@ import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_D
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_TEAM_LIST_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UNFOLLOW_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UNFOLLOW_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_AVATAR_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_AVATAR_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_PROFILE_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_CONNECT_FAILED
@@ -23,9 +25,13 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.USER_ME
 import net.sarasarasa.lifeup.network.UserNetwork
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.vo.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
@@ -102,6 +108,44 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         })
     }
 
+    fun updateAvatar(file: File) {
+        Log.i("LifeUp 用户模块", "执行[更新用户头像]操作")
+
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData("avatarImage", file.name, requestFile)
+
+        val call = network.updateAvatar(userService.getToken(), body)
+
+
+
+        call.enqueue(object : Callback<ResultVO<String>> {
+            override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
+                Log.e("LifeUp 用户模块", "[更新用户头像]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_UPDATE_AVATAR_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<String>>, response: Response<ResultVO<String>>) {
+                val responseBody = response.body()
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 用户模块", "[更新用户头像]请求失败：错误或失效TOKEN")
+                    message.what = MSG_UPDATE_AVATAR_FAILED
+                    message.obj = responseBody.msg
+                } else {
+                    message.what = MSG_UPDATE_AVATAR_SUCCESS
+                    val userMine = userService.getMine()
+                    userMine.userHead = responseBody?.data
+                    userMine.save()
+
+                    Log.i("LifeUp 用户模块", "[更新用户头像]请求成功 " + responseBody?.data)
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
 
     fun getUserActivities(pageVO: PageVO<TeamActivityListVO>, userId: Long) {
         Log.i("LifeUp 团队模块", "执行[查询团队列表]操作" + userService.getToken())

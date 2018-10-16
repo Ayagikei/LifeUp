@@ -17,8 +17,10 @@ class LifeUpApplication : Application() {
         ToastUtils.init(this)
         DensityUtil.init(this)
 
+        /*
         val applicationCrashHandler = ApplicationCrashHandler()
         applicationCrashHandler.init(this)
+        */
 
         instance = this
 

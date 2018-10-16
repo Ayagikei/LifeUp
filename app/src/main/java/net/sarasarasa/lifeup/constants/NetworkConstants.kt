@@ -18,6 +18,8 @@ class NetworkConstants {
         const val MSG_UPDATE_FAILED = 264
         const val MSG_UPDATE_SUCCESS = 265
         const val MSG_UPDATE_PROFILE_SUCCESS = 266
+        const val MSG_UPDATE_AVATAR_FAILED = 267
+        const val MSG_UPDATE_AVATAR_SUCCESS = 268
         const val MSG_GET_USER_ACTIVITIES_SUCCESS = 333
         const val MSG_GET_USER_DETAIL_SUCCESS = 334
         const val MSG_GET_USER_TEAM_LIST_SUCCESS = 888

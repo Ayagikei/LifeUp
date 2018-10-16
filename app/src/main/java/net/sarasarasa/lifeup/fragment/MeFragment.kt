@@ -13,10 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import kotlinx.android.synthetic.main.content_user_mine.view.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.activities.HistoryActivity
-import net.sarasarasa.lifeup.activities.SettingActivity
-import net.sarasarasa.lifeup.activities.UserActivity
-import net.sarasarasa.lifeup.activities.WelcomeActivity
+import net.sarasarasa.lifeup.activities.*
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -63,27 +60,6 @@ class MeFragment : Fragment() {
                     rootView.iv_avatar.setImageDrawable(circularBitmapDrawable)
                 }
             })
-    }
-
-
-    fun openProfile(view: View) {
-        val intent = Intent(activity, UserActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun openHistory(view: View) {
-        val intent = Intent(activity, HistoryActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun openWelcome(view: View) {
-        val intent = Intent(activity, WelcomeActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun openSetting(view: View) {
-        val intent = Intent(activity, SettingActivity::class.java)
-        startActivity(intent)
     }
 
 

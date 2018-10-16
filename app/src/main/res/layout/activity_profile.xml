@@ -72,6 +72,22 @@
         android:background="#ccc" />
 
     <com.jeff.settingitem.SettingView
+        android:id="@+id/sv_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:item_background="@drawable/selector_item"
+        app:item_text="更换头像"
+        app:show_dot="false"
+        app:show_left_icon="false"
+        app:text_color="#000"
+        app:text_size="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc" />
+
+    <com.jeff.settingitem.SettingView
         android:id="@+id/sv_phone"
         android:layout_width="match_parent"
         android:layout_height="56dp"

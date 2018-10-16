@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.network
 
 import net.sarasarasa.lifeup.vo.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,6 +12,10 @@ interface UserNetwork {
 
     @PUT("/user/profile")
     fun updateUserProfile(@Header("authenticity-token") token: String, @Body profileVO: ProfileVO): Call<ResultVO<ProfileVO>>
+
+    @Multipart
+    @POST("/user/avatar")
+    fun updateAvatar(@Header("authenticity-token") token: String, @Part body: MultipartBody.Part): Call<ResultVO<String>>
 
     @GET("/user/{userId}/activities")
     fun getUserActivities(@Header("authenticity-token") token: String, @Path("userId") userId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>

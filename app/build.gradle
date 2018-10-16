@@ -8,13 +8,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.mob.sdk'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "net.sarasarasa.lifeup"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 9
-        versionName "v1.25"
+        versionName "v1.26"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,6 +40,7 @@ configurations {
     implementation.exclude group: 'com.android.support', module: 'constraint-layout'
 }
 
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -47,13 +48,13 @@ dependencies {
     api 'com.airbnb.android:lottie:2.6.0-beta19'
     implementation 'com.google.android.gms:play-services-plus:15.0.1'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
     api 'me.relex:circleindicator:1.2.2@aar'
     api 'com.jeff:settingitem:1.0'
     api 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
-    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:28.0.0'
     api 'com.daimajia.numberprogressbar:library:1.4@aar'
     api 'com.xiaosong520:doublewaveview:1.0.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
@@ -68,6 +69,7 @@ dependencies {
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
     implementation 'com.github.medyo:android-about-page:1.2.4'
+    implementation 'pub.devrel:easypermissions:2.0.0'
 }
 
 MobSDK {
