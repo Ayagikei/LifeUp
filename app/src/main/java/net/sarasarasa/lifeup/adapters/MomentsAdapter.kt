@@ -15,13 +15,14 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.activities.TeamActivity
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.fragment.MomentsFragment
 import net.sarasarasa.lifeup.fragment.TodoFragment
 import net.sarasarasa.lifeup.vo.TeamActivityListVO
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) : BaseQuickAdapter<TeamActivityListVO, BaseViewHolder>(layoutResId, data) {
+class MomentsAdapter(layoutResId: Int, data: List<TeamActivityListVO>, val fragment: MomentsFragment) : BaseQuickAdapter<TeamActivityListVO, BaseViewHolder>(layoutResId, data) {
 
     override fun convert(helper: BaseViewHolder, item: TeamActivityListVO) {
 
@@ -57,8 +58,10 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
 
         helper.addOnClickListener(R.id.npl_item_moment_photos)
 
-        val delegate = mContext as TeamActivity
-        ninePhotoLayout.setDelegate(delegate)
+        ninePhotoLayout.setDelegate(fragment)
+
+        //val delegate = mContext as MomentsFragment
+        //ninePhotoLayout.setDelegate(delegate)
 
 /*        if(item.teamTitle.isNullOrEmpty()){
             helper.setVisible(R.id.tv_teamTitle,false)
@@ -71,7 +74,7 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
         //设置头像
         val ivAvatar = helper.getView<ImageView>(R.id.iv_avatar)
         val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
-        Glide.with(mContext as TeamActivity).asBitmap().load(item.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(ivAvatar) {
+        Glide.with(mContext as MainActivity).asBitmap().load(item.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(ivAvatar) {
             override fun setResource(resource: Bitmap?) {
                 val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(mContext.resources, resource)
                 circularBitmapDrawable.isCircular = true

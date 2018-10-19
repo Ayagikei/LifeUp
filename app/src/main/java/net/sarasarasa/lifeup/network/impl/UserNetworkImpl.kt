@@ -113,7 +113,6 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData("avatarImage", file.name, requestFile)
-
         val call = network.updateAvatar(userService.getToken(), body)
 
 

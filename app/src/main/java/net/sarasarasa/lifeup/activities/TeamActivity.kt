@@ -1,8 +1,10 @@
 package net.sarasarasa.lifeup.activities
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +13,9 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity
+import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
@@ -31,10 +36,14 @@ import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamActivityListVO
 import net.sarasarasa.lifeup.vo.TeamDetailVO
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TeamActivity : AppCompatActivity() {
+class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
+
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
 
@@ -90,6 +99,11 @@ class TeamActivity : AppCompatActivity() {
     private var mTeamId = -1L
     private var currentPage = 0L
     private var totalPage: Long? = null
+    private var mCurrentClickNpl: BGANinePhotoLayout? = null
+
+    companion object {
+        private const val PRC_PHOTO_PREVIEW = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -231,6 +245,7 @@ class TeamActivity : AppCompatActivity() {
         mAdapter.setOnLoadMoreListener({ getNewList() }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(false)
+
 /*        mAdapter.setOnItemClickListener { adapter, view, position ->
 
 
@@ -286,6 +301,52 @@ class TeamActivity : AppCompatActivity() {
 
         }
         return true
+    }
+
+
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == PRC_PHOTO_PREVIEW) {
+            ToastUtils.showShortToast("您拒绝了「图片预览」所需要的相关权限!")
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+    }
+
+    override fun onClickNinePhotoItem(ninePhotoLayout: BGANinePhotoLayout, view: View, position: Int, model: String, models: MutableList<String>) {
+        mCurrentClickNpl = ninePhotoLayout
+        photoPreviewWrapper()
+    }
+
+    /**
+     * 图片预览，兼容6.0动态权限
+     */
+    @AfterPermissionGranted(PRC_PHOTO_PREVIEW)
+    private fun photoPreviewWrapper() {
+
+        if (mCurrentClickNpl == null) {
+            return
+        }
+
+        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(this, *perms)) {
+            val downloadDir = File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload")
+            val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(this)
+                    .saveImgDir(downloadDir) // 保存图片的目录，如果传 null，则没有保存图片功能
+
+            if (mCurrentClickNpl!!.itemCount == 1) {
+                // 预览单张图片
+                photoPreviewIntentBuilder.previewPhoto(mCurrentClickNpl!!.currentClickItem)
+            } else if (mCurrentClickNpl!!.itemCount > 1) {
+                // 预览多张图片
+                photoPreviewIntentBuilder.previewPhotos(mCurrentClickNpl!!.data)
+                        .currentPosition(mCurrentClickNpl!!.currentClickItemPosition) // 当前预览图片的索引
+            }
+            startActivity(photoPreviewIntentBuilder.build())
+        } else {
+            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, *perms)
+        }
     }
 
 

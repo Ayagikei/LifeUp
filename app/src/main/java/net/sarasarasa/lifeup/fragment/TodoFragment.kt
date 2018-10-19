@@ -1,22 +1,30 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.Manifest
 import android.animation.Animator
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity
+import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
 import com.airbnb.lottie.LottieAnimationView
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
+import kotlinx.android.synthetic.main.dialog_activity.view.*
 import kotlinx.android.synthetic.main.fragment_todo.view.*
 import kotlinx.android.synthetic.main.head_view_to_do.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
@@ -32,6 +40,7 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.IS_TEAM_TASK
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
+import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -39,11 +48,14 @@ import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.ActivityVO
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TodoFragment : Fragment() {
+class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASortableNinePhotoLayout.Delegate {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
 
@@ -70,6 +82,7 @@ class TodoFragment : Fragment() {
         return@Callback true
     }
 
+    private val uploadNetworkImpl = UploadNetworkImpl(uiHandler)
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
     private val todoService = TodoServiceImpl()
     private val attributeService = AttributeServiceImpl()
@@ -82,6 +95,15 @@ class TodoFragment : Fragment() {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
+
+    private var mPhotosSnpl:BGASortableNinePhotoLayout? = null
+
+    companion object {
+        private const val PRC_PHOTO_PICKER = 1
+        private const val RC_CHOOSE_PHOTO = 1
+        private const val RC_PHOTO_PREVIEW = 2
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_todo, null)
@@ -221,6 +243,8 @@ class TodoFragment : Fragment() {
                             showDialogAbbr(item)
                             isEverShowDialog = true
                             refreshHeaderView(mHeaderView)
+                            mView.progress = 1.0f
+                            mView.isClickable = false
                         }
 
                     }
@@ -229,6 +253,8 @@ class TodoFragment : Fragment() {
                         if (!isEverShowDialog) {
                             showDialogAbbr(item)
                             isEverShowDialog = true
+                            mView.progress = 1.0f
+                            mView.isClickable = false
                         }
                     }
 
@@ -495,26 +521,37 @@ class TodoFragment : Fragment() {
     }
 
     private fun showDialogActivity(taskModel: TaskModel) {
-        val editText = EditText(context)
+        // val editText = EditText(context)
         val activityVO = ActivityVO()
         val builder = context?.let { AlertDialog.Builder(it) }
-
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_activity, null)
         val title = "动态"
+        mPhotosSnpl = dialogView.snpl_moment_add_photos
+        mPhotosSnpl!!.setDelegate(this)
+        mPhotosSnpl!!.setOnClickListener { choicePhotoWrapper() }
+        mPhotosSnpl!!.maxItemCount = 3
 
         if (builder != null)
             with(builder) {
                 setTitle(title)
 
-                setView(editText)
+                setView(dialogView)
 
                 setPositiveButton("发表") { _, _ ->
                     //发表动态请求
+                    activityVO.activity = dialogView.editText.text.toString()
 
-                    activityVO.activity = editText.text.toString()
+                    if(mPhotosSnpl!!.data.isEmpty())
                     teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                    else {
+                        uploadNetworkImpl.uploadImages(mPhotosSnpl!!.data,taskModel,activityVO)
+                    }
+
+                    mPhotosSnpl = null
                 }
                 setNegativeButton("取消") { _, _ ->
                     teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                    mPhotosSnpl = null
                 }
 
                 show()
@@ -579,6 +616,71 @@ class TodoFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             refreshDataSet()
+        }
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == PRC_PHOTO_PICKER) {
+            ToastUtils.showShortToast("您拒绝了「图片选择」所需要的相关权限!")
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+    }
+
+    override fun onClickNinePhotoItem(sortableNinePhotoLayout: BGASortableNinePhotoLayout, view: View, position: Int, model: String, models: ArrayList<String>) {
+        if(mPhotosSnpl == null) return
+
+        val photoPickerPreviewIntent = BGAPhotoPickerPreviewActivity.IntentBuilder(activity)
+                .previewPhotos(models) // 当前预览的图片路径集合
+                .selectedPhotos(models) // 当前已选中的图片路径集合
+                .maxChooseCount(mPhotosSnpl!!.maxItemCount) // 图片选择张数的最大值
+                .currentPosition(position) // 当前预览图片的索引
+                .isFromTakePhoto(false) // 是否是拍完照后跳转过来
+                .build()
+        startActivityForResult(photoPickerPreviewIntent, RC_PHOTO_PREVIEW)
+    }
+
+    override fun onClickAddNinePhotoItem(sortableNinePhotoLayout: BGASortableNinePhotoLayout, view: View, position: Int, models: ArrayList<String>) {
+        choicePhotoWrapper()
+    }
+
+    override fun onNinePhotoItemExchanged(sortableNinePhotoLayout: BGASortableNinePhotoLayout, fromPosition: Int, toPosition: Int, models: ArrayList<String>) {
+    }
+
+    override fun onClickDeleteNinePhotoItem(sortableNinePhotoLayout: BGASortableNinePhotoLayout, view: View, position: Int, model: String, models: ArrayList<String>) {
+        mPhotosSnpl?.removeItem(position)
+    }
+
+    @AfterPermissionGranted(PRC_PHOTO_PICKER)
+    private fun choicePhotoWrapper() {
+        if(mPhotosSnpl == null) return
+
+        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+        if (context?.let { EasyPermissions.hasPermissions(it, *perms) } == true) {
+            // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
+            val takePhotoDir = File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto")
+
+            val photoPickerIntent = BGAPhotoPickerActivity.IntentBuilder(activity)
+                    .cameraFileDir(takePhotoDir) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
+                    .maxChooseCount(3) // 图片选择张数的最大值 mPhotosSnpl!!.maxItemCount - mPhotosSnpl!!.itemCount
+                    .selectedPhotos(mPhotosSnpl!!.data) // 当前已选中的图片路径集合
+                    .pauseOnScroll(false) // 滚动列表时是否暂停加载图片
+                    .build()
+            startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO)
+        } else {
+            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, *perms)
+        }
+    }
+
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+         if(mPhotosSnpl != null)
+        if (resultCode == Activity.RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
+            mPhotosSnpl!!.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data!!))
+        } else if (requestCode == RC_PHOTO_PREVIEW) {
+            mPhotosSnpl!!.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data!!))
         }
     }
 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.balysv.materialripple.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<com.balysv.materialripple.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ripple_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:mrl_rippleAlpha="0.1"
     app:mrl_rippleColor="#585858"
     app:mrl_rippleHover="true"
-    app:mrl_rippleOverlay="true">
+    app:mrl_rippleOverlay="true">-->
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -68,15 +69,30 @@
             app:layout_constraintStart_toStartOf="@+id/tv_nickname"
             app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
+
+    <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+        android:id="@+id/npl_item_moment_photos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:bga_npl_itemCornerRadius="2dp"
+        app:bga_npl_itemSpanCount="3"
+        app:bga_npl_itemWhiteSpacing="4dp"
+        app:bga_npl_itemWidth="76dp"
+        app:bga_npl_otherWhiteSpacing="64dp"
+        app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+        app:bga_npl_showAsLargeWhenOnlyOne="false"
+        app:layout_constraintStart_toStartOf="@+id/tv_remark"
+        app:layout_constraintTop_toBottomOf="@+id/tv_remark" />
+
         <View
             android:id="@+id/divider"
             android:layout_width="350dp"
             android:layout_height="1dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:background="#ededed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_remark" />
+            app:layout_constraintTop_toBottomOf="@+id/npl_item_moment_photos" />
 
         <TextView
             android:id="@+id/tv_date"
@@ -106,4 +122,5 @@
 
     </android.support.constraint.ConstraintLayout>
 
-</com.balysv.materialripple.MaterialRippleLayout>
+<!--
+</com.balysv.materialripple.MaterialRippleLayout>-->
