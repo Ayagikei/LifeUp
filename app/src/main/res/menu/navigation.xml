@@ -16,9 +16,10 @@
         android:title="@string/title_status" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_me"
         android:icon="@drawable/ic_cloud_black_24dp"
         android:fragment="net.sarasarasa.lifeup.fragment.CloudFragment"
         android:title="@string/title_community" />
+
 
 </menu>

@@ -34,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+            app:layout_constraintStart_toStartOf="parent">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/mainCardView"
@@ -130,6 +129,65 @@
 
             </android.support.v7.widget.CardView>
 
+            <!-- start of copy -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/sportCardView"
+                android:layout_width="340dp"
+                android:layout_height="128dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:contentPadding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mainCardView">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tw_sportHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="运动"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.shuhart.stepview.StepView
+                        android:id="@+id/step_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:sv_animationType="Line"
+                        app:sv_doneCircleColor="@color/colorPrimary"
+                        app:sv_doneCircleRadius="12dp"
+                        app:sv_doneStepLineColor="@color/colorAccent"
+                        app:sv_doneStepMarkColor="@color/white"
+                        app:sv_nextStepLineColor="@color/smssdk_gray"
+                        app:sv_nextTextColor="@color/smssdk_gray"
+                        app:sv_selectedCircleColor="@color/colorAccent"
+                        app:sv_selectedCircleRadius="12dp"
+                        app:sv_selectedStepNumberColor="@color/white"
+                        app:sv_selectedTextColor="@color/colorAccent"
+                        app:sv_stepLineWidth="1dp"
+                        app:sv_stepNumberTextSize="12sp"
+                        app:sv_stepPadding="4dp"
+                        app:sv_stepViewStyle="@style/StepView" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+
             <android.support.v7.widget.CardView
                 android:id="@+id/mainCardViewstatus"
                 android:layout_width="350dp"
@@ -143,7 +201,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mainCardView">
+                app:layout_constraintTop_toBottomOf="@+id/sportCardView">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"

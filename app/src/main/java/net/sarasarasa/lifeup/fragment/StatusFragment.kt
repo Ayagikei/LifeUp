@@ -91,6 +91,17 @@ class StatusFragment : Fragment() {
         view.pgb_lifeLevel.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
         view.tv_finishCount.text = "到目前为止，你一共完成了${todoService.getFinishCount()}个待办事项！\n继续努力！"
+
+        val arrStep = ArrayList<String>()
+        with(arrStep) {
+            arrStep.add("2500步")
+            arrStep.add("5000步")
+            arrStep.add("10000步")
+            arrStep.add("15000步")
+            arrStep.add("20000步")
+        }
+
+        view.step_view.setSteps(arrStep)
     }
 
 

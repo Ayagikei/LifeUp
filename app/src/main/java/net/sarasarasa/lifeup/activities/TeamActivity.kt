@@ -21,12 +21,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.chad.library.adapter.base.BaseQuickAdapter
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_team.*
 import kotlinx.android.synthetic.main.content_team.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamActivityListAdapter
-import net.sarasarasa.lifeup.constants.CommonConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_REPORT_TYPE_SUCCESS
@@ -34,7 +32,6 @@ import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_A
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_DETAIL_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_JOIN_TEAM_SUCCESS
 import net.sarasarasa.lifeup.converter.TodoItemConverter
-import net.sarasarasa.lifeup.network.ReportNetwork
 import net.sarasarasa.lifeup.network.impl.ReportNetworkImpl
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
@@ -374,10 +371,10 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 .setSingleChoiceItems(arrTypeName, 0) { dialog, index ->
 
                     with(reportDetailVO){
-                        criminalUserId = mTeamDetailVO.userId
+                        criminalUserId = mTeamDetailVO.owner?.userId
                         itemId = mTeamId
                         reportItem = "team"
-                        reportTypeId = index.toLong()
+                        reportTypeId = index.toLong() + 1
                     }
 
                 }.setPositiveButton("确定") { _, _ ->

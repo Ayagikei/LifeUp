@@ -8,4 +8,12 @@
         <item>Lv4</item>
     </string-array>
 
+    <string-array name="steps">
+        <item>2500步</item>
+        <item>5000步</item>
+        <item>10000步</item>
+        <item>15000步</item>
+        <item>20000步</item>
+    </string-array>
+
 </resources>
