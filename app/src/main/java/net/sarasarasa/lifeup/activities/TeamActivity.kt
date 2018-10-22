@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,22 +21,25 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.chad.library.adapter.base.BaseQuickAdapter
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_team.*
 import kotlinx.android.synthetic.main.content_team.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.TeamActivityListAdapter
+import net.sarasarasa.lifeup.constants.CommonConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_REPORT_TYPE_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_DETAIL_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_JOIN_TEAM_SUCCESS
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.network.ReportNetwork
+import net.sarasarasa.lifeup.network.impl.ReportNetworkImpl
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
-import net.sarasarasa.lifeup.vo.PageVO
-import net.sarasarasa.lifeup.vo.TeamActivityListVO
-import net.sarasarasa.lifeup.vo.TeamDetailVO
+import net.sarasarasa.lifeup.vo.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
@@ -56,6 +60,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             MSG_GET_TEAM_DETAIL_SUCCESS -> {
                 if (msg.obj != null) {
                     val teamDetailVO = msg.obj as TeamDetailVO
+                    mTeamDetailVO = teamDetailVO
                     initData(teamDetailVO)
                 }
             }
@@ -81,6 +86,13 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
             }
+            MSG_GET_REPORT_TYPE_SUCCESS ->{
+                if(msg.obj != null){
+                    val returnList = msg.obj as ArrayList<ReportTypeVO>
+
+                    showReportDialog(returnList)
+                }
+            }
             else -> {
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
@@ -92,10 +104,12 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
     }
 
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
+    private val reportNetworkImpl = ReportNetworkImpl(uiHandler)
 
     private val mList: MutableList<TeamActivityListVO> = ArrayList<TeamActivityListVO>().toMutableList()
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: TeamActivityListAdapter
+    private var mTeamDetailVO = TeamDetailVO()
     private var mTeamId = -1L
     private var currentPage = 0L
     private var totalPage: Long? = null
@@ -287,7 +301,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_report -> {
-                ToastUtils.showShortToast("举报成功！")
+                reportNetworkImpl.getReportType()
                 return true
             }
             R.id.action_quit -> {
@@ -347,6 +361,29 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         } else {
             EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, *perms)
         }
+    }
+
+    private fun showReportDialog(reportTypeList :ArrayList<ReportTypeVO>) {
+        var arrTypeName = emptyArray<String>()
+
+        for(reportTypeVO in reportTypeList)
+            arrTypeName = arrTypeName.plus(reportTypeVO.typeName.toString())
+
+        val reportDetailVO = ReportDetailVO()
+        val dialog = AlertDialog.Builder(this).setTitle("举报")
+                .setSingleChoiceItems(arrTypeName, 0) { dialog, index ->
+
+                    with(reportDetailVO){
+                        criminalUserId = mTeamDetailVO.userId
+                        itemId = mTeamId
+                        reportItem = "team"
+                        reportTypeId = index.toLong()
+                    }
+
+                }.setPositiveButton("确定") { _, _ ->
+                    reportNetworkImpl.report(reportDetailVO)
+                }.create()
+        dialog.show()
     }
 
 

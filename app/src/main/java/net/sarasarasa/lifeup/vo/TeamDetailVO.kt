@@ -15,7 +15,7 @@ class TeamDetailVO {
     var teamId: Long? = null
     var teamStatus: Int? = null
     var teamTitle: String? = null
-    var userId: Int? = null
+    var userId: Long? = null
     var owner: ProfileVO? = null
     var teamHead: String? = null
     var memberAmount: Int? = null

@@ -73,6 +73,8 @@ dependencies {
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
     implementation 'com.github.medyo:android-about-page:1.2.4'
     implementation 'pub.devrel:easypermissions:2.0.0'
+    implementation 'com.github.baoyachi:StepView:1.9'
+    implementation 'com.shuhart.stepview:stepview:1.4.0'
 }
 
 MobSDK {

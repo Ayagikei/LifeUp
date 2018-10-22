@@ -41,5 +41,10 @@ class NetworkConstants {
 
         const val MSG_FINISH_TEAM_TASK = 566
 
+        const val MSG_GET_REPORT_TYPE_FAILED = 701
+        const val MSG_GET_REPORT_TYPE_SUCCESS = 702
+        const val MSG_REPORT_FAILED = 703
+        const val MSG_REPORT_SUCCESS = 704
+
     }
 }
