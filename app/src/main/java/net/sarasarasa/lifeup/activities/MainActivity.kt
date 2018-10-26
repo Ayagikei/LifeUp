@@ -23,10 +23,10 @@ import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.VersionConstants
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
-import net.sarasarasa.lifeup.network.impl.VersionNetworkImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
+import net.sarasarasa.lifeup.utils.Pedometer
 import net.sarasarasa.lifeup.utils.ToastUtils
 
 
@@ -63,15 +63,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return@Callback true
     }
 
-    val attributeNetworkImpl = AttributeNetworkImpl(uiHandler)
-    val userService = UserServiceImpl()
-    val attributeService = AttributeServiceImpl()
-    val versionNetworkImpl = VersionNetworkImpl(uiHandler)
+    private val attributeNetworkImpl = AttributeNetworkImpl(uiHandler)
+    private val userService = UserServiceImpl()
+    private val attributeService = AttributeServiceImpl()
+    private lateinit var pedometer: Pedometer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        pedometer = Pedometer(this)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        //pedometer.unRegister()
     }
 
     fun initToolBar(toolbar: Toolbar) {
@@ -178,6 +186,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
 
+        pedometer.register()
+
         val mine = userService.getMine()
         //设置昵称
         val headLayout = nav_view.getHeaderView(0)
@@ -214,5 +224,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+
+    fun getStep(): Float {
+        return pedometer.stepCount
+    }
 
 }

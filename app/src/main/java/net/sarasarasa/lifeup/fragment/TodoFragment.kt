@@ -12,11 +12,9 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
@@ -503,22 +501,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     }
 
-    private fun showDialogLifeUp() {
-        if (dialog != null)
-            return
 
-        dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_lifeup, null)
-        dialog = context?.let { AlertDialog.Builder(it).create() }
-
-        with(dialog) {
-            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
-                dismiss()
-                dialog = null
-            }
-            this?.setView(dialogView)
-            this?.show()
-        }
-    }
 
     private fun showDialogActivity(taskModel: TaskModel) {
         // val editText = EditText(context)

@@ -2,20 +2,24 @@ package net.sarasarasa.lifeup.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.dialog_lifeup.view.*
 import kotlinx.android.synthetic.main.fragment_status.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
+import net.sarasarasa.lifeup.service.impl.StepServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 
 class StatusFragment : Fragment() {
 
     val attributeLevelService = AttributeLevelServiceImpl()
     val attributeService = AttributeServiceImpl()
+    val stepService = StepServiceImpl()
     val todoService = TodoServiceImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -94,15 +98,61 @@ class StatusFragment : Fragment() {
 
         val arrStep = ArrayList<String>()
         with(arrStep) {
+            arrStep.add("0步")
             arrStep.add("2500步")
             arrStep.add("5000步")
             arrStep.add("10000步")
-            arrStep.add("15000步")
             arrStep.add("20000步")
         }
 
         view.step_view.setSteps(arrStep)
+
+        val mainActivity = context as MainActivity
+        val dailyStepCount = stepService.updateAndGetTodayStepCount(mainActivity.getStep())
+
+        when {
+            dailyStepCount in 2500..5000 -> view.step_view.go(2, true)
+            dailyStepCount in 5000..10000 -> view.step_view.go(3, true)
+            dailyStepCount in 10000..20000 -> view.step_view.go(4, true)
+            dailyStepCount > 20000 -> view.step_view.go(5, true)
+        }
+
+        view.tv_step_cnt_num.text = "${dailyStepCount}步"
+
+        if (stepService.isTodayGotReward()) {
+            view.btn_get_reward.isEnabled = false
+            view.btn_get_reward.text = "已领取"
+        } else if (dailyStepCount in 0..2500) {
+            view.btn_get_reward.isEnabled = false
+            view.btn_get_reward.text = "暂不可领取"
+        } else {
+            view.btn_get_reward.setOnClickListener {
+                getRewardByStep()
+                it.isEnabled = false
+            }
+        }
     }
 
+    private fun getRewardByStep() {
+        val exp = stepService.getRewardByStep()
+        showDialogLifeUp(exp)
+    }
+
+    private fun showDialogLifeUp(exp: Long) {
+
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_lifeup, null)
+        dialogView.tv_title.text = "你获得了「力量」属性经验值！"
+        dialogView.tv_content.text = " ${exp} 点"
+        val dialog = context?.let { AlertDialog.Builder(it).create() }
+
+        with(dialog) {
+            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                view?.let { initData(it) }
+                dismiss()
+            }
+            this?.setView(dialogView)
+            this?.show()
+        }
+    }
 
 }
