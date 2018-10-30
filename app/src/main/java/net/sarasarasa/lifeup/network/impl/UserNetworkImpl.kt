@@ -343,6 +343,8 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         if (currentPage == 0L || size == 0L)
             return
 
+        Log.e("userId", userId.toString())
+
         val call = when (userId) {
             USER_ME -> network.getUserFollower(userService.getToken(), currentPage, size)
             else -> network.getUserFollower(userService.getToken(), userId, currentPage, size)

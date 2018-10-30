@@ -10,9 +10,11 @@ class TeamMembaerListVO {
     var userAddress: String? = null
     var userHead: String? = null
     var createTime: Date? = null
+    var point: Long? = null
+    var rank: Int? = null
 
     override fun toString(): String {
-        return "TeamMembaerListVO(isFollow=$isFollow, userId=$userId, nickName=$nickname, userAddress=$userAddress, userHead=$userHead, createTime=$createTime)"
+        return "TeamMembaerListVO(isFollow=$isFollow, userId=$userId, nickname=$nickname, userAddress=$userAddress, userHead=$userHead, createTime=$createTime, point=$point)"
     }
 
 }

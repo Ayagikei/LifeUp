@@ -1,9 +1,12 @@
 package net.sarasarasa.lifeup.adapters
 
 import android.util.Log
+import android.view.View
+import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.UserActivity
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.vo.TeamActivityListVO
 import java.text.SimpleDateFormat
@@ -41,6 +44,19 @@ class UserActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
             helper.setVisible(R.id.tv_teamTitle, true)
             helper.setText(R.id.tv_teamTitle, "「${item.teamTitle}」团队")
         }
+
+        val ninePhotoLayout = helper.getView<BGANinePhotoLayout>(R.id.npl_item_moment_photos)
+        if (item.activityImages != null) {
+            ninePhotoLayout.data = item.activityImages
+            ninePhotoLayout.visibility = View.VISIBLE
+        } else {
+            ninePhotoLayout.visibility = View.GONE
+        }
+
+        helper.addOnClickListener(R.id.npl_item_moment_photos)
+
+        val delegate = mContext as UserActivity
+        ninePhotoLayout.setDelegate(delegate)
 
 
     }

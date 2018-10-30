@@ -1,6 +1,5 @@
 package net.sarasarasa.lifeup.fragment
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import kotlinx.android.synthetic.main.content_user_mine.view.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.activities.*
+import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -29,7 +28,7 @@ class MeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
-
+        (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
 
 
         initView(rootView)

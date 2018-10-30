@@ -3,6 +3,7 @@
     <string name="title_board">Board</string>
     <string name="title_status">Status</string>
     <string name="title_community">Community</string>
+    <string name="title_me">Me</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>

@@ -12,10 +12,8 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.activities.TeamActivity
 import net.sarasarasa.lifeup.converter.TodoItemConverter
-import net.sarasarasa.lifeup.fragment.TodoFragment
 import net.sarasarasa.lifeup.vo.TeamActivityListVO
 import java.text.SimpleDateFormat
 import java.util.*

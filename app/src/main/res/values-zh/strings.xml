@@ -37,5 +37,6 @@
     <string name="login_viaYiban">使用易班登陆</string>
 
     <string name="title_activity_add_to_do_item">新设待办事项</string>
+    <string name="title_me">我的</string>
 
 </resources>
