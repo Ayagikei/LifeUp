@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -257,9 +256,11 @@
                 android:id="@+id/iv_history"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="176dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:onClick="openHistory"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_btn_history" />
@@ -276,6 +277,30 @@
                 app:layout_constraintEnd_toEndOf="@+id/iv_history"
                 app:layout_constraintStart_toStartOf="@+id/iv_history"
                 app:layout_constraintTop_toBottomOf="@+id/iv_history" />
+
+            <ImageView
+                android:id="@+id/iv_achievement"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="56dp"
+                android:onClick="openAchievement"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_btn_achievement" />
+
+            <TextView
+                android:id="@+id/tv_achievement"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_marginTop="4dp"
+                android:text="我的成就"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_achievement"
+                app:layout_constraintStart_toStartOf="@+id/iv_achievement"
+                app:layout_constraintTop_toBottomOf="@+id/iv_achievement" />
         </android.support.constraint.ConstraintLayout>
 
 
@@ -321,9 +346,11 @@
                 android:id="@+id/iv_setting"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="176dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
                 android:onClick="openSetting"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_btn_setting" />

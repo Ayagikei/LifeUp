@@ -16,7 +16,7 @@ class RetrofitInstance {
         var client = OkHttpClient.Builder()
                 .build()
 
-        private val retrofitInstance = Retrofit.Builder().baseUrl("http://172.16.33.155:8080").client(client).addConverterFactory(GsonConverterFactory.create(gson)).build()
+        private val retrofitInstance = Retrofit.Builder().baseUrl("http://hdonghong.top").client(client).addConverterFactory(GsonConverterFactory.create(gson)).build()
 
         fun getInstance(): Retrofit {
             return retrofitInstance

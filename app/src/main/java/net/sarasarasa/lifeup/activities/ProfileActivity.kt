@@ -2,8 +2,6 @@ package net.sarasarasa.lifeup.activities
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,13 +12,12 @@ import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatImageView
-import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import com.jeff.settingitem.SettingView
+import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_profile.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.CommonConstants.Companion.CHOOSE_PICTURE
@@ -29,22 +26,20 @@ import net.sarasarasa.lifeup.constants.CommonConstants.Companion.TAKE_PICTURE
 import net.sarasarasa.lifeup.constants.CommonConstants.Companion.USER_SEX_FEMALE
 import net.sarasarasa.lifeup.constants.CommonConstants.Companion.USER_SEX_MALE
 import net.sarasarasa.lifeup.constants.CommonConstants.Companion.USER_SEX_SECRET
-import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_AVATAR_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_AVATAR_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_PROFILE_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_SUCCESS
 import net.sarasarasa.lifeup.converter.UserConverter
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
-import net.sarasarasa.lifeup.utils.PictureUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.ProfileVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-import java.io.*
+import java.io.File
+import java.io.IOException
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -76,8 +71,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private var tempUri:Uri? = null
     private lateinit var tempFile:File
-    private lateinit var mBitmap:Bitmap
     private var fileName = "avatar.jpg"
+    private var fileNameOrigin = "avatarOrigin.jpg"
 
     companion object {
         private const val RC_CAMERA = 200
@@ -104,12 +99,12 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_finish -> {
                 userNetwork.updateUserProfile(profileVO)
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -140,7 +135,11 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         sv_avatar.setOnItemViewClick {
-            showChoosePicDialog()
+            try {
+                showChoosePicDialog()
+            } catch (e: Exception) {
+                ToastUtils.showShortToast(e.toString())
+            }
         }
     }
 
@@ -201,33 +200,40 @@ class ProfileActivity : AppCompatActivity() {
      * 显示修改图片的对话框
      */
     @AfterPermissionGranted(RC_CAMERA)
-    protected fun showChoosePicDialog() {
+    fun showChoosePicDialog() {
         val currentApiVersion = android.os.Build.VERSION.SDK_INT
         val builder = android.app.AlertDialog.Builder(this)
 
         builder.setTitle("修改头像")
         val items = arrayOf("选择本地照片", "拍照")
         builder.setNegativeButton("取消", null)
-        builder.setItems(items) { dialog, which ->
+        builder.setItems(items) { _, which ->
             when (which) {
                 0 // 选择本地照片
                 -> {
-                    val intent = Intent(Intent.ACTION_PICK)//返回被选中项的URI
-                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")//得到所有图片的URI
-                    startActivityForResult(intent, CHOOSE_PICTURE)
+                    val perms = arrayOf(Manifest.permission.CAMERA)
+
+                    if (EasyPermissions.hasPermissions(this, *perms)) {
+                        val intent = Intent(Intent.ACTION_PICK)//返回被选中项的URI
+                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")//得到所有图片的URI
+                        startActivityForResult(intent, CHOOSE_PICTURE)
+                    } else {
+                        EasyPermissions.requestPermissions(this, "需要文件写入权限", RC_CAMERA, *perms)
+                    }
                 }
                 1 // 拍照
                 -> {
-                    val perms = Manifest.permission.CAMERA
+                    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
 
-                    if(EasyPermissions.hasPermissions(this,perms)) {
+                    if (EasyPermissions.hasPermissions(this, *perms)) {
                         val openCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
                         val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
+                        //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
                         if(!appDir.exists())
                             appDir.mkdir()
 
-                        val file = File(appDir,fileName)
+                        val file = File(appDir, fileNameOrigin)
                         if(file.exists())
                             file.delete()
                         tempFile = file
@@ -244,7 +250,7 @@ class ProfileActivity : AppCompatActivity() {
                         startActivityForResult(openCameraIntent, TAKE_PICTURE)
                     }
                     else{
-                        EasyPermissions.requestPermissions(this,"拍照需要系统摄像头权限授权",RC_CAMERA,perms)
+                        EasyPermissions.requestPermissions(this, "拍照需要系统摄像头权限授权和文件写入权限", RC_CAMERA, *perms)
                     }
                 }
             }
@@ -258,31 +264,57 @@ class ProfileActivity : AppCompatActivity() {
             when (requestCode) {
                 TAKE_PICTURE -> {
                     val imgUriSel = FileProvider.getUriForFile(this, "$packageName.provider", tempFile)
-                    cutImage(imgUriSel)
+                    cutImageByUcrop(imgUriSel)
                 } // 对图片进行裁剪处理
-                CHOOSE_PICTURE -> cutImage(data!!.data) // 对图片进行裁剪处理
+                CHOOSE_PICTURE -> cutImageByUcrop(data?.data) // 对图片进行裁剪处理
                 CROP_SMALL_PICTURE -> if (data != null) {
+                    ToastUtils.showShortToast("here")
                     try {
-                        setImageToView(data) // 让刚才选择裁剪得到的图片显示在界面上
+                        uploadFile(data) // 让刚才选择裁剪得到的图片显示在界面上
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-
                 }
+                UCrop.REQUEST_CROP -> {
+
+                    data?.let { uploadFile(it) }
+                }
+                UCrop.RESULT_ERROR -> {
+                    val cropError = data?.let { UCrop.getError(it) }
+                    ToastUtils.showShortToast(cropError.toString())
+                }
+
             }
         }
     }
 
-    /**
-     * 裁剪图片方法实现
-     */
-    protected fun cutImage(uri: Uri?) {
-        ToastUtils.showShortToast("heelp")
+    private fun cutImageByUcrop(uri: Uri?) {
+        val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
+        //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
+        if (!appDir.exists())
+            appDir.mkdir()
+
+        val outputImage = File(appDir, fileName)
+        val outputUri = Uri.fromFile(outputImage)
+
+        uri?.let {
+            UCrop.of(it, outputUri)
+                    .withAspectRatio(1f, 1f)
+                    .withMaxResultSize(256, 256)
+                    .start(this)
+        }
+    }
+
+
+    @Deprecated("use ucrop instead")
+    fun cutImage(uri: Uri?) {
+        val currentApiVersion = android.os.Build.VERSION.SDK_INT
 
         if (uri == null) {
             Log.i("tip", "The uri is not exist.")
         }
         tempUri = uri!!
+        ToastUtils.showShortToast(tempUri.toString())
         val intent = Intent("com.android.camera.action.CROP")
         //com.android.camera.action.CROP这个action是用来裁剪图片用的
         intent.setDataAndType(uri, "image/*")
@@ -294,53 +326,36 @@ class ProfileActivity : AppCompatActivity() {
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 256)
         intent.putExtra("outputY", 256)
-        intent.putExtra("return-data", true)
-
+        //intent.putExtra("return-data", true)
+        //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
+        tempUri = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().absolutePath + "/" + "LifeUp" + "/" + fileName)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri)
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        intent.putExtra("noFaceDetection", true)
+
         startActivityForResult(intent, CROP_SMALL_PICTURE)
     }
+
 
     /**
      * 保存裁剪之后的图片数据
      */
     @Throws(IOException::class)
-    protected fun setImageToView(data: Intent) {
-        val extras = data.extras
-        if (extras != null) {
-            mBitmap = extras.getParcelable("data")
-            //这里图片是方形的，可以用一个工具类处理成圆形（很多头像都是圆形，这种工具类网上很多不再详述）
-            //mImage.setImageBitmap(mBitmap)//显示图片
-        }
+    fun uploadFile(data: Intent) {
 
-        val file = saveFile(mBitmap)
+        //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
+        val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
+        if (!appDir.exists())
+            appDir.mkdir()
 
+        val file = File(appDir, fileName)
+
+        LoadingDialogUtils.show(this)
         userNetwork.updateAvatar(file)
 
     }
 
 
-    fun saveFile(bitmap: Bitmap): File {
-        val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
-        if(!appDir.exists())
-            appDir.mkdir()
-
-        val file = File(appDir,fileName)
-        if(file.exists())
-            file.delete()
-
-        file.createNewFile()
-
-        try{
-            val fos = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos)
-            fos.flush()
-            fos.close()
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
-
-        Log.e("file",file.absolutePath)
-        return file
-    }
 }

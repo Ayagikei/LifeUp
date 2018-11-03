@@ -192,8 +192,10 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     userService.saveToken(str)
 
                     message.what = MSG_PHONE_REGISTER_SUCCESS
-                    uiHandler.handleMessage(message)
+
                 }
+
+                uiHandler.handleMessage(message)
             }
         })
     }

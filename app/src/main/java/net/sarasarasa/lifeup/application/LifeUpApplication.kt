@@ -16,7 +16,7 @@ class LifeUpApplication : Application() {
         LitePal.initialize(this)
         ToastUtils.init(this)
         DensityUtil.init(this)
-
+        //ApplicationCrashHandler.getInstance().init(this)
 
         /*
         val applicationCrashHandler = ApplicationCrashHandler()

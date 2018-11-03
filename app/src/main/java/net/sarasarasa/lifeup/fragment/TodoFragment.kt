@@ -39,6 +39,7 @@ import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
+import net.sarasarasa.lifeup.service.impl.AchievementServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -85,6 +86,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private val todoService = TodoServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private val attributeLevelService = AttributeLevelServiceImpl()
+    private val achievementService = AchievementServiceImpl()
     private val mList: MutableList<TaskModel> = todoService.getUncompletedTodoList().toMutableList()
     private var dialogView: View? = null
     private var dialog: AlertDialog? = null
@@ -93,6 +95,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
+    private lateinit var rootView: View
 
     private var mPhotosSnpl:BGASortableNinePhotoLayout? = null
 
@@ -107,6 +110,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val view = inflater.inflate(R.layout.fragment_todo, null)
 
         initView(view)
+        rootView = view
         return view
     }
 
@@ -149,14 +153,19 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
 
                 //如果所选Item不是未完成状态或是团队事项，不可长按
-                if (item.taskStatus != 0 || item.teamId != IS_TEAM_TASK)
+                //|| item.teamId != IS_TEAM_TASK
+                if (item.taskStatus != 0)
                     return@setOnMenuItemClickListener true
 
                 when (menuItem.itemId) {
                     R.id.edit_item -> {
-                        val intent = Intent(this.context, EditToDoItemActivity::class.java)
-                        intent.putExtra("id", item.id)
-                        startActivity(intent)
+                        if (item.teamId != IS_TEAM_TASK) {
+                            ToastUtils.showShortToast("团队事项不可编辑！")
+                        } else {
+                            val intent = Intent(this.context, EditToDoItemActivity::class.java)
+                            intent.putExtra("id", item.id)
+                            startActivity(intent)
+                        }
                         return@setOnMenuItemClickListener true
                     }
                     R.id.delete_item -> {
@@ -273,6 +282,10 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                 //刷新HeaderView的进度显示
                 mList[position].taskStatus = ToDoItemConstants.COMPLETED
+
+                rootView.post {
+                    achievementService.checkAchievement(rootView.achievement_view)
+                }
 
             } // end of the if
         }
@@ -523,6 +536,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 setPositiveButton("发表") { _, _ ->
                     //发表动态请求
                     activityVO.activity = dialogView.editText.text.toString()
+                    LoadingDialogUtils.show(context)
 
                     if(mPhotosSnpl!!.data.isEmpty())
                     teamNetworkImpl.finishTeamTask(taskModel, activityVO)
@@ -558,6 +572,11 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         } else mAdapter.removeAllFooterView()
 
         mAdapter.notifyDataSetChanged()
+
+        rootView.post {
+            achievementService.checkAchievement(rootView.achievement_view)
+        }
+
     }
 
     private fun refreshHeaderView(view: View): View {

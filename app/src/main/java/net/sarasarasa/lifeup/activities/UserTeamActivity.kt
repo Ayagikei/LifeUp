@@ -116,10 +116,8 @@ class UserTeamActivity : AppCompatActivity() {
         getNewList()
         mAdapter.setOnLoadMoreListener({ getNewList() }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
-        mAdapter.isFirstOnly(false)
+        mAdapter.isFirstOnly(true)
         mAdapter.setOnItemClickListener { adapter, view, position ->
-
-
             val item = adapter.getItem(position) as TeamListVO
 
             val intent = Intent(this, TeamActivity::class.java)

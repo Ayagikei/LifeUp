@@ -47,14 +47,17 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
                     totalPage = pageVO.totalPage
 
-                    if (swipe_refresh_layout.isRefreshing) {
-                        swipe_refresh_layout.isRefreshing = false
-                        mAdapter.data.clear()
-                    }
+                    if (swipe_refresh_layout != null)
+                        if (swipe_refresh_layout.isRefreshing) {
+                            swipe_refresh_layout.isRefreshing = false
+                            mAdapter.data.clear()
+                        }
 
                     setNewData(list.toMutableList())
 
-                    swipe_refresh_layout.isEnabled = true
+                    if (swipe_refresh_layout != null)
+                        swipe_refresh_layout.isEnabled = true
+
                     mAdapter.setEnableLoadMore(true)
                     mAdapter.notifyDataSetChanged()
                 }
@@ -128,7 +131,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
             swipe_refresh_layout.isEnabled = false
         }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
-        mAdapter.isFirstOnly(false)
+        mAdapter.isFirstOnly(true)
         mAdapter.setOnItemClickListener { adapter, view, position ->
 
             val item = adapter.getItem(position) as TeamActivityListVO

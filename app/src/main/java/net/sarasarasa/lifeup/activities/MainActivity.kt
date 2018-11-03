@@ -23,7 +23,9 @@ import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.VersionConstants
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
+import net.sarasarasa.lifeup.service.impl.AchievementServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
+import net.sarasarasa.lifeup.service.impl.StepServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.Pedometer
@@ -31,6 +33,9 @@ import net.sarasarasa.lifeup.utils.ToastUtils
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    val stepServiceImpl = StepServiceImpl()
+    val achievementServiceImpl = AchievementServiceImpl()
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
 
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private val attributeNetworkImpl = AttributeNetworkImpl(uiHandler)
+    private val achievementService = AchievementServiceImpl()
     private val userService = UserServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private lateinit var pedometer: Pedometer
@@ -73,6 +79,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
         pedometer = Pedometer(this)
+
     }
 
 
@@ -130,7 +137,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_achievement -> {
-                ToastUtils.showShortToast("此功能暂不可用！")
+                val intent = Intent(this, AchievementActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingActivity::class.java)
@@ -183,6 +191,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
     }
 
+    fun openAchievement(view: View) {
+        val intent = Intent(this, AchievementActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -218,6 +231,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun syncData() {
+
+
         if (!userService.getToken().isBlank()) {
             //保存数据到云端
             attributeNetworkImpl.updateAttribute(attributeService.getAttributeVO())
@@ -228,5 +243,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun getStep(): Float {
         return pedometer.stepCount
     }
+
+/*    fun getAchievementView(): AchievementView{
+        return achievement_view
+    }*/
 
 }

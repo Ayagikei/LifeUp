@@ -32,8 +32,9 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 && item.taskFrequency == 0
                 && item.taskStatus == ToDoItemConstants.COMPLETED) {
 
-            helper.setVisible(R.id.btn_undo, true)
-                    .addOnClickListener(R.id.btn_undo)
+            if (item.teamId == -1L)
+                helper.setVisible(R.id.btn_undo, true)
+                        .addOnClickListener(R.id.btn_undo)
         } else {
             helper.setVisible(R.id.btn_undo, false)
         }

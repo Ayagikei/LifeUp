@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PictureUtils {
@@ -71,5 +73,25 @@ public class PictureUtils {
         return strFileExtendName;
     }
 
+    public static void compressBitmap(String filePath, File file) {
+        // 数值越高，图片像素越低
+        int inSampleSize = 2;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        //采样率
+        options.inSampleSize = inSampleSize;
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 把压缩后的数据存放到baos中
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

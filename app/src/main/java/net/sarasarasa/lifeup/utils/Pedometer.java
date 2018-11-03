@@ -28,8 +28,15 @@ public class Pedometer implements SensorEventListener {
     }
 
     public void register() {
-        register(mStepCount, SensorManager.SENSOR_DELAY_FASTEST);
-        register(mStepDetector, SensorManager.SENSOR_DELAY_FASTEST);
+        if (mStepCount == null && mStepDetector == null) {
+            ToastUtils.Companion.showLongToast("你的手机可能不支持计步传感器，部分功能不可用。");
+        } else {
+            if (mStepCount != null)
+                register(mStepCount, SensorManager.SENSOR_DELAY_FASTEST);
+
+            if (mStepDetector != null)
+                register(mStepDetector, SensorManager.SENSOR_DELAY_FASTEST);
+        }
     }
 
     public void unRegister() {

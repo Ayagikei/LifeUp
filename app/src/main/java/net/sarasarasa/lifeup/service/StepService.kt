@@ -6,5 +6,8 @@ interface StepService {
 
     fun getRewardByStep(): Long
 
+    fun getTodayStepCount(): Long
+
     fun isTodayGotReward(): Boolean
+
 }

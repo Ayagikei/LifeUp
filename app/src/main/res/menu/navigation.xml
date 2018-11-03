@@ -22,6 +22,12 @@
         android:title="@string/title_community" />
 
     <item
+        android:id="@+id/navigation_message"
+        android:fragment="net.sarasarasa.lifeup.fragment.MessageFragment"
+        android:icon="@drawable/ic_textsms_24px"
+        android:title="消息" />
+
+    <item
         android:id="@+id/navigation_me"
         android:fragment="net.sarasarasa.lifeup.fragment.MeFragment"
         android:icon="@drawable/ic_face_24px"

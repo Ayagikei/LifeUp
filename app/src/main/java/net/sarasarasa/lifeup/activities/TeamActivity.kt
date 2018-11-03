@@ -159,18 +159,6 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             btn_join.isEnabled = false
             btn_join.setText("已截止")
         } else {
-
-            if (teamDetailVO.isMember != 0) {
-                btn_sign_next.setOnClickListener {
-                    teamNetworkImpl.getNextTeamTask(mTeamId)
-                    it.isEnabled = false
-                }
-                btn_sign_next.isEnabled = true
-
-            } else {
-                btn_sign_next.isEnabled = false
-            }
-
             if (teamDetailVO.isMember != 0) {
                 btn_join.isEnabled = false
                 btn_join.setText("已加入")
@@ -185,6 +173,19 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 }
             }
 
+        }
+
+        if (teamDetailVO.isMember != 0) {
+            btn_sign_next.setOnClickListener {
+                teamNetworkImpl.getNextTeamTask(mTeamId)
+                it.isEnabled = false
+                btn_sign_next.setText("已领取")
+            }
+            btn_sign_next.isEnabled = true
+            btn_sign_next.setText("领取")
+        } else {
+            btn_sign_next.isEnabled = false
+            btn_sign_next.setText("不可领取")
         }
 
 
@@ -255,7 +256,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         getNewList()
         mAdapter.setOnLoadMoreListener({ getNewList() }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
-        mAdapter.isFirstOnly(false)
+        mAdapter.isFirstOnly(true)
 
 /*        mAdapter.setOnItemClickListener { adapter, view, position ->
 

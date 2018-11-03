@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.dao
 
 import net.sarasarasa.lifeup.models.TaskModel
 import org.litepal.LitePal
+import java.util.*
 
 class TodoDAO {
     fun saveTodoItem(taskModel: TaskModel): Long? {
@@ -39,7 +40,11 @@ class TodoDAO {
     }
 
     fun getOverdueItems(time: Long): List<TaskModel> {
-        return LitePal.where("taskExpireTime <= ? and taskStatus = ?", time.toString(), "0").find(TaskModel::class.java)
+        val listTotalItem = LitePal.where("taskExpireTime <= ? and taskStatus = ? and teamId = ?", time.toString(), "0", "-1").find(TaskModel::class.java)
+        val cal = Calendar.getInstance()
+        val listNetworkItem = LitePal.where("endTime <= ? and taskStatus = ? and teamId != ?", cal.timeInMillis.toString(), "0", "-1").find(TaskModel::class.java)
+        listTotalItem.addAll(listNetworkItem)
+        return listTotalItem
     }
 
     fun getFinishCount(): Int {
@@ -59,6 +64,10 @@ class TodoDAO {
             return null
 
         return LitePal.where("teamId = ? and teamRecordId = ?", teamId.toString(), teamRecordId.toString()).findFirst(TaskModel::class.java)
+    }
+
+    fun getFinishTeamTaskCount(): Int {
+        return LitePal.where("taskStatus = ? and teamId != ?", "1", "-1").count(TaskModel::class.java)
     }
 
 }

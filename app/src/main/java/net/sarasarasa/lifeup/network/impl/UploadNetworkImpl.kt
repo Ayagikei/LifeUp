@@ -4,29 +4,16 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import net.sarasarasa.lifeup.base.BaseNetwork
-import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_CONNECT_FAILED
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FOLLOW_FAILED
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FOLLOW_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_MOMENTS_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_PROFILE_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_ACTIVITIES_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_DETAIL_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_USER_TEAM_LIST_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UNFOLLOW_FAILED
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UNFOLLOW_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_AVATAR_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_AVATAR_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_FAILED
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_UPDATE_PROFILE_SUCCESS
-import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_CONNECT_FAILED
-import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.USER_ME
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.UploadNetwork
-import net.sarasarasa.lifeup.network.UserNetwork
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
-import net.sarasarasa.lifeup.vo.*
+import net.sarasarasa.lifeup.utils.PictureUtils
+import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.vo.ActivityVO
+import net.sarasarasa.lifeup.vo.ResultVO
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -49,9 +36,10 @@ class UploadNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         val parts = ArrayList<MultipartBody.Part>()
 
         for(item in images){
-            val fileFirst = File(item)
-            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), fileFirst)
-            val part = MultipartBody.Part.createFormData("imageFiles", fileFirst.name, requestFile)
+            val file = File(item)
+            PictureUtils.compressBitmap(file.absolutePath, file)
+            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            val part = MultipartBody.Part.createFormData("imageFiles", file.name, requestFile)
             parts.add(part)
         }
 
@@ -70,6 +58,7 @@ class UploadNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 上传模块", "[上传图片]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = MSG_UPDATE_AVATAR_FAILED
                     message.obj = responseBody.msg
                 } else {

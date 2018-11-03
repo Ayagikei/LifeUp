@@ -11,6 +11,7 @@ import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.network.AttributeNetwork
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.AttributionVO
 import net.sarasarasa.lifeup.vo.ResultVO
 import retrofit2.Call
@@ -42,6 +43,7 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 属性模块", "[获取用户属性]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
 
                 } else {
@@ -95,6 +97,7 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 属性模块", "[更新用户属性]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_ATTR_UPDATE_SUCCESS

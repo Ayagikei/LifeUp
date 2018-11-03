@@ -241,7 +241,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         getNewList()
         mAdapter.setOnLoadMoreListener({ getNewList() }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
-        mAdapter.isFirstOnly(false)
+        mAdapter.isFirstOnly(true)
         mAdapter.emptyView = getEmptyView()
 
     }

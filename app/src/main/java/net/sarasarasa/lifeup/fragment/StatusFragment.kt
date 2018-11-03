@@ -111,10 +111,10 @@ class StatusFragment : Fragment() {
         val dailyStepCount = stepService.updateAndGetTodayStepCount(mainActivity.getStep())
 
         when {
-            dailyStepCount in 2500..5000 -> view.step_view.go(2, true)
-            dailyStepCount in 5000..10000 -> view.step_view.go(3, true)
-            dailyStepCount in 10000..20000 -> view.step_view.go(4, true)
-            dailyStepCount > 20000 -> view.step_view.go(5, true)
+            dailyStepCount in 2500..5000 -> view.step_view.go(1, true)
+            dailyStepCount in 5000..10000 -> view.step_view.go(2, true)
+            dailyStepCount in 10000..20000 -> view.step_view.go(3, true)
+            dailyStepCount >= 20000 -> view.step_view.go(4, true)
         }
 
         view.tv_step_cnt_num.text = "${dailyStepCount}步"

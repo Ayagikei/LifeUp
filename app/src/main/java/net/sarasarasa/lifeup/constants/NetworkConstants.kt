@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.constants
 class NetworkConstants {
     companion object {
         const val MSG_CONNECT_FAILED = 10
+        const val TOKEN_ABSENT = 500202
         const val INVALID_TOKEN = 500203
 
 

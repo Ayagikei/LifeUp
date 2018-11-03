@@ -44,10 +44,11 @@ class TeamMemberActivity : AppCompatActivity() {
 
                     totalPage = pageVO.totalPage
 
-                    if (swipe_refresh_layout.isRefreshing) {
-                        swipe_refresh_layout.isRefreshing = false
-                        mAdapter.data.clear()
-                    }
+                    if (swipe_refresh_layout != null)
+                        if (swipe_refresh_layout.isRefreshing) {
+                            swipe_refresh_layout.isRefreshing = false
+                            mAdapter.data.clear()
+                        }
 
                     mAdapter.setEnableLoadMore(true)
 
@@ -115,7 +116,7 @@ class TeamMemberActivity : AppCompatActivity() {
         getNewList()
         mAdapter.setOnLoadMoreListener({ getNewList() }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT)
-        mAdapter.isFirstOnly(false)
+        mAdapter.isFirstOnly(true)
 
         mAdapter.setOnItemClickListener { adapter, view, position ->
             val item = adapter.getItem(position) as TeamMembaerListVO
@@ -149,6 +150,13 @@ class TeamMemberActivity : AppCompatActivity() {
                 mView.text = "关注"
                 mView.isClickable = true
                 item.isFollow = 0
+                val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
+                ViewCompat.setBackgroundTintList(mView, colorStateList)
+            } else if (item.isFollow == 2) {
+                item.userId?.let { userNetworkImpl.unfollowUserById(it) }
+                mView.text = "关注"
+                mView.isClickable = true
+                item.isFollow = 1
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
                 ViewCompat.setBackgroundTintList(mView, colorStateList)
             }

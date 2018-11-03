@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -44,14 +45,17 @@ class BoardFragment : Fragment() {
                         currentPage = totalPage as Long
                     }
 
-                    if (swipe_refresh_layout.isRefreshing) {
-                        swipe_refresh_layout.isRefreshing = false
-                        mAdapter.data.clear()
-                    }
+                    if (swipe_refresh_layout != null)
+                        if (swipe_refresh_layout.isRefreshing) {
+                            swipe_refresh_layout.isRefreshing = false
+                            mAdapter.data.clear()
+                        }
 
                     setNewData(list.toMutableList())
 
-                    swipe_refresh_layout.isEnabled = true
+                    if (swipe_refresh_layout != null)
+                        swipe_refresh_layout.isEnabled = true
+
                     mAdapter.setEnableLoadMore(true)
                     mAdapter.notifyDataSetChanged()
                 }
@@ -90,15 +94,16 @@ class BoardFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
 
 
-
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
         return rootView
     }
 
+    @SuppressLint("RestrictedApi")
     private fun initView(rootView: View) {
         initRecyclerView(rootView)
 
+        rootView.fab.visibility = View.GONE
         rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         rootView.swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
@@ -124,7 +129,7 @@ class BoardFragment : Fragment() {
             swipe_refresh_layout.isEnabled = false
         }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
-        mAdapter.isFirstOnly(false)
+        mAdapter.isFirstOnly(true)
     }
 
     private fun getNewList() {

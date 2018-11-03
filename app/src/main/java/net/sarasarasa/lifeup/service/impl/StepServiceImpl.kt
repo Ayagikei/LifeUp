@@ -103,6 +103,20 @@ class StepServiceImpl : StepService {
         return 0
     }
 
+    override fun getTodayStepCount(): Long {
+        val theLastStepRec = stepDAO.getTheLastStepRecord()
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+
+        return if (theLastStepRec != null
+                && DateUtils.isToday(theLastStepRec.date.time))
+            theLastStepRec.dailyStepCount
+        else 0
+    }
+
     override fun isTodayGotReward(): Boolean {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
 

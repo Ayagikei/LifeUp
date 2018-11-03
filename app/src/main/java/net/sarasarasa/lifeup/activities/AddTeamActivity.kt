@@ -286,7 +286,7 @@ open class AddTeamActivity : AppCompatActivity() {
         val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
             if (view is TextInputEditText)
                 if (isMaxSec) {
-                    view.setText("${hourOfDay}:${minute}:59")
+                    view.setText("${hourOfDay}:${minute}:00")
                 } else {
                     view.setText("${hourOfDay}:${minute}:00")
                 }
@@ -405,6 +405,7 @@ open class AddTeamActivity : AppCompatActivity() {
         Log.i("TeamVO", teamVO.toString())
 
         teamNetworkImpl.addTeam(teamVO)
+        LoadingDialogUtils.show(this)
 
     }
 
@@ -428,6 +429,26 @@ open class AddTeamActivity : AppCompatActivity() {
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
             til_toDoText.error = "不能为空"
+            isAllCheckPassed = false
+        }
+
+        if (TextUtils.isEmpty(til_remindTime.editText?.text)) {
+            til_toDoText.error = "不能为空"
+            isAllCheckPassed = false
+        }
+
+        if (TextUtils.isEmpty(til_remindDate.editText?.text)) {
+            et_remindDate.error = "不能为空"
+            isAllCheckPassed = false
+        }
+
+        if (TextUtils.isEmpty(til_startTimeEnd.editText?.text)) {
+            et_remindDate.error = "不能为空"
+            isAllCheckPassed = false
+        }
+
+        if (TextUtils.isEmpty(til_deadLine.editText?.text)) {
+            et_remindDate.error = "不能为空"
             isAllCheckPassed = false
         }
 

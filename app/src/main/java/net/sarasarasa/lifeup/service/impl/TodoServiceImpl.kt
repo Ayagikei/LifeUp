@@ -168,6 +168,10 @@ class TodoServiceImpl : TodoService {
         return todoDAO.getFinishCount()
     }
 
+    override fun getFinishTeamTaskCount(): Int {
+        return todoDAO.getFinishTeamTaskCount()
+    }
+
     override fun getGiveUpCount(): Int {
         return todoDAO.getGiveUpCount()
     }

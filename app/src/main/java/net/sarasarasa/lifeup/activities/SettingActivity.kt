@@ -35,5 +35,9 @@ class SettingActivity : AppCompatActivity() {
             ToastUtils.showShortToast("退出成功")
         }
 
+        setting_item_account.setOnItemViewClick {
+            ToastUtils.showShortToast("此功能暂不可用！")
+        }
+
     }
 }

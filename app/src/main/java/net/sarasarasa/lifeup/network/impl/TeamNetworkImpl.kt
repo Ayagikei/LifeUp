@@ -18,6 +18,7 @@ import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,6 +58,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队列表]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_GET_TEAM_LIST_SUCCESS
@@ -97,6 +99,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队成员列表]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_GET_TEAM_MEMBER_LIST_SUCCESS
@@ -135,6 +138,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队动态列表]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_GET_TEAM_ACTIVITIES_SUCCESS
@@ -169,6 +173,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[新建团队]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_ADD_TEAM_SUCCESS
@@ -206,6 +211,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[团队信息]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_GET_TEAM_DETAIL_SUCCESS
@@ -239,6 +245,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[加入团队]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_JOIN_TEAM_SUCCESS
@@ -277,6 +284,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[领取团队事项]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
@@ -317,6 +325,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_FINISH_TEAM_TASK

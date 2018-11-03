@@ -24,10 +24,11 @@ class MeFragment : Fragment() {
     val attributeService = AttributeServiceImpl()
     val attributeLevelService = AttributeLevelServiceImpl()
     val todoService = TodoServiceImpl()
+    lateinit var rootView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
+        rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
         (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
 
 
@@ -59,6 +60,19 @@ class MeFragment : Fragment() {
                     rootView.iv_avatar.setImageDrawable(circularBitmapDrawable)
                 }
             })
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            initView(rootView)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        initView(rootView)
     }
 
 

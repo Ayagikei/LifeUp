@@ -146,5 +146,6 @@
     </string>
     <string name="title_activity_user_team">团队</string>
     <string name="title_activity_about">关于</string>
+    <string name="title_activity_achievement">成就</string>
 
 </resources>
