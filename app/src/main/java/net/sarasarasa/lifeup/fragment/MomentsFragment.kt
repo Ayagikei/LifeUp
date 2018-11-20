@@ -17,7 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.activities.TeamActivity
+import net.sarasarasa.lifeup.activities.UserActivity
 import net.sarasarasa.lifeup.adapters.MomentsAdapter
 import net.sarasarasa.lifeup.base.RecyclerViewNoBugLinearLayoutManager
 import net.sarasarasa.lifeup.constants.AttributeConstants
@@ -136,8 +136,8 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
             val item = adapter.getItem(position) as TeamActivityListVO
 
-            val intent = Intent(context, TeamActivity::class.java)
-            intent.putExtra("teamId", item.teamId)
+            val intent = Intent(context, UserActivity::class.java)
+            intent.putExtra("userId", item.userId)
 
             startActivity(intent)
         }
@@ -190,7 +190,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (context?.let { EasyPermissions.hasPermissions(it, *perms) } == true) {
-            val downloadDir = File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload")
+            val downloadDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
             val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(context)
                     .saveImgDir(downloadDir) // 保存图片的目录，如果传 null，则没有保存图片功能
 

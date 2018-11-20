@@ -32,7 +32,7 @@
     <string name="prompt_phone">手机号码</string>
     <string name="login_welcome">登陆以体验更多功能</string>
     <string name="login_signIn">登陆</string>
-    <string name="login_signUp">还没有账号？点击这里注册！</string>
+    <string name="login_signUp">注册功能暂停使用！请使用第三方登陆。</string>
     <string name="login_or">或者</string>
     <string name="login_viaYiban">使用易班登陆</string>
 

@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import kotlinx.android.synthetic.main.content_user_mine.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.LoginActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
@@ -48,6 +50,19 @@ class MeFragment : Fragment() {
 
         rootView.tv_expAmount.text = attributeService.getTotalAttrExp().toString()
         rootView.tv_lifeExpAmount.text = attributeModel.gradeAttribute.toString()
+
+        if (userService.getToken().isBlank()) {
+            rootView.btn_edit_profile.setText("登陆")
+            rootView.btn_edit_profile.setOnClickListener {
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        } else {
+            rootView.btn_edit_profile.setText("编辑个人资料")
+            rootView.btn_edit_profile.setOnClickListener {
+                (activity as MainActivity).openProfile(it)
+            }
+        }
 
 
         val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)

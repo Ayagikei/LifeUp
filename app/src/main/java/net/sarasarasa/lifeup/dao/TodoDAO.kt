@@ -18,8 +18,16 @@ class TodoDAO {
         return LitePal.where("taskStatus = ?", "0").order("startTime asc").find(TaskModel::class.java)
     }
 
+    fun findAllUncompletedAndNeedRemindTodoItem(time: Long): List<TaskModel> {
+        return LitePal.where("taskStatus = ? and taskRemindTime > ?", "0", time.toString()).find(TaskModel::class.java)
+    }
+
     fun findAllCompletedTodoItem(): List<TaskModel> {
         return LitePal.where("taskStatus != ?", "0").order("endDate desc").find(TaskModel::class.java)
+    }
+
+    fun findAllTeamTodoItem(): List<TaskModel> {
+        return LitePal.where("teamId != ?", "-1").find(TaskModel::class.java)
     }
 
     fun findATodoItem(id: Long): TaskModel? {

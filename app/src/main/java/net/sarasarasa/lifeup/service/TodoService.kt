@@ -61,5 +61,10 @@ interface TodoService {
     fun getOverdueCount(): Int
 
     fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO): Boolean
+
     fun getFinishTeamTaskCount(): Int
+
+    fun deleteTeamTask()
+
+    fun resetAllRemind(context: Context)
 }

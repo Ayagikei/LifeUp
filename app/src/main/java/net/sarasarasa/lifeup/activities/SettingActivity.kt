@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import com.jeff.settingitem.SettingView
 import kotlinx.android.synthetic.main.activity_setting.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.ToastUtils
 
@@ -13,6 +14,7 @@ import net.sarasarasa.lifeup.utils.ToastUtils
 class SettingActivity : AppCompatActivity() {
 
     val userService = UserServiceImpl()
+    val todoService = TodoServiceImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,10 @@ class SettingActivity : AppCompatActivity() {
 
 
         setting_item_logout.setOnItemViewClick {
+            //清空token和非本地事项
             userService.saveToken("")
+            todoService.deleteTeamTask()
+
             ToastUtils.showShortToast("退出成功")
         }
 

@@ -1,11 +1,9 @@
 package net.sarasarasa.lifeup.activities
 
-import android.Manifest.permission.READ_CONTACTS
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.app.LoaderManager.LoaderCallbacks
-import android.content.Context
 import android.content.CursorLoader
 import android.content.Intent
 import android.content.Loader
@@ -17,18 +15,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.ContactsContract
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
-import cn.smssdk.EventHandler
-import cn.smssdk.SMSSDK
-import cn.smssdk.gui.RegisterPage
 import com.tencent.connect.UserInfo
 import com.tencent.connect.common.Constants
 import com.tencent.tauth.IUiListener
@@ -50,7 +42,6 @@ import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.MD5Util
 import net.sarasarasa.lifeup.utils.ToastUtils
-import net.sarasarasa.lifeup.vo.MobVO
 import net.sarasarasa.lifeup.vo.QQLoginVO
 import net.sarasarasa.lifeup.vo.QQUserInfoVO
 import net.sarasarasa.lifeup.vo.SignUpVO
@@ -142,7 +133,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     private fun mayRequestContacts(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+/*        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true
         }
         if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
@@ -154,7 +145,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                             { requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS) })
         } else {
             requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
-        }
+        }*/
         return false
     }
 
@@ -366,11 +357,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     fun signUp(view: View) {
-        sendCode(this, false)
+        //sendCode(this, false)
     }
 
-
-    /** Mob短信验证集成 **/
+/*
+    */
+    /** Mob短信验证集成 **//*
     fun sendCode(context: Context, isLoginBySMS: Boolean) {
         val page = RegisterPage()
         //如果使用我们的ui，没有申请模板编号的情况下需传null
@@ -402,7 +394,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             }
         })
         page.show(context)
-    }
+    }*/
 
     private fun inputDialog(phone: String) {
 
@@ -509,12 +501,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+/*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_login, menu)
         return true
-    }
+    }*/
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+/*    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_login_by_sms -> {
                 sendCode(this, true)
@@ -522,5 +514,5 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-    }
+    }*/
 }

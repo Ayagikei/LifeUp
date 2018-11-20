@@ -13,5 +13,7 @@ class CommonConstants {
         const val CHOOSE_PICTURE = 0
         const val TAKE_PICTURE = 1
         const val CROP_SMALL_PICTURE = 2
+
+        const val IS_USING_MOB_SDK = 0
     }
 }

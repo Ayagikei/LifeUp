@@ -44,6 +44,7 @@ class ReportNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     Log.i("LifeUp 举报模块", "[获取举报类型]请求失败：错误或失效TOKEN")
                     ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = MSG_GET_REPORT_TYPE_FAILED
+                    userService.saveToken("")
                     message.obj = responseBody.msg
                 } else {
                     message.what = MSG_GET_REPORT_TYPE_SUCCESS
@@ -78,6 +79,7 @@ class ReportNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     Log.i("LifeUp 举报模块", "[举报]请求失败：错误或失效TOKEN")
                     ToastUtils.showShortToast("登陆已失效，请重新登陆！")
                     message.what = MSG_REPORT_FAILED
+                    userService.saveToken("")
                     message.obj = responseBody.msg
                 } else {
                     message.what = MSG_REPORT_SUCCESS

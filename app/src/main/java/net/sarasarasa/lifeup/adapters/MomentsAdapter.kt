@@ -31,6 +31,12 @@ class MomentsAdapter(layoutResId: Int, data: List<TeamActivityListVO>, val fragm
                 .setText(R.id.tv_date, timeFormat.format(item.createTime))
                 .setImageResource(R.id.iv_icon, getIconDrawable(item.activityIcon))
 
+        if (item.teamTitle.isNullOrEmpty()) {
+            helper.setVisible(R.id.tv_teamTitle, false)
+        } else {
+            helper.setVisible(R.id.tv_teamTitle, true)
+            helper.setText(R.id.tv_teamTitle, "「${item.teamTitle}」团队")
+        }
 
         if (item.activityIcon == 2) {
             if (item.userActivity.isNullOrEmpty()) {

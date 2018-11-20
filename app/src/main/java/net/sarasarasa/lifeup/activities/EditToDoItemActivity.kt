@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintSet
 import android.text.Editable
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
@@ -46,6 +47,9 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 set.clone(layout_extra)
                 set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
                 set.applyTo(layout_extra)
+
+                btn_ddl_reset.visibility = View.VISIBLE
+                til_repeat.visibility = View.VISIBLE
             }
 
             if (taskModel.taskRemindTime != null) {
@@ -53,6 +57,8 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 val simpleDateFormatSec = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                 checkNotNull(til_remindDate.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormatFirst.format(taskModel.taskRemindTime))
                 checkNotNull(til_remindTime.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormatSec.format(taskModel.taskRemindTime))
+
+                btn_remind_reset.visibility = View.VISIBLE
             }
 
             //还原奖励设置

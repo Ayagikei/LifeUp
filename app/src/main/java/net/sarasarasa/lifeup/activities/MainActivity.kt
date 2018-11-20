@@ -23,10 +23,7 @@ import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.VersionConstants
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
-import net.sarasarasa.lifeup.service.impl.AchievementServiceImpl
-import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
-import net.sarasarasa.lifeup.service.impl.StepServiceImpl
-import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.service.impl.*
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.Pedometer
 import net.sarasarasa.lifeup.utils.ToastUtils
@@ -69,7 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private val attributeNetworkImpl = AttributeNetworkImpl(uiHandler)
-    private val achievementService = AchievementServiceImpl()
+    private val todoService = TodoServiceImpl()
     private val userService = UserServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private lateinit var pedometer: Pedometer
@@ -80,6 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         pedometer = Pedometer(this)
 
+        todoService.resetAllRemind(applicationContext)
     }
 
 

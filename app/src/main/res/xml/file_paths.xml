@@ -2,9 +2,6 @@
 <paths>
     <files-path path="Android/data/net.sarasarasa.lifeup/files/Pictures/" name="Avatar" />
     <external-path path="Android/data/net.sarasarasa.lifeup/files/Pictures/" name="Avatar" />
-    <external-path
-        name="LifeUp"
-        path="LifeUp/" />
     <external-files-path path="files/Pictures/Avatar" name="images"/>
     <root-path name="name" path="" />
 </paths>

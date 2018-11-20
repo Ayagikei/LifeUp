@@ -29,7 +29,7 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
         helper.setText(R.id.tv_headerText, item.nickname)
                 .setText(R.id.tv_date, timeFormat.format(item.createTime))
                 .setImageResource(R.id.iv_icon, getIconDrawable(item.activityIcon))
-
+                .setVisible(R.id.tv_teamTitle, false)
 
         if (item.activityIcon == 2) {
             if (item.userActivity.isNullOrEmpty()) {

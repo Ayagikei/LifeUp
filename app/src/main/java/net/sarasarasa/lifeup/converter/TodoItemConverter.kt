@@ -72,7 +72,7 @@ class TodoItemConverter {
                 }
             } else {
                 return when (taskFrequency) {
-                    0 -> "单次任务"
+                    0 -> "不重复"
                     1 -> "周期任务-每日"
                     2 -> "周期任务-每两日"
                     7 -> "周期任务-每周"

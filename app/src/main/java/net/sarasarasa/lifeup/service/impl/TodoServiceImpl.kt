@@ -321,4 +321,19 @@ class TodoServiceImpl : TodoService {
 
         return false
     }
+
+    override fun deleteTeamTask() {
+        val teamTaskList = todoDAO.findAllTeamTodoItem()
+        for (teamTask in teamTaskList) {
+            teamTask.delete()
+        }
+    }
+
+    override fun resetAllRemind(context: Context) {
+        val cal = Calendar.getInstance()
+        val teamTaskList = todoDAO.findAllUncompletedAndNeedRemindTodoItem(cal.timeInMillis)
+        for (teamTask in teamTaskList) {
+            teamTask.id?.let { setOrUpdateAlarm(teamTask.taskRemindTime!!.time, it, context) }
+        }
+    }
 }

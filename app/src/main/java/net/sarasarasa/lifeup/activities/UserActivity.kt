@@ -309,7 +309,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(this, *perms)) {
-            val downloadDir = File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload")
+            val downloadDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
             val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(this)
                     .saveImgDir(downloadDir) // 保存图片的目录，如果传 null，则没有保存图片功能
 
