@@ -20,6 +20,7 @@ class TeamDetailVO {
     var teamHead: String? = null
     var memberAmount: Int? = null
     var isMember: Int? = null
+    var isOwner: Int? = null
 
 
     override fun toString(): String {

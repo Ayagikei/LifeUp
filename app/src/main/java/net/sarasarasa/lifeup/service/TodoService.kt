@@ -67,4 +67,6 @@ interface TodoService {
     fun deleteTeamTask()
 
     fun resetAllRemind(context: Context)
+
+    fun deleteTeamTaskByTeamId(teamId: Long)
 }

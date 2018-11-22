@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
@@ -25,6 +27,7 @@ import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamListVO
+
 
 class TeamListFragment : Fragment() {
 
@@ -89,11 +92,12 @@ class TeamListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
-
+        setHasOptionsMenu(true)
 
 
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
+
         return rootView
     }
 
@@ -160,5 +164,18 @@ class TeamListFragment : Fragment() {
         }
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_team_list, menu)
+        val searchItem = menu.findItem(R.id.menu_search)
+        val mSearchView = MenuItemCompat.getActionView(searchItem) as SearchView
+        //mSearchView.setIconifiedByDefault(false)
+
+        val editText = mSearchView.findViewById<EditText>(R.id.search_src_text)
+        editText.setHintTextColor(ContextCompat.getColor(this.context!!, R.color.light_gray));
+
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
 }

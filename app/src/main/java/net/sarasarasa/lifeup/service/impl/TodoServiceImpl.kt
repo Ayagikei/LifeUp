@@ -329,6 +329,11 @@ class TodoServiceImpl : TodoService {
         }
     }
 
+    override fun deleteTeamTaskByTeamId(teamId: Long) {
+        val teamTask = todoDAO.findTeamTodoItem(teamId)
+        teamTask.delete()
+    }
+
     override fun resetAllRemind(context: Context) {
         val cal = Calendar.getInstance()
         val teamTaskList = todoDAO.findAllUncompletedAndNeedRemindTodoItem(cal.timeInMillis)

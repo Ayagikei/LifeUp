@@ -13,7 +13,10 @@ interface TeamNetwork {
     fun getTeamMembers(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
 
     @DELETE("/teams/{teamId}/members/quit")
-    fun quitTeam(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
+    fun quitTeam(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long): Call<ResultVO<Any>>
+
+    @POST("/teams/{teamId}/end")
+    fun endTeam(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long): Call<ResultVO<Any>>
 
     @GET("/teams/{teamId}/records")
     fun getTeamActivity(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>

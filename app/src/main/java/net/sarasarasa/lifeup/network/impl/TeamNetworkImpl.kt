@@ -7,6 +7,7 @@ import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_END_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_ACTIVITIES_SUCCESS
@@ -14,6 +15,7 @@ import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_D
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_LIST_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_TEAM_MEMBER_LIST_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_JOIN_TEAM_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_QUIT_TEAM_SUCCESS
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -108,6 +110,78 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     val list = responseBody?.data
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队成员列表]请求成功：${list}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+    fun quitTeam(teamId: Long) {
+        Log.i("LifeUp 团队模块", "执行[退出团队]操作")
+
+        val call = network.quitTeam(userService.getToken(), teamId)
+
+        call.enqueue(object : Callback<ResultVO<Any>> {
+            override fun onFailure(call: Call<ResultVO<Any>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[退出团队]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
+                val responseBody = response.body()
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[退出团队]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    userService.saveToken("")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+                    message.what = MSG_QUIT_TEAM_SUCCESS
+                    val teamTaskVO = responseBody?.data
+                    message.obj = teamTaskVO
+
+                    todoService.deleteTeamTaskByTeamId(teamId)
+
+                    Log.i("LifeUp 团队模块", "[退出团队]请求成功")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+    fun endTeam(teamId: Long) {
+        Log.i("LifeUp 团队模块", "执行[终止团队]操作")
+
+        val call = network.endTeam(userService.getToken(), teamId)
+
+        call.enqueue(object : Callback<ResultVO<Any>> {
+            override fun onFailure(call: Call<ResultVO<Any>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[终止团队]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
+                val responseBody = response.body()
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[终止团队]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    userService.saveToken("")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+                    message.what = MSG_END_TEAM_SUCCESS
+                    val teamTaskVO = responseBody?.data
+                    message.obj = teamTaskVO
+
+                    todoService.deleteTeamTaskByTeamId(teamId)
+
+                    Log.i("LifeUp 团队模块", "[终止团队]请求成功")
                 }
                 uiHandler.handleMessage(message)
             }

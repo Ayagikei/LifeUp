@@ -27,7 +27,9 @@ public class SplashActivity extends AppCompatActivity {
         //判断是不是第一次打开应用
         SharedPreferences sharedPreferences = getSharedPreferences("status", MODE_PRIVATE);
         boolean isFirst = sharedPreferences.getBoolean("isFirst", true);
+        int iDataBaseVersion = sharedPreferences.getInt("iiDataBaseVersion", 0);
         Editor editor = sharedPreferences.edit();
+
 
         if (isFirst) {
             //第一次进入的时候，跳转到引导页
@@ -43,6 +45,12 @@ public class SplashActivity extends AppCompatActivity {
 
         } else {
             //否则，进入主页面
+
+            if (iDataBaseVersion == 0) {
+                attributeLevelService.initAttributeLevel();
+                editor.putInt("iiDataBaseVersion", 1);
+            }
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();

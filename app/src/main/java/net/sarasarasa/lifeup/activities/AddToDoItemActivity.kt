@@ -2,7 +2,6 @@ package net.sarasarasa.lifeup.activities
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
@@ -175,7 +174,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     /** 初始化重复频次选择 **/
     private fun initRepeater() {
         et_repeat.inputType = InputType.TYPE_NULL
-        et_repeat.setText("不重复")
+        et_repeat.setText("单次")
         et_repeat.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showRepeaterDialog()
@@ -258,14 +257,14 @@ open class AddToDoItemActivity : AppCompatActivity() {
      * 展示重复频次选择对话框
      */
     private fun showRepeaterDialog() {
-        val items = arrayOf("不重复", "每日", "每两日", "每周", "每两周", "每月")
+        val items = arrayOf("单次", "每日", "每两日", "每周", "每两周", "每月")
 
         val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
-                .setSingleChoiceItems(items, iCheckedItemIndex, DialogInterface.OnClickListener { dialog, index ->
+                .setSingleChoiceItems(items, iCheckedItemIndex) { dialog, index ->
                     iCheckedItemIndex = index
                     et_repeat.setText(items[index])
                     dialog.dismiss()
-                }).create()
+                }.create()
         dialog.show()
     }
 

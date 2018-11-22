@@ -90,6 +90,12 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                     showReportDialog(returnList)
                 }
             }
+            NetworkConstants.MSG_QUIT_TEAM_SUCCESS -> {
+                ToastUtils.showShortToast("退出团队成功")
+            }
+            NetworkConstants.MSG_END_TEAM_SUCCESS -> {
+                ToastUtils.showShortToast("终止团队成功")
+            }
             else -> {
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
@@ -293,6 +299,14 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_team, menu)
+
+        if (mTeamDetailVO.isMember == 0) {
+            menu.removeItem(R.id.action_quit)
+        } else {
+            if (mTeamDetailVO.isOwner == 1)
+                menu.findItem(R.id.action_quit).title = "终止"
+        }
+
         return true
     }
 
@@ -303,7 +317,11 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 return true
             }
             R.id.action_quit -> {
-                ToastUtils.showShortToast("此功能暂不可用！")
+                if (mTeamDetailVO.isOwner == 1)
+                    teamNetworkImpl.endTeam(mTeamId)
+                else
+                    teamNetworkImpl.quitTeam(mTeamId)
+
                 return true
             }
             android.R.id.home -> {

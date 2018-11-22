@@ -2,7 +2,7 @@ package net.sarasarasa.lifeup.constants
 
 class AttributeConstants {
     companion object {
-        const val MAX_LEVEL = 50
+        const val MAX_LEVEL = 99
 
         const val MSG_CONNECT_FAILED = 10
         const val MSG_ATTR_UPDATE_SUCCESS = 11

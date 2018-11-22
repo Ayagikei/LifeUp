@@ -30,6 +30,10 @@ class TodoDAO {
         return LitePal.where("teamId != ?", "-1").find(TaskModel::class.java)
     }
 
+    fun findTeamTodoItem(teamId: Long): TaskModel {
+        return LitePal.where("teamId != ? and taskStatus = ?", teamId.toString(), "0").findLast(TaskModel::class.java)
+    }
+
     fun findATodoItem(id: Long): TaskModel? {
         return LitePal.find(TaskModel::class.java, id)
     }

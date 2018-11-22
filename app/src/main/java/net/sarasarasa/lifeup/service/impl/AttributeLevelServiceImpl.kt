@@ -4,12 +4,16 @@ import android.util.Log
 import net.sarasarasa.lifeup.dao.AttributeLevelDAO
 import net.sarasarasa.lifeup.models.AttributeLevelModel
 import net.sarasarasa.lifeup.service.AttributeLevelService
+import org.litepal.LitePal
 
 class AttributeLevelServiceImpl : AttributeLevelService {
 
     private val attributeLevelDAO = AttributeLevelDAO()
 
     override fun initAttributeLevel() {
+
+        LitePal.deleteAll(AttributeLevelModel::class.java)
+
         AttributeLevelModel(1, 0, 300).save()
         AttributeLevelModel(2, 300, 1000).save()
         AttributeLevelModel(3, 1000, 2500).save()
@@ -20,7 +24,7 @@ class AttributeLevelServiceImpl : AttributeLevelService {
         AttributeLevelModel(8, 12500, 15000).save()
 
         var levelNum = 9
-        while (levelNum <= 30) {
+        while (levelNum <= 99) {
             AttributeLevelModel(levelNum, 15000 + 2500 * (levelNum - 9), 15000 + 2500 * (levelNum - 8)).save()
             levelNum++
         }
