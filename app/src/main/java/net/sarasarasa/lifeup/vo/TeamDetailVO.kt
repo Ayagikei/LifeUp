@@ -24,7 +24,7 @@ class TeamDetailVO {
 
 
     override fun toString(): String {
-        return "TeamDetailVO(completeTime=$completeTime, createTime=$createTime, rewardAttrs=$rewardAttrs, rewardExp=$rewardExp, startDate=$startDate, nextStartTime=$nextStartTime, nextEndTime=$nextEndTime, teamDesc=$teamDesc, teamFreq=$teamFreq, teamId=$teamId, teamStatus=$teamStatus, teamTitle=$teamTitle, userId=$userId, owner=$owner, teamHead=$teamHead, memberAmount=$memberAmount, isMember=$isMember)"
+        return "TeamDetailVO(completeTime=$completeTime, createTime=$createTime, rewardAttrs=$rewardAttrs, rewardExp=$rewardExp, startDate=$startDate, nextStartTime=$nextStartTime, nextEndTime=$nextEndTime, teamDesc=$teamDesc, teamFreq=$teamFreq, teamId=$teamId, teamStatus=$teamStatus, teamTitle=$teamTitle, userId=$userId, owner=$owner, teamHead=$teamHead, memberAmount=$memberAmount, isMember=$isMember, isOwner=$isOwner)"
     }
 
 

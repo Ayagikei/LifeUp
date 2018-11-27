@@ -39,4 +39,32 @@
     <string name="title_activity_add_to_do_item">新设待办事项</string>
     <string name="title_me">我的</string>
 
+    <string name="navigation_drawer_open">打开导航栏</string>
+    <string name="navigation_drawer_close">关闭导航栏</string>
+
+    <string name="title_activity_comm">CommActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="title_activity_add_team_item">新建团队</string>
+    <string name="title_activity_team">团队详细信息</string>
+    <string name="title_activity_user">用户详细信息</string>
+    <string name="title_activity_edit_to_do_item">编辑待办事项</string>
+    <string name="title_activity_history">历史</string>
+    <string name="title_activity_YBLogin">易班授权登陆</string>
+    <string name="title_activity_profile">修改个人信息</string>
+    <string name="title_activity_user_mine">我的资料</string>
+    <string name="title_activity_team_member">成员</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <string name="title_activity_user_team">团队</string>
+    <string name="title_activity_about">关于</string>
+    <string name="title_activity_achievement">成就</string>
+
+    <string name="AcraText">很抱歉应用崩溃了，麻烦发送崩溃报告给我们吧~</string>
+    <string name="AcraTitle">应用崩溃</string>
+    <string name="AcraCommend">说一下是什么情况下崩溃的：</string>
+    <string name="AcraChannel">人升崩溃</string>
+
+
 </resources>

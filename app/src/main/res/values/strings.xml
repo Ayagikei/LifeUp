@@ -26,7 +26,7 @@
 
     <!-- Strings related to login -->
     <string name="title_activity_login">Sign in</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -37,7 +37,7 @@
     <string name="prompt_phone">Phone Number</string>
     <string name="login_welcome">Sign In for More Function</string>
     <string name="login_signIn">SIGN IN</string>
-    <string name="login_signUp">You don\'t hava an account yet? Sign Up here!</string>
+    <string name="login_signUp">You don\'t hava an account yet? Please use QQ Login.</string>
     <string name="login_or">or</string>
     <string name="login_viaYiban">SIGN IN WITH YIBAN</string>
     <string name="title_activity_comm">CommActivity</string>
@@ -45,15 +45,15 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_add_to_do_item">Add To DO ITEM</string>
-    <string name="title_activity_add_team_item">新建团队</string>
-    <string name="title_activity_team">团队详细信息</string>
-    <string name="title_activity_user">用户详细信息</string>
-    <string name="title_activity_edit_to_do_item">编辑待办事项</string>
-    <string name="title_activity_history">历史</string>
-    <string name="title_activity_YBLogin">易班授权登陆</string>
-    <string name="title_activity_profile">修改个人信息</string>
-    <string name="title_activity_user_mine">我的资料</string>
-    <string name="title_activity_team_member">成员</string>
+    <string name="title_activity_add_team_item">ADD NEW TEAM</string>
+    <string name="title_activity_team">TEAM DETAIL</string>
+    <string name="title_activity_user">USER DETAIL</string>
+    <string name="title_activity_edit_to_do_item">EDIT TO DO</string>
+    <string name="title_activity_history">HISTORY</string>
+    <string name="title_activity_YBLogin">Login by Yiban</string>
+    <string name="title_activity_profile">EDIT PROFILE</string>
+    <string name="title_activity_user_mine">MY PROFILE</string>
+    <string name="title_activity_team_member">MEMBERS</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -144,8 +144,12 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="title_activity_user_team">团队</string>
-    <string name="title_activity_about">关于</string>
-    <string name="title_activity_achievement">成就</string>
+    <string name="title_activity_user_team">Team</string>
+    <string name="title_activity_about">About</string>
+    <string name="title_activity_achievement">Achievement</string>
 
+    <string name="AcraText">We are sorry that app crash,please send us crash report.</string>
+    <string name="AcraTitle">Crash Report</string>
+    <string name="AcraCommend">Situation：</string>
+    <string name="AcraChannel">LifeUp Report</string>
 </resources>

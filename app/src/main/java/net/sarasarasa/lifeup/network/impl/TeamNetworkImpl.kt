@@ -140,11 +140,8 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_QUIT_TEAM_SUCCESS
-                    val teamTaskVO = responseBody?.data
-                    message.obj = teamTaskVO
 
                     todoService.deleteTeamTaskByTeamId(teamId)
-
                     Log.i("LifeUp 团队模块", "[退出团队]请求成功")
                 }
                 uiHandler.handleMessage(message)
@@ -176,11 +173,8 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
                     message.what = MSG_END_TEAM_SUCCESS
-                    val teamTaskVO = responseBody?.data
-                    message.obj = teamTaskVO
 
                     todoService.deleteTeamTaskByTeamId(teamId)
-
                     Log.i("LifeUp 团队模块", "[终止团队]请求成功")
                 }
                 uiHandler.handleMessage(message)

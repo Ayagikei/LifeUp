@@ -13,10 +13,10 @@ class LoadingDialogUtils {
         fun show(context: Context) {
 
             if (dialog != null) {
-                dialog?.let { it.dismiss() }
+                dialog?.dismiss()
             }
 
-            dialog = SpotsDialog.Builder().setMessage("加载中...").setCancelable(false).setContext(context).build()
+            dialog = SpotsDialog.Builder().setMessage("加载中...").setCancelable(true).setContext(context).build()
 
             dialog?.let {
                 if (!it.isShowing)

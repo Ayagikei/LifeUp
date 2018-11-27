@@ -59,6 +59,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                     val teamDetailVO = msg.obj as TeamDetailVO
                     mTeamDetailVO = teamDetailVO
                     initData(teamDetailVO)
+                    updateMenuTitles()
                 }
             }
             MSG_JOIN_TEAM_SUCCESS -> {
@@ -117,6 +118,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
     private var currentPage = 0L
     private var totalPage: Long? = null
     private var mCurrentClickNpl: BGANinePhotoLayout? = null
+    private var mMenu: Menu? = null
 
     companion object {
         private const val PRC_PHOTO_PREVIEW = 1
@@ -299,15 +301,18 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_team, menu)
-
-        if (mTeamDetailVO.isMember == 0) {
-            menu.removeItem(R.id.action_quit)
-        } else {
-            if (mTeamDetailVO.isOwner == 1)
-                menu.findItem(R.id.action_quit).title = "终止"
-        }
+        mMenu = menu
 
         return true
+    }
+
+    private fun updateMenuTitles() {
+        if (mTeamDetailVO.isMember == 0) {
+            mMenu?.removeItem(R.id.action_quit)
+        } else {
+            if (mTeamDetailVO.isOwner == 1)
+                mMenu?.findItem(R.id.action_quit)?.title = "终止"
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -319,8 +324,10 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             R.id.action_quit -> {
                 if (mTeamDetailVO.isOwner == 1)
                     teamNetworkImpl.endTeam(mTeamId)
-                else
+                else if (mTeamDetailVO.isOwner == 0 && mTeamDetailVO.isMember == 1) {
                     teamNetworkImpl.quitTeam(mTeamId)
+                    mTeamDetailVO.isMember = 0
+                }
 
                 return true
             }
