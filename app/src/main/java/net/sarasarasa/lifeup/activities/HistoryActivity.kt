@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -10,14 +11,34 @@ import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.foot_view_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.HistoryAdapter
+import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.ToastUtils
 
 
 class HistoryActivity : AppCompatActivity() {
 
+    private val uiHandler: Handler.Callback = Handler.Callback { msg ->
+
+        when (msg.what) {
+            NetworkConstants.INVALID_TOKEN -> {
+                ToastUtils.showShortToast("授权失效，请重试")
+            }
+            else -> {
+                if (msg.obj != null)
+                    ToastUtils.showShortToast(msg.obj.toString())
+            }
+
+        }
+
+        return@Callback true
+    }
+
     private val todoService = TodoServiceImpl()
+    private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
     private val mList: MutableList<TaskModel> = todoService.getCompletedTodoList().toMutableList()
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: HistoryAdapter
@@ -48,9 +69,19 @@ class HistoryActivity : AppCompatActivity() {
 
             when (view.id) {
                 R.id.btn_undo -> {
-                    todoService.undoFinishTodoItem(item.id)
-                    ToastUtils.showShortToast("撤销成功")
-                    refreshDataSet()
+                    if (item.taskStatus == ToDoItemConstants.COMPLETED) {
+                        todoService.undoFinishTodoItem(item.id)
+                        ToastUtils.showShortToast("撤销成功")
+                        refreshDataSet()
+                    } else if (item.taskStatus == ToDoItemConstants.OUT_OF_DATE) {
+                        if (item.teamId == -1L) {
+                            item.id?.let { todoService.restartTask(it) }
+                            view.visibility = View.INVISIBLE
+                        } else {
+                            teamNetworkImpl.getNextTeamTask(item.teamId)
+                            view.visibility = View.INVISIBLE
+                        }
+                    }
                 }
             }
         }

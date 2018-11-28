@@ -79,7 +79,17 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             }
 
             //还原频次的选择
-            checkNotNull(til_repeat.editText).text = Editable.Factory.getInstance().newEditable(TodoItemConverter.iFrequencyToTitleString(taskModel.taskFrequency))
+            checkNotNull(til_repeat.editText).text = when (taskModel.taskFrequency) {
+                0 -> Editable.Factory.getInstance().newEditable("单次")
+                -1 -> Editable.Factory.getInstance().newEditable("多次")
+                1 -> Editable.Factory.getInstance().newEditable("每日")
+                2 -> Editable.Factory.getInstance().newEditable("每两日")
+                7 -> Editable.Factory.getInstance().newEditable("每周")
+                14 -> Editable.Factory.getInstance().newEditable("每两周")
+                30 -> Editable.Factory.getInstance().newEditable("每月")
+                else -> Editable.Factory.getInstance().newEditable("不重复")
+            }
+
 
             //还原3个属性的选择
             restoreAbbrSelection(taskModel.relatedAttribute1)

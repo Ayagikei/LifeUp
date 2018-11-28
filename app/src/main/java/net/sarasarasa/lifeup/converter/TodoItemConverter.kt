@@ -73,6 +73,7 @@ class TodoItemConverter {
             } else {
                 return when (taskFrequency) {
                     0 -> "单次任务"
+                    -1 -> "多次任务"
                     1 -> "周期任务-每日"
                     2 -> "周期任务-每两日"
                     7 -> "周期任务-每周"
@@ -86,6 +87,7 @@ class TodoItemConverter {
         fun iFrequencyToNormalString(taskFrequency: Int?): String {
             return when (taskFrequency) {
                 0 -> "单次"
+                -1 -> "多次"
                 1 -> "每日"
                 2 -> "-每两日"
                 7 -> "每周"

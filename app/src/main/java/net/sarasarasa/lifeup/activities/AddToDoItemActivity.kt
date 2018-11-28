@@ -181,18 +181,26 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         et_repeat.setOnClickListener { showRepeaterDialog(); }
+
+        til_repeat.visibility = View.VISIBLE
+
+        //显示重复
+        val set = ConstraintSet()
+        set.clone(layout_extra)
+        set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
+        set.applyTo(layout_extra)
     }
 
     /** 重置期限日期 **/
     fun finishDateReset(view: View) {
         dDDL.setText("")
         view.visibility = View.INVISIBLE
-        til_repeat.visibility = View.INVISIBLE
+        til_repeat.visibility = View.VISIBLE
 
-        val set = ConstraintSet()
+/*        val set = ConstraintSet()
         set.clone(layout_extra)
         set.connect(switch1.id, ConstraintSet.TOP, til_deadLine.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-        set.applyTo(layout_extra)
+        set.applyTo(layout_extra)*/
     }
 
     /** 重置提醒日期 **/
@@ -257,7 +265,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
      * 展示重复频次选择对话框
      */
     private fun showRepeaterDialog() {
-        val items = arrayOf("单次", "每日", "每两日", "每周", "每两周", "每月")
+        val items = arrayOf("单次", "多次", "每日", "每两日", "每周", "每两周", "每月")
 
         val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
                 .setSingleChoiceItems(items, iCheckedItemIndex) { dialog, index ->
@@ -323,7 +331,8 @@ open class AddToDoItemActivity : AppCompatActivity() {
         var relatedAttribute = arrayOf<String>()
 
         val taskFrequency = when (til_repeat.editText?.text.toString()) {
-            "不重复" -> 0
+            "单次" -> 0
+            "多次" -> -1
             "每日" -> 1
             "每两日" -> 2
             "每周" -> 7
@@ -399,6 +408,22 @@ open class AddToDoItemActivity : AppCompatActivity() {
         if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
             ToastUtils.showShortToast("提醒日期和时间必须填写完整！")
+            isAllCheckPassed = false
+        }
+
+        val isNeedDDl = when (til_repeat.editText?.text.toString()) {
+            "单次" -> false
+            "多次" -> false
+            "每日" -> true
+            "每两日" -> true
+            "每周" -> true
+            "每两周" -> true
+            "每月" -> true
+            else -> true
+        }
+
+        if (isNeedDDl && TextUtils.isEmpty(til_deadLine.editText?.text)) {
+            dDDL.error = "该重复频次需要设置期限日期"
             isAllCheckPassed = false
         }
 

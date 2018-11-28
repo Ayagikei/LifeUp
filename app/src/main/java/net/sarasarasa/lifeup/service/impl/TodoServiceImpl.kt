@@ -10,6 +10,7 @@ import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
+import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.vo.TeamTaskVO
 import java.util.*
 
@@ -107,6 +108,11 @@ class TodoServiceImpl : TodoService {
             attributeService.decreaseExp(this.relatedAttribute1 ?: "", this.expReward)
             attributeService.decreaseExp(this.relatedAttribute2 ?: "", this.expReward)
             attributeService.decreaseExp(this.relatedAttribute3 ?: "", this.expReward)
+
+            if (this.nextTaskId != null && this.nextTaskId is Long) {
+                val nextTask = todoDAO.findATodoItem(this.nextTaskId!!)
+                nextTask?.delete()
+            }
         }
 
         return true
@@ -220,19 +226,22 @@ class TodoServiceImpl : TodoService {
         taskModel.createdTime = Calendar.getInstance().timeInMillis
         taskModel.updatedTime = Calendar.getInstance().timeInMillis
         taskModel.expReward = origin.expReward
+        taskModel.priority = origin.priority
 
-        val newExpireTime = Calendar.getInstance()
-        newExpireTime.time = origin.taskExpireTime
-        newExpireTime.add(Calendar.DATE, origin.taskFrequency)
-        taskModel.taskExpireTime = newExpireTime.time
+        if (origin.taskFrequency != -1) {
+            val newExpireTime = Calendar.getInstance()
+            newExpireTime.time = origin.taskExpireTime
+            newExpireTime.add(Calendar.DATE, origin.taskFrequency)
+            taskModel.taskExpireTime = newExpireTime.time
 
-        val newStartTime = Calendar.getInstance()
-        newStartTime.time = origin.startTime
-        newStartTime.set(Calendar.HOUR_OF_DAY, 0)
-        newStartTime.set(Calendar.MINUTE, 0)
-        newStartTime.set(Calendar.SECOND, 0)
-        newStartTime.add(Calendar.DATE, origin.taskFrequency)
-        taskModel.startTime = newStartTime.time
+            val newStartTime = Calendar.getInstance()
+            newStartTime.time = origin.startTime
+            newStartTime.set(Calendar.HOUR_OF_DAY, 0)
+            newStartTime.set(Calendar.MINUTE, 0)
+            newStartTime.set(Calendar.SECOND, 0)
+            newStartTime.add(Calendar.DATE, origin.taskFrequency)
+            taskModel.startTime = newStartTime.time
+        }
 
         if (origin.taskRemindTime != null) {
             val newRemindTime = Calendar.getInstance()
@@ -242,6 +251,10 @@ class TodoServiceImpl : TodoService {
         }
 
         taskModel.save()
+
+        //保存下一次的id，以便撤销
+        origin.nextTaskId = taskModel.id
+        origin.save()
 
         return true
     }
@@ -340,5 +353,74 @@ class TodoServiceImpl : TodoService {
         for (teamTask in teamTaskList) {
             teamTask.id?.let { setOrUpdateAlarm(teamTask.taskRemindTime!!.time, it, context) }
         }
+    }
+
+    override fun changePriority(id: Long): Int {
+        with(todoDAO.findATodoItem(id) ?: return -1)
+        {
+            priority = if (priority != 1) {
+                1
+            } else 0
+
+            updatedTime = Calendar.getInstance().timeInMillis
+            save()
+
+            return priority as Int
+        }
+    }
+
+    override fun restartTask(id: Long): Boolean {
+        if (id == null) return false
+        val origin = todoDAO.findATodoItem(id) ?: return false
+
+        val taskModel = TaskModel(
+                origin.content,
+                origin.remark,
+                origin.taskExpireTime,
+                origin.taskRemindTime,
+                origin.relatedAttribute1,
+                origin.relatedAttribute2,
+                origin.relatedAttribute3,
+                origin.taskUrgencyDegree,
+                origin.taskDifficultyDegree,
+                origin.taskFrequency,
+                origin.userId,
+                origin.isShared,
+                origin.taskType
+        )
+
+        taskModel.taskId = origin.taskId
+        taskModel.createdTime = Calendar.getInstance().timeInMillis
+        taskModel.updatedTime = Calendar.getInstance().timeInMillis
+        taskModel.expReward = origin.expReward
+        taskModel.priority = origin.priority
+
+
+        val newExpireTime = Calendar.getInstance()
+        newExpireTime.time = origin.taskExpireTime
+        val iExpireTimes = DateUtil.getDiscrepantDays(newExpireTime.time, Calendar.getInstance().time) / origin.taskFrequency + 1
+        newExpireTime.add(Calendar.DATE, origin.taskFrequency * iExpireTimes)
+        taskModel.taskExpireTime = newExpireTime.time
+
+        val newStartTime = Calendar.getInstance()
+        newStartTime.time = origin.startTime
+        newStartTime.set(Calendar.HOUR_OF_DAY, 0)
+        newStartTime.set(Calendar.MINUTE, 0)
+        newStartTime.set(Calendar.SECOND, 0)
+        val iStartTimes = DateUtil.getDiscrepantDays(newStartTime.time, Calendar.getInstance().time) / origin.taskFrequency
+        newStartTime.add(Calendar.DATE, origin.taskFrequency * iStartTimes)
+        taskModel.startTime = newStartTime.time
+
+
+        if (origin.taskRemindTime != null) {
+            val newRemindTime = Calendar.getInstance()
+            newRemindTime.time = origin.taskRemindTime
+            newRemindTime.add(Calendar.DATE, origin.taskFrequency)
+            taskModel.taskRemindTime = newRemindTime.time
+        }
+
+        taskModel.save()
+
+        return true
     }
 }

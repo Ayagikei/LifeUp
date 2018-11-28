@@ -15,6 +15,7 @@ public class Pedometer implements SensorEventListener {
     private float mCount;//步行总数
     private float mDetector;//步行探测器
     private Context context;
+    private boolean isAvailable = true;
 
     public Pedometer() {
 
@@ -29,7 +30,7 @@ public class Pedometer implements SensorEventListener {
 
     public void register() {
         if (mStepCount == null && mStepDetector == null) {
-            ToastUtils.Companion.showLongToast("你的手机可能不支持计步传感器，部分功能不可用。");
+            isAvailable = false;
         } else {
             if (mStepCount != null)
                 register(mStepCount, SensorManager.SENSOR_DELAY_FASTEST);
@@ -74,6 +75,10 @@ public class Pedometer implements SensorEventListener {
 
     public float getmDetector() {
         return mDetector;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
 }

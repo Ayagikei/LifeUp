@@ -27,6 +27,9 @@ data class TaskModel(
     var startTime: Date = Date()
     var endTime: Date = Date()
 
+    var priority: Int? = 0
+    var nextTaskId: Long? = null
+
     //事项完成、放弃、预期的日期
     var endDate: Date? = null
     var taskStatus: Int = 0

@@ -230,8 +230,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun syncData() {
-
-
         if (!userService.getToken().isBlank()) {
             //保存数据到云端
             attributeNetworkImpl.updateAttribute(attributeService.getAttributeVO())
@@ -241,6 +239,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun getStep(): Float {
         return pedometer.stepCount
+    }
+
+    fun getPedometerIsAvailable(): Boolean {
+        return pedometer.isAvailable
     }
 
 /*    fun getAchievementView(): AchievementView{

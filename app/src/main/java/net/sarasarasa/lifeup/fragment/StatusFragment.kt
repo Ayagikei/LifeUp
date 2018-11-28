@@ -119,6 +119,10 @@ class StatusFragment : Fragment() {
 
         view.tv_step_cnt_num.text = "${dailyStepCount}步"
 
+        if (!mainActivity.getPedometerIsAvailable()) {
+            view.tv_step_cnt_desc.text = "计步不可用："
+        }
+
         if (stepService.isTodayGotReward()) {
             view.btn_get_reward.isEnabled = false
             view.btn_get_reward.text = "已领取"

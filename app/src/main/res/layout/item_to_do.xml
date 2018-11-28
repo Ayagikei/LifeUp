@@ -62,10 +62,10 @@
                             android:id="@+id/tv_startDateTitle"
                             android:layout_width="256dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
-                            android:text="每天背单词50个"
+                            android:layout_marginBottom="16dp"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/iv_expIcon" />
@@ -145,6 +145,14 @@
                             android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/iv_timeIcon"
                             app:layout_constraintTop_toBottomOf="@+id/tw_name" />
+
+                        <ImageView
+                            android:id="@+id/iv_top"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_top" />
 
 
                     </android.support.constraint.ConstraintLayout>

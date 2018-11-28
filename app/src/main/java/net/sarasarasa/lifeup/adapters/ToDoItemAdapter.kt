@@ -35,6 +35,12 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
                 .setImageResource(R.id.iv_iconSkillThird, getAbbrIconDrawable(item.relatedAttribute3))
                 .addOnClickListener(R.id.av_checkBtn)
 
+        if (item.priority == 1) {
+            helper.setVisible(R.id.iv_top, true)
+        } else {
+            helper.setVisible(R.id.iv_top, false)
+        }
+
         if (cal.timeInMillis < item.startTime.time) {
             //还没到开始时间的时候
             with(helper) {

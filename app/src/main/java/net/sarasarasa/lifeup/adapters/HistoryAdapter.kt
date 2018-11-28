@@ -28,13 +28,18 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 .setImageResource(R.id.iv_avatar, getStatusIconDrawable(item.taskStatus))
                 .addOnClickListener(R.id.tv_btn)
 
-        if (DateUtils.isToday(checkNotNull(item.endDate).time)
-                && item.taskFrequency == 0
-                && item.taskStatus == ToDoItemConstants.COMPLETED) {
-
-            if (item.teamId == -1L)
-                helper.setVisible(R.id.btn_undo, true)
-                        .addOnClickListener(R.id.btn_undo)
+        if (item.taskStatus == ToDoItemConstants.COMPLETED) {
+            if (DateUtils.isToday(checkNotNull(item.endDate).time)) {
+                if (item.teamId == -1L)
+                    helper.setVisible(R.id.btn_undo, true)
+                            .addOnClickListener(R.id.btn_undo)
+            } else {
+                helper.setVisible(R.id.btn_undo, false)
+            }
+        } else if (item.taskStatus == ToDoItemConstants.OUT_OF_DATE) {
+            helper.setVisible(R.id.btn_undo, true)
+                    .setText(R.id.btn_undo, "重做")
+                    .addOnClickListener(R.id.btn_undo)
         } else {
             helper.setVisible(R.id.btn_undo, false)
         }

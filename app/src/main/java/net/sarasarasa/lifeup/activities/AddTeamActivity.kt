@@ -425,42 +425,41 @@ open class AddTeamActivity : AppCompatActivity() {
 
     /** 提交前对表单进行检测 **/
     protected fun check(): Boolean {
-        var isAllCheckPassed = true
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
             til_toDoText.error = "不能为空"
-            isAllCheckPassed = false
+            return false
         }
 
         if (TextUtils.isEmpty(til_remindTime.editText?.text)) {
-            til_toDoText.error = "不能为空"
-            isAllCheckPassed = false
+            til_remindTime.error = "不能为空"
+            return false
         }
 
         if (TextUtils.isEmpty(til_remindDate.editText?.text)) {
-            et_remindDate.error = "不能为空"
-            isAllCheckPassed = false
+            til_remindDate.error = "不能为空"
+            return false
         }
 
         if (TextUtils.isEmpty(til_startTimeEnd.editText?.text)) {
-            et_remindDate.error = "不能为空"
-            isAllCheckPassed = false
+            til_startTimeEnd.error = "不能为空"
+            return false
         }
 
         if (TextUtils.isEmpty(til_deadLine.editText?.text)) {
-            et_remindDate.error = "不能为空"
-            isAllCheckPassed = false
+            til_deadLine.error = "不能为空"
+            return false
         }
 
         if (arrAbbrBtn[SELECTED_CNT] == 0) {
             ToastUtils.showShortToast("你至少需要选择一个相关属性！")
-            isAllCheckPassed = false
+            return false
         }
 
         if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
             ToastUtils.showShortToast("提醒日期和时间必须填写完整！")
-            isAllCheckPassed = false
+            return false
         }
 
         val taskRemindDateAndTime = til_remindDate.editText?.text.toString() + " " + til_remindTime.editText?.text.toString()
@@ -469,6 +468,8 @@ open class AddTeamActivity : AppCompatActivity() {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
             dateFirstStartTime = simpleDateFormat.parse(taskRemindDateAndTime)
         }
+
+
 
         val taskRemindDateAndTimeEnd = til_remindDate.editText?.text.toString() + " " + til_startTimeEnd.editText?.text.toString()
         var dateFirstEndTime: Date? = null
@@ -482,11 +483,12 @@ open class AddTeamActivity : AppCompatActivity() {
             if (dateFirstEndTime.before(dateFirstStartTime)) {
                 til_startTimeEnd.error = "结束时间必须晚于开始时间"
                 til_startTimeEnd.requestFocus()
+                return false
             }
         }
 
 
-        return isAllCheckPassed
+        return true
     }
 
     fun showDialogAttribution(view: View) {

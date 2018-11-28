@@ -54,4 +54,9 @@ public class DateUtil {
         return weekDays[w];
     }
 
+
+    public static int getDiscrepantDays(Date dateStart, Date dateEnd) {
+        return (int) ((dateEnd.getTime() - dateStart.getTime()) / 1000 / 60 / 60 / 24);
+    }
+
 }

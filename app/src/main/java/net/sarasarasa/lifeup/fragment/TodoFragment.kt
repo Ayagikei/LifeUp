@@ -145,19 +145,31 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         //设置长按Item的长按事件
         mAdapter.setOnItemLongClickListener { adapter, mView, position ->
+
             //获得所选item
             val item = adapter.getItem(position) as TaskModel
             val mPopupMenu = PopupMenu(mView.context, mView.av_checkBtn)
+
+            //本地事项可以撤销
+            if (item.taskStatus != 0 && item.teamId == -1L) {
+                showDialogReset(item)
+                return@setOnItemLongClickListener true
+            }
+
+
             mPopupMenu.menuInflater.inflate(R.menu.menu_to_do_item, mPopupMenu.menu)
             mPopupMenu.setOnMenuItemClickListener { menuItem ->
 
-
                 //如果所选Item不是未完成状态或是团队事项，不可长按
                 //|| item.teamId != IS_TEAM_TASK
-                if (item.taskStatus != 0)
-                    return@setOnMenuItemClickListener true
+
 
                 when (menuItem.itemId) {
+                    R.id.top_item -> {
+                        item.id?.let { todoService.changePriority(it) }
+                        refreshDataSet()
+                        return@setOnMenuItemClickListener true
+                    }
                     R.id.edit_item -> {
                         if (item.teamId != IS_TEAM_TASK) {
                             ToastUtils.showShortToast("团队事项不可编辑！")
@@ -237,6 +249,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 return@setOnItemChildClickListener
             }
 
+
             if (mView is LottieAnimationView &&
                     item.taskStatus == ToDoItemConstants.UNCOMPLETED) {
 
@@ -275,6 +288,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 //如果不是团队事项，这里就可以处理业务逻辑
                 if (item.teamId == IS_TEAM_TASK) {
                     todoService.finishTodoItem(item.id)
+                    item.taskStatus = ToDoItemConstants.COMPLETED
                 }
 
                 val activity = checkNotNull(context) as MainActivity
@@ -341,18 +355,48 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
         val calendar = Calendar.getInstance()
-        calendar.time = taskModel.taskExpireTime
-        if (taskModel.taskFrequency != 30)
-            calendar.add(Calendar.DATE, taskModel.taskFrequency)
-        else calendar.add(Calendar.MONTH, 1)
+
+        if (taskModel.taskFrequency != -1) {
+            calendar.time = taskModel.taskExpireTime
+            if (taskModel.taskFrequency != 30)
+                calendar.add(Calendar.DATE, taskModel.taskFrequency)
+            else calendar.add(Calendar.MONTH, 1)
+        }
 
         if (dialog != null)
             with(dialog) {
                 setTitle("重复设置")
-                setMessage("要进行重复吗？\n下一次的期限日期是 ${simpleDateFormat.format(calendar.time)}。")
+
+                if (taskModel.taskFrequency != -1)
+                    setMessage("要进行重复吗？\n下一次的期限日期是 ${simpleDateFormat.format(calendar.time)}。")
+                else
+                    setMessage("要进行重复吗？")
+
                 setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
                     if (taskModel.id != null)
                         todoService.repeatTask(taskModel.id)
+                    refreshDataSet()
+                    dialog.cancel()
+                }
+                setButton(AlertDialog.BUTTON_NEGATIVE, "否") { _, _ ->
+                    dialog.cancel()
+                }
+
+                show()
+            }
+    }
+
+    private fun showDialogReset(taskModel: TaskModel) {
+        val dialog = context?.let { AlertDialog.Builder(it).create() }
+
+        if (dialog != null)
+            with(dialog) {
+                setTitle("撤销")
+                setMessage("你确定要撤销完成吗？")
+                setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
+                    if (taskModel.id != null)
+                        todoService.undoFinishTodoItem(taskModel.id)
+                    ToastUtils.showShortToast("撤销成功")
                     refreshDataSet()
                     dialog.cancel()
                 }
@@ -546,9 +590,11 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                     mPhotosSnpl = null
                 }
-                setNegativeButton("取消") { _, _ ->
+                setNeutralButton("不发表") { _, _ ->
                     teamNetworkImpl.finishTeamTask(taskModel, activityVO)
                     mPhotosSnpl = null
+                }
+                setNegativeButton("取消") { _, _ ->
                 }
 
                 show()

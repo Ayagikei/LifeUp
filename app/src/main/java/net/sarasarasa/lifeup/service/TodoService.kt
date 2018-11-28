@@ -69,4 +69,6 @@ interface TodoService {
     fun resetAllRemind(context: Context)
 
     fun deleteTeamTaskByTeamId(teamId: Long)
+    fun changePriority(id: Long): Int
+    fun restartTask(id: Long): Boolean
 }
