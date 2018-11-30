@@ -1,15 +1,13 @@
 package net.sarasarasa.lifeup.utils;
 
 
-import android.util.Log;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
     /**
      * @param plainText 明文
-     * @return 32位密文
+     * @return 16位密文
      */
     public static String encryption(String plainText) {
         String re_md5 = new String();
@@ -36,7 +34,7 @@ public class MD5Util {
             e.printStackTrace();
         }
 
-        Log.e("MD5_Result", re_md5);
+        //Log.e("MD5_Result", re_md5);
 
         return re_md5;
     }

@@ -24,6 +24,7 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.USER_ME
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
+import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamMembaerListVO
 import java.util.*
@@ -39,20 +40,27 @@ class TeamMemberActivity : AppCompatActivity() {
             }
             MSG_GET_TEAM_MEMBER_LIST_SUCCESS -> {
                 if (msg.obj != null) {
-                    val pageVO = msg.obj as PageVO<*>
-                    val list = pageVO.list as List<TeamMembaerListVO>
+                    try {
+                        val pageVO = msg.obj as PageVO<*>
 
-                    totalPage = pageVO.totalPage
+                        if (pageVO.list != null) {
+                            val list = pageVO.list as List<TeamMembaerListVO>
 
-                    if (swipe_refresh_layout != null)
-                        if (swipe_refresh_layout.isRefreshing) {
-                            swipe_refresh_layout.isRefreshing = false
-                            mAdapter.data.clear()
+                            totalPage = pageVO.totalPage
+
+                            if (swipe_refresh_layout != null)
+                                if (swipe_refresh_layout.isRefreshing) {
+                                    swipe_refresh_layout.isRefreshing = false
+                                    mAdapter.data.clear()
+                                }
+
+                            mAdapter.setEnableLoadMore(true)
+
+                            setNewData(list.toMutableList())
                         }
-
-                    mAdapter.setEnableLoadMore(true)
-
-                    setNewData(list.toMutableList())
+                    } catch (e: Exception) {
+                        ToastUtils.showShortToast(e.toString())
+                    }
                 }
             }
             else -> {

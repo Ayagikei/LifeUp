@@ -32,6 +32,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_team_fujisan" />
 
+            <Button
+                android:id="@+id/btn_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/blue"
+                android:text="关注"
+                android:textColor="#FFF"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
+
             <TextView
                 android:id="@+id/tv_userName"
                 android:layout_width="182dp"
@@ -52,13 +64,14 @@
                 android:id="@+id/btn_sign_next"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
-                android:paddingBottom="3dp"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp"
                 android:paddingTop="3dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="3dp"
+                android:visibility="gone"
                 app:fb_borderColor="@color/blue"
                 app:fb_borderWidth="1dp"
                 app:fb_defaultColor="@color/blue"

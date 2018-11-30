@@ -9,6 +9,9 @@ interface TeamNetwork {
     @GET("/teams")
     fun getTeamList(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamListVO>>>
 
+    @GET("/teams")
+    fun searchTeamList(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long, @Query("teamTitle") teamTitle: String): Call<ResultVO<PageVO<TeamListVO>>>
+
     @GET("/teams/{teamId}/members")
     fun getTeamMembers(@Header("authenticity-token") token: String, @Path("teamId") teamId: Long, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamMembaerListVO>>>
 

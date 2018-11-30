@@ -266,16 +266,16 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
 
-/*        mAdapter.setOnItemClickListener { adapter, view, position ->
+        mAdapter.setOnItemChildClickListener { adapter, view, position ->
+            if (view.id == R.id.iv_avatar) {
+                val item = adapter.getItem(position) as TeamActivityListVO
 
+                val intent = Intent(this, UserActivity::class.java)
+                intent.putExtra("userId", item.userId)
 
-            val item = adapter.getItem(position) as TeamListVO
-
-            val intent = Intent(this,TeamActivity::class.java)
-            intent.putExtra("teamId",item.teamId)
-
-            startActivity(intent)
-        }*/
+                startActivity(intent)
+            }
+        }
     }
 
     private fun getNewList() {

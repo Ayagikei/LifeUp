@@ -37,27 +37,34 @@ class BoardFragment : Fragment() {
             }
             MSG_GET_TEAM_MEMBER_LIST_SUCCESS -> {
                 if (msg.obj != null) {
-                    val pageVO = msg.obj as PageVO<*>
-                    val list = pageVO.list as List<TeamMembaerListVO>
+                    try {
+                        val pageVO = msg.obj as PageVO<*>
 
-                    totalPage = pageVO.totalPage ?: totalPage
-                    if (currentPage > totalPage!!) {
-                        currentPage = totalPage as Long
-                    }
+                        if (pageVO.list != null) {
+                            val list = pageVO.list as List<TeamMembaerListVO>
 
-                    if (swipe_refresh_layout != null)
-                        if (swipe_refresh_layout.isRefreshing) {
-                            swipe_refresh_layout.isRefreshing = false
-                            mAdapter.data.clear()
+                            totalPage = pageVO.totalPage ?: totalPage
+                            if (currentPage > totalPage!!) {
+                                currentPage = totalPage as Long
+                            }
+
+                            if (swipe_refresh_layout != null)
+                                if (swipe_refresh_layout.isRefreshing) {
+                                    swipe_refresh_layout.isRefreshing = false
+                                    mAdapter.data.clear()
+                                }
+
+                            setNewData(list.toMutableList())
+
+                            if (swipe_refresh_layout != null)
+                                swipe_refresh_layout.isEnabled = true
+
+                            mAdapter.setEnableLoadMore(true)
+                            mAdapter.notifyDataSetChanged()
                         }
-
-                    setNewData(list.toMutableList())
-
-                    if (swipe_refresh_layout != null)
-                        swipe_refresh_layout.isEnabled = true
-
-                    mAdapter.setEnableLoadMore(true)
-                    mAdapter.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        ToastUtils.showShortToast(e.toString())
+                    }
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {

@@ -74,6 +74,50 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         })
     }
 
+    fun getTeamList(pageVO: PageVO<TeamListVO>, searchText: String) {
+        Log.i("LifeUp 团队模块", "执行[搜索团队列表]操作" + userService.getToken())
+
+        val currentPage = pageVO.currentPage ?: 0
+        val size = pageVO.size ?: 0
+
+        if (currentPage == 0L || size == 0L)
+            return
+
+
+        val call = if (searchText.isBlank())
+            network.getTeamList(userService.getToken(), currentPage, size)
+        else network.searchTeamList(userService.getToken(), currentPage, size, searchText.trim())
+
+        call.enqueue(object : Callback<ResultVO<PageVO<TeamListVO>>> {
+            override fun onFailure(call: Call<ResultVO<PageVO<TeamListVO>>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[搜索团队列表]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[搜索团队列表]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    userService.saveToken("")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+                    message.what = MSG_GET_TEAM_LIST_SUCCESS
+                    val list = responseBody?.data
+                    message.obj = list
+                    Log.i("LifeUp 团队模块", "[搜索团队列表]请求成功：${list}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
 
     fun getTeamMembersList(pageVO: PageVO<TeamMembaerListVO>, teamId: Long) {
         Log.i("LifeUp 团队模块", "执行[查询团队成员列表]操作")

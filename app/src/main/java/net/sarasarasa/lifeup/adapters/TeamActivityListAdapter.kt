@@ -54,6 +54,7 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
         }
 
         helper.addOnClickListener(R.id.npl_item_moment_photos)
+                .addOnClickListener(R.id.iv_avatar)
 
         val delegate = mContext as TeamActivity
         ninePhotoLayout.setDelegate(delegate)

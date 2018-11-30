@@ -81,6 +81,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 LoadingDialogUtils.show(this@LoginActivity)
                 userNetworkImpl.getUserProfile()
             }
+            NetworkConstants.MSG_QQ_LOGIN_FAILED -> {
+                if (msg.obj != null)
+                    ToastUtils.showShortToast(msg.obj.toString())
+            }
             else -> {
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
@@ -464,7 +468,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onError(p0: UiError?) {
-            ToastUtils.showShortToast("授权登录出现异常，请稍后再试。")
+            ToastUtils.showShortToast("授权登录出现异常：" + p0.toString())
         }
 
     }
@@ -474,12 +478,22 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             val res = gson.fromJson(p0.toString(), QQUserInfoVO::class.java)
 
             val signUpVO = SignUpVO()
+
             with(signUpVO) {
                 authIdentifier = mTencent.openId
                 authType = "qq"
-                nickname = res.nickname
+                nickname = if (res.nickname == null) {
+                    getQQDefaultNickname()
+                } else {
+                    res.nickname
+                }
                 userAddress = res.city
-                userHead = res.figureurl_2
+
+                userHead = if (res.figureurl_qq_2 != null) {
+                    res.figureurl_qq_2
+                } else {
+                    res.figureurl_qq_1
+                }
                 userSex = when (res.gender) {
                     "女" -> 0
                     "男" -> 1
@@ -492,13 +506,40 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onCancel() {
-            ToastUtils.showShortToast("授权登录取消")
+            ToastUtils.showShortToast("获取用户信息取消")
+
+            val signUpVO = SignUpVO()
+            with(signUpVO) {
+                authIdentifier = mTencent.openId
+                authType = "qq"
+                nickname = getQQDefaultNickname()
+                userSex = 2
+            }
+
+            LoadingDialogUtils.show(this@LoginActivity)
+            loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
         }
 
         override fun onError(p0: UiError?) {
-            ToastUtils.showShortToast("授权登录出现异常，请稍后再试。")
+            ToastUtils.showShortToast("获取用户信息出现异常：" + p0.toString())
+
+            val signUpVO = SignUpVO()
+            with(signUpVO) {
+                authIdentifier = mTencent.openId
+                authType = "qq"
+                nickname = getQQDefaultNickname()
+                userSex = 2
+            }
+
+            LoadingDialogUtils.show(this@LoginActivity)
+            loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
         }
 
+
+    }
+
+    private fun getQQDefaultNickname(): String {
+        return "QQ用户_" + MD5Util.encryption(Calendar.getInstance().toString()).substring(0, 10)
     }
 
 /*    override fun onCreateOptionsMenu(menu: Menu): Boolean {

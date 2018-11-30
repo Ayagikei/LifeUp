@@ -9,7 +9,9 @@ import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -208,6 +210,44 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             }
         } else {
             btn_sign_next.visibility = View.GONE
+        }
+
+        when (userDetailVO.isFollow) {
+            -1 -> btn_follow.visibility = View.INVISIBLE
+            0 -> {
+            }
+            1 -> {
+                btn_follow.text = "已关注"
+                val colorStateList = ContextCompat.getColorStateList(this, R.color.clicked_btn)
+                ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
+            }
+            2 -> {
+                btn_follow.text = "互相关注"
+                val colorStateList = ContextCompat.getColorStateList(this, R.color.clicked_btn)
+                ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
+            }
+        }
+
+        btn_follow.setOnClickListener {
+            if (userDetailVO.isFollow == 0) {
+                userDetailVO.userId?.let { it1 -> userNetworkImpl.followUserById(it1) }
+                btn_follow.text = "已关注"
+                userDetailVO.isFollow = 1
+                val colorStateList = ContextCompat.getColorStateList(this, R.color.clicked_btn)
+                ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
+            } else if (userDetailVO.isFollow == 1) {
+                userDetailVO.userId?.let { it1 -> userNetworkImpl.unfollowUserById(it1) }
+                btn_follow.text = "关注"
+                userDetailVO.isFollow = 0
+                val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
+                ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
+            } else if (userDetailVO.isFollow == 2) {
+                userDetailVO.userId?.let { it1 -> userNetworkImpl.unfollowUserById(it1) }
+                btn_follow.text = "关注"
+                userDetailVO.isFollow = 1
+                val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
+                ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
+            }
         }
 
 

@@ -42,24 +42,31 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
             }
             NetworkConstants.MSG_GET_MOMENTS_SUCCESS -> {
                 if (msg.obj != null) {
-                    val pageVO = msg.obj as PageVO<*>
-                    val list = pageVO.list as List<TeamActivityListVO>
+                    try {
+                        val pageVO = msg.obj as PageVO<*>
 
-                    totalPage = pageVO.totalPage
+                        if (pageVO.list != null) {
+                            val list = pageVO.list as List<TeamActivityListVO>
 
-                    if (swipe_refresh_layout != null)
-                        if (swipe_refresh_layout.isRefreshing) {
-                            swipe_refresh_layout.isRefreshing = false
-                            mAdapter.data.clear()
+                            totalPage = pageVO.totalPage
+
+                            if (swipe_refresh_layout != null)
+                                if (swipe_refresh_layout.isRefreshing) {
+                                    swipe_refresh_layout.isRefreshing = false
+                                    mAdapter.data.clear()
+                                }
+
+                            setNewData(list.toMutableList())
+
+                            if (swipe_refresh_layout != null)
+                                swipe_refresh_layout.isEnabled = true
+
+                            mAdapter.setEnableLoadMore(true)
+                            mAdapter.notifyDataSetChanged()
                         }
-
-                    setNewData(list.toMutableList())
-
-                    if (swipe_refresh_layout != null)
-                        swipe_refresh_layout.isEnabled = true
-
-                    mAdapter.setEnableLoadMore(true)
-                    mAdapter.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        ToastUtils.showShortToast(e.toString())
+                    }
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {

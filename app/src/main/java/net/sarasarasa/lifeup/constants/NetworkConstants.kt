@@ -14,6 +14,7 @@ class NetworkConstants {
         const val MSG_YB_LOGIN_CONNECT_FAILED = 4
         const val MSG_GET_PROFILE_SUCCESS = 5
         const val MSG_QQ_LOGIN_SUCCESS = 6
+        const val MSG_QQ_LOGIN_FAILED = 8
         const val MSG_PHONE_REGISTER_SUCCESS = 7
 
         const val MSG_UPDATE_FAILED = 264

@@ -22,6 +22,8 @@ class TeamVO {
 
     var teamTitle: String? = null
 
+    var teamHead: String? = null
+
     override fun toString(): String {
         return "TeamVO(firstEndTime=$firstEndTime, firstStartTime=$firstStartTime, rewardAttrs=$rewardAttrs, rewardExp=$rewardExp, startDate=$startDate, teamDesc=$teamDesc, teamFreq=$teamFreq, teamId=$teamId, teamTitle=$teamTitle)"
     }

@@ -40,24 +40,32 @@ class TeamListFragment : Fragment() {
             }
             MSG_GET_TEAM_LIST_SUCCESS -> {
                 if (msg.obj != null) {
-                    val pageVO = msg.obj as PageVO<*>
-                    val list = pageVO.list as List<TeamListVO>
 
-                    totalPage = pageVO.totalPage
+                    try {
+                        val pageVO = msg.obj as PageVO<*>
 
-                    if (swipe_refresh_layout != null)
-                        if (swipe_refresh_layout.isRefreshing) {
-                            swipe_refresh_layout.isRefreshing = false
-                            mAdapter.data.clear()
+                        if (pageVO.list != null) {
+                            val list = pageVO.list as List<TeamListVO>
+
+                            totalPage = pageVO.totalPage
+
+                            if (swipe_refresh_layout != null)
+                                if (swipe_refresh_layout.isRefreshing) {
+                                    swipe_refresh_layout.isRefreshing = false
+                                    mAdapter.data.clear()
+                                }
+
+                            setNewData(list.toMutableList())
+
+                            if (swipe_refresh_layout != null)
+                                swipe_refresh_layout.isEnabled = true
+
+                            mAdapter.setEnableLoadMore(true)
+                            mAdapter.notifyDataSetChanged()
                         }
-
-                    setNewData(list.toMutableList())
-
-                    if (swipe_refresh_layout != null)
-                        swipe_refresh_layout.isEnabled = true
-
-                    mAdapter.setEnableLoadMore(true)
-                    mAdapter.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        ToastUtils.showShortToast(e.toString())
+                    }
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {
@@ -106,8 +114,17 @@ class TeamListFragment : Fragment() {
 
         rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         rootView.swipe_refresh_layout.setOnRefreshListener {
+
+            mAdapter.setOnLoadMoreListener({
+                getNewList()
+                swipe_refresh_layout.isEnabled = false
+            }, mRecyclerView)
+
+
             currentPage = 0L
+            totalPage = null
             mAdapter.setEnableLoadMore(false)
+            mAdapter.data.clear()
             getNewList()
         }
 
@@ -151,6 +168,15 @@ class TeamListFragment : Fragment() {
         teamNetworkImpl.getTeamList(pageVO)
     }
 
+    private fun getNewList(searchText: String) {
+        val pageVO = PageVO<TeamListVO>()
+        pageVO.size = 8
+        pageVO.currentPage = ++currentPage
+        Log.i("PageVO", pageVO.toString())
+
+        teamNetworkImpl.getTeamList(pageVO, searchText)
+    }
+
     private fun setNewData(list: MutableList<TeamListVO>) {
         mAdapter.addData(list)
 
@@ -161,6 +187,7 @@ class TeamListFragment : Fragment() {
             } else {
                 mAdapter.loadMoreComplete()
             }
+
         }
     }
 
@@ -171,8 +198,51 @@ class TeamListFragment : Fragment() {
         val mSearchView = MenuItemCompat.getActionView(searchItem) as SearchView
         //mSearchView.setIconifiedByDefault(false)
 
+        //搜索框文字变化监听
+        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String): Boolean {
+                mAdapter.setEnableLoadMore(false)
+                mAdapter.setOnLoadMoreListener({
+                    getNewList(s)
+                    swipe_refresh_layout.isEnabled = false
+                }, mRecyclerView)
+
+                if (swipe_refresh_layout != null)
+                    swipe_refresh_layout.isEnabled = false
+                currentPage = 0L
+
+                mAdapter.data.clear()
+                getNewList(s)
+
+
+                return false
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                return false
+            }
+        })
+
+        mSearchView.setOnCloseListener {
+            mAdapter.setEnableLoadMore(false)
+            mAdapter.setOnLoadMoreListener({
+                getNewList()
+                swipe_refresh_layout.isEnabled = false
+            }, mRecyclerView)
+
+            if (swipe_refresh_layout != null)
+                swipe_refresh_layout.isEnabled = false
+            currentPage = 0L
+
+            mAdapter.data.clear()
+            getNewList()
+
+            false
+        }
+
+
         val editText = mSearchView.findViewById<EditText>(R.id.search_src_text)
-        editText.setHintTextColor(ContextCompat.getColor(this.context!!, R.color.light_gray));
+        editText.setHintTextColor(ContextCompat.getColor(this.context!!, R.color.light_gray))
 
 
         super.onCreateOptionsMenu(menu, inflater)

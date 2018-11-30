@@ -14,11 +14,11 @@ class UserDetailVO {
     var userId: Long? = null
     var userSex: Int? = null
     var userStatus: Int? = null
+    var isFollow: Int? = null
 
 
     override fun toString(): String {
-        return "UserDetailVO(createTime=$createTime, fansAmount=$followingAmount, followerAmount=$followerAmount, nickname=$nickname, phone=$phone, teamAmount=$teamAmount, userAddress=$userAddress, userHead=$userHead, userId=$userId, userSex=$userSex, userStatus=$userStatus)"
+        return "UserDetailVO(createTime=$createTime, followingAmount=$followingAmount, followerAmount=$followerAmount, nickname=$nickname, phone=$phone, teamAmount=$teamAmount, userAddress=$userAddress, userHead=$userHead, userId=$userId, userSex=$userSex, userStatus=$userStatus, isFollow=$isFollow)"
     }
-
 
 }

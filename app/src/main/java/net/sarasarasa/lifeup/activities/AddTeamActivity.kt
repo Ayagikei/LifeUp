@@ -1,14 +1,22 @@
 package net.sarasarasa.lifeup.activities
 
+import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
+import android.provider.MediaStore
 import android.support.design.widget.TextInputEditText
+import android.support.v4.content.FileProvider
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
@@ -18,11 +26,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
+import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_add_team.*
 import kotlinx.android.synthetic.main.content_add_team.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.constants.CommonConstants.Companion.CHOOSE_PICTURE
+import net.sarasarasa.lifeup.constants.CommonConstants.Companion.TAKE_PICTURE
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
@@ -31,11 +45,17 @@ import net.sarasarasa.lifeup.converter.ExpRewardConverter
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
+import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.TeamTaskVO
 import net.sarasarasa.lifeup.vo.TeamVO
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,6 +78,20 @@ open class AddTeamActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+            NetworkConstants.MSG_UPDATE_AVATAR_SUCCESS -> {
+                if (msg.obj != null)
+                    newTeamHeadUrl = msg.obj as String
+
+                val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+
+                Glide.with(this).asBitmap().load(newTeamHeadUrl).apply(requestOptions).into(object : BitmapImageViewTarget(iv_team_avatar) {
+                    override fun setResource(resource: Bitmap?) {
+                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@AddTeamActivity.resources, resource)
+                        circularBitmapDrawable.isCircular = true
+                        iv_team_avatar.setImageDrawable(circularBitmapDrawable)
+                    }
+                })
+            }
             else -> {
                 if (msg.obj != null)
                     ToastUtils.showShortToast(msg.obj.toString())
@@ -74,6 +108,16 @@ open class AddTeamActivity : AppCompatActivity() {
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
+    private val uploadNetworkImpl = UploadNetworkImpl(uiHandler)
+    private val userService = UserServiceImpl()
+
+    private var avatarFileName = "teamAvatar.jpg"
+    private var avatarOriginFileName = "teamAvatarOrigin.jpg"
+    private var newTeamHeadUrl: String = ""
+
+    companion object {
+        private const val RC_CAMERA = 200
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +136,20 @@ open class AddTeamActivity : AppCompatActivity() {
         initRepeater()
         initSeekBar()
         initAbbrBtn()
+
+        iv_team_avatar.setOnClickListener {
+            showChoosePicDialog()
+        }
+
+        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val mine = userService.getMine()
+        Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_team_avatar) {
+            override fun setResource(resource: Bitmap?) {
+                val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@AddTeamActivity.resources, resource)
+                circularBitmapDrawable.isCircular = true
+                iv_team_avatar.setImageDrawable(circularBitmapDrawable)
+            }
+        })
     }
 
     /** 将技能图标初始化为灰色 **/
@@ -391,6 +449,7 @@ open class AddTeamActivity : AppCompatActivity() {
             startDate = dateStartDate
             firstStartTime = dateFirstStartTime
             firstEndTime = dateFirstEndTime
+            teamHead = newTeamHeadUrl
 
             for (i in arrAbbrBtn.indices) {
                 if (i == 0) continue
@@ -501,5 +560,140 @@ open class AddTeamActivity : AppCompatActivity() {
             this.show()
 
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    /**
+     * 显示修改图片的对话框
+     */
+    @AfterPermissionGranted(RC_CAMERA)
+    fun showChoosePicDialog() {
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("修改头像")
+        val items = arrayOf("选择本地照片", "拍照")
+        builder.setNegativeButton("取消", null)
+        builder.setItems(items) { _, which ->
+            when (which) {
+                0 // 选择本地照片
+                -> {
+                    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+                    //if (EasyPermissions.hasPermissions(this, *perms)) {
+                    val intent = Intent(Intent.ACTION_PICK)
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                    startActivityForResult(intent, CHOOSE_PICTURE)
+/*                    } else {
+                        EasyPermissions.requestPermissions(this, "需要文件写入权限", RC_CAMERA, *perms)
+                    }*/
+                }
+                1 // 拍照
+                -> {
+                    val perms = arrayOf(Manifest.permission.CAMERA)
+
+                    if (EasyPermissions.hasPermissions(this, *perms)) {
+                        val openCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+                        val file = getAvatarFile(avatarOriginFileName)
+
+                        if (file.exists())
+                            file.delete()
+
+                        val fileUri = getUriByOsVersion(file)
+
+                        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+                        openCameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        openCameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        startActivityForResult(openCameraIntent, TAKE_PICTURE)
+                    } else {
+                        EasyPermissions.requestPermissions(this, "拍照需要系统摄像头权限授权", RC_CAMERA, *perms)
+                    }
+                }
+            }
+        }
+        builder.show()
+    }
+
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                // 对拍照返回的图片进行裁剪处理
+                TAKE_PICTURE -> {
+                    val imgUriSel = getUriByOsVersion(getAvatarFile(avatarOriginFileName))
+                    cutImageByuCrop(imgUriSel)
+                }
+                // 对在图库选择的图片进行裁剪处理
+                CHOOSE_PICTURE -> cutImageByuCrop(data?.data)
+                // 上传裁剪成功的文件
+                UCrop.REQUEST_CROP -> {
+                    data?.let { uploadFile(it) }
+                }
+                // 输出裁剪
+                UCrop.RESULT_ERROR -> {
+                    val cropError = data?.let { UCrop.getError(it) }
+                    ToastUtils.showShortToast(cropError.toString())
+                }
+
+            }
+        }
+    }
+
+    /**
+     * 使用uCrop框架对指定[uri]的文件进行裁剪
+     */
+    private fun cutImageByuCrop(uri: Uri?) {
+        val outputImage = getAvatarFile(avatarFileName)
+        val outputUri = Uri.fromFile(outputImage)
+
+        uri?.let {
+            UCrop.of(it, outputUri)
+                    .withAspectRatio(1f, 1f)
+                    .withMaxResultSize(256, 256)
+                    .start(this)
+        }
+    }
+
+    /**
+     *  获得指定[filename]的[File]对象
+     */
+    private fun getAvatarFile(filename: String): File {
+        // 使用 APP 内部储存空间
+        val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
+
+        // 这句是使用外部存储空间的
+        //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
+
+        if (!appDir.exists())
+            appDir.mkdir()
+
+        return File(appDir, filename)
+    }
+
+    private fun getUriByOsVersion(file: File): Uri {
+        val currentApiVersion = android.os.Build.VERSION.SDK_INT
+
+        return if (currentApiVersion < 24) {
+            Uri.fromFile(file)
+        } else {
+            FileProvider.getUriForFile(this, packageName + ".provider", file)
+        }
+    }
+
+
+    /**
+     * 上传裁剪后的头像
+     */
+    @Throws(IOException::class)
+    fun uploadFile(data: Intent) {
+        val file = getAvatarFile(avatarFileName)
+
+        LoadingDialogUtils.show(this)
+        uploadNetworkImpl.uploadImages(file)
     }
 }

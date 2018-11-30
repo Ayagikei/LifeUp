@@ -96,8 +96,14 @@ class ProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_finish -> {
-                userNetwork.updateUserProfile(profileVO)
-                true
+                if (profileVO.nickname != null && profileVO.nickname!!.isBlank()) {
+                    ToastUtils.showShortToast("用户名不能为空")
+                    super.onOptionsItemSelected(item)
+                } else {
+                    userNetwork.updateUserProfile(profileVO)
+                    true
+                }
+
             }
             else -> super.onOptionsItemSelected(item)
         }

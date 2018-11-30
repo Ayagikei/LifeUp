@@ -76,4 +76,46 @@ class UploadNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         })
     }
 
+
+    fun uploadImages(file: File) {
+        Log.i("LifeUp 上传模块", "执行[上传图片]操作")
+
+        val parts = ArrayList<MultipartBody.Part>()
+
+        PictureUtils.compressBitmap(file.absolutePath, file)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val part = MultipartBody.Part.createFormData("imageFiles", file.name, requestFile)
+        parts.add(part)
+
+
+        val call = network.uploadImages(userService.getToken(), parts)
+        call.enqueue(object : Callback<ResultVO<List<String>>> {
+            override fun onFailure(call: Call<ResultVO<List<String>>>?, t: Throwable?) {
+                Log.e("LifeUp 上传模块", "[上传图片]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_UPDATE_AVATAR_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<List<String>>>, response: Response<ResultVO<List<String>>>) {
+                val responseBody = response.body()
+
+                val message = Message()
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 上传模块", "[上传图片]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    userService.saveToken("")
+                    message.what = MSG_UPDATE_AVATAR_FAILED
+                    message.obj = responseBody.msg
+                } else {
+                    message.what = MSG_UPDATE_AVATAR_SUCCESS
+                    val returnList = response.body()?.data
+                    message.obj = returnList?.get(0)
+                    Log.i("LifeUp 上传模块", "[上传图片]请求成功 " + returnList.toString())
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
 }

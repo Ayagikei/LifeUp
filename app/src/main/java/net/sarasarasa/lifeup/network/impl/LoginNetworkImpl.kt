@@ -4,13 +4,16 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import net.sarasarasa.lifeup.base.BaseNetwork
+import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_PHONE_REGISTER_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_QQ_LOGIN_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_QQ_LOGIN_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_URL_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_URL_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_YB_LOGIN_SUCCESS
 import net.sarasarasa.lifeup.network.LoginNetwork
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.MobVO
 import net.sarasarasa.lifeup.vo.ResultVO
 import net.sarasarasa.lifeup.vo.SignUpVO
@@ -122,20 +125,30 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
         call.enqueue(object : Callback<ResultVO<String>> {
             override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
                 Log.e("LifeUp 登陆模块", "[使用QQ授权登录或注册]返回错误: ${t.toString()}")
+                ToastUtils.showShortToast("[使用QQ授权登录或注册]返回错误:" + t.toString())
+
+                val message = Message()
+                message.what = AttributeConstants.MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
                 val resultVO = response?.body()
                 Log.e("Profile", resultVO.toString())
 
+                val message = Message()
                 if (resultVO?.data != null) {
                     Log.i("LifeUp 登陆模块", "[使用QQ授权登录或注册]请求成功")
                     str = resultVO.data
                     userService.saveToken(str)
-                    val message = Message()
                     message.what = MSG_QQ_LOGIN_SUCCESS
-                    uiHandler.handleMessage(message)
+
+                } else {
+                    message.what = MSG_QQ_LOGIN_FAILED
+                    message.obj = resultVO?.msg
                 }
+
+                uiHandler.handleMessage(message)
             }
         })
     }
