@@ -6,10 +6,14 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import android.support.constraint.ConstraintSet
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,6 +22,8 @@ import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
+import kotlinx.android.synthetic.main.dialog_repeat.view.*
+import mehdi.sakout.fancybuttons.FancyButton
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
@@ -29,6 +35,7 @@ import net.sarasarasa.lifeup.utils.DensityUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 open class AddToDoItemActivity : AppCompatActivity() {
@@ -37,6 +44,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
     protected var iCheckedItemIndex = 0
     protected var iUrgency = 0
     protected var iDifficulty = 0
+
+    //没按下确定键时候的频次选择
+    protected var iTempFrequency = 0
+    protected var iFrequency = 0
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
 
@@ -265,7 +276,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
      * 展示重复频次选择对话框
      */
     private fun showRepeaterDialog() {
-        val items = arrayOf("单次", "多次", "每日", "每两日", "每周", "每两周", "每月")
+/*        val items = arrayOf("单次", "多次", "每日", "每两日", "每周", "每两周", "每月")
 
         val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
                 .setSingleChoiceItems(items, iCheckedItemIndex) { dialog, index ->
@@ -273,7 +284,121 @@ open class AddToDoItemActivity : AppCompatActivity() {
                     et_repeat.setText(items[index])
                     dialog.dismiss()
                 }.create()
+        dialog.show()*/
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_repeat, null)
+        val arrButton = ArrayList<FancyButton>()
+        with(arrButton) {
+            add(dialogView.button_fre_none)
+            add(dialogView.button_fre0)
+            add(dialogView.button_fre1)
+            add(dialogView.button_fre2)
+            add(dialogView.button_fre7)
+            add(dialogView.button_fre14)
+            add(dialogView.button_fre30)
+            add(dialogView.button_fre_custom)
+        }
+
+        for (button in arrButton) {
+            button.setOnClickListener { setTaskFre(button, dialogView) }
+        }
+
+        dialogView.editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                setTaskFre(dialogView.button_fre_custom, dialogView)
+            }
+
+        })
+
+        val clickedButton = when (iFrequency) {
+            0 -> dialogView.button_fre0
+            1 -> dialogView.button_fre1
+            2 -> dialogView.button_fre2
+            7 -> dialogView.button_fre7
+            14 -> dialogView.button_fre14
+            30 -> dialogView.button_fre30
+            -1 -> dialogView.button_fre_none
+            -2 -> dialogView.button_fre_custom
+            else -> dialogView.button_fre0
+        }
+        setTaskFre(clickedButton, dialogView)
+
+
+        val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
+                .setView(dialogView)
+                .setPositiveButton("确定") { _, _ ->
+                    if (iTempFrequency != -2) {
+                        iFrequency = iTempFrequency
+                    } else {
+                        try {
+                            iFrequency = if (!dialogView.editText.text.toString().isBlank())
+                                Integer.valueOf(dialogView.editText.text.toString()) ?: 0
+                            else 0
+                        } catch (e: Exception) {
+                            ToastUtils.showShortToast("你输入的数据不合法")
+                        }
+                    }
+
+                    //ToastUtils.showShortToast("u choose:$iFrequency")
+                    til_repeat.editText?.setText(TodoItemConverter.iFrequencyToNormalString(iFrequency))
+
+                }
+                .setNegativeButton("取消") { _, _ ->
+                    iTempFrequency = iFrequency
+                }
+                .create()
+
         dialog.show()
+    }
+
+    private fun setTaskFre(button: FancyButton, dialogView: View) {
+        iTempFrequency = when (button.id) {
+            R.id.button_fre0 -> 0
+            R.id.button_fre1 -> 1
+            R.id.button_fre2 -> 2
+            R.id.button_fre7 -> 7
+            R.id.button_fre14 -> 14
+            R.id.button_fre30 -> 30
+            R.id.button_fre_none -> -1
+            R.id.button_fre_custom -> -2
+            else -> 0
+        }
+
+        resetButtonColor(dialogView)
+
+        button.setBackgroundColor(getThemeColor(iTempFrequency))
+        button.setTextColor(ContextCompat.getColor(this, R.color.white))
+
+    }
+
+    private fun resetButtonColor(dialogView: View) {
+        dialogView.button_fre0.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre0.setTextColor(getThemeColor(0))
+        dialogView.button_fre_none.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre_none.setTextColor(getThemeColor(0))
+        dialogView.button_fre1.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre1.setTextColor(getThemeColor(1))
+        dialogView.button_fre2.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre2.setTextColor(getThemeColor(2))
+        dialogView.button_fre7.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre7.setTextColor(getThemeColor(7))
+        dialogView.button_fre14.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre14.setTextColor(getThemeColor(14))
+        dialogView.button_fre30.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre30.setTextColor(getThemeColor(30))
+        dialogView.button_fre_custom.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre_custom.setTextColor(getThemeColor(-2))
+    }
+
+    /** 根据[taskFrequency: String]获得[color]主题色 **/
+    private fun getThemeColor(taskFrequency: Int): Int {
+        return ContextCompat.getColor(this, TodoItemConverter.strFrequencyToColorId(taskFrequency))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -330,7 +455,8 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val taskShared = switch1.isChecked
         var relatedAttribute = arrayOf<String>()
 
-        val taskFrequency = when (til_repeat.editText?.text.toString()) {
+        val taskFrequency = iFrequency
+/*                when (til_repeat.editText?.text.toString()) {
             "单次" -> 0
             "多次" -> -1
             "每日" -> 1
@@ -339,7 +465,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             "每两周" -> 14
             "每月" -> 30
             else -> 0
-        }
+        }*/
 
         for (i in arrAbbrBtn.indices) {
             if (i == 0) continue

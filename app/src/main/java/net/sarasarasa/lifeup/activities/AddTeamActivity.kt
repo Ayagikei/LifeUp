@@ -38,6 +38,7 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.CommonConstants.Companion.CHOOSE_PICTURE
 import net.sarasarasa.lifeup.constants.CommonConstants.Companion.TAKE_PICTURE
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
@@ -91,6 +92,10 @@ open class AddTeamActivity : AppCompatActivity() {
                         iv_team_avatar.setImageDrawable(circularBitmapDrawable)
                     }
                 })
+            }
+            MSG_ADD_TEAM_FAILED -> {
+                if (msg.obj != null)
+                    ToastUtils.showShortToast("创建团队失败：" + msg.obj.toString())
             }
             else -> {
                 if (msg.obj != null)

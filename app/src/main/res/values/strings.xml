@@ -152,4 +152,6 @@
     <string name="AcraTitle">Crash Report</string>
     <string name="AcraCommend">Situation：</string>
     <string name="AcraChannel">LifeUp Report</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

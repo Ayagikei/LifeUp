@@ -42,7 +42,9 @@ class AchievementNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
 

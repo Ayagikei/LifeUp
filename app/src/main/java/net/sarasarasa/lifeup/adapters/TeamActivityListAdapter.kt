@@ -40,8 +40,13 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
                         .setText(R.id.tv_remark, item.userActivity + "\n")
             }
         } else {
-            helper.setText(R.id.tv_nickname, item.userActivity)
-                    .setText(R.id.tv_remark, "")
+            if (item.activityIcon == 1) {
+                helper.setText(R.id.tv_nickname, "欢迎${item.nickname}加入团队「${item.teamTitle}」")
+                        .setText(R.id.tv_remark, "")
+            } else {
+                helper.setText(R.id.tv_nickname, item.userActivity)
+                        .setText(R.id.tv_remark, "")
+            }
         }
 
 

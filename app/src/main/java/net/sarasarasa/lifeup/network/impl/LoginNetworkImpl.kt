@@ -134,7 +134,9 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
                 val resultVO = response?.body()
-                Log.e("Profile", resultVO.toString())
+
+                if (resultVO != null)
+                    Log.e("Profile", resultVO.toString())
 
                 val message = Message()
                 if (resultVO?.data != null) {
@@ -166,7 +168,9 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
                 val resultVO = response?.body()
-                Log.e("Profile", resultVO.toString())
+                if (resultVO != null)
+                    Log.e("Profile", resultVO.toString())
+
                 val message = Message()
                 message.obj = resultVO?.msg
 

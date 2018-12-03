@@ -89,7 +89,9 @@ class AchievementActivity : AppCompatActivity() {
             6 -> dialogView.imageView.setImageResource(R.drawable.ic_achieve_sport)
         }
 
-        if (!achievement.isGotReward && achievement.hasFinished)
+        val dbAchievement = achievementService.getAchievementById(achievement.achievementId)
+
+        if (!dbAchievement.isGotReward && dbAchievement.hasFinished)
             dialogView.btn_reward.setOnClickListener {
                 achievementService.finishAchievement(achievement.achievementId)
                 it.visibility = View.GONE

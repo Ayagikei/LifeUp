@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.fragment
 import android.Manifest
 import android.animation.Animator
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -337,8 +338,17 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 cancel()
 
                 //本地事项才显示重复对话框
-                if (item.taskFrequency != 0 && item.teamId == IS_TEAM_TASK)
+                if (item.taskFrequency != 0 && item.teamId == IS_TEAM_TASK) {
+                    val sharedPreferences = activity?.getSharedPreferences("options", Context.MODE_PRIVATE)
+                    val isShowRepeatDialog = sharedPreferences?.getBoolean("isShowRepeatDialog", true)
+
+                    if (isShowRepeatDialog == true)
                     showDialogRepeat(item)
+                    else {
+                        todoService.repeatTask(item.id)
+                        refreshDataSet()
+                    }
+                }
 
                 //非本地事项显示动态对话框
                 if (item.teamId != IS_TEAM_TASK) {

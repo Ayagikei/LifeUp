@@ -192,6 +192,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             val intent = Intent(this, TeamMemberActivity::class.java)
             intent.putExtra("typeId", mUserId)
                     .putExtra("memberType", FOLLOWING_MEMBER)
+                    .putExtra("title", "关注列表")
             startActivity(intent)
         }
 
@@ -199,6 +200,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             val intent = Intent(this, TeamMemberActivity::class.java)
             intent.putExtra("typeId", mUserId)
                     .putExtra("memberType", FOLLOWER_MEMBER)
+                    .putExtra("title", "粉丝列表")
             startActivity(intent)
         }
 

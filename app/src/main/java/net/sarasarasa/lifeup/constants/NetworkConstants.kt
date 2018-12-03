@@ -35,6 +35,7 @@ class NetworkConstants {
         const val MSG_GET_TEAM_LIST_SUCCESS = 300
         const val MSG_GET_TEAM_DETAIL_SUCCESS = 200
         const val MSG_ADD_TEAM_SUCCESS = 201
+        const val MSG_ADD_TEAM_FAILED = 202
         const val MSG_QUIT_TEAM_SUCCESS = 204
         const val MSG_END_TEAM_SUCCESS = 206
         const val MSG_JOIN_TEAM_SUCCESS = 211

@@ -94,8 +94,14 @@ class TeamMemberActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
+
         typeId = intent.getLongExtra("typeId", USER_ME)
         mMemberType = intent.getLongExtra("memberType", TEAM_MEMBER)
+
+        val title = intent.getStringExtra("title")
+
+        if (title.isNotEmpty())
+            supportActionBar?.title = title
 
         initView()
     }

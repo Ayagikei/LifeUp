@@ -26,6 +26,7 @@ class StatusFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_status, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+
         initData(view)
         return view
     }

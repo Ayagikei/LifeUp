@@ -6,6 +6,7 @@ import android.util.Log
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_END_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
@@ -292,12 +293,16 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
-                    message.what = MSG_ADD_TEAM_SUCCESS
+
                     val teamTaskVO = responseBody?.data
-                    message.obj = teamTaskVO
 
                     if (teamTaskVO != null) {
+                        message.what = MSG_ADD_TEAM_SUCCESS
+                        message.obj = teamTaskVO
                         todoService.addOrUpdateTeamTask(teamTaskVO)
+                    } else {
+                        message.what = MSG_ADD_TEAM_FAILED
+                        message.obj = responseBody?.msg
                     }
 
                     Log.i("LifeUp 团队模块", "[新建团队]请求成功：${teamTaskVO}")
@@ -322,7 +327,9 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<TeamDetailVO>>, response: Response<ResultVO<TeamDetailVO>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -357,7 +364,9 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -397,7 +406,9 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -439,7 +450,9 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {

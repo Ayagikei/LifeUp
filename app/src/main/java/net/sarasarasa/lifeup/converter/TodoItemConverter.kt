@@ -68,7 +68,7 @@ class TodoItemConverter {
                     7 -> "团队任务-每周"
                     14 -> "团队任务-每两周"
                     30 -> "团队任务-每月"
-                    else -> ""
+                    else -> "团队任务-每${taskFrequency}天"
                 }
             } else {
                 return when (taskFrequency) {
@@ -79,7 +79,7 @@ class TodoItemConverter {
                     7 -> "周期任务-每周"
                     14 -> "周期任务-每两周"
                     30 -> "周期任务-每月"
-                    else -> ""
+                    else -> "周期任务-每${taskFrequency}天"
                 }
             }
         }
@@ -89,11 +89,11 @@ class TodoItemConverter {
                 0 -> "单次"
                 -1 -> "多次"
                 1 -> "每日"
-                2 -> "-每两日"
+                2 -> "每两日"
                 7 -> "每周"
                 14 -> "每两周"
                 30 -> "每月"
-                else -> ""
+                else -> "自定义-${taskFrequency}天"
             }
         }
 
@@ -109,13 +109,14 @@ class TodoItemConverter {
 
         fun strFrequencyToColorId(taskFrequency: Int): Int {
             return when (taskFrequency) {
+                -1 -> R.color.color_to_do_item_fre0
                 0 -> R.color.color_to_do_item_fre0
                 1 -> R.color.color_to_do_item_fre1
                 2 -> R.color.color_to_do_item_fre1
                 7 -> R.color.color_to_do_item_fre7
                 14 -> R.color.color_to_do_item_fre7
                 30 -> R.color.color_to_do_item_fre30
-                else -> R.color.color_to_do_item_fre0
+                else -> R.color.color_to_do_item_custom
             }
         }
 

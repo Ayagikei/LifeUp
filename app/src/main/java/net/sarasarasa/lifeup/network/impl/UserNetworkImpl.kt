@@ -178,7 +178,9 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamActivityListVO>>>, response: Response<ResultVO<PageVO<TeamActivityListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
 
@@ -264,7 +266,9 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
 
@@ -377,7 +381,9 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
 
@@ -421,7 +427,9 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
 
@@ -464,7 +472,9 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamActivityListVO>>>, response: Response<ResultVO<PageVO<TeamActivityListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
 
                 val message = Message()
 
