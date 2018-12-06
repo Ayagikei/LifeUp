@@ -70,6 +70,7 @@
             android:theme="@style/AppTheme.TranslucentTheme" />
         <activity
             android:name=".activities.MainActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Main" />
         <activity
