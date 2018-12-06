@@ -69,7 +69,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     val profileVO = responseBody?.data
                     Log.i("LifeUp 用户模块", "[获取用户信息]请求成功：${profileVO}")
                     if (profileVO != null)
-                        userService.saveMine(profileVO)
+                        userService.saveMine(profileVO, true)
                 }
                 uiHandler.handleMessage(message)
             }
@@ -105,8 +105,9 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.what = MSG_UPDATE_PROFILE_SUCCESS
                     val profileVO = responseBody?.data
                     Log.i("LifeUp 用户模块", "[更新用户信息]请求成功：${profileVO}")
-                    if (profileVO != null)
-                        userService.saveMine(profileVO)
+                    if (profileVO != null) {
+                        userService.saveMine(profileVO, false)
+                    }
                 }
                 uiHandler.handleMessage(message)
             }

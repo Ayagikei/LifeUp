@@ -66,7 +66,9 @@ public class Pedometer implements SensorEventListener {
     }
 
     public float getStepCount() {
-        return mCount;
+        if (mStepCount != null)
+            return mCount;
+        else return mDetector;
     }
 
     private void setStepCount(float count) {

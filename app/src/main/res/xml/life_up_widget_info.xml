@@ -3,8 +3,8 @@
     android:initialKeyguardLayout="@layout/life_up_widget"
     android:initialLayout="@layout/life_up_widget"
     android:minWidth="180dp"
-    android:minHeight="40dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:minHeight="110dp"
+    android:previewImage="@drawable/lifeup_widget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen"></appwidget-provider>

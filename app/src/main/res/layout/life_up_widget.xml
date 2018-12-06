@@ -1,32 +1,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#09C"
+        android:layout_height="48dp"
+        android:background="@color/blue"
         android:padding="@dimen/widget_margin">
 
         <TextView
             android:id="@+id/appwidget_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:contentDescription="人升LifeUp"
+            android:text="今日事项 0/11"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+        <ImageView
+            android:id="@+id/iv_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="#09C"
-            android:contentDescription="@string/appwidget_text"
-            android:text="@string/appwidget_text"
-            android:textColor="#ffffff"
-            android:textSize="24sp"
-            android:textStyle="bold|italic" />
+            android:layout_gravity="center_vertical"
+            android:padding="4dp"
+            android:src="@drawable/ic_home_white_24dp" />
+
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="4dp"
+            android:src="@drawable/ic_add_d" />
+
+        <ImageView
+            android:id="@+id/iv_refresh"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_refresh" />
 
     </LinearLayout>
 
-    <ListView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="今日事项都完成了，添加一些吧。" />
+
+        <ListView
+            android:id="@+id/widget_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:divider="#00000000"></ListView>
+    </RelativeLayout>
 
 </LinearLayout>

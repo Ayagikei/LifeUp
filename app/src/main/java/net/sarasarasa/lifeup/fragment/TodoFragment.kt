@@ -47,6 +47,7 @@ import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.utils.WidgetUtils
 import net.sarasarasa.lifeup.vo.ActivityVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -194,6 +195,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                                             Toast.makeText(it, "删除操作出现异常",
                                                     Toast.LENGTH_SHORT).show()
                                         }
+                                        activity?.applicationContext?.let { it1 -> WidgetUtils.updateWidgets(it1) }
                                         refreshDataSet()
                                     }
                                     .setNegativeButton("取消") { _, _ ->
@@ -614,8 +616,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun refreshDataSet() {
         //检查并更新逾期情况
         if (todoService.checkAndUpdateOverdueTask()) {
-            val mContext = context
-            if (mContext != null)
                 ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
 

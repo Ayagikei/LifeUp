@@ -161,7 +161,7 @@ class TeamListFragment : Fragment() {
 
     private fun getNewList() {
         val pageVO = PageVO<TeamListVO>()
-        pageVO.size = 8
+        pageVO.size = 15
         pageVO.currentPage = ++currentPage
         Log.i("PageVO", pageVO.toString())
 
@@ -170,7 +170,7 @@ class TeamListFragment : Fragment() {
 
     private fun getNewList(searchText: String) {
         val pageVO = PageVO<TeamListVO>()
-        pageVO.size = 8
+        pageVO.size = 15
         pageVO.currentPage = ++currentPage
         Log.i("PageVO", pageVO.toString())
 

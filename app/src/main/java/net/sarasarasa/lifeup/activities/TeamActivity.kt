@@ -36,6 +36,7 @@ import net.sarasarasa.lifeup.network.impl.ReportNetworkImpl
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.utils.WidgetUtils
 import net.sarasarasa.lifeup.vo.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -64,6 +65,8 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             }
             MSG_JOIN_TEAM_SUCCESS -> {
                 ToastUtils.showShortToast("加入成功")
+
+                WidgetUtils.updateWidgets(applicationContext)
             }
             MSG_GET_TEAM_ACTIVITIES_SUCCESS -> {
                 if (msg.obj != null) {
@@ -280,7 +283,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     private fun getNewList() {
         val pageVO = PageVO<TeamActivityListVO>()
-        pageVO.size = 5
+        pageVO.size = 30
         pageVO.currentPage = ++currentPage
         Log.i("PageVO", pageVO.toString())
 

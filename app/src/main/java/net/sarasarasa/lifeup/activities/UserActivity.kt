@@ -290,7 +290,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     private fun getNewList() {
         val pageVO = PageVO<TeamActivityListVO>()
-        pageVO.size = 5
+        pageVO.size = 30
         pageVO.currentPage = ++currentPage
         Log.i("PageVO", pageVO.toString())
 

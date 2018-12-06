@@ -17,6 +17,7 @@ import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.utils.WidgetUtils
 
 
 class HistoryActivity : AppCompatActivity() {
@@ -82,6 +83,9 @@ class HistoryActivity : AppCompatActivity() {
                             view.visibility = View.INVISIBLE
                         }
                     }
+
+                    WidgetUtils.updateWidgets(applicationContext)
+
                 }
             }
         }

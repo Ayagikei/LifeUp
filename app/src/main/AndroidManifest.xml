@@ -213,15 +213,22 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!--        <receiver android:name=".fragment.LifeUpWidget">
+        <receiver android:name=".fragment.LifeUpWidget">
                     <intent-filter>
                         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                        <action android:name="net.sarasarasa.lifeup.action.FINISH_TASK" />
                     </intent-filter>
 
                     <meta-data
                         android:name="android.appwidget.provider"
                         android:resource="@xml/life_up_widget_info" />
-                </receiver>-->
+        </receiver>
+
+        <service
+            android:name=".service.LifeUpRemoteViewsService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+
     </application>
 
 </manifest>

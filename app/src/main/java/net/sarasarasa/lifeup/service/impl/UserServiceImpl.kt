@@ -47,17 +47,24 @@ class UserServiceImpl : UserService {
         mine.save()
     }
 
-    override fun saveMine(profileVO: ProfileVO) {
+    override fun saveMine(profileVO: ProfileVO, isSaveUserHead: Boolean) {
         clearMine()
 
         val mine = getMine()
         mine.createTime = profileVO.createTime
         mine.nickName = profileVO.nickname
-        mine.userHead = profileVO.userHead
+
+        if (isSaveUserHead)
+            mine.userHead = profileVO.userHead
+
         mine.userSex = profileVO.userSex ?: 2
         mine.userAddress = profileVO.userAddress
         mine.phone = profileVO.phone
         mine.save()
+    }
+
+    override fun saveMine(profileVO: ProfileVO) {
+        saveMine(profileVO, false)
     }
 
 }

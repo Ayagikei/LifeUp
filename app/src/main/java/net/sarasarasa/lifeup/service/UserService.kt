@@ -21,4 +21,5 @@ interface UserService {
     fun saveMine(profileVO: ProfileVO)
 
     fun clearMine()
+    fun saveMine(profileVO: ProfileVO, isSaveUserHead: Boolean)
 }

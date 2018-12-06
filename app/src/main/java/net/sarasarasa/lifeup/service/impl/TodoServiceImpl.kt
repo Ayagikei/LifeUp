@@ -11,6 +11,7 @@ import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
 import net.sarasarasa.lifeup.utils.DateUtil
+import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.TeamTaskVO
 import java.util.*
 
@@ -63,6 +64,9 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun getUncompletedTodoList(): List<TaskModel> {
+        if (checkAndUpdateOverdueTask()) {
+            ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+        }
         return todoDAO.findAllUncompletedTodoItem()
     }
 
@@ -205,6 +209,8 @@ class TodoServiceImpl : TodoService {
     override fun repeatTask(id: Long?): Boolean {
         if (id == null) return false
         val origin = todoDAO.findATodoItem(id) ?: return false
+
+        if (origin.taskFrequency == 0) return false
 
         val taskModel = TaskModel(
                 origin.content,
@@ -395,6 +401,11 @@ class TodoServiceImpl : TodoService {
         taskModel.expReward = origin.expReward
         taskModel.priority = origin.priority
 
+
+        //重设的时候，把单次和多次事项当做每日事项处理
+        if (origin.taskFrequency == 0 || origin.taskFrequency == -1) {
+            origin.taskFrequency = 1
+        }
 
         val newExpireTime = Calendar.getInstance()
         newExpireTime.time = origin.taskExpireTime

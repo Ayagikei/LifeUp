@@ -100,7 +100,7 @@ class TeamMemberActivity : AppCompatActivity() {
 
         val title = intent.getStringExtra("title")
 
-        if (title.isNotEmpty())
+        if (title != null && title.isNotEmpty())
             supportActionBar?.title = title
 
         initView()

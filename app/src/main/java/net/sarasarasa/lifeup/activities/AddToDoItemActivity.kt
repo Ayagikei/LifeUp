@@ -33,6 +33,7 @@ import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DensityUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -506,6 +507,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     private fun addItem(taskModel: TaskModel) {
 
         val id = todoService.addTodoItem(taskModel)
+        WidgetUtils.updateWidgets(applicationContext)
 
         //设置提醒
         if (taskModel.taskRemindTime != null && id != null) {

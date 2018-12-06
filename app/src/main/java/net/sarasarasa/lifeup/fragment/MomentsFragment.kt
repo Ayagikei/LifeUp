@@ -152,7 +152,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
     private fun getNewList() {
         val pageVO = PageVO<TeamActivityListVO>()
-        pageVO.size = 8
+        pageVO.size = 30
         pageVO.currentPage = ++currentPage
         Log.i("PageVO", pageVO.toString())
 
