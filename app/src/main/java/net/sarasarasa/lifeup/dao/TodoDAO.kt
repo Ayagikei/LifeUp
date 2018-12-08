@@ -20,6 +20,13 @@ class TodoDAO {
                 .find(TaskModel::class.java)
     }
 
+    fun findAllUncompletedTodoItemWhichHaveBegun(): List<TaskModel> {
+
+        return LitePal.where("taskStatus = ? and startTime <= ?", "0", Calendar.getInstance().timeInMillis.toString())
+                .order("priority desc,startTime asc")
+                .find(TaskModel::class.java)
+    }
+
     fun findAllUncompletedAndNeedRemindTodoItem(time: Long): List<TaskModel> {
         return LitePal.where("taskStatus = ? and taskRemindTime > ?", "0", time.toString()).find(TaskModel::class.java)
     }

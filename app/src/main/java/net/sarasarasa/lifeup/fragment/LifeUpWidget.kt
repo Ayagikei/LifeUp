@@ -124,7 +124,9 @@ class LifeUpWidget : AppWidgetProvider() {
 
 
             // Construct the RemoteViews object
-            val views = RemoteViews(context.packageName, R.layout.life_up_widget)
+
+
+            val views = RemoteViews(context.packageName, getMainLayoutByPreferences(context))
             views.setTextViewText(R.id.appwidget_text, "今日事项 0/0")
 
             val intent = Intent(context, LifeUpRemoteViewsService::class.java)
@@ -165,6 +167,19 @@ class LifeUpWidget : AppWidgetProvider() {
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
+
+        private fun getMainLayoutByPreferences(context: Context): Int {
+            val sharedPreferences = context.getSharedPreferences("options", Context.MODE_PRIVATE)
+            val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
+
+            return if (isWidgetDarkTheme)
+                R.layout.life_up_widget_dark_theme
+            else R.layout.life_up_widget
+
+        }
+
+
+
     }
 }
 

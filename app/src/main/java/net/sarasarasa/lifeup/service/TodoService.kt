@@ -71,4 +71,5 @@ interface TodoService {
     fun deleteTeamTaskByTeamId(teamId: Long)
     fun changePriority(id: Long): Int
     fun restartTask(id: Long): Boolean
+    fun getUncompletedTodoListWhichHaveBegun(): List<TaskModel>
 }

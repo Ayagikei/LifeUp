@@ -25,7 +25,7 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
 
     override fun onCreate() {
         mList.clear()
-        mList.addAll(todoService.getUncompletedTodoList())
+        mList.addAll(getListByPreferences())
     }
 
     override fun getLoadingView(): RemoteViews? {
@@ -38,7 +38,7 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
 
     override fun onDataSetChanged() {
         mList.clear()
-        mList.addAll(todoService.getUncompletedTodoList())
+        mList.addAll(getListByPreferences())
     }
 
     override fun hasStableIds(): Boolean {
@@ -50,7 +50,8 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
             return null
 
         val taskModel = mList[position]
-        val rv = RemoteViews(mContext.packageName, R.layout.item_widget_list)
+        val rv = RemoteViews(mContext.packageName, getListViewLayoutByPreferences(mContext))
+
         var canBeFinish = true
 
         rv.setTextViewText(R.id.tv_title, taskModel.content)
@@ -119,6 +120,26 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
 
     override fun onDestroy() {
         mList.clear()
+    }
+
+    private fun getListViewLayoutByPreferences(context: Context): Int {
+        val sharedPreferences = context.getSharedPreferences("options", Context.MODE_PRIVATE)
+        val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
+
+        return if (isWidgetDarkTheme)
+            R.layout.item_widget_list_dark_theme
+        else R.layout.item_widget_list
+
+    }
+
+    private fun getListByPreferences(): List<TaskModel> {
+        val sharedPreferences = mContext.getSharedPreferences("options", Context.MODE_PRIVATE)
+        val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
+
+        return if (isHideNotBegunItem)
+            todoService.getUncompletedTodoListWhichHaveBegun()
+        else todoService.getUncompletedTodoList()
+
     }
 
 

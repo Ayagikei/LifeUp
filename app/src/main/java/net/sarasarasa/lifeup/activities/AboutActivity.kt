@@ -63,11 +63,11 @@ class AboutActivity : AppCompatActivity() {
                 .setImage(R.mipmap.ic_launcher)
                 .setDescription("一款「人生游戏化」的待办事项管理应用。\n" +
                         "用「游戏化」的形式让你的人生更加美好。")
-                .addItem(Element().setTitle("版本号 v1.42"))
+                .addItem(Element().setTitle("版本号 v1.43"))
                 .addItem(elementCheckUpdate)
                 .addGroup("联系")
                 .addEmail("AyagiKei@163.com")
-                .addWebsite("https://www.pgyer.com/LifeUp")
+                .addWebsite("https://www.coolapk.com/apk/net.sarasarasa.lifeup")
                 .addGitHub("AyagiKei")
                 .addGitHub("hdonghong")
                 .create()

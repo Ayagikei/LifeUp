@@ -49,6 +49,41 @@
         android:background="#ccc" />
 
     <TextView
+        android:id="@+id/tv_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="小部件设置" />
+
+    <Switch
+        android:id="@+id/switch_widget_dark_theme"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="暗色主题"
+        android:textSize="16sp" />
+
+    <Switch
+        android:id="@+id/switch_hide_item"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="隐藏未开始事项"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/v_divider_2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc" />
+
+    <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

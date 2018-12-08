@@ -469,6 +469,8 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                         todoService.finishTodoItem(item.id)
                         //添加新的事项
                         todoService.addOrUpdateTeamTask(teamTaskVO)
+
+
                     }
 
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求成功：${teamTaskVO}")

@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.models.TaskModel
@@ -12,6 +13,7 @@ import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
 import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.utils.WidgetUtils
 import net.sarasarasa.lifeup.vo.TeamTaskVO
 import java.util.*
 
@@ -68,6 +70,14 @@ class TodoServiceImpl : TodoService {
             ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
         return todoDAO.findAllUncompletedTodoItem()
+    }
+
+    override fun getUncompletedTodoListWhichHaveBegun(): List<TaskModel> {
+        if (checkAndUpdateOverdueTask()) {
+            ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+        }
+
+        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
     }
 
     override fun getCompletedTodoList(): List<TaskModel> {
@@ -333,6 +343,7 @@ class TodoServiceImpl : TodoService {
             }
 
             newTaskModel.save()
+            WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
 
             return true
         }

@@ -8,6 +8,7 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.ToastUtils
+import net.sarasarasa.lifeup.utils.WidgetUtils
 
 
 class SettingActivity : AppCompatActivity() {
@@ -32,6 +33,8 @@ class SettingActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("options", Context.MODE_PRIVATE)
         val isShowRepeatDialog = sharedPreferences.getBoolean("isShowRepeatDialog", true)
+        val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
+        val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
         val editor = sharedPreferences.edit()
 
 
@@ -41,6 +44,19 @@ class SettingActivity : AppCompatActivity() {
             editor.apply()
         }
 
+        switch_widget_dark_theme.isChecked = isWidgetDarkTheme
+        switch_widget_dark_theme.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isWidgetDarkTheme", isChecked)
+            editor.apply()
+            WidgetUtils.updateWidgets(applicationContext)
+        }
+
+        switch_hide_item.isChecked = isHideNotBegunItem
+        switch_hide_item.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isHideNotBegunItem", isChecked)
+            editor.apply()
+            WidgetUtils.updateWidgets(applicationContext)
+        }
 
         setting_item_logout.setOnItemViewClick {
             //清空token和非本地事项
