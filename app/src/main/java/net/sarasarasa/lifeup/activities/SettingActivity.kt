@@ -35,6 +35,7 @@ class SettingActivity : AppCompatActivity() {
         val isShowRepeatDialog = sharedPreferences.getBoolean("isShowRepeatDialog", true)
         val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
         val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
+        val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
         val editor = sharedPreferences.edit()
 
 
@@ -57,6 +58,13 @@ class SettingActivity : AppCompatActivity() {
             editor.apply()
             WidgetUtils.updateWidgets(applicationContext)
         }
+
+        switch_status_play_animation.isChecked = isStatusPlayAnimation
+        switch_status_play_animation.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isStatusPlayAnimation", isChecked)
+            editor.apply()
+        }
+
 
         setting_item_logout.setOnItemViewClick {
             //清空token和非本地事项

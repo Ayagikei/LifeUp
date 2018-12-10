@@ -53,7 +53,7 @@ class AboutActivity : AppCompatActivity() {
 
         val elementCheckUpdate = Element()
         elementCheckUpdate.iconDrawable = R.drawable.ic_system_update_alt_24px
-        elementCheckUpdate.title = "检查更新"
+        elementCheckUpdate.title = "检查更新（建议使用酷安更新）"
         elementCheckUpdate.setOnClickListener {
             versionNetworkImpl.checkUpdate(VersionUtil.getLocalVersion(applicationContext))
         }
@@ -63,7 +63,7 @@ class AboutActivity : AppCompatActivity() {
                 .setImage(R.mipmap.ic_launcher)
                 .setDescription("一款「人生游戏化」的待办事项管理应用。\n" +
                         "用「游戏化」的形式让你的人生更加美好。")
-                .addItem(Element().setTitle("版本号 v1.43"))
+                .addItem(Element().setTitle("版本号 v1.44"))
                 .addItem(elementCheckUpdate)
                 .addGroup("联系")
                 .addEmail("AyagiKei@163.com")

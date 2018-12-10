@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddTeamActivity
+import net.sarasarasa.lifeup.activities.UserActivity
 import net.sarasarasa.lifeup.adapters.BoardrListAdapter
 import net.sarasarasa.lifeup.base.RecyclerViewNoBugLinearLayoutManager
 import net.sarasarasa.lifeup.constants.AttributeConstants
@@ -137,6 +138,16 @@ class BoardFragment : Fragment() {
         }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
+
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+
+            val item = adapter.getItem(position) as TeamMembaerListVO
+
+            val intent = Intent(context, UserActivity::class.java)
+            intent.putExtra("userId", item.userId)
+
+            startActivity(intent)
+        }
     }
 
     private fun getNewList() {

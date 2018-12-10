@@ -5,7 +5,6 @@ import android.app.TimePickerDialog
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
-import android.support.constraint.ConstraintSet
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -30,8 +29,8 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
 import net.sarasarasa.lifeup.converter.ExpRewardConverter
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.models.TaskTargetModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
-import net.sarasarasa.lifeup.utils.DensityUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
@@ -197,10 +196,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
         til_repeat.visibility = View.VISIBLE
 
         //显示重复
-        val set = ConstraintSet()
+/*        val set = ConstraintSet()
         set.clone(layout_extra)
         set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-        set.applyTo(layout_extra)
+        set.applyTo(layout_extra)*/
     }
 
     /** 重置期限日期 **/
@@ -233,11 +232,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
             til_repeat.visibility = View.VISIBLE
             btn_ddl_reset.visibility = View.VISIBLE
 
-            //显示重复
+/*            //显示重复
             val set = ConstraintSet()
             set.clone(layout_extra)
             set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-            set.applyTo(layout_extra)
+            set.applyTo(layout_extra)*/
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
         //最小日期限制
@@ -411,7 +410,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_finish -> {
                 if (check()) {
-                    addItem(getItem())
+                    addItem(getItem(newItem = true))
                 }
                 return true
             }
@@ -420,7 +419,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     /** 创建新待办事项的响应 **/
-    protected fun getItem(): TaskModel {
+    protected fun getItem(newItem: Boolean): TaskModel {
         // 将表单转换为对象
         val content = til_toDoText.editText?.text.toString()
         val remark = til_remark.editText?.text.toString()
@@ -453,7 +452,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             99 -> 4
             else -> 0
         }
-        val taskShared = switch1.isChecked
+        val taskShared = false
         var relatedAttribute = arrayOf<String>()
 
         val taskFrequency = iFrequency
@@ -467,6 +466,20 @@ open class AddToDoItemActivity : AppCompatActivity() {
             "每月" -> 30
             else -> 0
         }*/
+        var targetTimes = 0
+
+        if (iFrequency != 0 || iFrequency != -1) {
+            if (til_target.editText?.text != null && !til_target.editText?.text.isNullOrEmpty()) {
+                try {
+                    val timesFromText = Integer.valueOf(til_target.editText?.text.toString())
+                    if (timesFromText > 0) {
+                        targetTimes = timesFromText
+                    }
+                } catch (e: Exception) {
+                    ToastUtils.showShortToast("目标次数数据异常")
+                }
+            }
+        }
 
         for (i in arrAbbrBtn.indices) {
             if (i == 0) continue
@@ -492,6 +505,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 null
         )
 
+
         //设置默认开始时间为当天0点
         val cal = Calendar.getInstance()
         with(cal) {
@@ -501,6 +515,16 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         taskModel.expReward = ExpRewardConverter.getExpReward(arrAbbrBtn[SELECTED_CNT], taskUrgencyLevel, taskDifficultyLevel)
+
+        taskModel.currentTimes = 1
+
+        if (newItem && targetTimes != 0 && iFrequency != 0) {
+            val newTarget = TaskTargetModel(targetTimes, taskModel.expReward * targetTimes / 10)
+            newTarget.save()
+            taskModel.taskTargetId = newTarget.id
+        }
+
+
         return taskModel
     }
 
@@ -553,6 +577,22 @@ open class AddToDoItemActivity : AppCompatActivity() {
         if (isNeedDDl && TextUtils.isEmpty(til_deadLine.editText?.text)) {
             dDDL.error = "该重复频次需要设置期限日期"
             isAllCheckPassed = false
+        }
+
+        if (iFrequency != 0 || iFrequency != -1) {
+            if (til_target.editText?.text != null && !til_target.editText?.text.isNullOrEmpty()) {
+                try {
+                    val timesFromText = Integer.valueOf(til_target.editText?.text.toString())
+                    if (timesFromText < 0) {
+                        til_target.error = "数据异常"
+                        isAllCheckPassed = false
+                    }
+                } catch (e: Exception) {
+                    ToastUtils.showShortToast("目标次数数据异常")
+                    til_target.error = "数据异常"
+                    isAllCheckPassed = false
+                }
+            }
         }
 
         return isAllCheckPassed

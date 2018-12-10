@@ -22,7 +22,15 @@ class TodoDAO {
 
     fun findAllUncompletedTodoItemWhichHaveBegun(): List<TaskModel> {
 
-        return LitePal.where("taskStatus = ? and startTime <= ?", "0", Calendar.getInstance().timeInMillis.toString())
+        val cal = Calendar.getInstance()
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+        }
+        val lastSecOfThisDay = cal.timeInMillis
+
+        return LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
                 .order("priority desc,startTime asc")
                 .find(TaskModel::class.java)
     }

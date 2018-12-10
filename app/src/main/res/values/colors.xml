@@ -20,4 +20,6 @@
     <color name="color_to_do_item_unable">#90CAF9</color>
     <color name="color_to_do_item_custom">#FBC02D</color>
 
+    <color name="color_to_do_item_time">#FF8A80</color>
+
 </resources>

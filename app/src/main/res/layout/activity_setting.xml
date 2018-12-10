@@ -74,11 +74,37 @@
         android:background="@color/white"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="隐藏未开始事项"
+        android:text="隐藏非今日事项"
         android:textSize="16sp" />
 
     <View
         android:id="@+id/v_divider_2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc" />
+
+    <TextView
+        android:id="@+id/tv_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="动画设置" />
+
+    <Switch
+        android:id="@+id/switch_status_play_animation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="状态页面播放波浪动画（可能影响性能）"
+        android:textSize="16sp" />
+
+
+    <View
+        android:id="@+id/v_divider_3"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#ccc" />

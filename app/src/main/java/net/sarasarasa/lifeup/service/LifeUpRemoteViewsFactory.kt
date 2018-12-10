@@ -8,6 +8,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.fragment.LifeUpWidget
 import net.sarasarasa.lifeup.fragment.LifeUpWidget.Companion.FINISH_TASK
 import net.sarasarasa.lifeup.models.TaskModel
@@ -22,6 +23,7 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
     private val mContext = context
 
     private val todoService = TodoServiceImpl()
+    private val taskTargetDAO = TaskTargetDAO()
 
     override fun onCreate() {
         mList.clear()
@@ -54,7 +56,16 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
 
         var canBeFinish = true
 
-        rv.setTextViewText(R.id.tv_title, taskModel.content)
+        var itemTitle = taskModel.content
+        if (taskModel.taskTargetId != null && taskModel.taskFrequency != 0) {
+            val taskTarget = taskTargetDAO.getTaskTargetById(taskModel.taskTargetId!!)
+
+            if (taskTarget != null && taskTarget.targetTimes != 0) {
+                itemTitle = "${taskModel.content} （${taskModel.currentTimes}/${taskTarget.targetTimes}）"
+            }
+        }
+
+        rv.setTextViewText(R.id.tv_title, itemTitle)
         rv.setTextViewText(R.id.tv_exp, taskModel.expReward.toString() + "经验值")
 
 

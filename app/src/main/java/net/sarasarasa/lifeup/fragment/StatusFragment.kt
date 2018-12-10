@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -10,6 +11,7 @@ import kotlinx.android.synthetic.main.dialog_lifeup.view.*
 import kotlinx.android.synthetic.main.fragment_status.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.StepServiceImpl
@@ -26,6 +28,11 @@ class StatusFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_status, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+
+
+        val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+        val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
+        view.waveView.setAnim(isStatusPlayAnimation)
 
         initData(view)
         return view

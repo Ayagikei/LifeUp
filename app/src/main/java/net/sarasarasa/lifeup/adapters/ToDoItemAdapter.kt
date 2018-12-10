@@ -8,12 +8,15 @@ import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter<TaskModel, BaseViewHolder>(layoutResId, data) {
+
+    private val taskTargetDAO = TaskTargetDAO()
 
     override fun convert(helper: BaseViewHolder, item: TaskModel) {
 
@@ -25,8 +28,16 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
             else -> true
         }
 
+        var itemTitle = item.content
+        if (item.taskTargetId != null && item.taskFrequency != 0) {
+            val taskTarget = taskTargetDAO.getTaskTargetById(item.taskTargetId!!)
 
-        helper.setText(R.id.tw_name, item.content)
+            if (taskTarget != null && taskTarget.targetTimes != 0) {
+                itemTitle = "${item.content} （${item.currentTimes}/${taskTarget.targetTimes}）"
+            }
+        }
+
+        helper.setText(R.id.tw_name, itemTitle)
                 .setText(R.id.tv_startDateTitle, item.remark)
                 .setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(isTeamTask, item.taskFrequency))
                 .setText(R.id.tv_remark, "${item.expReward}经验值")
@@ -55,6 +66,7 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
             //设置频次标识的颜色
             helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
             helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
+            helper.setTextColor(R.id.tv_time, getNormalTimeColor())
 
             if (item.taskExpireTime != null) {
                 if (item.teamId != -1L) {
@@ -96,5 +108,7 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
         return ContextCompat.getColor(mContext, R.color.color_to_do_item_unable)
     }
 
-
+    private fun getNormalTimeColor(): Int {
+        return ContextCompat.getColor(mContext, R.color.color_to_do_item_time)
+    }
 }

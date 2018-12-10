@@ -221,14 +221,16 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         tw_ddlText.text = dateFormat.format(teamDetailVO.startDate)
 
 
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
-        Glide.with(this).asBitmap().load(teamDetailVO.teamHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_avatar) {
-            override fun setResource(resource: Bitmap?) {
-                val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@TeamActivity.resources, resource)
-                circularBitmapDrawable.isCircular = true
-                iv_avatar.setImageDrawable(circularBitmapDrawable)
-            }
-        })
+        if (!this.isDestroyed) {
+            val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+            Glide.with(this).asBitmap().load(teamDetailVO.teamHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_avatar) {
+                override fun setResource(resource: Bitmap?) {
+                    val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@TeamActivity.resources, resource)
+                    circularBitmapDrawable.isCircular = true
+                    iv_avatar.setImageDrawable(circularBitmapDrawable)
+                }
+            })
+        }
 
     }
 

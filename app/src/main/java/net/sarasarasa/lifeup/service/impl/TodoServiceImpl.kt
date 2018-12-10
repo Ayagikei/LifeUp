@@ -7,6 +7,9 @@ import android.content.Intent
 import android.util.Log
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
+import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.OUT_OF_DATE
+import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.UNCOMPLETED
+import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
@@ -20,6 +23,7 @@ import java.util.*
 class TodoServiceImpl : TodoService {
 
     private val todoDAO = TodoDAO()
+    private val taskTargetDAO = TaskTargetDAO()
     private val attributeService = AttributeServiceImpl()
 
     override fun addTodoItem(taskModel: TaskModel): Long? {
@@ -53,6 +57,7 @@ class TodoServiceImpl : TodoService {
             //更新UpdatedTime
             updatedTime = Calendar.getInstance().timeInMillis
         }
+
 
         todoDAO.saveTodoItem(existTodoItem)
         return true
@@ -102,8 +107,6 @@ class TodoServiceImpl : TodoService {
             attributeService.increaseExp(this.relatedAttribute2 ?: "", this.expReward)
             attributeService.increaseExp(this.relatedAttribute3 ?: "", this.expReward)
         }
-
-
 
         return true
     }
@@ -243,6 +246,16 @@ class TodoServiceImpl : TodoService {
         taskModel.updatedTime = Calendar.getInstance().timeInMillis
         taskModel.expReward = origin.expReward
         taskModel.priority = origin.priority
+        taskModel.currentTimes = origin.currentTimes + 1
+        taskModel.taskTargetId = origin.taskTargetId
+
+        //最后一次事项增加奖励
+        if (taskModel.taskTargetId != null && taskModel.taskTargetId is Long) {
+            val taskTarget = taskTargetDAO.getTaskTargetById(taskModel.taskTargetId!!)
+            if (taskTarget?.targetTimes == taskModel.currentTimes) {
+                taskModel.expReward += taskTarget.extraExpReward
+            }
+        }
 
         if (origin.taskFrequency != -1) {
             val newExpireTime = Calendar.getInstance()
@@ -265,6 +278,7 @@ class TodoServiceImpl : TodoService {
             newRemindTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.taskRemindTime = newRemindTime.time
         }
+
 
         taskModel.save()
 
@@ -347,7 +361,11 @@ class TodoServiceImpl : TodoService {
 
             return true
         }
-
+        // 如果事项是逾期状态，恢复为未完成
+        if (taskModel.taskStatus == OUT_OF_DATE) {
+            taskModel.taskStatus = UNCOMPLETED
+            taskModel.save()
+        }
 
         return false
     }
@@ -411,6 +429,8 @@ class TodoServiceImpl : TodoService {
         taskModel.updatedTime = Calendar.getInstance().timeInMillis
         taskModel.expReward = origin.expReward
         taskModel.priority = origin.priority
+        taskModel.currentTimes = origin.currentTimes
+        taskModel.taskTargetId = origin.taskTargetId
 
 
         //重设的时候，把单次和多次事项当做每日事项处理

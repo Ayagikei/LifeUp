@@ -1,7 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
 import android.os.Bundle
-import android.support.constraint.ConstraintSet
 import android.text.Editable
 import android.view.MenuItem
 import android.view.View
@@ -10,8 +9,8 @@ import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
-import net.sarasarasa.lifeup.utils.DensityUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
@@ -20,6 +19,7 @@ import java.util.*
 class EditToDoItemActivity : AddToDoItemActivity() {
 
     var id: Long = 0
+    private val taskTargetDAO = TaskTargetDAO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +33,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
     }
 
     private fun initStatus(id: Long) {
+
         val taskModel = todoService.getATodoItem(id)
         if (taskModel != null) {
             //还原基础信息
@@ -43,11 +44,11 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
                 checkNotNull(til_deadLine.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormat.format(taskModel.taskExpireTime))
 
-                //显示重复
+/*                //显示重复
                 val set = ConstraintSet()
                 set.clone(layout_extra)
                 set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-                set.applyTo(layout_extra)
+                set.applyTo(layout_extra)*/
 
                 btn_ddl_reset.visibility = View.VISIBLE
                 til_repeat.visibility = View.VISIBLE
@@ -100,7 +101,19 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             restoreAbbrSelection(taskModel.relatedAttribute2)
             restoreAbbrSelection(taskModel.relatedAttribute3)
 
-            switch1.isChecked = taskModel.isShared
+
+            if (taskModel.taskTargetId != null) {
+                val taskTarget = taskTargetDAO.getTaskTargetById(taskModel.taskTargetId!!)
+                if (taskTarget != null) {
+                    til_target.editText?.setText(taskTarget.targetTimes.toString())
+                } else {
+                    til_target.editText?.setText("0")
+                }
+            }
+            til_target.isEnabled = false
+
+
+            //switch1.isChecked = taskModel.isShared
 
         }
     }
@@ -128,7 +141,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
         when (item.itemId) {
             R.id.action_finish -> {
                 if (check()) {
-                    updateItem(getItem())
+                    updateItem(getItem(newItem = false))
                 }
                 return true
             }

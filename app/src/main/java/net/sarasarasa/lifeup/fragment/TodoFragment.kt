@@ -37,6 +37,7 @@ import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEA
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.IS_TEAM_TASK
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
@@ -86,6 +87,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private val uploadNetworkImpl = UploadNetworkImpl(uiHandler)
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
     private val todoService = TodoServiceImpl()
+    private val taskTargetDAO = TaskTargetDAO()
     private val attributeService = AttributeServiceImpl()
     private val attributeLevelService = AttributeLevelServiceImpl()
     private val achievementService = AchievementServiceImpl()
@@ -341,14 +343,28 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                 //本地事项才显示重复对话框
                 if (item.taskFrequency != 0 && item.teamId == IS_TEAM_TASK) {
-                    val sharedPreferences = activity?.getSharedPreferences("options", Context.MODE_PRIVATE)
-                    val isShowRepeatDialog = sharedPreferences?.getBoolean("isShowRepeatDialog", true)
 
-                    if (isShowRepeatDialog == true)
-                    showDialogRepeat(item)
-                    else {
-                        todoService.repeatTask(item.id)
-                        refreshDataSet()
+                    var needToRepeat = true
+                    if (item.taskTargetId != null) {
+                        val taskTarget = taskTargetDAO.getTaskTargetById(item.taskTargetId!!)
+                        if (taskTarget != null) {
+                            if (taskTarget.targetTimes == item.currentTimes) {
+                                needToRepeat = false
+                                ToastUtils.showShortToast("你完成了设定的目标次数！")
+                            }
+                        }
+                    }
+
+                    if (needToRepeat) {
+                        val sharedPreferences = activity?.getSharedPreferences("options", Context.MODE_PRIVATE)
+                        val isShowRepeatDialog = sharedPreferences?.getBoolean("isShowRepeatDialog", true)
+
+                        if (isShowRepeatDialog == true)
+                            showDialogRepeat(item)
+                        else {
+                            todoService.repeatTask(item.id)
+                            refreshDataSet()
+                        }
                     }
                 }
 

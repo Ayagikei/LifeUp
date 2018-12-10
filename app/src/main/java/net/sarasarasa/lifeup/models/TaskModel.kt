@@ -36,4 +36,10 @@ data class TaskModel(
     var teamId: Long = -1
     var teamRecordId: Long = -1
 
+    var currentTimes: Int = 1
+    var taskTargetId: Long? = null
+    //var taskTarget:TaskTargetModel? = null
+
+
+
 }

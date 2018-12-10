@@ -30,6 +30,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+
         <!-- <uses-library android:name="org.apache.http.legacy" android:required="false"/> -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
