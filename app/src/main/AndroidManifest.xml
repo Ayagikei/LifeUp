@@ -107,6 +107,14 @@
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
         </activity>
         <activity
+            android:name=".activities.EditTeamActivity"
+            android:label="@string/title_activity_edit_team_item"
+            android:theme="@style/AppTheme.Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.MainActivity" />
+        </activity>
+        <activity
             android:name=".activities.TeamActivity"
             android:label="@string/title_activity_team"
             android:parentActivityName=".activities.MainActivity"

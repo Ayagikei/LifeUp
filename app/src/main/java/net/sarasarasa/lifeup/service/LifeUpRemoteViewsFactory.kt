@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.service
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
@@ -67,6 +68,23 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
 
         rv.setTextViewText(R.id.tv_title, itemTitle)
         rv.setTextViewText(R.id.tv_exp, taskModel.expReward.toString() + "经验值")
+
+
+        val sharedPreferences = mContext.getSharedPreferences("options", Context.MODE_PRIVATE)
+        val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
+        val isWidgetDarkThemeWhiteIconAndFonts = sharedPreferences.getBoolean("isWidgetDarkThemeWhiteIconAndFonts", false)
+
+        if (isWidgetDarkTheme && isWidgetDarkThemeWhiteIconAndFonts) {
+            rv.setTextColor(R.id.tv_exp, mContext.resources.getColor(R.color.white))
+            rv.setTextColor(R.id.tv_time, mContext.resources.getColor(R.color.white))
+            rv.setImageViewResource(R.id.imageView4, R.drawable.ic_award_exp_white)
+            rv.setImageViewResource(R.id.iv_time, R.drawable.ic_time_white)
+        } else {
+            rv.setTextColor(R.id.tv_exp, Color.parseColor("#FF9100"))
+            rv.setTextColor(R.id.tv_time, Color.parseColor("#FF8A80"))
+            rv.setImageViewResource(R.id.imageView4, R.drawable.ic_award_exp)
+            rv.setImageViewResource(R.id.iv_time, R.drawable.ic_time)
+        }
 
 
         val cal = Calendar.getInstance()

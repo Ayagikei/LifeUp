@@ -58,7 +58,7 @@ class TeamMemberListAdapter(layoutResId: Int, data: List<TeamMembaerListVO>) : B
 
         //设置头像
         val ivAvatar = helper.getView<ImageView>(R.id.iv_avatar)
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
         Glide.with(mContext).asBitmap().load(item.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(ivAvatar) {
             override fun setResource(resource: Bitmap?) {
                 val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(mContext.resources, resource)

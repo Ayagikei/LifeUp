@@ -148,7 +148,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     }
 
-    fun initData(teamDetailVO: TeamDetailVO) {
+    private fun initData(teamDetailVO: TeamDetailVO) {
 
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
@@ -180,7 +180,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                     btn_join.setText("已加入")
 
                     val memberAmount = teamDetailVO.memberAmount?.plus(1)
-                    btn_members.setText("成员 | " + memberAmount)
+                    btn_members.setText("成员 | $memberAmount")
                 }
             }
 
@@ -222,7 +222,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
 
         if (!this.isDestroyed) {
-            val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+            val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
             Glide.with(this).asBitmap().load(teamDetailVO.teamHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_avatar) {
                 override fun setResource(resource: Bitmap?) {
                     val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@TeamActivity.resources, resource)
@@ -314,9 +314,12 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
     private fun updateMenuTitles() {
         if (mTeamDetailVO.isMember == 0) {
             mMenu?.removeItem(R.id.action_quit)
+            mMenu?.removeItem(R.id.action_edit)
         } else {
-            if (mTeamDetailVO.isOwner == 1)
+            if (mTeamDetailVO.isOwner == 1) {
+                mMenu?.removeItem(R.id.action_report)
                 mMenu?.findItem(R.id.action_quit)?.title = "终止"
+            }
         }
     }
 
@@ -335,6 +338,14 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 }
 
                 return true
+            }
+            R.id.action_edit -> {
+                val intent = Intent(this, EditTeamActivity::class.java)
+                intent.putExtra("teamTitle", mTeamDetailVO.teamTitle)
+                intent.putExtra("teamDesc", mTeamDetailVO.teamDesc)
+                intent.putExtra("teamHead", mTeamDetailVO.teamHead)
+                intent.putExtra("teamId", mTeamDetailVO.teamId)
+                startActivity(intent)
             }
             android.R.id.home -> {
                 onBackPressed()

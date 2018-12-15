@@ -139,6 +139,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, AchievementActivity::class.java)
                 startActivity(intent)
             }
+            R.id.nav_help -> {
+                val url = "http://sarasarasa.net/post/157a032e.html"
+                val uri = Uri.parse(url)
+                val intent = Intent()
+                intent.action = "android.intent.action.VIEW"
+                intent.data = uri
+                startActivity(intent)
+            }
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)

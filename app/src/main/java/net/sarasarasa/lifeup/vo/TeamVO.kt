@@ -18,7 +18,7 @@ class TeamVO {
 
     var teamFreq: Int = 0
 
-    var teamId: Int? = null
+    var teamId: Long? = null
 
     var teamTitle: String? = null
 

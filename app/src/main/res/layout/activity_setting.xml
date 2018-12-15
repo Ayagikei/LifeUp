@@ -68,6 +68,16 @@
         android:textSize="16sp" />
 
     <Switch
+        android:id="@+id/switch_widget_dark_theme_white_icon_and_fonts"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="暗色主题：白色字体和图标"
+        android:textSize="16sp" />
+
+    <Switch
         android:id="@+id/switch_hide_item"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -76,6 +86,17 @@
         android:paddingEnd="8dp"
         android:text="隐藏非今日事项"
         android:textSize="16sp" />
+
+    <!--    <com.jeff.settingitem.SettingView
+            android:id="@+id/setting_item_change_widget_font_color"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:item_background="@drawable/selector_item"
+            app:item_text="设置经验值和重复周期字体颜色"
+            app:show_dot="false"
+            app:show_left_icon="false"
+            app:text_color="#000"
+            app:text_size="16sp" />-->
 
     <View
         android:id="@+id/v_divider_2"

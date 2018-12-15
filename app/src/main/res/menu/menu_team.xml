@@ -8,8 +8,13 @@
         android:title="举报"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_quit"
+        android:id="@+id/action_edit"
         android:orderInCategory="200"
+        android:title="修改"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_quit"
+        android:orderInCategory="300"
         android:title="退出"
         app:showAsAction="never" />
 </menu>

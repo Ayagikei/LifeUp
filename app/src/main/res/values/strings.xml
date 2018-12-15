@@ -46,6 +46,7 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_add_to_do_item">Add To DO ITEM</string>
     <string name="title_activity_add_team_item">ADD NEW TEAM</string>
+    <string name="title_activity_edit_team_item">EDIT TEAM</string>
     <string name="title_activity_team">TEAM DETAIL</string>
     <string name="title_activity_user">USER DETAIL</string>
     <string name="title_activity_edit_to_do_item">EDIT TO DO</string>

@@ -8,6 +8,8 @@ import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_ADD_TEAM_SUCCESS
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_EDIT_TEAM_FAILED
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_EDIT_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_END_TEAM_SUCCESS
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_NEXT_TEAM_ACTIVITIES_SUCCESS
@@ -271,6 +273,10 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     fun addTeam(teamVO: TeamVO) {
         Log.i("LifeUp 团队模块", "执行[新建团队]操作")
 
+        if (teamVO.teamHead.isNullOrEmpty()) {
+            teamVO.teamHead = userService.getMine().userHead
+        }
+
         val call = network.addTeam(userService.getToken(), teamVO)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
@@ -306,6 +312,53 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     }
 
                     Log.i("LifeUp 团队模块", "[新建团队]请求成功：${teamTaskVO}")
+                }
+                uiHandler.handleMessage(message)
+            }
+        })
+    }
+
+    fun editTeam(teamEditVO: TeamEditVO) {
+        Log.i("LifeUp 团队模块", "执行[修改团队]操作")
+
+        if (teamEditVO.teamId == null || teamEditVO.teamId == -1L)
+            return
+
+        ToastUtils.showLongToast(teamEditVO.toString())
+
+        val call = network.editTeam(userService.getToken(), teamEditVO, teamEditVO.teamId!!)
+
+        call.enqueue(object : Callback<ResultVO<Any>> {
+            override fun onFailure(call: Call<ResultVO<Any>>?, t: Throwable?) {
+                Log.e("LifeUp 团队模块", "[修改团队]返回错误: ${t.toString()}")
+                val message = Message()
+                message.what = MSG_CONNECT_FAILED
+                uiHandler.handleMessage(message)
+            }
+
+            override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
+                val responseBody = response.body()
+                Log.i("LifeUp", responseBody?.msg)
+
+                val message = Message()
+
+                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                    Log.i("LifeUp 团队模块", "[修改团队]请求失败：错误或失效TOKEN")
+                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    userService.saveToken("")
+                    message.what = NetworkConstants.INVALID_TOKEN
+                } else {
+
+                    val messageResponse = responseBody?.msg
+
+                    if (messageResponse.equals("success")) {
+                        message.what = MSG_EDIT_TEAM_SUCCESS
+                    } else {
+                        message.what = MSG_EDIT_TEAM_FAILED
+                        message.obj = responseBody?.msg
+                    }
+
+                    Log.i("LifeUp 团队模块", "[修改团队]请求成功：${messageResponse}")
                 }
                 uiHandler.handleMessage(message)
             }

@@ -48,7 +48,7 @@ class UserMineActivity : AppCompatActivity() {
         tv_lifeExpAmount.text = attributeModel.gradeAttribute.toString()
 
 
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
 
         if (!mine.userHead.isNullOrBlank())
             Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_avatar) {

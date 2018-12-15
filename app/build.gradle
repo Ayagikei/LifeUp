@@ -13,8 +13,8 @@ android {
         applicationId "net.sarasarasa.lifeup"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 24
-        versionName "1.44"
+        versionCode 25
+        versionName "1.45"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -82,6 +82,8 @@ dependencies {
     /*    implementation "ch.acra:acra-notification:5.1.3"*/
     implementation 'ch.acra:acra-dialog:5.1.3'
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+    implementation 'com.dingmouren.colorpicker:colorpicker:1.0.1'
     
 }
 

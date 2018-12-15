@@ -80,10 +80,11 @@ open class AddTeamActivity : AppCompatActivity() {
                 finish()
             }
             NetworkConstants.MSG_UPDATE_AVATAR_SUCCESS -> {
-                if (msg.obj != null)
+                if (msg.obj != null) {
                     newTeamHeadUrl = msg.obj as String
+                }
 
-                val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+                val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
 
                 Glide.with(this).asBitmap().load(newTeamHeadUrl).apply(requestOptions).into(object : BitmapImageViewTarget(iv_team_avatar) {
                     override fun setResource(resource: Bitmap?) {
@@ -118,7 +119,7 @@ open class AddTeamActivity : AppCompatActivity() {
 
     private var avatarFileName = "teamAvatar.jpg"
     private var avatarOriginFileName = "teamAvatarOrigin.jpg"
-    private var newTeamHeadUrl: String = ""
+    private var newTeamHeadUrl: String? = userService.getMine().userHead
 
     companion object {
         private const val RC_CAMERA = 200
@@ -146,7 +147,7 @@ open class AddTeamActivity : AppCompatActivity() {
             showChoosePicDialog()
         }
 
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
         val mine = userService.getMine()
         Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_team_avatar) {
             override fun setResource(resource: Bitmap?) {

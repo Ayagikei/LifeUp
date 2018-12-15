@@ -34,6 +34,7 @@ class SettingActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("options", Context.MODE_PRIVATE)
         val isShowRepeatDialog = sharedPreferences.getBoolean("isShowRepeatDialog", true)
         val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
+        val isWidgetDarkThemeWhiteIconAndFonts = sharedPreferences.getBoolean("isWidgetDarkThemeWhiteIconAndFonts", false)
         val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
         val editor = sharedPreferences.edit()
@@ -64,6 +65,46 @@ class SettingActivity : AppCompatActivity() {
             editor.putBoolean("isStatusPlayAnimation", isChecked)
             editor.apply()
         }
+
+        switch_widget_dark_theme_white_icon_and_fonts.isChecked = isWidgetDarkThemeWhiteIconAndFonts
+        switch_widget_dark_theme_white_icon_and_fonts.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isWidgetDarkThemeWhiteIconAndFonts", isChecked)
+            editor.apply()
+            WidgetUtils.updateWidgets(applicationContext)
+        }
+
+/*        setting_item_change_widget_font_color.setOnItemViewClick {
+            val mOnColorPickerListener = object : OnColorPickerListener {
+                override fun onColorCancel(dialog: ColorPickerDialog) {//取消选择的颜色
+
+                }
+
+                override fun onColorChange(dialog: ColorPickerDialog, color: Int) {//实时监听颜色变化
+
+                }
+
+                override fun onColorConfirm(dialog: ColorPickerDialog, color: Int) {//确定的颜色
+
+
+                    val hexColor = "#" + Integer.toHexString(color)
+                    ToastUtils.showShortToast(hexColor.toString())
+
+                    try {
+                        tv_widget.setTextColor(Color.parseColor(hexColor))
+                    }catch (e:Exception){
+                        ToastUtils.showShortToast(e.toString())
+                    }
+                }
+            }
+
+            val mColorPickerDialog = ColorPickerDialog(
+                    this,
+                    resources.getColor(R.color.colorPrimary),
+                    false,
+                    mOnColorPickerListener
+            ).show()
+
+        }*/
 
 
         setting_item_logout.setOnItemViewClick {

@@ -26,7 +26,7 @@ class TeamListAdapter(layoutResId: Int, data: List<TeamListVO>) : BaseQuickAdapt
 
         //设置头像
         val ivAvatar = helper.getView<ImageView>(R.id.iv_avatar)
-        val requestOptions = RequestOptions.bitmapTransform(RoundCorner(10f)).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val requestOptions = RequestOptions.bitmapTransform(RoundCorner(10f)).placeholder(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
 
         Glide.with(mContext).asBitmap().load(item.teamHead).apply(requestOptions).into(ivAvatar)
 

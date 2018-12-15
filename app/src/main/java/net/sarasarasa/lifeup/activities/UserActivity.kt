@@ -253,7 +253,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         }
 
 
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
         Glide.with(this).asBitmap().load(userDetailVO.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(iv_avatar) {
             override fun setResource(resource: Bitmap?) {
                 val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(this@UserActivity.resources, resource)
