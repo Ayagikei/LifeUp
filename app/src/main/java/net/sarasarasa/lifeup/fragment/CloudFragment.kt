@@ -41,6 +41,7 @@ class CloudFragment : Fragment() {
 
 
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        viewPager.offscreenPageLimit = 0
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(viewPager))
 
         return view
@@ -72,6 +73,22 @@ class CloudFragment : Fragment() {
         }
     }
 
+    /** 刷新数据 **/
+    override fun onResume() {
+        super.onResume()
+
+        mSectionsPagerAdapter?.notifyDataSetChanged()
+    }
+
+    /** 刷新数据 **/
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            mSectionsPagerAdapter?.notifyDataSetChanged()
+        }
+    }
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -97,6 +114,7 @@ class CloudFragment : Fragment() {
             //rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
             return rootView
         }
+
 
         companion object {
             /**

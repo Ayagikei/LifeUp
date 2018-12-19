@@ -70,16 +70,16 @@ class TodoServiceImpl : TodoService {
         return ans > 0
     }
 
-    override fun getUncompletedTodoList(): List<TaskModel> {
+    override fun getUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask()) {
-            ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
         return todoDAO.findAllUncompletedTodoItem()
     }
 
-    override fun getUncompletedTodoListWhichHaveBegun(): List<TaskModel> {
+    override fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask()) {
-            ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
 
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
@@ -308,9 +308,15 @@ class TodoServiceImpl : TodoService {
                 attributeService.decreaseExp(e.relatedAttribute1 ?: "", e.expReward / 5)
                 attributeService.decreaseExp(e.relatedAttribute2 ?: "", e.expReward / 5)
                 attributeService.decreaseExp(e.relatedAttribute3 ?: "", e.expReward / 5)
+
+                val isDefaultRemake = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE).getBoolean("isDefaultRemake", true)
+                if (isDefaultRemake && e.taskFrequency != 0 && e.taskFrequency != -1)
+                    e.id?.let { restartTask(it) }
             }
             true
         }
+
+
     }
 
 
@@ -379,7 +385,8 @@ class TodoServiceImpl : TodoService {
 
     override fun deleteTeamTaskByTeamId(teamId: Long) {
         val teamTask = todoDAO.findTeamTodoItem(teamId)
-        teamTask.delete()
+
+        teamTask?.delete()
     }
 
     override fun resetAllRemind(context: Context) {
@@ -440,7 +447,7 @@ class TodoServiceImpl : TodoService {
 
         val newExpireTime = Calendar.getInstance()
         newExpireTime.time = origin.taskExpireTime
-        val iExpireTimes = DateUtil.getDiscrepantDays(newExpireTime.time, Calendar.getInstance().time) / origin.taskFrequency + 1
+        val iExpireTimes = DateUtil.getDiscrepantDays(newExpireTime.time, Calendar.getInstance().time) / origin.taskFrequency
         newExpireTime.add(Calendar.DATE, origin.taskFrequency * iExpireTimes)
         taskModel.taskExpireTime = newExpireTime.time
 
@@ -463,6 +470,30 @@ class TodoServiceImpl : TodoService {
 
         taskModel.save()
 
+        origin.nextTaskId = taskModel.id
+        origin.save()
+
         return true
+    }
+
+    override fun addGuideTask(): Boolean {
+        val task = TaskModel(
+                "开始使用人升",
+                "点击小圆圈完成待办事项。\n长按可以进行置顶、编辑、放弃、删除等操作。",
+                null,
+                null,
+                "endurance",
+                null,
+                null,
+                1,
+                1,
+                0,
+                0,
+                false,
+                null
+        )
+
+        task.expReward = 130
+        return task.save()
     }
 }

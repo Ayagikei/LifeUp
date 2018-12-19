@@ -603,8 +603,12 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         if (isNeedDDl && TextUtils.isEmpty(til_deadLine.editText?.text)) {
-            dDDL.error = "该重复频次需要设置期限日期"
-            isAllCheckPassed = false
+/*            dDDL.error = "该重复频次需要设置期限日期"
+            isAllCheckPassed = false*/
+
+            //容错处理：没填期限日期的时候自动填充为当天
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+            til_deadLine.editText?.setText(simpleDateFormat.format(Date()))
         }
 
         if (iFrequency != 0 || iFrequency != -1) {

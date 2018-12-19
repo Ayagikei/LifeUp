@@ -16,7 +16,7 @@ interface TodoService {
     fun deleteTodoItem(id: Long?): Boolean
 
     /** 获取所有未完成事项的[List<TaskModel>] **/
-    fun getUncompletedTodoList(): List<TaskModel>
+    fun getUncompletedTodoList(isShowToast: Boolean): List<TaskModel>
 
     /** 获取所有非未完成事项（含逾期、放弃等）的[List<TaskModel>] **/
     fun getCompletedTodoList(): List<TaskModel>
@@ -69,7 +69,11 @@ interface TodoService {
     fun resetAllRemind(context: Context)
 
     fun deleteTeamTaskByTeamId(teamId: Long)
+
     fun changePriority(id: Long): Int
+
     fun restartTask(id: Long): Boolean
-    fun getUncompletedTodoListWhichHaveBegun(): List<TaskModel>
+
+    fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel>
+    fun addGuideTask(): Boolean
 }

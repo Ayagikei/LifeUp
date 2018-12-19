@@ -13,7 +13,7 @@ class RetrofitInstance {
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create()
 
-        var client = OkHttpClient.Builder()
+        private var client = OkHttpClient.Builder()
                 .build()
 
         private val retrofitInstance = Retrofit.Builder().baseUrl("http://hdonghong.top").client(client).addConverterFactory(GsonConverterFactory.create(gson)).build()

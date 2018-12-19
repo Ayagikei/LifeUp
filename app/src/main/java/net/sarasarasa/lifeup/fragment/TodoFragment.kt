@@ -22,6 +22,8 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
 import com.airbnb.lottie.LottieAnimationView
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.dialog_activity.view.*
 import kotlinx.android.synthetic.main.fragment_todo.view.*
@@ -32,6 +34,7 @@ import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.EditToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
@@ -91,7 +94,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private val attributeService = AttributeServiceImpl()
     private val attributeLevelService = AttributeLevelServiceImpl()
     private val achievementService = AchievementServiceImpl()
-    private val mList: MutableList<TaskModel> = todoService.getUncompletedTodoList().toMutableList()
+    private val mList: MutableList<TaskModel> = todoService.getUncompletedTodoList(true).toMutableList()
     private var dialogView: View? = null
     private var dialog: AlertDialog? = null
     private var thread: Thread? = null
@@ -128,6 +131,101 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             val intent = Intent(this.context, AddToDoItemActivity::class.java)
             startActivity(intent)
         }
+
+
+/*        TapTargetView.showFor(activity,                 // `this` is an Activity
+                TapTarget.forView(view.fab, "新建待办事项", "试试新建你的第一个待办事项吧！")
+                        // All options below are optional
+                        .outerCircleColor(R.color.blue)      // Specify a color for the outer circle
+                        .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                        //.targetCircleColor(R.color.white)   // Specify a color for the target circle
+                        .titleTextSize(20)                  // Specify the size (in sp) of the title text
+                        .titleTextColor(R.color.white)      // Specify the color of the title text
+                        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+                        .descriptionTextColor(R.color.white)  // Specify the color of the description text
+                        .textColor(R.color.white)            // Specify a color for both the title and description text
+                        // If set, will dim behind the view with 30% opacity of the given color
+                        .drawShadow(true)                   // Whether to draw a drop shadow or not
+                        .cancelable(true)                  // Whether tapping outside the outer circle dismisses the view
+                        .tintTarget(false)                   // Whether to tint the target view's color
+                        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)             // Specify a custom drawable to draw as the target
+                        .targetRadius(60),                  // Specify the target radius (in dp)
+                object: TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                    override fun onTargetClick(view: TapTargetView?) {
+                        super.onTargetClick(view)
+                        ToastUtils.showShortToast("clicked")
+                    }
+                })*/
+
+/*        TapTargetView.showFor(activity,                 // `this` is an Activity
+                TapTarget.forView((activity as MainActivity).findViewById(R.id.navigation), "导航栏", "试试新建你的第一个待办事项吧！")
+                        // All options below are optional
+                        .outerCircleColor(R.color.blue)      // Specify a color for the outer circle
+                        .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                        //.targetCircleColor(R.color.white)   // Specify a color for the target circle
+                        .titleTextSize(20)                  // Specify the size (in sp) of the title text
+                        .titleTextColor(R.color.white)      // Specify the color of the title text
+                        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+                        .descriptionTextColor(R.color.white)  // Specify the color of the description text
+                        .textColor(R.color.white)            // Specify a color for both the title and description text
+                        // If set, will dim behind the view with 30% opacity of the given color
+                        .drawShadow(true)                   // Whether to draw a drop shadow or not
+                        .cancelable(true)                  // Whether tapping outside the outer circle dismisses the view
+                        .tintTarget(false)                   // Whether to tint the target view's color
+                        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)             // Specify a custom drawable to draw as the target
+                        .targetRadius(60),                  // Specify the target radius (in dp)
+                object: TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                    override fun onTargetClick(view: TapTargetView?) {
+                        super.onTargetClick(view)
+                        ToastUtils.showShortToast("clicked")
+                    }
+                })*/
+
+        val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("status", Context.MODE_PRIVATE)
+        val isShowGuide = sharedPreferences.getBoolean("isShowGuide", false)
+
+        if (!isShowGuide) {
+            TapTargetSequence(activity)
+                    .targets(TapTarget.forView(view.fab, "新建待办事项", "点击这里可以新建待办事项！")
+                            .outerCircleColor(R.color.blue)
+                            .outerCircleAlpha(0.96f)
+                            .titleTextSize(20)
+                            .titleTextColor(R.color.white)
+                            .descriptionTextSize(12)
+                            .descriptionTextColor(R.color.white)
+                            .textColor(R.color.white)
+                            .drawShadow(true)
+                            .cancelable(false)
+                            .tintTarget(false)
+                            .transparentTarget(false)
+                            .targetRadius(60),
+                            TapTarget.forView((activity as MainActivity).findViewById(R.id.navigation), "导航栏", "告示板：如同RPG游戏中接受任务和完成任务的地方\n" +
+                                    "状态：查看你的各项属性的等级。\n\n" +
+                                    "社区：加入社区建立的团队，领取公共事项（需要登陆）\n\n" +
+                                    "消息：暂未实现，可能改为其他功能。\n\n\n" +
+                                    "除了社区以外的功能都支持离线使用哦~\n" +
+                                    "目前大部分数据保存在本地，谨慎进行清除数据、卸载等操作。")
+                                    .outerCircleColor(R.color.blue)
+                                    .outerCircleAlpha(0.96f)
+                                    .titleTextSize(20)
+                                    .titleTextColor(R.color.white)
+                                    .descriptionTextSize(12)
+                                    .descriptionTextColor(R.color.white)
+                                    .textColor(R.color.white)
+                                    .drawShadow(true)
+                                    .cancelable(false)
+                                    .tintTarget(false)
+                                    .transparentTarget(false)
+                                    .targetRadius(60),
+                            TapTarget.forToolbarNavigationIcon(view.toolbar, "侧边栏", "可以进行登陆，查看成就、历史、设置等功能").id(1)
+                    )
+                    .start()
+
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("isShowGuide", true)
+            editor.apply()
+        }
+
     }
 
     private fun initRecyclerView(view: View) {
@@ -636,7 +734,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         }
 
         mList.clear()
-        mList.addAll(todoService.getUncompletedTodoList())
+        mList.addAll(todoService.getUncompletedTodoList(false))
         refreshHeaderView(mHeaderView)
 
         if (mList.size == 0) {

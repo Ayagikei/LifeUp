@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import net.sarasarasa.lifeup.service.AttributeLevelService;
 import net.sarasarasa.lifeup.service.AttributeService;
+import net.sarasarasa.lifeup.service.TodoService;
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl;
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl;
+import net.sarasarasa.lifeup.service.impl.TodoServiceImpl;
 
 /**
  * Created by AyagiKei on 2018/6/19 0019.
@@ -18,6 +20,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl;
 public class SplashActivity extends AppCompatActivity {
 
     AttributeService attributeService = new AttributeServiceImpl();
+    TodoService todoService = new TodoServiceImpl();
     AttributeLevelService attributeLevelService = new AttributeLevelServiceImpl();
 
     @Override
@@ -31,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         Editor editor = sharedPreferences.edit();
 
 
+
         if (isFirst) {
             //第一次进入的时候，跳转到引导页
             Intent intent = new Intent(this, WelcomeActivity.class);
@@ -40,6 +44,7 @@ public class SplashActivity extends AppCompatActivity {
             //初始化数据
             attributeService.initAttribute();
             attributeLevelService.initAttributeLevel();
+            todoService.addGuideTask();
             editor.putBoolean("isFirst", false);
             editor.apply();
 

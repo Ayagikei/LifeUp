@@ -16,15 +16,31 @@ class ToastUtils {
         fun showShortToast(string: String) {
             val context = contextReference.get()
 
-            if (context != null)
-                Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
+            try {
+                if (context != null)
+                    Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun showShortToast(string: String, passedContext: Context) {
+            try {
+                Toast.makeText(passedContext, string, Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         fun showLongToast(string: String) {
             val context = contextReference.get()
 
-            if (context != null)
-                Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+            try {
+                if (context != null)
+                    Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

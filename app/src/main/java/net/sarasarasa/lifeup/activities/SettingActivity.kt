@@ -33,6 +33,7 @@ class SettingActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("options", Context.MODE_PRIVATE)
         val isShowRepeatDialog = sharedPreferences.getBoolean("isShowRepeatDialog", true)
+        val isDefaultRemake = sharedPreferences.getBoolean("isDefaultRemake", true)
         val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
         val isWidgetDarkThemeWhiteIconAndFonts = sharedPreferences.getBoolean("isWidgetDarkThemeWhiteIconAndFonts", false)
         val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
@@ -43,6 +44,12 @@ class SettingActivity : AppCompatActivity() {
         switch_default_repeat.isChecked = !isShowRepeatDialog
         switch_default_repeat.setOnCheckedChangeListener { _, isChecked ->
             editor.putBoolean("isShowRepeatDialog", !isChecked)
+            editor.apply()
+        }
+
+        switch_default_remake_overdue.isChecked = isDefaultRemake
+        switch_default_remake_overdue.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isDefaultRemake", isChecked)
             editor.apply()
         }
 
@@ -73,6 +80,13 @@ class SettingActivity : AppCompatActivity() {
             WidgetUtils.updateWidgets(applicationContext)
         }
 
+        setting_item_guide.setOnItemViewClick {
+            val statusSharedPreferences = getSharedPreferences("status", Context.MODE_PRIVATE)
+            val statusEditor = statusSharedPreferences.edit()
+            statusEditor.putBoolean("isShowGuide", false)
+            statusEditor.apply()
+            ToastUtils.showShortToast("重新开启指引成功")
+        }
 /*        setting_item_change_widget_font_color.setOnItemViewClick {
             val mOnColorPickerListener = object : OnColorPickerListener {
                 override fun onColorCancel(dialog: ColorPickerDialog) {//取消选择的颜色

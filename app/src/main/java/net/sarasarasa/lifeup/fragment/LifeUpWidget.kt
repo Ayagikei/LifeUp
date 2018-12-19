@@ -11,11 +11,9 @@ import android.widget.RemoteViews
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
-import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.service.LifeUpRemoteViewsService
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
-import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import net.sarasarasa.lifeup.vo.ActivityVO
@@ -28,22 +26,6 @@ class LifeUpWidget : AppWidgetProvider() {
 
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
-
-        LoadingDialogUtils.dismiss()
-
-        when (msg.what) {
-            NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("请重新登陆")
-            }
-            NetworkConstants.MSG_FINISH_TEAM_TASK -> {
-                //团队事项完成
-                ToastUtils.showShortToast("成功完成事项")
-            }
-            else -> {
-
-            }
-
-        }
 
         return@Callback true
     }
@@ -75,7 +57,7 @@ class LifeUpWidget : AppWidgetProvider() {
             this.onUpdate(context, AppWidgetManager.getInstance(context), ids)
 
             if (intent.getBooleanExtra("isShowToast", false))
-                ToastUtils.showShortToast("成功刷新")
+                ToastUtils.showShortToast("成功刷新", context)
         } else if (intent.action == FINISH_TASK) {
             val extras = intent.extras
             if (extras != null) {
@@ -87,7 +69,7 @@ class LifeUpWidget : AppWidgetProvider() {
 
                     if (teamId == -1L) {
                         todoService.finishTodoItem(taskId)
-                        ToastUtils.showShortToast("成功完成事项")
+                        ToastUtils.showShortToast("成功完成事项", context)
 
                         if (item?.taskFrequency != 0)
                             todoService.repeatTask(taskId)
@@ -95,12 +77,12 @@ class LifeUpWidget : AppWidgetProvider() {
                         val activityVO = ActivityVO()
                         item?.let {
                             teamNetworkImpl.finishTeamTask(it, activityVO)
-                            ToastUtils.showShortToast("成功完成事项")
+                            ToastUtils.showShortToast("成功完成事项", context)
                         }
                     }
 
                 } else {
-                    ToastUtils.showShortToast("尚未到开始时间")
+                    ToastUtils.showShortToast("尚未到开始时间", context)
                 }
 
                 WidgetUtils.updateWidgets(context)
