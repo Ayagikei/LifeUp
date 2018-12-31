@@ -319,13 +319,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <android.support.design.widget.TextInputLayout
+                <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_remindDate"
-                    android:layout_width="142dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:hint="提醒日期（可选）"
+                    android:hint="提醒时间"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
 
@@ -333,63 +334,80 @@
                         android:id="@+id/et_remindDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_alarm_black_24dp"
+                        android:drawablePadding="4dp"
                         android:freezesText="false"
                         android:inputType="date"
-                        android:singleLine="true"
-                        android:textSize="14sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_remindTime"
-                    android:layout_width="153dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:hint="提醒时间"
-                    app:layout_constraintStart_toEndOf="@+id/til_remindDate"
-                    app:layout_constraintTop_toBottomOf="@id/tw_extraHeader">
-
-                    <net.sarasarasa.lifeup.view.FixedTextInputEditText
-                        android:id="@+id/et_startTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:freezesText="false"
-                        android:inputType="date"
-                        android:singleLine="true"
-                        android:textSize="14sp" />
-                </android.support.design.widget.TextInputLayout>
+                        android:singleLine="true" />
+                </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <TextView
                     android:id="@+id/btn_remind_reset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:onClick="finishRemindReset"
                     android:text="重置"
                     android:textColor="@color/colorAccent"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
-                    app:layout_constraintTop_toTopOf="@+id/til_remindTime" />
+                    app:layout_constraintTop_toTopOf="@+id/til_remindDate" />
 
-                <android.support.design.widget.TextInputLayout
+                <net.sarasarasa.lifeup.view.CustomTextInputLayout
+                    android:id="@+id/til_startTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="开始时间"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_remindDate">
+
+                    <net.sarasarasa.lifeup.view.FixedTextInputEditText
+                        android:id="@+id/et_startTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_event_black_24dp"
+                        android:drawablePadding="4dp"
+                        android:freezesText="false"
+                        android:inputType="date"
+                        android:singleLine="true" />
+                </net.sarasarasa.lifeup.view.CustomTextInputLayout>
+
+                <TextView
+                    android:id="@+id/btn_start_time_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="startTimeReset"
+                    android:text="重置"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/til_startTime"
+                    app:layout_constraintTop_toTopOf="@+id/til_startTime" />
+
+                <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_deadLine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:hint="期限日期（可选）"
+                    android:hint="期限日期"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til_remindDate">
+                    app:layout_constraintTop_toBottomOf="@id/til_startTime">
 
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:id="@+id/dDDL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_date_range_black_24dp"
+                        android:drawablePadding="4dp"
                         android:freezesText="false"
                         android:inputType="date"
                         android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
+                </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <TextView
                     android:id="@+id/btn_ddl_reset"
@@ -404,7 +422,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
                     app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
 
-                <android.support.design.widget.TextInputLayout
+                <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_repeat"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -418,11 +436,13 @@
                         android:id="@+id/et_repeat"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_loop_black_24dp"
+                        android:drawablePadding="4dp"
                         android:inputType="date"
                         android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
+                </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_target"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -436,10 +456,12 @@
                         android:id="@+id/et_target"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_grade_black_24dp"
+                        android:drawablePadding="4dp"
                         android:inputType="number"
                         android:maxLength="4"
                         android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
+                </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <!--                <Switch
                                     android:id="@+id/switch1"

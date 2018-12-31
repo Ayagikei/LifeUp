@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.graphics.ColorMatrix
@@ -201,11 +202,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
         et_startTime.inputType = InputType.TYPE_NULL
         et_startTime.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
-                showRemindTimePickerDialog()
+                showStartDatePickerDialog()
         }
 
         et_startTime.setOnClickListener {
-            showRemindTimePickerDialog()
+            showStartDatePickerDialog()
         }
 
     }
@@ -220,32 +221,25 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         et_repeat.setOnClickListener { showRepeaterDialog(); }
-
         til_repeat.visibility = View.VISIBLE
-
-        //显示重复
-/*        val set = ConstraintSet()
-        set.clone(layout_extra)
-        set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-        set.applyTo(layout_extra)*/
     }
 
     /** 重置期限日期 **/
     fun finishDateReset(view: View) {
         dDDL.setText("")
         view.visibility = View.INVISIBLE
-        til_repeat.visibility = View.VISIBLE
+    }
 
-/*        val set = ConstraintSet()
-        set.clone(layout_extra)
-        set.connect(switch1.id, ConstraintSet.TOP, til_deadLine.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-        set.applyTo(layout_extra)*/
+    /** 重置开始时间 **/
+    fun startTimeReset(view: View) {
+        et_startTime.setText("")
+        view.visibility = View.INVISIBLE
     }
 
     /** 重置提醒日期 **/
     fun finishRemindReset(view: View) {
         et_remindDate.setText("")
-        et_startTime.setText("")
+        //et_startTime.setText("")
         //使重置按钮[不可见]
         view.visibility = View.INVISIBLE
     }
@@ -253,18 +247,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
     /**
      * 展示期限日期选择对话框
      */
+    @SuppressLint("SetTextI18n")
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             dDDL.setText("$year/${monthOfYear + 1}/$dayOfMonth")
             til_repeat.visibility = View.VISIBLE
             btn_ddl_reset.visibility = View.VISIBLE
-
-/*            //显示重复
-            val set = ConstraintSet()
-            set.clone(layout_extra)
-            set.connect(switch1.id, ConstraintSet.TOP, til_repeat.id, ConstraintSet.BOTTOM, DensityUtil.dp2px(this, 8f))
-            set.applyTo(layout_extra)*/
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
         //最小日期限制
@@ -275,11 +264,16 @@ open class AddToDoItemActivity : AppCompatActivity() {
     /**
      * 展示提醒日期选择对话框
      */
+    @SuppressLint("SetTextI18n")
     private fun showRemindDatePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            et_remindDate.setText("$year/${monthOfYear + 1}/$dayOfMonth")
+            val strMonthOfYear: String = if (monthOfYear + 1 < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
+            val strDayOfMonth: String = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+
+            et_remindDate.setText("$year/$strMonthOfYear/$strDayOfMonth")
             btn_remind_reset.visibility = View.VISIBLE
+            showRemindTimePickerDialog()
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
         //最小日期限制
@@ -290,13 +284,62 @@ open class AddToDoItemActivity : AppCompatActivity() {
     /**
      * 展示提醒时间选择对话框
      */
+    @SuppressLint("SetTextI18n")
     private fun showRemindTimePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
-            et_startTime.setText("${hourOfDay}:${minute}:00")
+            val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
+            val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
+
             btn_remind_reset.visibility = View.VISIBLE
+            et_remindDate.setText(et_remindDate.text.toString() + " $strHourOfDay:$strMinute:00")
         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
 
+        datePickerDialog.setOnCancelListener {
+            et_remindDate.setText("")
+        }
+        datePickerDialog.show()
+    }
+
+
+    /**
+     * 展示开始日期选择对话框
+     */
+    private fun showStartDatePickerDialog() {
+        val c = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            val strMonthOfYear: String = if (monthOfYear + 1 < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
+            val strDayOfMonth: String = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+
+            et_startTime.setText("$year/$strMonthOfYear/$strDayOfMonth")
+            btn_start_time_reset.visibility = View.VISIBLE
+            showStartTimePickerDialog()
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+
+        //最小日期限制
+        datePickerDialog.datePicker.minDate = c.timeInMillis
+        datePickerDialog.show()
+    }
+
+    /**
+     * 展示开始时间选择对话框
+     */
+    @SuppressLint("SetTextI18n")
+    private fun showStartTimePickerDialog() {
+        val c = Calendar.getInstance()
+        val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
+            //et_startTime.setText("${hourOfDay}:${minute}:00")
+            btn_remind_reset.visibility = View.VISIBLE
+
+            val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
+            val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
+
+            et_startTime.setText(et_startTime.text.toString() + " $strHourOfDay:$strMinute:00")
+        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
+
+        datePickerDialog.setOnCancelListener {
+            et_remindDate.setText("")
+        }
         datePickerDialog.show()
     }
 
@@ -304,15 +347,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
      * 展示重复频次选择对话框
      */
     private fun showRepeaterDialog() {
-/*        val items = arrayOf("单次", "多次", "每日", "每两日", "每周", "每两周", "每月")
-
-        val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
-                .setSingleChoiceItems(items, iCheckedItemIndex) { dialog, index ->
-                    iCheckedItemIndex = index
-                    et_repeat.setText(items[index])
-                    dialog.dismiss()
-                }.create()
-        dialog.show()*/
 
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_repeat, null)
         val arrButton = ArrayList<FancyButton>()
@@ -459,7 +493,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             dateTaskDeadline = simpleDateFormat.parse(taskDeadline)
         }
 
-        val taskRemindDateAndTime = til_remindDate.editText?.text.toString() + " " + til_remindTime.editText?.text.toString()
+        val taskRemindDateAndTime = til_remindDate.editText?.text.toString()
         var dateTaskRemindDateAndTime: Date? = null
         if (!taskRemindDateAndTime.isBlank()) {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
@@ -552,6 +586,12 @@ open class AddToDoItemActivity : AppCompatActivity() {
             taskModel.taskTargetId = newTarget.id
         }
 
+        // 开始时间
+        val taskStartDateAndTime = til_startTime.editText?.text.toString()
+        if (!taskStartDateAndTime.isBlank()) {
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+            taskModel.startTime = simpleDateFormat.parse(taskStartDateAndTime)
+        }
 
         return taskModel
     }
@@ -577,6 +617,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
             til_toDoText.error = "不能为空"
+
+            scroll_view.post {
+                scroll_view.scrollTo(0, til_toDoText.top)
+            }
+
             isAllCheckPassed = false
         }
 
@@ -585,11 +630,56 @@ open class AddToDoItemActivity : AppCompatActivity() {
             isAllCheckPassed = false
         }
 
-        if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
+/*        if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
             ToastUtils.showShortToast("提醒日期和时间必须填写完整！")
             isAllCheckPassed = false
+        }*/
+
+        try {
+            val taskRemindDateAndTime = til_remindDate.editText?.text.toString()
+            if (!taskRemindDateAndTime.isBlank()) {
+                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+                simpleDateFormat.parse(taskRemindDateAndTime)
+            }
+        } catch (e: Exception) {
+            ToastUtils.showShortToast("提醒日期数据异常")
+            isAllCheckPassed = false
         }
+
+        val taskStartDateAndTime = til_startTime.editText?.text.toString()
+        try {
+            if (!taskStartDateAndTime.isBlank()) {
+                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+                simpleDateFormat.parse(taskStartDateAndTime)
+            }
+        } catch (e: Exception) {
+            ToastUtils.showShortToast("开始时间数据异常")
+            isAllCheckPassed = false
+        }
+
+        if (!TextUtils.isEmpty(til_deadLine.editText?.text) && !TextUtils.isEmpty(taskStartDateAndTime)) {
+            try {
+                val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+
+                val dateStartTime = simpleDateTimeFormat.parse(taskStartDateAndTime)
+                val dateTaskDeadline = simpleDateFormat.parse(til_deadLine.editText?.text.toString())
+
+                val deadLine = Calendar.getInstance()
+                deadLine.time = dateTaskDeadline
+                deadLine.add(Calendar.DATE, 1)
+
+                if (dateStartTime.after(deadLine.time)) {
+                    ToastUtils.showShortToast("开始时间不能晚于期限日期")
+                    isAllCheckPassed = false
+                }
+            } catch (e: Exception) {
+                ToastUtils.showShortToast("开始时间数据异常")
+                isAllCheckPassed = false
+            }
+        }
+
 
         val isNeedDDl = when (til_repeat.editText?.text.toString()) {
             "单次" -> false
@@ -603,9 +693,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         if (isNeedDDl && TextUtils.isEmpty(til_deadLine.editText?.text)) {
-/*            dDDL.error = "该重复频次需要设置期限日期"
-            isAllCheckPassed = false*/
-
             //容错处理：没填期限日期的时候自动填充为当天
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
             til_deadLine.editText?.setText(simpleDateFormat.format(Date()))

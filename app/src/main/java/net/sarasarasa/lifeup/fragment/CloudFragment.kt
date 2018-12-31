@@ -104,6 +104,7 @@ class CloudFragment : Fragment() {
                     rootView.setOnClickListener {
                         val intent = Intent(context, LoginActivity::class.java)
                         startActivity(intent)
+                        activity?.finish()
                     }
                 } else {
                     rootView.tv_error2.text = "本功能未开放！"

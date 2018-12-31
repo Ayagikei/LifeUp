@@ -69,7 +69,7 @@ class BoardFragment : Fragment() {
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {
-                if (swipe_refresh_layout.isRefreshing)
+                if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing)
                     swipe_refresh_layout.isRefreshing = false
 
                 mAdapter.loadMoreFail()
@@ -80,7 +80,8 @@ class BoardFragment : Fragment() {
                 if (msg.obj != null) {
                     mAdapter.loadMoreFail()
 
-                    swipe_refresh_layout.isEnabled = true
+                    if (swipe_refresh_layout != null)
+                        swipe_refresh_layout.isEnabled = true
                 }
             }
 

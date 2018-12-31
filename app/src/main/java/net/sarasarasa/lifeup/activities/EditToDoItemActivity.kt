@@ -55,13 +55,15 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             }
 
             if (taskModel.taskRemindTime != null) {
-                val simpleDateFormatFirst = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-                val simpleDateFormatSec = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                checkNotNull(til_remindDate.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormatFirst.format(taskModel.taskRemindTime))
-                checkNotNull(til_remindTime.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormatSec.format(taskModel.taskRemindTime))
+                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+                checkNotNull(til_remindDate.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormat.format(taskModel.taskRemindTime))
 
                 btn_remind_reset.visibility = View.VISIBLE
             }
+
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+            checkNotNull(til_startTime.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormat.format(taskModel.startTime))
+            btn_start_time_reset.visibility = View.VISIBLE
 
             //还原奖励设置
             when (taskModel.taskUrgencyDegree) {

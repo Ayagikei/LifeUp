@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+    <group android:id="@+id/classification">
+        <item
+            android:id="@+id/action_all"
+            android:icon="@drawable/ic_date_range_black_24dp"
+            android:orderInCategory="100"
+            android:title="显示所有事项"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/action_today"
+            android:icon="@drawable/ic_today_black_24dp"
+            android:orderInCategory="100"
+            android:title="显示今天事项"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/action_week"
+            android:icon="@drawable/ic_date_range_black_24dp"
+            android:orderInCategory="100"
+            android:title="显示近七天事项"
+            app:showAsAction="withText" />
+    </group>
+    <group android:id="@+id/options">
+        <item
+            android:id="@+id/action_sort"
+            android:icon="@drawable/ic_list_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/action_sort"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/action_sort_asc_change"
+            android:icon="@drawable/ic_swap_vert_black_24dp"
+            android:orderInCategory="200"
+            android:title="正序/倒序"
+            app:showAsAction="withText" />
+    </group>
 </menu>

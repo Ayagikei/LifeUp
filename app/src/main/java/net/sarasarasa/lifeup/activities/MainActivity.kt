@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.bumptech.glide.Glide
@@ -258,5 +259,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 /*    fun getAchievementView(): AchievementView{
         return achievement_view
     }*/
+
+    // 让菜单同时显示图标和文字
+    override fun onMenuOpened(featureId: Int, menu: Menu?): Boolean {
+        if (menu != null) {
+            if (menu.javaClass.simpleName.contentEquals("MenuBuilder")) {
+                try {
+                    val method = menu.javaClass.getDeclaredMethod("setOptionalIconsVisible", java.lang.Boolean.TYPE)
+                    method.isAccessible = true
+                    method.invoke(menu, true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+        return super.onMenuOpened(featureId, menu)
+    }
 
 }

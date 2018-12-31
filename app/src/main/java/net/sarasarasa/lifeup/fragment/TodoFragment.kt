@@ -2,20 +2,20 @@ package net.sarasarasa.lifeup.fragment
 
 import android.Manifest
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
@@ -26,6 +26,7 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.dialog_activity.view.*
+import kotlinx.android.synthetic.main.dialog_sort.view.*
 import kotlinx.android.synthetic.main.fragment_todo.view.*
 import kotlinx.android.synthetic.main.head_view_to_do.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
@@ -99,6 +100,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private var dialog: AlertDialog? = null
     private var thread: Thread? = null
     private var threadRunning: Boolean = false
+    private val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
@@ -116,6 +118,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_todo, null)
 
+        setHasOptionsMenu(true)
         initView(view)
         rootView = view
         return view
@@ -123,7 +126,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     private fun initView(view: View) {
         initRecyclerView(view)
-
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
 
@@ -131,55 +133,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             val intent = Intent(this.context, AddToDoItemActivity::class.java)
             startActivity(intent)
         }
-
-
-/*        TapTargetView.showFor(activity,                 // `this` is an Activity
-                TapTarget.forView(view.fab, "新建待办事项", "试试新建你的第一个待办事项吧！")
-                        // All options below are optional
-                        .outerCircleColor(R.color.blue)      // Specify a color for the outer circle
-                        .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-                        //.targetCircleColor(R.color.white)   // Specify a color for the target circle
-                        .titleTextSize(20)                  // Specify the size (in sp) of the title text
-                        .titleTextColor(R.color.white)      // Specify the color of the title text
-                        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-                        .descriptionTextColor(R.color.white)  // Specify the color of the description text
-                        .textColor(R.color.white)            // Specify a color for both the title and description text
-                        // If set, will dim behind the view with 30% opacity of the given color
-                        .drawShadow(true)                   // Whether to draw a drop shadow or not
-                        .cancelable(true)                  // Whether tapping outside the outer circle dismisses the view
-                        .tintTarget(false)                   // Whether to tint the target view's color
-                        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)             // Specify a custom drawable to draw as the target
-                        .targetRadius(60),                  // Specify the target radius (in dp)
-                object: TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
-                    override fun onTargetClick(view: TapTargetView?) {
-                        super.onTargetClick(view)
-                        ToastUtils.showShortToast("clicked")
-                    }
-                })*/
-
-/*        TapTargetView.showFor(activity,                 // `this` is an Activity
-                TapTarget.forView((activity as MainActivity).findViewById(R.id.navigation), "导航栏", "试试新建你的第一个待办事项吧！")
-                        // All options below are optional
-                        .outerCircleColor(R.color.blue)      // Specify a color for the outer circle
-                        .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-                        //.targetCircleColor(R.color.white)   // Specify a color for the target circle
-                        .titleTextSize(20)                  // Specify the size (in sp) of the title text
-                        .titleTextColor(R.color.white)      // Specify the color of the title text
-                        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-                        .descriptionTextColor(R.color.white)  // Specify the color of the description text
-                        .textColor(R.color.white)            // Specify a color for both the title and description text
-                        // If set, will dim behind the view with 30% opacity of the given color
-                        .drawShadow(true)                   // Whether to draw a drop shadow or not
-                        .cancelable(true)                  // Whether tapping outside the outer circle dismisses the view
-                        .tintTarget(false)                   // Whether to tint the target view's color
-                        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)             // Specify a custom drawable to draw as the target
-                        .targetRadius(60),                  // Specify the target radius (in dp)
-                object: TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
-                    override fun onTargetClick(view: TapTargetView?) {
-                        super.onTargetClick(view)
-                        ToastUtils.showShortToast("clicked")
-                    }
-                })*/
 
         val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("status", Context.MODE_PRIVATE)
         val isShowGuide = sharedPreferences.getBoolean("isShowGuide", false)
@@ -454,9 +407,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     }
 
                     if (needToRepeat) {
-                        val sharedPreferences = activity?.getSharedPreferences("options", Context.MODE_PRIVATE)
-                        val isShowRepeatDialog = sharedPreferences?.getBoolean("isShowRepeatDialog", true)
-
+                        val isShowRepeatDialog = optionSharedPreferences?.getBoolean("isShowRepeatDialog", true)
                         if (isShowRepeatDialog == true)
                             showDialogRepeat(item)
                         else {
@@ -852,7 +803,95 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         if (resultCode == Activity.RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
             mPhotosSnpl!!.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data!!))
         } else if (requestCode == RC_PHOTO_PREVIEW) {
-            mPhotosSnpl!!.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data!!))
+            mPhotosSnpl!!.data = BGAPhotoPickerPreviewActivity.getSelectedPhotos(data!!)
+        }
+     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.main, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    @SuppressLint("ApplySharedPref")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        when (item.itemId) {
+            R.id.action_sort -> {
+                val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
+                val view = layoutInflater.inflate(R.layout.dialog_sort, null)
+                view.ll_sort_start_time.setOnClickListener {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("sortBy", "startTime")
+                    editor?.commit()
+                    refreshDataSet()
+                    bottomSheetDialog?.cancel()
+                }
+                view.ll_sort_deadline.setOnClickListener {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("sortBy", "deadline")
+                    editor?.commit()
+                    refreshDataSet()
+                    bottomSheetDialog?.cancel()
+                }
+                view.ll_sort_create_time.setOnClickListener {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("sortBy", "createTime")
+                    editor?.commit()
+                    refreshDataSet()
+                    bottomSheetDialog?.cancel()
+                }
+                view.ll_sort_exp.setOnClickListener {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("sortBy", "exp")
+                    editor?.commit()
+                    refreshDataSet()
+                    bottomSheetDialog?.cancel()
+                }
+                bottomSheetDialog?.setContentView(view)
+                bottomSheetDialog?.show()
+                return true
+            }
+            R.id.action_all -> {
+                val editor = optionSharedPreferences?.edit()
+                editor?.putString("classBy", "all")
+                editor?.commit()
+                refreshDataSet()
+                return true
+            }
+            R.id.action_today -> {
+                val editor = optionSharedPreferences?.edit()
+                editor?.putString("classBy", "today")
+                editor?.commit()
+                refreshDataSet()
+                return true
+            }
+            R.id.action_week -> {
+                val editor = optionSharedPreferences?.edit()
+                editor?.putString("classBy", "week")
+                editor?.commit()
+                refreshDataSet()
+                return true
+            }
+            R.id.action_sort_asc_change -> {
+                val isAsc = optionSharedPreferences?.getBoolean("isAsc", true)
+                val editor = optionSharedPreferences?.edit()
+                editor?.putBoolean("isAsc", !isAsc!!)
+                editor?.commit()
+                refreshDataSet()
+
+                if (!isAsc!!)
+                    ToastUtils.showShortToast("已经更改为正序")
+                else
+                    ToastUtils.showShortToast("已经更改为倒序")
+
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

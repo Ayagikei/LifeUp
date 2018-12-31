@@ -1,6 +1,9 @@
 package net.sarasarasa.lifeup.dao
 
+import android.content.Context
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.models.TaskModel
+import org.litepal.FluentQuery
 import org.litepal.LitePal
 import java.util.*
 
@@ -15,13 +18,53 @@ class TodoDAO {
     }
 
     fun findAllUncompletedTodoItem(): List<TaskModel> {
-        return LitePal.where("taskStatus = ?", "0")
-                .order("priority desc,startTime asc")
-                .find(TaskModel::class.java)
+        val litePalWhere = LitePal.where("taskStatus = ?", "0")
+
+        return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
+    }
+
+    private fun getLitePalOrder(litePalWhere: FluentQuery): FluentQuery {
+        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+        val classBy = optionSharedPreferences.getString("sortBy", "startTime")
+        val isAsc = optionSharedPreferences.getBoolean("isAsc", true)
+
+        return if (isAsc)
+            when (classBy) {
+                "startTime" -> litePalWhere.order("priority desc,startTime asc")
+                "deadline" -> litePalWhere.order("priority desc,taskExpireTime asc")
+                "createTime" -> litePalWhere.order("priority desc,id asc")
+                "exp" -> litePalWhere.order("priority desc,expReward asc")
+                else -> litePalWhere.order("priority desc,startTime asc")
+            }
+        else when (classBy) {
+            "startTime" -> litePalWhere.order("priority desc,startTime desc")
+            "deadline" -> litePalWhere.order("priority desc,taskExpireTime desc")
+            "createTime" -> litePalWhere.order("priority desc,id desc")
+            "exp" -> litePalWhere.order("priority desc,expReward desc")
+            else -> litePalWhere.order("priority desc,startTime desc")
+        }
+
+    }
+
+    fun findUncompletedTodoItemAfterDays(days: Int): List<TaskModel> {
+        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+
+        val classBy = optionSharedPreferences.getString("sortBy", "startTime")
+        val isAsc = optionSharedPreferences.getBoolean("isAsc", true)
+
+        val cal = Calendar.getInstance()
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+            add(Calendar.DATE, days - 1)
+        }
+        val lastSecOfThisDay = cal.timeInMillis
+        val litePalWhere = LitePal.where("taskStatus = ? and startTime < ?", "0", lastSecOfThisDay.toString())
+        return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
 
     fun findAllUncompletedTodoItemWhichHaveBegun(): List<TaskModel> {
-
         val cal = Calendar.getInstance()
         with(cal) {
             set(Calendar.HOUR_OF_DAY, 23)
@@ -29,10 +72,9 @@ class TodoDAO {
             set(Calendar.SECOND, 59)
         }
         val lastSecOfThisDay = cal.timeInMillis
+        val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
 
-        return LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
-                .order("priority desc,startTime asc")
-                .find(TaskModel::class.java)
+        return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
 
     fun findAllUncompletedAndNeedRemindTodoItem(time: Long): List<TaskModel> {

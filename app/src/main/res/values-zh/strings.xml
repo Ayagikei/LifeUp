@@ -66,6 +66,7 @@
     <string name="AcraCommend">说一下是什么情况下崩溃的：</string>
     <string name="AcraChannel">人升崩溃</string>
     <string name="title_activity_edit_team_item">编辑团队信息</string>
+    <string name="action_sort">排序</string>
 
 
 </resources>

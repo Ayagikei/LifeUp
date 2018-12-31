@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -317,7 +318,10 @@ open class AddTeamActivity : AppCompatActivity() {
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            dDDL.setText("$year/${monthOfYear + 1}/$dayOfMonth")
+            val strMonthOfYear: String = if (monthOfYear + 1 < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
+            val strDayOfMonth: String = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+
+            dDDL.setText("$year/$strMonthOfYear/$strDayOfMonth")
             til_repeat.visibility = View.VISIBLE
             btn_ddl_reset.visibility = View.VISIBLE
 
@@ -331,10 +335,14 @@ open class AddTeamActivity : AppCompatActivity() {
     /**
      * 展示提醒日期选择对话框
      */
+    @SuppressLint("SetTextI18n")
     private fun showRemindDatePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            et_remindDate.setText("$year/${monthOfYear + 1}/$dayOfMonth")
+            val strMonthOfYear: String = if (monthOfYear + 1 < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
+            val strDayOfMonth: String = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+
+            et_remindDate.setText("$year/$strMonthOfYear/$strDayOfMonth")
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
         //最小日期限制
@@ -345,14 +353,18 @@ open class AddTeamActivity : AppCompatActivity() {
     /**
      * 展示提醒时间选择对话框
      */
+    @SuppressLint("SetTextI18n")
     private fun showRemindTimePickerDialog(view: View, isMaxSec: Boolean) {
         val c = Calendar.getInstance()
         val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
+            val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
+            val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
+
             if (view is TextInputEditText)
                 if (isMaxSec) {
-                    view.setText("${hourOfDay}:${minute}:00")
+                    view.setText("$strHourOfDay:$strMinute:59")
                 } else {
-                    view.setText("${hourOfDay}:${minute}:00")
+                    view.setText("$strHourOfDay:$strMinute:00")
                 }
         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
 

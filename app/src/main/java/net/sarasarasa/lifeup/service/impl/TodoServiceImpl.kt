@@ -54,8 +54,10 @@ class TodoServiceImpl : TodoService {
             endDate = taskModel.endDate
             taskStatus = taskModel.taskStatus
 
-            //更新UpdatedTime
+            // 更新UpdatedTime
             updatedTime = Calendar.getInstance().timeInMillis
+            // 开始时间也支持修改
+            startTime = taskModel.startTime
         }
 
 
@@ -74,8 +76,19 @@ class TodoServiceImpl : TodoService {
         if (checkAndUpdateOverdueTask()) {
             if (isShowToast) ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
-        return todoDAO.findAllUncompletedTodoItem()
+
+        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+
+        val classBy = optionSharedPreferences.getString("classBy", "all")
+
+        return when (classBy) {
+            "all" -> todoDAO.findAllUncompletedTodoItem()
+            "today" -> todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
+            else -> todoDAO.findUncompletedTodoItemAfterDays(7)
+        }
+
     }
+
 
     override fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask()) {
