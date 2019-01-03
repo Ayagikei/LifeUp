@@ -268,8 +268,10 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
             override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
                 val responseBody = response.body()
 
-                if (responseBody?.msg != null)
+                if (responseBody?.msg != null) {
                     Log.i("LifeUp", responseBody.msg)
+                    ToastUtils.showShortToast(responseBody.msg)
+                }
 
                 val message = Message()
 

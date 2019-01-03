@@ -11,13 +11,19 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.OUT_OF_DATE
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.UNCOMPLETED
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.dao.TodoDAO
+import net.sarasarasa.lifeup.instance.RetrofitInstance
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
 import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
+import net.sarasarasa.lifeup.vo.ResultVO
 import net.sarasarasa.lifeup.vo.TeamTaskVO
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class TodoServiceImpl : TodoService {
@@ -25,6 +31,8 @@ class TodoServiceImpl : TodoService {
     private val todoDAO = TodoDAO()
     private val taskTargetDAO = TaskTargetDAO()
     private val attributeService = AttributeServiceImpl()
+    private val userService = UserServiceImpl()
+
 
     override fun addTodoItem(taskModel: TaskModel): Long? {
         taskModel.createdTime = Calendar.getInstance().timeInMillis
@@ -139,7 +147,7 @@ class TodoServiceImpl : TodoService {
             attributeService.decreaseExp(this.relatedAttribute2 ?: "", this.expReward)
             attributeService.decreaseExp(this.relatedAttribute3 ?: "", this.expReward)
 
-            if (this.nextTaskId != null && this.nextTaskId is Long) {
+            if (this.nextTaskId != null && this.nextTaskId is Long && this.nextTaskId != 0L && this.nextTaskId != -1L) {
                 val nextTask = todoDAO.findATodoItem(this.nextTaskId!!)
                 nextTask?.delete()
             }
@@ -324,7 +332,31 @@ class TodoServiceImpl : TodoService {
 
                 val isDefaultRemake = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE).getBoolean("isDefaultRemake", true)
                 if (isDefaultRemake && e.taskFrequency != 0 && e.taskFrequency != -1)
-                    e.id?.let { restartTask(it) }
+                    if (e.teamId == -1L) {
+                        e.id?.let { restartTask(it) }
+                    } else {
+                        val retrofit = RetrofitInstance.getInstance()
+                        val network: TeamNetwork = retrofit.create(TeamNetwork::class.java)
+                        val call = network.getNextTeamTask(userService.getToken(), e.teamId)
+
+                        call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
+                            override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
+                            }
+
+                            override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
+                                val responseBody = response.body()
+
+                                if (responseBody?.msg.equals("success")) {
+                                    val teamTaskVO = responseBody?.data
+                                    if (teamTaskVO != null) {
+                                        addOrUpdateTeamTask(teamTaskVO)
+                                    }
+                                }
+                            }
+                        })
+
+                    }
+
             }
             true
         }
@@ -426,7 +458,9 @@ class TodoServiceImpl : TodoService {
 
     override fun restartTask(id: Long): Boolean {
         if (id == null) return false
+
         val origin = todoDAO.findATodoItem(id) ?: return false
+        if (origin.teamId != -1L) return false
 
         val taskModel = TaskModel(
                 origin.content,

@@ -37,7 +37,7 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 helper.setVisible(R.id.btn_undo, false)
             }
         } else if (item.taskStatus == ToDoItemConstants.OUT_OF_DATE) {
-            if (item.nextTaskId == null) {
+            if (item.nextTaskId == null || item.nextTaskId == 0L) {
                 helper.setVisible(R.id.btn_undo, true)
                         .setText(R.id.btn_undo, "重做")
                         .addOnClickListener(R.id.btn_undo)

@@ -38,6 +38,7 @@ class SettingActivity : AppCompatActivity() {
         val isWidgetDarkThemeWhiteIconAndFonts = sharedPreferences.getBoolean("isWidgetDarkThemeWhiteIconAndFonts", false)
         val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
+        val isHideCommunity = sharedPreferences.getBoolean("isHideCommunity", false)
         val editor = sharedPreferences.edit()
 
 
@@ -70,6 +71,12 @@ class SettingActivity : AppCompatActivity() {
         switch_status_play_animation.isChecked = isStatusPlayAnimation
         switch_status_play_animation.setOnCheckedChangeListener { _, isChecked ->
             editor.putBoolean("isStatusPlayAnimation", isChecked)
+            editor.apply()
+        }
+
+        switch_hide_community.isChecked = isHideCommunity
+        switch_hide_community.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isHideCommunity", isChecked)
             editor.apply()
         }
 

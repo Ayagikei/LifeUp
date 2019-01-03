@@ -13,8 +13,8 @@ android {
         applicationId "net.sarasarasa.lifeup"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 27
-        versionName "1.47"
+        versionCode 28
+        versionName "1.48"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

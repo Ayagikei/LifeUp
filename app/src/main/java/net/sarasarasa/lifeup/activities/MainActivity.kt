@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -74,10 +75,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val sharedPreferences = getSharedPreferences("options", Context.MODE_PRIVATE)
+        val isHideCommunity = sharedPreferences.getBoolean("isHideCommunity", false)
+
+        if (!isHideCommunity)
+            setContentView(R.layout.activity_main)
+        else setContentView(R.layout.activity_main_without_community)
 
 
         pedometer = Pedometer(this)
+
+
 
         todoService.resetAllRemind(applicationContext)
 

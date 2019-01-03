@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/navigation_assignment"
+        android:fragment="net.sarasarasa.lifeup.fragment.TodoFragment"
+        android:icon="@drawable/ic_assignment_turned_in_black_24dp"
+        android:title="@string/title_board"
+        tools:ignore="MissingPrefix" />
+
+    <item
+        android:id="@+id/navigation_status"
+        android:fragment="net.sarasarasa.lifeup.fragment.StatusFragment"
+        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:title="@string/title_status" />
+
+    <item
+        android:id="@+id/navigation_me"
+        android:fragment="net.sarasarasa.lifeup.fragment.MeFragment"
+        android:icon="@drawable/ic_face_24px"
+        android:title="@string/title_me" />
+
+
+</menu>

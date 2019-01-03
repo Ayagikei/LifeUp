@@ -29,7 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
+class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
     val userService = UserServiceImpl()
     val todoService = TodoServiceImpl()
@@ -52,7 +52,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[查询团队列表]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
@@ -72,7 +72,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队列表]请求成功：${list}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -96,7 +96,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[搜索团队列表]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
@@ -116,7 +116,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[搜索团队列表]请求成功：${list}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -138,7 +138,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[查询团队成员列表]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
@@ -158,7 +158,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队成员列表]请求成功：${list}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -173,7 +173,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[退出团队]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
@@ -191,7 +191,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     todoService.deleteTeamTaskByTeamId(teamId)
                     Log.i("LifeUp 团队模块", "[退出团队]请求成功")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -206,7 +206,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[终止团队]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
@@ -224,7 +224,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     todoService.deleteTeamTaskByTeamId(teamId)
                     Log.i("LifeUp 团队模块", "[终止团队]请求成功")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -245,7 +245,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[查询团队动态列表]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamActivityListVO>>>, response: Response<ResultVO<PageVO<TeamActivityListVO>>>) {
@@ -264,7 +264,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.obj = list
                     Log.i("LifeUp 团队模块", "[查询团队动态列表]请求成功：${list}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -284,7 +284,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[新建团队]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
@@ -313,7 +313,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                     Log.i("LifeUp 团队模块", "[新建团队]请求成功：${teamTaskVO}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -333,7 +333,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[修改团队]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
@@ -360,7 +360,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                     Log.i("LifeUp 团队模块", "[修改团队]请求成功：${messageResponse}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -375,7 +375,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[团队信息]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<TeamDetailVO>>, response: Response<ResultVO<TeamDetailVO>>) {
@@ -396,7 +396,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.obj = teamDetailVO
                     Log.i("LifeUp 团队模块", "[团队信息]请求成功：${teamDetailVO}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -412,7 +412,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[加入团队]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
@@ -438,7 +438,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                     Log.i("LifeUp 团队模块", "[加入团队]请求成功：${teamTaskVO}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -454,7 +454,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[领取团队事项]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
@@ -482,7 +482,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                     Log.i("LifeUp 团队模块", "[领取团队事项]请求成功：${teamTaskVO}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
@@ -498,7 +498,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("LifeUp 团队模块", "[完成团队事项]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_CONNECT_FAILED
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
@@ -522,13 +522,11 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                         todoService.finishTodoItem(item.id)
                         //添加新的事项
                         todoService.addOrUpdateTeamTask(teamTaskVO)
-
-
                     }
 
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求成功：${teamTaskVO}")
                 }
-                uiHandler.handleMessage(message)
+                uiHandler?.handleMessage(message)
             }
         })
     }
