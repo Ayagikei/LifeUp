@@ -107,7 +107,14 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun getCompletedTodoList(): List<TaskModel> {
-        return todoDAO.findAllCompletedTodoItem()
+        val filterList = ArrayList<TaskModel>()
+        val dbList = todoDAO.findAllCompletedTodoItem()
+
+        for (item in dbList) {
+            if (item.isDeleteRecord != 1)
+                filterList.add(item)
+        }
+        return filterList
     }
 
     override fun getATodoItem(id: Long): TaskModel? {
@@ -495,7 +502,8 @@ class TodoServiceImpl : TodoService {
         val newExpireTime = Calendar.getInstance()
         newExpireTime.time = origin.taskExpireTime
         val iExpireTimes = DateUtil.getDiscrepantDays(newExpireTime.time, Calendar.getInstance().time) / origin.taskFrequency
-        newExpireTime.add(Calendar.DATE, origin.taskFrequency * iExpireTimes)
+        if (iExpireTimes == 0) newExpireTime.add(Calendar.DATE, origin.taskFrequency * 1)
+        else newExpireTime.add(Calendar.DATE, origin.taskFrequency * iExpireTimes)
         taskModel.taskExpireTime = newExpireTime.time
 
         val newStartTime = Calendar.getInstance()
@@ -504,7 +512,8 @@ class TodoServiceImpl : TodoService {
         newStartTime.set(Calendar.MINUTE, 0)
         newStartTime.set(Calendar.SECOND, 0)
         val iStartTimes = DateUtil.getDiscrepantDays(newStartTime.time, Calendar.getInstance().time) / origin.taskFrequency
-        newStartTime.add(Calendar.DATE, origin.taskFrequency * iStartTimes)
+        if (iExpireTimes == 0) newStartTime.add(Calendar.DATE, origin.taskFrequency * 1)
+        else newStartTime.add(Calendar.DATE, origin.taskFrequency * iStartTimes)
         taskModel.startTime = newStartTime.time
 
 
@@ -543,4 +552,17 @@ class TodoServiceImpl : TodoService {
         task.expReward = 130
         return task.save()
     }
+
+    override fun hideHistoryItem(id: Long): Int {
+        with(todoDAO.findATodoItem(id) ?: return -1)
+        {
+            isDeleteRecord = 1
+
+            updatedTime = Calendar.getInstance().timeInMillis
+            save()
+
+            return 1
+        }
+    }
+
 }

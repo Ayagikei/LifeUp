@@ -5,10 +5,12 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.foot_view_to_do.view.*
+import kotlinx.android.synthetic.main.item_finished_to_do.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.adapters.HistoryAdapter
 import net.sarasarasa.lifeup.constants.NetworkConstants
@@ -64,6 +66,7 @@ class HistoryActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         mRecyclerView.adapter = mAdapter
+        mAdapter.emptyView = getEmptyView()
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = adapter.getItem(position) as TaskModel
@@ -87,15 +90,34 @@ class HistoryActivity : AppCompatActivity() {
                     WidgetUtils.updateWidgets(applicationContext)
 
                 }
+                R.id.tv_btn -> {
+                    val mPopupMenu = PopupMenu(view.context, view.tv_btn)
+                    mPopupMenu.menuInflater.inflate(R.menu.menu_history_item, mPopupMenu.menu)
+                    mPopupMenu.setOnMenuItemClickListener { menuItem ->
+
+                        when (menuItem.itemId) {
+                            R.id.delete_item -> {
+                                item.id?.let {
+                                    if (todoService.hideHistoryItem(it) == 1)
+                                        ToastUtils.showShortToast("成功删除历史记录")
+                                }
+                                refreshDataSet()
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> true
+                        }
+                    }
+                    mPopupMenu.show()
+                }
             }
         }
-        mAdapter.emptyView = getEmptyView()
     }
 
     private fun refreshDataSet() {
         mList.clear()
         mList.addAll(todoService.getCompletedTodoList())
         mAdapter.notifyDataSetChanged()
+
     }
 
 

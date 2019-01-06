@@ -65,7 +65,9 @@ public class SplashActivity extends AppCompatActivity {
             if (iDataBaseVersion == 0) {
                 attributeLevelService.initAttributeLevel();
                 editor.putInt("iiDataBaseVersion", 1);
+                editor.apply();
             }
+
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

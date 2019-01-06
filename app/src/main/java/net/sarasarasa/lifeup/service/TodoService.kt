@@ -76,4 +76,6 @@ interface TodoService {
 
     fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel>
     fun addGuideTask(): Boolean
+    fun hideHistoryItem(id: Long): Int
+
 }

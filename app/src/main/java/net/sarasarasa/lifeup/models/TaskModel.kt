@@ -38,6 +38,7 @@ data class TaskModel(
 
     var currentTimes: Int = 1
     var taskTargetId: Long? = null
+    var isDeleteRecord: Int? = 0
     //var taskTarget:TaskTargetModel? = null
 
 
