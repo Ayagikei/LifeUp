@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.dialog_input_sport_data.view.*
 import kotlinx.android.synthetic.main.dialog_lifeup.view.*
 import kotlinx.android.synthetic.main.fragment_status.view.*
 import net.sarasarasa.lifeup.R
@@ -16,6 +17,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.StepServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.ToastUtils
 
 class StatusFragment : Fragment() {
 
@@ -117,6 +119,14 @@ class StatusFragment : Fragment() {
 
         val mainActivity = context as MainActivity
         val dailyStepCount = stepService.updateAndGetTodayStepCount(mainActivity.getStep())
+        if (dailyStepCount < 2500) {
+            view.tv_input_sport_data.visibility = View.VISIBLE
+            view.tv_input_sport_data.isClickable = true
+            view.tv_input_sport_data.setOnClickListener {
+                showDialogInputSportData(view)
+            }
+
+        } else view.tv_input_sport_data.visibility = View.INVISIBLE
 
         when {
             dailyStepCount in 2500..5000 -> view.step_view.go(1, true)
@@ -165,6 +175,35 @@ class StatusFragment : Fragment() {
             this?.setView(dialogView)
             this?.show()
         }
+    }
+
+    private fun showDialogInputSportData(view: View) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_input_sport_data, null)
+        val dialog = context?.let { AlertDialog.Builder(it).create() }
+
+        with(dialog) {
+            this?.setTitle("手动输入计步数据")
+            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+                val step = dialogView.til_sport_data.editText?.text.toString().toLongOrNull()
+                if (step != null) {
+                    if (stepService.userInputTodayStepData(step)) {
+                        initData(view)
+                        ToastUtils.showShortToast("手动输入计步数据成功。")
+                    } else ToastUtils.showShortToast("手动输入计步数据出现异常，请重试。")
+                }
+                dismiss()
+            }
+            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "取消") { _, _ ->
+                dismiss()
+            }
+            this?.setView(dialogView)
+            this?.show()
+        }
+    }
+
+    private fun disableInputDataButton(view: View) {
+        view.tv_input_sport_data.visibility = View.INVISIBLE
+        view.tv_input_sport_data.isClickable = false
     }
 
 }

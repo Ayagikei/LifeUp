@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.service
 import android.content.Context
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.vo.TeamTaskVO
+import java.util.*
 
 interface TodoService {
 
@@ -75,7 +76,12 @@ interface TodoService {
     fun restartTask(id: Long): Boolean
 
     fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel>
+
     fun addGuideTask(): Boolean
+
     fun hideHistoryItem(id: Long): Int
 
+    fun getFinishTaskCountByDate(cal: Calendar): Int
+
+    fun listFinishTaskCountPastDays(days: Int): ArrayList<Int>
 }

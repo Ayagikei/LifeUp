@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
         config.locale = Locale.SIMPLIFIED_CHINESE;
         resources.updateConfiguration(config, dm);
 
+
         if (isFirst) {
             //第一次进入的时候，跳转到引导页
             Intent intent = new Intent(this, WelcomeActivity.class);
@@ -67,7 +68,6 @@ public class SplashActivity extends AppCompatActivity {
                 editor.putInt("iiDataBaseVersion", 1);
                 editor.apply();
             }
-
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

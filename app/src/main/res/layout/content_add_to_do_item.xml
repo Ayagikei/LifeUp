@@ -463,6 +463,25 @@
                         android:singleLine="true" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
+                <net.sarasarasa.lifeup.view.CustomTextInputLayout
+                    android:id="@+id/til_complete_reward"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="完成奖励（例：休息5分钟）"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_target">
+
+                    <net.sarasarasa.lifeup.view.FixedTextInputEditText
+                        android:id="@+id/et_complete_reward"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_card_giftcard_black_24dp"
+                        android:drawablePadding="4dp"
+                        android:singleLine="true" />
+                </net.sarasarasa.lifeup.view.CustomTextInputLayout>
+
                 <!--                <Switch
                                     android:id="@+id/switch1"
                                     android:layout_width="match_parent"

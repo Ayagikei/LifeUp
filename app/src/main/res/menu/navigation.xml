@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/navigation_message"
-        android:fragment="net.sarasarasa.lifeup.fragment.MessageFragment"
+        android:fragment="net.sarasarasa.lifeup.fragment.StatisticsFragment"
         android:icon="@drawable/ic_textsms_24px"
         android:title="消息" />
 

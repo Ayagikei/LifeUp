@@ -577,7 +577,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         taskModel.expReward = ExpRewardConverter.getExpReward(arrAbbrBtn[SELECTED_CNT], taskUrgencyLevel, taskDifficultyLevel)
-
         taskModel.currentTimes = 1
 
         if (newItem && targetTimes != 0 && iFrequency != 0) {
@@ -592,6 +591,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
             taskModel.startTime = simpleDateFormat.parse(taskStartDateAndTime)
         }
+
+        // 完成奖励
+        taskModel.completeReward = til_complete_reward.editText?.text.toString()
 
         return taskModel
     }

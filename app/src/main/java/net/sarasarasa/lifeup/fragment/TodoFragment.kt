@@ -536,6 +536,12 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
 
         }
+
+        if (item.completeReward.isNullOrEmpty()) {
+            newDialogView.constraintLayout_treasure.visibility = View.GONE
+        } else {
+            newDialogView.tv_treasure.text = item.completeReward
+        }
     }
 
     private fun doProgressOrigin(dialogView: View, item: TaskModel, index: Int) {

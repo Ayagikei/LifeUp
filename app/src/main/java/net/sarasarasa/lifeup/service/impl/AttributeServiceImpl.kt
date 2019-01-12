@@ -11,8 +11,10 @@ class AttributeServiceImpl : AttributeService {
 
 
     override fun initAttribute() {
-        val attributeModel = AttributeModel(0, 0, 0, 0, 0, 0, 0)
-        attributeDAO.saveAttribute(attributeModel)
+        if (attributeDAO.getFirstAttribute() == null) {
+            val attributeModel = AttributeModel(0, 0, 0, 0, 0, 0, 0)
+            attributeDAO.saveAttribute(attributeModel)
+        }
     }
 
     override fun getAttribute(): AttributeModel {

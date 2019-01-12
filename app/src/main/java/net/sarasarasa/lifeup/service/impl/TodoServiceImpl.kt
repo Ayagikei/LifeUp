@@ -107,14 +107,7 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun getCompletedTodoList(): List<TaskModel> {
-        val filterList = ArrayList<TaskModel>()
-        val dbList = todoDAO.findAllCompletedTodoItem()
-
-        for (item in dbList) {
-            if (item.isDeleteRecord != 1)
-                filterList.add(item)
-        }
-        return filterList
+        return todoDAO.findAllCompletedTodoItem()
     }
 
     override fun getATodoItem(id: Long): TaskModel? {
@@ -492,6 +485,7 @@ class TodoServiceImpl : TodoService {
         taskModel.priority = origin.priority
         taskModel.currentTimes = origin.currentTimes
         taskModel.taskTargetId = origin.taskTargetId
+        taskModel.completeReward = origin.completeReward
 
 
         //重设的时候，把单次和多次事项当做每日事项处理
@@ -563,6 +557,36 @@ class TodoServiceImpl : TodoService {
 
             return 1
         }
+    }
+
+    override fun getFinishTaskCountByDate(cal: Calendar): Int {
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        val firstSecOfThisDay = cal.timeInMillis
+
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+        }
+        val lastSecOfThisDay = cal.timeInMillis
+
+        return todoDAO.getFinishCountByStartTimeAndEndTime(firstSecOfThisDay, lastSecOfThisDay)
+    }
+
+    override fun listFinishTaskCountPastDays(days: Int): ArrayList<Int> {
+        val cal = Calendar.getInstance()
+        val countList = ArrayList<Int>()
+
+        for (i in 1..days) {
+            countList.add(getFinishTaskCountByDate(cal))
+            cal.add(Calendar.DATE, -1)
+        }
+        countList.reverse()
+        return countList
     }
 
 }

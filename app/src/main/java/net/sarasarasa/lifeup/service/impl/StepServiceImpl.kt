@@ -23,19 +23,24 @@ class StepServiceImpl : StepService {
         if (theLastStepRec != null) {
             // 第二步：如果有记录，判断是不是今天的记录
             if (DateUtils.isToday(theLastStepRec.date.time)) {
-                // 第三步：以总步数判断是否重启过
-                if (step.toLong() < theLastStepRec.totalStepCount) {
-                    // 重启过，将所有步数加入当天步数，并且重置总步数统计
-                    theLastStepRec.dailyStepCount += step.toLong()
+                // 第三步：判断有没有手动输入
+                if (theLastStepRec.isUserInput) {
+                    // 手动输入的话，直接返回手动输入的数据
+                    return theLastStepRec.dailyStepCount
                 } else {
-                    // 没有重启过，将差值加入当天步数
-                    theLastStepRec.dailyStepCount += step.toLong() - theLastStepRec.totalStepCount
+                    // 第四步：以总步数判断是否重启过
+                    if (step.toLong() < theLastStepRec.totalStepCount) {
+                        // 重启过，将所有步数加入当天步数，并且重置总步数统计
+                        theLastStepRec.dailyStepCount += step.toLong()
+                    } else {
+                        // 没有重启过，将差值加入当天步数
+                        theLastStepRec.dailyStepCount += step.toLong() - theLastStepRec.totalStepCount
+                    }
+                    // 第五步：保存并且返回
+                    theLastStepRec.totalStepCount = step.toLong()
+                    theLastStepRec.save()
+                    return theLastStepRec.dailyStepCount
                 }
-
-                // 第四步：保存并且返回
-                theLastStepRec.totalStepCount = step.toLong()
-                theLastStepRec.save()
-                return theLastStepRec.dailyStepCount
             } else {
                 // 如果不是今天的记录，那么判断总步数
                 if (step.toLong() < theLastStepRec.totalStepCount) {
@@ -128,5 +133,62 @@ class StepServiceImpl : StepService {
         return theLastStepRec != null
                 && DateUtils.isToday(theLastStepRec.date.time)
                 && theLastStepRec.isGotReward
+    }
+
+    override fun userInputTodayStepData(step: Long): Boolean {
+        if (step < 0) return false
+        val theLastStepRec = stepDAO.getTheLastStepRecord()
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+
+        if (theLastStepRec != null) {
+            return if (DateUtils.isToday(theLastStepRec.date.time)) {
+                theLastStepRec.dailyStepCount = step
+                theLastStepRec.isUserInput = true
+                theLastStepRec.save()
+            } else {
+                val newStepRecord = StepModel(step, theLastStepRec.totalStepCount, false, cal.time)
+                newStepRecord.isUserInput = true
+                newStepRecord.save()
+            }
+        } else {
+            val newStepRecord = StepModel(step, step, false, cal.time)
+            newStepRecord.isUserInput = true
+            return newStepRecord.save()
+        }
+    }
+
+    override fun getDailyStepByDate(cal: Calendar): Long {
+        with(cal) {
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+        }
+        val firstSecOfThisDay = cal.timeInMillis
+
+        with(cal) {
+            set(java.util.Calendar.HOUR_OF_DAY, 23)
+            set(java.util.Calendar.MINUTE, 59)
+            set(java.util.Calendar.SECOND, 59)
+        }
+        val lastSecOfThisDay = cal.timeInMillis
+
+        return stepDAO.getStepByStartTimeAndEndTime(firstSecOfThisDay, lastSecOfThisDay)?.dailyStepCount
+                ?: 0L
+    }
+
+    override fun listFinishTaskCountPastDays(days: Int): ArrayList<Long> {
+        val cal = Calendar.getInstance()
+        val stepList = ArrayList<Long>()
+
+        for (i in 1..days) {
+            stepList.add(getDailyStepByDate(cal))
+            cal.add(Calendar.DATE, -1)
+        }
+        stepList.reverse()
+        return stepList
     }
 }

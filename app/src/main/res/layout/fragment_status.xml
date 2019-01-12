@@ -217,6 +217,17 @@
                         app:layout_constraintEnd_toEndOf="@+id/step_view"
                         app:layout_constraintTop_toBottomOf="@+id/step_view" />
 
+                    <TextView
+                        android:id="@+id/tv_input_sport_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="输入数据"
+                        android:textColor="@color/blue"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_get_reward"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 

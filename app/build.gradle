@@ -13,8 +13,8 @@ android {
         applicationId "net.sarasarasa.lifeup"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 29
-        versionName "1.49"
+        versionCode 30
+        versionName "1.50"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,6 +31,9 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
     buildToolsVersion '28.0.2'
 }
 
@@ -39,6 +42,8 @@ configurations {
     implementation.exclude group: 'org.jetbrains', module: 'annotations'
     implementation.exclude group: 'com.android.support', module: 'constraint-layout'
 }
+
+
 
 
 dependencies {
@@ -84,6 +89,7 @@ dependencies {
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
     implementation 'com.dingmouren.colorpicker:colorpicker:1.0.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     
 }
 

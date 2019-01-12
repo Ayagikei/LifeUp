@@ -1,7 +1,9 @@
 package net.sarasarasa.lifeup.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -57,6 +59,18 @@ public class DateUtil {
 
     public static int getDiscrepantDays(Date dateStart, Date dateEnd) {
         return (int) ((dateEnd.getTime() - dateStart.getTime()) / 1000 / 60 / 60 / 24);
+    }
+
+    public static ArrayList<String> listStringDatePastDays(Integer days) {
+        ArrayList<String> stringDateList = new ArrayList<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        for (int i = 0; i < days; i++) {
+            stringDateList.add(simpleDateFormat.format(cal.getTime()));
+            cal.add(Calendar.DATE, -1);
+        }
+        Collections.reverse(stringDateList);
+        return stringDateList;
     }
 
 }

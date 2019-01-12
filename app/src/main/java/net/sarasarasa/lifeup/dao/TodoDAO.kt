@@ -82,8 +82,7 @@ class TodoDAO {
     }
 
     fun findAllCompletedTodoItem(): List<TaskModel> {
-        // 直接在这里加上isDeleteRecord的查询条件就查询不出来？
-        return LitePal.where("taskStatus != ? and isDeleteRecord != ?", "0", "1").order("endDate desc").find(TaskModel::class.java)
+        return LitePal.where("taskStatus != ? and (isDeleteRecord != ? or isDeleteRecord is null)", "0", "1").order("endDate desc").find(TaskModel::class.java)
     }
 
     fun findAllTeamTodoItem(): List<TaskModel> {
@@ -109,6 +108,10 @@ class TodoDAO {
 
     fun getTodayFinishCount(time: Long): Int {
         return LitePal.where("endDate > ? and taskStatus = ?", time.toString(), "1").count(TaskModel::class.java)
+    }
+
+    fun getFinishCountByStartTimeAndEndTime(startTime: Long, endTime: Long): Int {
+        return LitePal.where("endDate > ? and endDate < ? and taskStatus = ?", startTime.toString(), endTime.toString(), "1").count(TaskModel::class.java)
     }
 
     fun getOverdueItems(time: Long): List<TaskModel> {

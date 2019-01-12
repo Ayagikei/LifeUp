@@ -9,6 +9,6 @@ data class StepModel(var dailyStepCount: Long,
                      var date: Date) : LitePalSupport() {
     var id: Long? = null
     var userId: Long? = null
-
+    var isUserInput: Boolean = false
 
 }

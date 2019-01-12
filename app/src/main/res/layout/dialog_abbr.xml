@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_first"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:paddingEnd="4dp"
         android:paddingStart="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingEnd="4dp">
 
         <com.daimajia.numberprogressbar.NumberProgressBar
             android:id="@+id/npb_first"
@@ -76,14 +73,10 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_sec"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="4dp"
         android:paddingStart="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_first">
+        android:paddingEnd="4dp">
 
         <com.daimajia.numberprogressbar.NumberProgressBar
             android:id="@+id/npb_Sec"
@@ -144,14 +137,10 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_thr"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="4dp"
         android:paddingStart="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_sec">
+        android:paddingEnd="4dp">
 
         <com.daimajia.numberprogressbar.NumberProgressBar
             android:id="@+id/npb_thr"
@@ -210,5 +199,49 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_treasure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="22dp"
+        android:paddingEnd="4dp">
 
-</android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_treasure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="LV99"
+            android:textColor="@color/color_text_reward"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_nameTreasure"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconTreasure" />
+
+        <TextView
+            android:id="@+id/tv_nameTreasure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="奖励"
+            android:textColor="@color/color_text_reward_desc"
+            app:layout_constraintStart_toEndOf="@+id/iv_iconTreasure"
+            app:layout_constraintTop_toTopOf="@+id/iv_iconTreasure" />
+
+        <ImageView
+            android:id="@+id/iv_iconTreasure"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_treasure"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
