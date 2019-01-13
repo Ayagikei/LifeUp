@@ -106,8 +106,12 @@ class TodoServiceImpl : TodoService {
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
     }
 
-    override fun getCompletedTodoList(): List<TaskModel> {
-        return todoDAO.findAllCompletedTodoItem()
+    override fun getCompletedTodoList(limit: Int, offset: Int): List<TaskModel> {
+        return todoDAO.findAllCompletedTodoItem(limit, offset)
+    }
+
+    override fun countCompletedTodoList(): Int {
+        return todoDAO.countAllCompletedTodoItem()
     }
 
     override fun getATodoItem(id: Long): TaskModel? {
@@ -124,9 +128,8 @@ class TodoServiceImpl : TodoService {
             endDate = Date()
             save()
 
-            attributeService.increaseExp(this.relatedAttribute1 ?: "", this.expReward)
-            attributeService.increaseExp(this.relatedAttribute2 ?: "", this.expReward)
-            attributeService.increaseExp(this.relatedAttribute3 ?: "", this.expReward)
+            val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
+            attributeService.increaseMultiExp(attrs, this.expReward, "完成事项「${this.content}」")
         }
 
         return true
@@ -143,9 +146,8 @@ class TodoServiceImpl : TodoService {
             save()
 
             //撤销经验
-            attributeService.decreaseExp(this.relatedAttribute1 ?: "", this.expReward)
-            attributeService.decreaseExp(this.relatedAttribute2 ?: "", this.expReward)
-            attributeService.decreaseExp(this.relatedAttribute3 ?: "", this.expReward)
+            val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
+            attributeService.decreaseMultiExp(attrs, this.expReward, "撤销完成事项「${this.content}」")
 
             if (this.nextTaskId != null && this.nextTaskId is Long && this.nextTaskId != 0L && this.nextTaskId != -1L) {
                 val nextTask = todoDAO.findATodoItem(this.nextTaskId!!)
@@ -167,9 +169,8 @@ class TodoServiceImpl : TodoService {
             save()
 
             //放弃任务损失经验值
-            attributeService.decreaseExp(this.relatedAttribute1 ?: "", this.expReward / 5)
-            attributeService.decreaseExp(this.relatedAttribute2 ?: "", this.expReward / 5)
-            attributeService.decreaseExp(this.relatedAttribute3 ?: "", this.expReward / 5)
+            val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
+            attributeService.decreaseMultiExp(attrs, this.expReward / 5, "放弃完成事项「${this.content}」")
         }
 
         return true
@@ -326,9 +327,8 @@ class TodoServiceImpl : TodoService {
                 e.save()
 
                 //经验值惩罚
-                attributeService.decreaseExp(e.relatedAttribute1 ?: "", e.expReward / 5)
-                attributeService.decreaseExp(e.relatedAttribute2 ?: "", e.expReward / 5)
-                attributeService.decreaseExp(e.relatedAttribute3 ?: "", e.expReward / 5)
+                val attrs = ArrayList<String>(Arrays.asList(e.relatedAttribute1, e.relatedAttribute2, e.relatedAttribute3))
+                attributeService.decreaseMultiExp(attrs, e.expReward / 5, "逾期事项「${e.content}」")
 
                 val isDefaultRemake = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE).getBoolean("isDefaultRemake", true)
                 if (isDefaultRemake && e.taskFrequency != 0 && e.taskFrequency != -1)

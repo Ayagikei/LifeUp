@@ -6,5 +6,5 @@
     android:minHeight="110dp"
     android:previewImage="@drawable/lifeup_widget_preview"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="86400000"
+    android:updatePeriodMillis="14400000"
     android:widgetCategory="home_screen"></appwidget-provider>

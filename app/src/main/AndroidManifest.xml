@@ -28,6 +28,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -144,6 +145,15 @@
         <activity
             android:name=".activities.HistoryActivity"
             android:label="@string/title_activity_history"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ExpActivity"
+            android:label="@string/title_activity_exp"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.Login">
             <meta-data

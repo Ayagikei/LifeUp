@@ -11,6 +11,7 @@ import android.os.Environment
 import android.os.Handler
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
@@ -69,7 +70,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                this.context?.let { ToastUtils.showShortToast("请重新登陆") }
+                this.context?.let { ToastUtils.showShortToast("请重新登录") }
             }
             MSG_FINISH_TEAM_TASK -> {
                 //团队事项完成
@@ -105,6 +106,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
     private lateinit var rootView: View
+    private var toolbar: ActionBar? = null
 
     private var mPhotosSnpl:BGASortableNinePhotoLayout? = null
 
@@ -128,6 +130,13 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         initRecyclerView(view)
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+
+        when (optionSharedPreferences.getString("classBy", "all")) {
+            "all" -> (activity as MainActivity).supportActionBar?.title = "待办：所有"
+            "today" -> (activity as MainActivity).supportActionBar?.title = "待办：今天"
+            "week" -> (activity as MainActivity).supportActionBar?.title = "待办：近七天"
+        }
+        toolbar = (activity as MainActivity).supportActionBar
 
         view.fab.setOnClickListener {
             val intent = Intent(this.context, AddToDoItemActivity::class.java)
@@ -154,8 +163,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                             .targetRadius(60),
                             TapTarget.forView((activity as MainActivity).findViewById(R.id.navigation), "导航栏", "告示板：如同RPG游戏中接受任务和完成任务的地方\n" +
                                     "状态：查看你的各项属性的等级。\n\n" +
-                                    "社区：加入社区建立的团队，领取公共事项（需要登陆）\n\n" +
-                                    "消息：暂未实现，可能改为其他功能。\n\n\n" +
+                                    "社区：加入社区建立的团队，领取公共事项（需要登录）\n\n" +
+                                    "统计：查看你的各项数据统计：事项完成情况、经验值获取情况、经验值分布、步数统计等。\n\n\n" +
                                     "除了社区以外的功能都支持离线使用哦~\n" +
                                     "目前大部分数据保存在本地，谨慎进行清除数据、卸载等操作。")
                                     .outerCircleColor(R.color.blue)
@@ -170,7 +179,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                                     .tintTarget(false)
                                     .transparentTarget(false)
                                     .targetRadius(60),
-                            TapTarget.forToolbarNavigationIcon(view.toolbar, "侧边栏", "可以进行登陆，查看成就、历史、设置等功能").id(1)
+                            TapTarget.forToolbarNavigationIcon(view.toolbar, "侧边栏", "可以进行登录，查看成就、历史、设置等功能").id(1)
                     )
                     .start()
 
@@ -817,7 +826,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.main, menu)
-
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -867,6 +875,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 editor?.putString("classBy", "all")
                 editor?.commit()
                 refreshDataSet()
+                if (toolbar is ActionBar)
+                    toolbar!!.title = "待办：所有"
                 return true
             }
             R.id.action_today -> {
@@ -874,6 +884,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 editor?.putString("classBy", "today")
                 editor?.commit()
                 refreshDataSet()
+                if (toolbar is ActionBar)
+                    toolbar!!.title = "待办：今天"
                 return true
             }
             R.id.action_week -> {
@@ -881,6 +893,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 editor?.putString("classBy", "week")
                 editor?.commit()
                 refreshDataSet()
+                if (toolbar is ActionBar)
+                    toolbar!!.title = "待办：近七天"
                 return true
             }
             R.id.action_sort_asc_change -> {
@@ -894,7 +908,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     ToastUtils.showShortToast("已经更改为正序")
                 else
                     ToastUtils.showShortToast("已经更改为倒序")
-
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

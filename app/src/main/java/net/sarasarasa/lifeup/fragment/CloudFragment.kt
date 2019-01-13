@@ -29,6 +29,7 @@ class CloudFragment : Fragment() {
 
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+        (activity as MainActivity).supportActionBar?.title = "社区"
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -100,7 +101,7 @@ class CloudFragment : Fragment() {
 
             arguments?.let {
                 if (it.getBoolean("isWithoutToken")) {
-                    rootView.tv_error2.text = "您需要登陆才能使用本功能！\n点击此处登陆！"
+                    rootView.tv_error2.text = "您需要登录才能使用本功能！\n点击此处登录！"
                     rootView.setOnClickListener {
                         val intent = Intent(context, LoginActivity::class.java)
                         startActivity(intent)

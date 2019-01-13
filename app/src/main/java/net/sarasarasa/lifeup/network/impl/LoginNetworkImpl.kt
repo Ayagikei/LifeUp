@@ -28,7 +28,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
     fun getYBLoginUrl(): String {
 
-        Log.i("LifeUp 登陆模块", "执行[获取易班登录URL]操作")
+        Log.i("LifeUp 登录模块", "执行[获取易班登录URL]操作")
 
         val call = network.getYBLoginUrl()
         var str = ""
@@ -38,7 +38,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 message.what = MSG_URL_FAILED
                 uiHandler.handleMessage(message)
-                Log.i("LifeUp 登陆模块", "[获取易班登录URL]请求返回错误")
+                Log.i("LifeUp 登录模块", "[获取易班登录URL]请求返回错误")
             }
 
             override fun onResponse(call: Call<ResultVO<String>>, response: Response<ResultVO<String>>) {
@@ -51,7 +51,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 message.obj = url
                 uiHandler.handleMessage(message)
 
-                Log.i("LifeUp 登陆模块", "[获取易班登录URL]请求成功")
+                Log.i("LifeUp 登录模块", "[获取易班登录URL]请求成功")
             }
 
         })
@@ -60,14 +60,14 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     }
 
     fun getYBLoginInfo(code: String) {
-        Log.i("LifeUp 登陆模块", "执行[发送易班授权CODE]操作")
+        Log.i("LifeUp 登录模块", "执行[发送易班授权CODE]操作")
 
         val call = network.getYBLoginInfo(code)
         var str: String
 
         call.enqueue(object : Callback<ResultVO<String>> {
             override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
-                Log.e("LifeUp 登陆模块", "[发送易班授权CODE]返回错误: ${t.toString()}")
+                Log.e("LifeUp 登录模块", "[发送易班授权CODE]返回错误: ${t.toString()}")
             }
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
@@ -77,7 +77,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
 
                 if (resultVO?.data != null) {
-                    Log.i("LifeUp 登陆模块", "[发送易班授权CODE]请求成功")
+                    Log.i("LifeUp 登录模块", "[发送易班授权CODE]请求成功")
                     str = resultVO.data
                     userService.saveToken(str)
                     val message = Message()
@@ -89,14 +89,14 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     }
 
     fun loginOrSignUpBySMS(mobVO: MobVO) {
-        Log.i("LifeUp 登陆模块", "执行[使用短信验证登录]操作")
+        Log.i("LifeUp 登录模块", "执行[使用短信验证登录]操作")
 
         val call = network.loginOrSignUpBySMS(mobVO)
         var str: String
 
         call.enqueue(object : Callback<ResultVO<String>> {
             override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
-                Log.e("LifeUp 登陆模块", "[使用短信验证登录]返回错误: ${t.toString()}")
+                Log.e("LifeUp 登录模块", "[使用短信验证登录]返回错误: ${t.toString()}")
             }
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
@@ -104,7 +104,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 Log.e("Profile", resultVO.toString())
 
                 if (resultVO?.data != null) {
-                    Log.i("LifeUp 登陆模块", "[使用短信验证登录]请求成功")
+                    Log.i("LifeUp 登录模块", "[使用短信验证登录]请求成功")
                     str = resultVO.data
                     userService.saveToken(str)
 
@@ -117,14 +117,14 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     }
 
     fun loginOrSignUpByQQ(signUpVO: SignUpVO) {
-        Log.i("LifeUp 登陆模块", "执行[使用QQ授权登录或注册]操作")
+        Log.i("LifeUp 登录模块", "执行[使用QQ授权登录或注册]操作")
 
         val call = network.loginOrSignUpByQQ(signUpVO)
         var str: String
 
         call.enqueue(object : Callback<ResultVO<String>> {
             override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
-                Log.e("LifeUp 登陆模块", "[使用QQ授权登录或注册]返回错误: ${t.toString()}")
+                Log.e("LifeUp 登录模块", "[使用QQ授权登录或注册]返回错误: ${t.toString()}")
                 ToastUtils.showShortToast("[使用QQ授权登录或注册]返回错误:" + t.toString())
 
                 val message = Message()
@@ -140,7 +140,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 val message = Message()
                 if (resultVO?.data != null) {
-                    Log.i("LifeUp 登陆模块", "[使用QQ授权登录或注册]请求成功")
+                    Log.i("LifeUp 登录模块", "[使用QQ授权登录或注册]请求成功")
                     str = resultVO.data
                     userService.saveToken(str)
                     message.what = MSG_QQ_LOGIN_SUCCESS
@@ -163,7 +163,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
         call.enqueue(object : Callback<ResultVO<String>> {
             override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
-                Log.e("LifeUp 登陆模块", "[使用手机号注册]返回错误: ${t.toString()}")
+                Log.e("LifeUp 登录模块", "[使用手机号注册]返回错误: ${t.toString()}")
             }
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
@@ -175,7 +175,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 message.obj = resultVO?.msg
 
                 if (resultVO?.data != null) {
-                    Log.i("LifeUp 登陆模块", "[使用手机号注册]请求成功")
+                    Log.i("LifeUp 登录模块", "[使用手机号注册]请求成功")
                     str = resultVO.data
                     userService.saveToken(str)
 
@@ -194,7 +194,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
         call.enqueue(object : Callback<ResultVO<String>> {
             override fun onFailure(call: Call<ResultVO<String>>?, t: Throwable?) {
-                Log.e("LifeUp 登陆模块", "[使用手机号登录]返回错误: ${t.toString()}")
+                Log.e("LifeUp 登录模块", "[使用手机号登录]返回错误: ${t.toString()}")
             }
 
             override fun onResponse(call: Call<ResultVO<String>>?, response: Response<ResultVO<String>>?) {
@@ -204,7 +204,7 @@ class LoginNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 message.obj = resultVO?.msg
 
                 if (resultVO?.data != null) {
-                    Log.i("LifeUp 登陆模块", "[使用手机号登录]请求成功")
+                    Log.i("LifeUp 登录模块", "[使用手机号登录]请求成功")
                     str = resultVO.data
                     userService.saveToken(str)
 

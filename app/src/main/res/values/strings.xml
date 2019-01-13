@@ -156,4 +156,6 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="action_sort">Sort</string>
+    <string name="title_statistics">Statistics</string>
+    <string name="title_activity_exp">经验值收支详情</string>
 </resources>

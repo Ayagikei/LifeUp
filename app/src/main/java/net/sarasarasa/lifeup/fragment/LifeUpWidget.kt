@@ -69,7 +69,10 @@ class LifeUpWidget : AppWidgetProvider() {
 
                     if (teamId == -1L) {
                         todoService.finishTodoItem(taskId)
-                        ToastUtils.showShortToast("成功完成事项", context)
+
+                        if (!item?.completeReward.isNullOrEmpty()) {
+                            ToastUtils.showLongToast("成功完成事项并且获得奖励：${item?.completeReward}！", context)
+                        } else ToastUtils.showShortToast("成功完成事项", context)
 
                         if (item?.taskFrequency != 0)
                             todoService.repeatTask(taskId)

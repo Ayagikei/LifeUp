@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 //ToastUtils.showShortToast("数据已同步到云端")
             }
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重新登陆。")
+                ToastUtils.showShortToast("授权失效，请重新登录。")
                 userService.saveToken("")
                 val intent = Intent(this, YBLoginActivity::class.java)
                 startActivity(intent)
@@ -172,10 +172,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun login() {
+    private fun login() {
         if (userService.getToken().isBlank()) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
@@ -224,10 +225,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val headLayout = nav_view.getHeaderView(0)
 
         headLayout.tv_userName.text = mine.nickName
-        headLayout.iv_avatar.setOnClickListener { login() }
+        headLayout.iv_avatar.setOnClickListener {
+            login()
+        }
         when {
-            mine.userAddress == null -> headLayout.tv_userDesc.text = "请点击上方头像登陆"
-            userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress}\n授权失效，请重新登陆。"
+            mine.userAddress == null -> headLayout.tv_userDesc.text = "请点击上方头像登录"
+            userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress}\n授权失效，请重新登录。"
             else -> {
                 headLayout.tv_userDesc.text = mine.userAddress
                 headLayout.iv_avatar.setOnClickListener {

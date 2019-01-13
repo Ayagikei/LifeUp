@@ -42,7 +42,7 @@ class ReportNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 举报模块", "[获取举报类型]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     message.what = MSG_GET_REPORT_TYPE_FAILED
                     userService.saveToken("")
                     message.obj = responseBody.msg
@@ -77,7 +77,7 @@ class ReportNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 举报模块", "[举报]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     message.what = MSG_REPORT_FAILED
                     userService.saveToken("")
                     message.obj = responseBody.msg

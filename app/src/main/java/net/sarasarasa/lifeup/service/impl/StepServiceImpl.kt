@@ -97,7 +97,9 @@ class StepServiceImpl : StepService {
                         theLastStepRec.dailyStepCount > 20000 -> exp = 2000
                     }
 
-                    attributeService.increaseExp("strength", exp)
+                    val attrs = ArrayList<String>(Arrays.asList("strength"))
+                    attributeService.increaseMultiExp(attrs, exp, "步数兑换力量经验值")
+
                     theLastStepRec.isGotReward = true
                     theLastStepRec.save()
                     return exp.toLong()

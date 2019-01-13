@@ -42,9 +42,11 @@ class HistoryActivity : AppCompatActivity() {
 
     private val todoService = TodoServiceImpl()
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
-    private val mList: MutableList<TaskModel> = todoService.getCompletedTodoList().toMutableList()
+    private val mList: MutableList<TaskModel> = todoService.getCompletedTodoList(100, 0).toMutableList()
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: HistoryAdapter
+    private var currentOffset = 0
+    private var maxOffset = todoService.countCompletedTodoList() - 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,10 @@ class HistoryActivity : AppCompatActivity() {
         mRecyclerView.adapter = mAdapter
         mAdapter.emptyView = getEmptyView()
 
+        mAdapter.setOnLoadMoreListener({
+            getNewList()
+        }, mRecyclerView)
+
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = adapter.getItem(position) as TaskModel
 
@@ -76,7 +82,7 @@ class HistoryActivity : AppCompatActivity() {
                     if (item.taskStatus == ToDoItemConstants.COMPLETED) {
                         todoService.undoFinishTodoItem(item.id)
                         ToastUtils.showShortToast("撤销成功")
-                        refreshDataSet()
+                        mAdapter.remove(position)
                     } else if (item.taskStatus == ToDoItemConstants.OUT_OF_DATE) {
                         if (item.teamId == -1L) {
                             item.id?.let { todoService.restartTask(it) }
@@ -101,7 +107,8 @@ class HistoryActivity : AppCompatActivity() {
                                     if (todoService.hideHistoryItem(it) == 1)
                                         ToastUtils.showShortToast("成功删除历史记录")
                                 }
-                                refreshDataSet()
+                                mAdapter.remove(position)
+                                //mAdapter.notifyItemRemoved(position)
                                 return@setOnMenuItemClickListener true
                             }
                             else -> true
@@ -115,9 +122,9 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun refreshDataSet() {
         mList.clear()
-        mList.addAll(todoService.getCompletedTodoList())
+        currentOffset = 0
+        mList.addAll(todoService.getCompletedTodoList(100, currentOffset))
         mAdapter.notifyDataSetChanged()
-
     }
 
 
@@ -125,6 +132,20 @@ class HistoryActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.foot_view_to_do, null)
         view.textView11.text = "没有已经完成的待办事项，添加一些吧"
         return view
+    }
+
+    private fun getNewList() {
+        currentOffset += 100
+        mAdapter.addData(todoService.getCompletedTodoList(100, currentOffset))
+
+        if (currentOffset >= maxOffset || currentOffset < 0) {
+            mAdapter.loadMoreEnd()
+        } else {
+            mAdapter.loadMoreComplete()
+            mAdapter.setEnableLoadMore(true)
+        }
+
+        mAdapter.notifyDataSetChanged()
     }
 
 }

@@ -15,6 +15,6 @@ class StepDAO {
     }
 
     fun getStepByStartTimeAndEndTime(startTime: Long, endTime: Long): StepModel? {
-        return LitePal.where("date < ? and date > ?", endTime.toString(), startTime.toString()).findLast(StepModel::class.java)
+        return LitePal.where("date < ? and date > ?", endTime.toString(), startTime.toString()).find(StepModel::class.java).getOrNull(0)
     }
 }

@@ -63,7 +63,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -107,7 +107,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[搜索团队列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -149,7 +149,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队成员列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -182,7 +182,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[退出团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -215,7 +215,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[终止团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -255,7 +255,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队动态列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -295,7 +295,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[新建团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -344,7 +344,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[修改团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -387,7 +387,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[团队信息]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -424,7 +424,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[加入团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -466,7 +466,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[领取团队事项]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -510,7 +510,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {

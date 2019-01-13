@@ -37,7 +37,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tw_basicHeader"
+                    android:id="@+id/tw_exp_pie_chart_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="基础信息"
@@ -55,7 +55,7 @@
                     android:hint="待办事项"
                     app:layout_constraintStart_toStartOf="parent"
                     app:errorEnabled="true"
-                    app:layout_constraintTop_toBottomOf="@+id/tw_basicHeader">
+                    app:layout_constraintTop_toBottomOf="@+id/tw_exp_pie_chart_header">
 
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:layout_width="match_parent"

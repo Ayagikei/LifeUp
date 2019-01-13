@@ -50,7 +50,7 @@ class AchievementNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 成就模块", "[查询排行榜]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {

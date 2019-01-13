@@ -35,7 +35,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/cw_line_chart"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
@@ -54,7 +54,7 @@
                     android:paddingBottom="8dp">
 
                     <TextView
-                        android:id="@+id/tw_line_chart_header"
+                        android:id="@+id/tw_task_line_chart_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
@@ -62,16 +62,73 @@
                         android:text="近七天事项完成数"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textSize="14sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/line_chart"
+                        android:id="@+id/line_chart_task"
                         android:layout_width="match_parent"
                         android:layout_height="256dp"
                         android:paddingStart="4dp"
                         android:paddingEnd="4dp" />
                 </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cw_line_chart_exp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tw_exp_line_chart_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:text="近七天经验值统计"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/line_chart_exp"
+                        android:layout_width="match_parent"
+                        android:layout_height="256dp"
+                        android:layout_marginTop="8dp"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        app:layout_constraintTop_toBottomOf="@+id/tw_exp_line_chart_header" />
+
+                    <TextView
+                        android:id="@+id/tv_exp_line_chart_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="true"
+                        android:text="收支详情"
+                        android:textColor="@color/blue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -95,7 +152,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tw_basicHeader"
+                        android:id="@+id/tw_exp_pie_chart_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
@@ -103,11 +160,12 @@
                         android:text="经验分布饼图"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textSize="14sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chart"
+                        android:id="@+id/pie_chart_exp"
                         android:layout_width="match_parent"
                         android:layout_height="256dp" />
                 </LinearLayout>
@@ -116,14 +174,14 @@
 
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cw_bar_chart"
+                android:id="@+id/cw_step_bar_chart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
@@ -138,7 +196,7 @@
                     android:paddingBottom="8dp">
 
                     <TextView
-                        android:id="@+id/tw_bar_chart_header"
+                        android:id="@+id/tw_step_bar_chart_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
@@ -146,11 +204,12 @@
                         android:text="近七天步数统计"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textSize="14sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/bar_chart"
+                        android:id="@+id/bar_chart_step"
                         android:layout_width="match_parent"
                         android:layout_height="256dp"
                         android:paddingStart="4dp"

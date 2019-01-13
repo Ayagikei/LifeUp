@@ -20,7 +20,7 @@
     <string name="page4_btn">开始人升</string>
 
     <!-- Strings related to login -->
-    <string name="title_activity_login">登陆</string>
+    <string name="title_activity_login">登录</string>
     <string name="prompt_password">密码</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">密码太短了！</string>
@@ -30,11 +30,11 @@
         completions."
     </string>
     <string name="prompt_phone">手机号码</string>
-    <string name="login_welcome">登陆以体验更多功能</string>
-    <string name="login_signIn">登陆</string>
-    <string name="login_signUp">注册功能暂停使用！请使用第三方登陆。</string>
+    <string name="login_welcome">登录以体验更多功能</string>
+    <string name="login_signIn">登录</string>
+    <string name="login_signUp">注册功能暂停使用！请使用第三方登录。</string>
     <string name="login_or">或者</string>
-    <string name="login_viaYiban">使用易班登陆</string>
+    <string name="login_viaYiban">使用易班登录</string>
 
     <string name="title_activity_add_to_do_item">新设待办事项</string>
     <string name="title_me">我的</string>
@@ -51,7 +51,7 @@
     <string name="title_activity_user">用户详细信息</string>
     <string name="title_activity_edit_to_do_item">编辑待办事项</string>
     <string name="title_activity_history">历史</string>
-    <string name="title_activity_YBLogin">易班授权登陆</string>
+    <string name="title_activity_YBLogin">易班授权登录</string>
     <string name="title_activity_profile">修改个人信息</string>
     <string name="title_activity_user_mine">我的资料</string>
     <string name="title_activity_team_member">成员</string>
@@ -67,6 +67,7 @@
     <string name="AcraChannel">人升崩溃</string>
     <string name="title_activity_edit_team_item">编辑团队信息</string>
     <string name="action_sort">排序</string>
+    <string name="title_statistics">统计</string>
 
 
 </resources>

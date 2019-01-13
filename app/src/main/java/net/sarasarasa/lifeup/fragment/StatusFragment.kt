@@ -30,6 +30,7 @@ class StatusFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_status, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+        (activity as MainActivity).supportActionBar?.title = "状态"
 
 
         val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)

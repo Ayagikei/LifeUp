@@ -22,10 +22,10 @@
         android:title="@string/title_community" />
 
     <item
-        android:id="@+id/navigation_message"
+        android:id="@+id/navigation_statistics"
         android:fragment="net.sarasarasa.lifeup.fragment.StatisticsFragment"
-        android:icon="@drawable/ic_textsms_24px"
-        android:title="消息" />
+        android:icon="@drawable/ic_view_stream_black_24dp"
+        android:title="@string/title_statistics" />
 
     <item
         android:id="@+id/navigation_me"

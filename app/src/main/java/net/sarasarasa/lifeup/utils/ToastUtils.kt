@@ -42,5 +42,13 @@ class ToastUtils {
                 e.printStackTrace()
             }
         }
+
+        fun showLongToast(string: String, passedContext: Context) {
+            try {
+                Toast.makeText(passedContext, string, Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

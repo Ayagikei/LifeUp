@@ -67,7 +67,7 @@ class YBLoginActivity : AppCompatActivity() {
                 this.webView.reload()
             }
             AttributeConstants.MSG_ATTR_GET_SUCCESS -> {
-                ToastUtils.showShortToast("登陆成功")
+                ToastUtils.showShortToast("登录成功")
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()

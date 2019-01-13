@@ -20,7 +20,10 @@ interface TodoService {
     fun getUncompletedTodoList(isShowToast: Boolean): List<TaskModel>
 
     /** 获取所有非未完成事项（含逾期、放弃等）的[List<TaskModel>] **/
-    fun getCompletedTodoList(): List<TaskModel>
+    fun getCompletedTodoList(limit: Int, offset: Int): List<TaskModel>
+
+    /** 获取所有非未完成事项（含逾期、放弃等）的计数 **/
+    fun countCompletedTodoList(): Int
 
     /** 根据[id: Long]获取该待办事项 **/
     fun getATodoItem(id: Long): TaskModel?

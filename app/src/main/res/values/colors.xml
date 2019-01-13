@@ -24,10 +24,13 @@
     <color name="color_abbr_learning">#3498DB</color>
     <color name="color_abbr_charm">#70A800</color>
     <color name="color_abbr_endurance">#03a9f4</color>
-    <color name="color_abbr_vitality">#FF3D7F</color>
+    <color name="color_abbr_vitality">#ff3d7f</color>
     <color name="color_abbr_creative">#6DBCDB</color>
     <color name="color_text_reward_desc">#ffad42</color>
     <color name="color_text_reward">#FF9100</color>
+
+    <color name="color_exp_increase">#03A9F4</color>
+    <color name="color_exp_decrease">#ff3d7f</color>
 
     <color name="color_bar_chart">#03A9F4</color>
 

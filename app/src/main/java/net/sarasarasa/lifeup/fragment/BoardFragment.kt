@@ -102,7 +102,6 @@ class BoardFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
 
-
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
         return rootView

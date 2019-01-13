@@ -14,7 +14,6 @@ class MessageFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_temp, container, false)
         (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
 
-
         return rootView
     }
 }

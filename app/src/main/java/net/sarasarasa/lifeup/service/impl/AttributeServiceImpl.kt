@@ -2,8 +2,10 @@ package net.sarasarasa.lifeup.service.impl
 
 import net.sarasarasa.lifeup.dao.AttributeDAO
 import net.sarasarasa.lifeup.models.AttributeModel
+import net.sarasarasa.lifeup.models.ExpModel
 import net.sarasarasa.lifeup.service.AttributeService
 import net.sarasarasa.lifeup.vo.AttributionVO
+import java.util.*
 
 class AttributeServiceImpl : AttributeService {
 
@@ -38,11 +40,11 @@ class AttributeServiceImpl : AttributeService {
         }
     }
 
-    override fun increaseExp(abbr: String, exp: Int): Boolean {
-
+    override fun increaseExp(attr: String?, exp: Int): Boolean {
+        if (attr.isNullOrEmpty()) return false
         val attributeModel = getAttribute()
 
-        when (abbr) {
+        when (attr) {
             "strength" -> attributeModel.strengthAttribute += exp
             "learning" -> attributeModel.knowledgeAttribute += exp
             "charm" -> attributeModel.charmAttribute += exp
@@ -53,15 +55,30 @@ class AttributeServiceImpl : AttributeService {
         }
 
         attributeModel.gradeAttribute += exp / 5
-
         return attributeModel.save()
     }
 
-    override fun decreaseExp(abbr: String, exp: Int): Boolean {
+    override fun increaseMultiExp(attrs: ArrayList<String>, exp: Int, content: String): Boolean {
+        if (attrs.isEmpty()) return false
+
+        val arrayListTrueDataSize = when {
+            attrs.getOrNull(1).isNullOrBlank() -> 1
+            attrs.getOrNull(2).isNullOrBlank() -> 2
+            else -> 3
+        }
+        val expModel = ExpModel(exp, content, Date(), false, exp * arrayListTrueDataSize, arrayListTrueDataSize)
+        expModel.relatedAttribute = attrs
+        increaseExp(attrs.getOrNull(0), exp)
+        increaseExp(attrs.getOrNull(1), exp)
+        increaseExp(attrs.getOrNull(2), exp)
+        return expModel.save()
+    }
+
+    override fun decreaseExp(attr: String?, exp: Int): Boolean {
+        if (attr.isNullOrEmpty()) return false
 
         val attributeModel = getAttribute()
-
-        when (abbr) {
+        when (attr) {
             "strength" -> {
                 attributeModel.strengthAttribute -= exp
                 if (attributeModel.strengthAttribute < 0)
@@ -102,6 +119,23 @@ class AttributeServiceImpl : AttributeService {
         return attributeModel.save()
     }
 
+    override fun decreaseMultiExp(attrs: ArrayList<String>, exp: Int, content: String): Boolean {
+        if (attrs.isEmpty()) return false
+
+        val arrayListTrueDataSize = when {
+            attrs.getOrNull(1).isNullOrBlank() -> 1
+            attrs.getOrNull(2).isNullOrBlank() -> 2
+            else -> 3
+        }
+
+        val expModel = ExpModel(exp, content, Date(), true, exp * arrayListTrueDataSize, arrayListTrueDataSize)
+        expModel.relatedAttribute = attrs
+        decreaseExp(attrs.getOrNull(0), exp)
+        decreaseExp(attrs.getOrNull(1), exp)
+        decreaseExp(attrs.getOrNull(2), exp)
+        return expModel.save()
+    }
+
     override fun getAttributeVO(): AttributionVO {
         val attributeModel = getAttribute()
         val attributionVO = AttributionVO()
@@ -128,4 +162,41 @@ class AttributeServiceImpl : AttributeService {
                 attributeModel.creativity
     }
 
+    override fun getDailyTotalExpByDate(cal: Calendar): Int {
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        val firstSecOfThisDay = cal.timeInMillis
+
+        with(cal) {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+        }
+        val lastSecOfThisDay = cal.timeInMillis
+
+        return attributeDAO.sumDailyTotalExpByDate(firstSecOfThisDay, lastSecOfThisDay)
+    }
+
+    override fun listDailyTotalExpPastDays(days: Int): ArrayList<Int> {
+        val cal = Calendar.getInstance()
+        val countList = ArrayList<Int>()
+
+        for (i in 1..days) {
+            countList.add(getDailyTotalExpByDate(cal))
+            cal.add(Calendar.DATE, -1)
+        }
+        countList.reverse()
+        return countList
+    }
+
+    override fun listExpDetail(limit: Int, offset: Int): List<ExpModel> {
+        return attributeDAO.listExpDetail(limit, offset)
+    }
+
+    override fun countExpDetail(): Int {
+        return attributeDAO.countExpDetail()
+    }
 }

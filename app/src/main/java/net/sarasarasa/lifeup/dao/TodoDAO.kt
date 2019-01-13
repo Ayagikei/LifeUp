@@ -81,8 +81,19 @@ class TodoDAO {
         return LitePal.where("taskStatus = ? and taskRemindTime > ?", "0", time.toString()).find(TaskModel::class.java)
     }
 
-    fun findAllCompletedTodoItem(): List<TaskModel> {
-        return LitePal.where("taskStatus != ? and (isDeleteRecord != ? or isDeleteRecord is null)", "0", "1").order("endDate desc").find(TaskModel::class.java)
+    fun findAllCompletedTodoItem(limit: Int, offset: Int): List<TaskModel> {
+        return LitePal.where("taskStatus != ? and (isDeleteRecord != ? or isDeleteRecord is null)", "0", "1")
+                .order("endDate desc")
+                .limit(limit)
+                .offset(offset)
+                .find(TaskModel::class.java)
+    }
+
+    fun countAllCompletedTodoItem(): Int {
+        return LitePal.where("taskStatus != ? and (isDeleteRecord != ? or isDeleteRecord is null)", "0", "1")
+                .order("endDate desc")
+                .find(TaskModel::class.java)
+                .count()
     }
 
     fun findAllTeamTodoItem(): List<TaskModel> {

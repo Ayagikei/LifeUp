@@ -60,7 +60,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[获取用户信息]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                     message.obj = responseBody.msg
@@ -77,14 +77,14 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     }
 
     fun updateUserProfile(profileVO: ProfileVO) {
-        Log.i("LifeUp 登陆模块", "执行[更新用户信息]操作")
+        Log.i("LifeUp 登录模块", "执行[更新用户信息]操作")
         profileVO.userHead = null
 
         val call = network.updateUserProfile(userService.getToken(), profileVO)
 
         call.enqueue(object : Callback<ResultVO<ProfileVO>> {
             override fun onFailure(call: Call<ResultVO<ProfileVO>>?, t: Throwable?) {
-                Log.e("LifeUp 登陆模块", "[更新用户信息]返回错误: ${t.toString()}")
+                Log.e("LifeUp 登录模块", "[更新用户信息]返回错误: ${t.toString()}")
                 val message = Message()
                 message.what = MSG_UPDATE_FAILED
                 uiHandler.handleMessage(message)
@@ -96,7 +96,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[更新用户信息]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = MSG_UPDATE_FAILED
                     message.obj = responseBody.msg
@@ -137,7 +137,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[更新用户头像]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = MSG_UPDATE_AVATAR_FAILED
                     message.obj = responseBody.msg
@@ -187,7 +187,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户动态列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -224,7 +224,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户详情]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = MSG_UPDATE_FAILED
                     message.obj = responseBody.msg
@@ -277,7 +277,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户加入团队列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -311,7 +311,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[关注用户]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = MSG_FOLLOW_FAILED
                     message.obj = responseBody.msg
@@ -344,7 +344,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[取消关注用户]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = MSG_UNFOLLOW_FAILED
                     message.obj = responseBody.msg
@@ -392,7 +392,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户粉丝列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -438,7 +438,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询用户关注列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -483,7 +483,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 用户模块", "[查询朋友圈]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登陆已失效，请重新登陆！")
+                    ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {

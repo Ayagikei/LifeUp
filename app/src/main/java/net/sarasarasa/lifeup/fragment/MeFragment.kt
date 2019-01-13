@@ -32,7 +32,7 @@ class MeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
         (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
-
+        (activity as MainActivity).supportActionBar?.title = "我的"
 
         initView(rootView)
 
@@ -52,7 +52,7 @@ class MeFragment : Fragment() {
         rootView.tv_lifeExpAmount.text = attributeModel.gradeAttribute.toString()
 
         if (userService.getToken().isBlank()) {
-            rootView.btn_edit_profile.setText("登陆")
+            rootView.btn_edit_profile.setText("登录")
             rootView.btn_edit_profile.setOnClickListener {
                 val intent = Intent(context, LoginActivity::class.java)
                 startActivity(intent)

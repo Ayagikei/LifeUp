@@ -16,6 +16,12 @@
         android:title="@string/title_status" />
 
     <item
+        android:id="@+id/navigation_statistics"
+        android:fragment="net.sarasarasa.lifeup.fragment.StatisticsFragment"
+        android:icon="@drawable/ic_view_stream_black_24dp"
+        android:title="@string/title_statistics" />
+
+    <item
         android:id="@+id/navigation_me"
         android:fragment="net.sarasarasa.lifeup.fragment.MeFragment"
         android:icon="@drawable/ic_face_24px"

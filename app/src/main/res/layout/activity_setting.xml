@@ -145,7 +145,7 @@
             android:background="@color/white"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="隐藏社区和消息模块（需要重启）"
+            android:text="隐藏社区模块（需要重启）"
             android:textSize="16sp" />
 
 
@@ -180,7 +180,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             app:item_background="@drawable/selector_item"
-            app:item_text="退出登陆"
+            app:item_text="退出登录"
             app:show_dot="false"
             app:show_left_icon="false"
             app:text_color="#000"
