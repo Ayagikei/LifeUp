@@ -47,11 +47,6 @@ class TodoDAO {
     }
 
     fun findUncompletedTodoItemAfterDays(days: Int): List<TaskModel> {
-        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
-
-        val classBy = optionSharedPreferences.getString("sortBy", "startTime")
-        val isAsc = optionSharedPreferences.getBoolean("isAsc", true)
-
         val cal = Calendar.getInstance()
         with(cal) {
             set(Calendar.HOUR_OF_DAY, 23)
@@ -126,11 +121,11 @@ class TodoDAO {
     }
 
     fun getOverdueItems(time: Long): List<TaskModel> {
-        val listTotalItem = LitePal.where("taskExpireTime <= ? and taskStatus = ? and teamId = ?", time.toString(), "0", "-1").find(TaskModel::class.java)
         val cal = Calendar.getInstance()
-        val listNetworkItem = LitePal.where("endTime <= ? and taskStatus = ? and teamId != ?", cal.timeInMillis.toString(), "0", "-1").find(TaskModel::class.java)
-        listTotalItem.addAll(listNetworkItem)
-        return listTotalItem
+        return LitePal.where("(taskExpireTime <= ? and taskStatus = ? and teamId = ? and (isUseSpecificExpireTime is null or isUseSpecificExpireTime = ?)) " +
+                "or (endTime <= ? and taskStatus = ? and teamId != ?)" +
+                "or (taskExpireTime <= ? and taskStatus = ? and teamId = ? and isUseSpecificExpireTime = ?)"
+                , time.toString(), "0", "-1", "0", cal.timeInMillis.toString(), "0", "-1", cal.timeInMillis.toString(), "0", "-1", "1").find(TaskModel::class.java)
     }
 
     fun getFinishCount(): Int {

@@ -243,14 +243,14 @@ open class AddTeamActivity : AppCompatActivity() {
         til_startTimeEnd.editText?.setText("23:59:59")
 
         //禁用输入法输入，下同
-        dDDL.inputType = InputType.TYPE_NULL
+        et_expire_time.inputType = InputType.TYPE_NULL
         //第一次点击首先响应Focus，下同
-        dDDL.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        et_expire_time.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showDatePickerDialog()
         }
 
-        dDDL.setOnClickListener {
+        et_expire_time.setOnClickListener {
             showDatePickerDialog()
         }
 
@@ -300,7 +300,7 @@ open class AddTeamActivity : AppCompatActivity() {
 
     /** 重置期限日期 **/
     fun finishDateReset(view: View) {
-        dDDL.setText("")
+        et_expire_time.setText("")
         view.visibility = View.INVISIBLE
     }
 
@@ -321,7 +321,7 @@ open class AddTeamActivity : AppCompatActivity() {
             val strMonthOfYear: String = if (monthOfYear + 1 < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
             val strDayOfMonth: String = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
 
-            dDDL.setText("$year/$strMonthOfYear/$strDayOfMonth")
+            et_expire_time.setText("$year/$strMonthOfYear/$strDayOfMonth")
             til_repeat.visibility = View.VISIBLE
             btn_ddl_reset.visibility = View.VISIBLE
 

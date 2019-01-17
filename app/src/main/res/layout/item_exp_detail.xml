@@ -12,7 +12,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="78dp"
         android:maxWidth="248dp"
         android:text="一起来学日语吧！"
@@ -28,6 +27,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_abbr_learning"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_content"
         app:layout_constraintStart_toEndOf="@+id/tv_content"
         app:layout_constraintTop_toTopOf="@+id/tv_content" />
 
@@ -59,7 +59,7 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textColor="@color/blue"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_content" />
@@ -70,11 +70,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:text="2019/1/11 10:00:00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_iconSkillSecond"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
 </android.support.constraint.ConstraintLayout>

@@ -25,16 +25,15 @@ import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.VersionConstants
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
-import net.sarasarasa.lifeup.service.impl.*
+import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
+import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.service.impl.UserServiceImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.Pedometer
 import net.sarasarasa.lifeup.utils.ToastUtils
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    val stepServiceImpl = StepServiceImpl()
-    val achievementServiceImpl = AchievementServiceImpl()
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
 
@@ -82,19 +81,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             setContentView(R.layout.activity_main)
         else setContentView(R.layout.activity_main_without_community)
 
-
         pedometer = Pedometer(this)
-
-
-
         todoService.resetAllRemind(applicationContext)
-
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
-
         //pedometer.unRegister()
     }
 

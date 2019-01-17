@@ -58,6 +58,7 @@ import net.sarasarasa.lifeup.vo.ActivityVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -363,7 +364,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 mList[position].taskStatus = ToDoItemConstants.COMPLETED
 
                 rootView.post {
-                    achievementService.checkAchievement(rootView.achievement_view)
+                    achievementService.checkAchievement(rootView.achievement_view, WeakReference(activity))
                 }
 
             } // end of the if
@@ -428,7 +429,12 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                 //非本地事项显示动态对话框
                 if (item.teamId != IS_TEAM_TASK) {
-                    showDialogActivity(item)
+                    val isIgnoreActivitySubmitDialog = optionSharedPreferences?.getBoolean("isIgnoreActivitySubmitDialog", false)
+
+                    // 检测设置里有没有勾选“默认不发表团队动态”
+                    if (isIgnoreActivitySubmitDialog == false)
+                        showDialogActivity(item)
+                    else teamNetworkImpl.finishTeamTask(item, ActivityVO())
                 }
             }
         }
@@ -710,7 +716,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         mAdapter.notifyDataSetChanged()
 
         rootView.post {
-            achievementService.checkAchievement(rootView.achievement_view)
+            achievementService.checkAchievement(rootView.achievement_view, WeakReference<Activity>(activity))
         }
 
     }

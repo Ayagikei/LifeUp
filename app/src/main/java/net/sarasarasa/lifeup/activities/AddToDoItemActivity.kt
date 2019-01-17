@@ -51,6 +51,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
     protected var iFrequency = 0
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
+    protected var isUseSpecificExpireTime = false
+
+    protected val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+    protected val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -178,14 +183,14 @@ open class AddToDoItemActivity : AppCompatActivity() {
     /** 初始化日期选择 **/
     private fun initDDDL() {
         //禁用输入法输入，下同
-        dDDL.inputType = InputType.TYPE_NULL
+        et_expire_time.inputType = InputType.TYPE_NULL
         //第一次点击首先响应Focus，下同
-        dDDL.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        et_expire_time.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showDatePickerDialog()
         }
 
-        dDDL.setOnClickListener {
+        et_expire_time.setOnClickListener {
             showDatePickerDialog()
         }
 
@@ -225,9 +230,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     /** 重置期限日期 **/
-    fun finishDateReset(view: View) {
-        dDDL.setText("")
+    fun expireTimeReset(view: View) {
+        et_expire_time.setText("")
+        isUseSpecificExpireTime = false
         view.visibility = View.INVISIBLE
+        btn_ddl_set_spec_time.visibility = View.INVISIBLE
     }
 
     /** 重置开始时间 **/
@@ -251,13 +258,39 @@ open class AddToDoItemActivity : AppCompatActivity() {
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            dDDL.setText("$year/${monthOfYear + 1}/$dayOfMonth")
+            val strMonthOfYear: String = if (monthOfYear + 1 < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
+            val strDayOfMonth: String = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+
+            et_expire_time.setText("$year/$strMonthOfYear/$strDayOfMonth")
+
             til_repeat.visibility = View.VISIBLE
             btn_ddl_reset.visibility = View.VISIBLE
+            btn_ddl_set_spec_time.visibility = View.VISIBLE
+            btn_ddl_set_spec_time.setOnClickListener { showExpireTimePickerDialog() }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
         //最小日期限制
         datePickerDialog.datePicker.minDate = c.timeInMillis
+        datePickerDialog.show()
+    }
+
+    /**
+     * 展示期限时间选择对话框
+     */
+    @SuppressLint("SetTextI18n")
+    private fun showExpireTimePickerDialog() {
+        val c = Calendar.getInstance()
+        val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
+
+            val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
+            val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
+
+            et_expire_time.setText(et_expire_time.text.toString() + " $strHourOfDay:$strMinute:00")
+            isUseSpecificExpireTime = true
+        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
+
+        datePickerDialog.setOnCancelListener {
+        }
         datePickerDialog.show()
     }
 
@@ -338,7 +371,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
 
         datePickerDialog.setOnCancelListener {
-            et_remindDate.setText("")
+            et_startTime.setText("")
         }
         datePickerDialog.show()
     }
@@ -489,8 +522,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val taskDeadline = til_deadLine.editText?.text.toString()
         var dateTaskDeadline: Date? = null
         if (!taskDeadline.isBlank()) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-            dateTaskDeadline = simpleDateFormat.parse(taskDeadline)
+            dateTaskDeadline = if (isUseSpecificExpireTime)
+                simpleDateTimeFormat.parse(til_deadLine.editText?.text.toString())
+            else simpleDateFormat.parse(til_deadLine.editText?.text.toString())
         }
 
         val taskRemindDateAndTime = til_remindDate.editText?.text.toString()
@@ -590,10 +624,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
         if (!taskStartDateAndTime.isBlank()) {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
             taskModel.startTime = simpleDateFormat.parse(taskStartDateAndTime)
+            taskModel.isUserInputStartTime = true
         }
 
         // 完成奖励
         taskModel.completeReward = til_complete_reward.editText?.text.toString()
+        // 期限具体时间
+        taskModel.isUseSpecificExpireTime = isUseSpecificExpireTime
 
         return taskModel
     }
@@ -660,17 +697,36 @@ open class AddToDoItemActivity : AppCompatActivity() {
             isAllCheckPassed = false
         }
 
+        if (isUseSpecificExpireTime && !TextUtils.isEmpty(til_deadLine.editText?.text)) {
+            try {
+
+
+                val dateTaskDeadline = if (isUseSpecificExpireTime)
+                    simpleDateTimeFormat.parse(til_deadLine.editText?.text.toString())
+                else simpleDateFormat.parse(til_deadLine.editText?.text.toString())
+
+                if (dateTaskDeadline.before(Date())) {
+                    ToastUtils.showShortToast("期限时间不能早于当前时间")
+                    isAllCheckPassed = false
+                }
+            } catch (e: Exception) {
+                ToastUtils.showShortToast("期限时间数据异常")
+                isAllCheckPassed = false
+            }
+        }
+
         if (!TextUtils.isEmpty(til_deadLine.editText?.text) && !TextUtils.isEmpty(taskStartDateAndTime)) {
             try {
-                val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-                val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-
                 val dateStartTime = simpleDateTimeFormat.parse(taskStartDateAndTime)
-                val dateTaskDeadline = simpleDateFormat.parse(til_deadLine.editText?.text.toString())
+                val dateTaskDeadline = if (isUseSpecificExpireTime)
+                    simpleDateTimeFormat.parse(til_deadLine.editText?.text.toString())
+                else simpleDateFormat.parse(til_deadLine.editText?.text.toString())
 
                 val deadLine = Calendar.getInstance()
                 deadLine.time = dateTaskDeadline
-                deadLine.add(Calendar.DATE, 1)
+
+                if (!isUseSpecificExpireTime)
+                    deadLine.add(Calendar.DATE, 1)
 
                 if (dateStartTime.after(deadLine.time)) {
                     ToastUtils.showShortToast("开始时间不能晚于期限日期")
@@ -696,8 +752,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         if (isNeedDDl && TextUtils.isEmpty(til_deadLine.editText?.text)) {
             //容错处理：没填期限日期的时候自动填充为当天
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-            til_deadLine.editText?.setText(simpleDateFormat.format(Date()))
+            if (TextUtils.isEmpty(til_startTime.editText?.text)) {
+                til_deadLine.editText?.setText(simpleDateFormat.format(Date()))
+            }
+            // 或者是开始时间当天
+            else {
+                til_deadLine.editText?.setText(simpleDateFormat.format(simpleDateFormat.parse(taskStartDateAndTime)))
+            }
         }
 
         if (iFrequency != 0 || iFrequency != -1) {

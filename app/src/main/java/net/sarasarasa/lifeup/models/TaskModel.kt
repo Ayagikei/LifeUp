@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.models
 
 import org.litepal.crud.LitePalSupport
 import java.util.*
+import kotlin.collections.ArrayList
 
 data class TaskModel(
         var content: String,
@@ -41,6 +42,9 @@ data class TaskModel(
     var isDeleteRecord: Int? = 0
     var completeReward: String? = null
 
+    var isUseSpecificExpireTime: Boolean = false
+    var isUserInputStartTime: Boolean = true
+    var isIgnoreDayOfWeek: ArrayList<Int> = ArrayList()
 
 
 }

@@ -398,7 +398,7 @@
                     app:layout_constraintTop_toBottomOf="@id/til_remindDate">
 
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
-                        android:id="@+id/dDDL"
+                        android:id="@+id/et_expire_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
@@ -413,7 +413,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="24dp"
-                    android:onClick="finishDateReset"
+                    android:onClick="expireTimeReset"
                     android:text="重置"
                     android:textColor="@color/colorAccent"
                     android:visibility="invisible"

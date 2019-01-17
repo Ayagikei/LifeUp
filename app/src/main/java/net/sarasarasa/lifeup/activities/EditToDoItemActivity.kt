@@ -42,8 +42,11 @@ class EditToDoItemActivity : AddToDoItemActivity() {
 
             if (taskModel.taskExpireTime != null) {
                 val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-                checkNotNull(til_deadLine.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormat.format(taskModel.taskExpireTime))
+                val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
 
+                if (!taskModel.isUseSpecificExpireTime)
+                    checkNotNull(til_deadLine.editText).text = Editable.Factory.getInstance().newEditable(simpleDateFormat.format(taskModel.taskExpireTime))
+                else checkNotNull(til_deadLine.editText).text = Editable.Factory.getInstance().newEditable(simpleDateTimeFormat.format(taskModel.taskExpireTime))
 /*                //显示重复
                 val set = ConstraintSet()
                 set.clone(layout_extra)
@@ -51,7 +54,7 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 set.applyTo(layout_extra)*/
 
                 btn_ddl_reset.visibility = View.VISIBLE
-                til_repeat.visibility = View.VISIBLE
+                btn_ddl_set_spec_time.visibility = View.VISIBLE
             }
 
             if (taskModel.taskRemindTime != null) {
@@ -114,6 +117,8 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             }
             til_target.isEnabled = false
 
+            // 还原奖励
+            til_complete_reward.editText?.setText(taskModel.completeReward)
 
             //switch1.isChecked = taskModel.isShared
 

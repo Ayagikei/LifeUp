@@ -399,7 +399,7 @@
                     app:layout_constraintTop_toBottomOf="@id/til_startTime">
 
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
-                        android:id="@+id/dDDL"
+                        android:id="@+id/et_expire_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_date_range_black_24dp"
@@ -415,11 +415,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
-                    android:onClick="finishDateReset"
+                    android:onClick="expireTimeReset"
                     android:text="重置"
                     android:textColor="@color/colorAccent"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
+                    app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
+
+                <TextView
+                    android:id="@+id/btn_ddl_set_spec_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="expireTimeReset"
+                    android:text="设置时间"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_ddl_reset"
                     app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
 
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout

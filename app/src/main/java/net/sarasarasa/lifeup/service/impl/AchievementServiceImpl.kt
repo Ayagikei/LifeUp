@@ -1,9 +1,11 @@
 package net.sarasarasa.lifeup.service.impl
 
+import android.app.Activity
 import com.cdev.achievementview.AchievementView
 import net.sarasarasa.lifeup.dao.AchievementDAO
 import net.sarasarasa.lifeup.models.AchievementModel
 import net.sarasarasa.lifeup.service.AchievementService
+import java.lang.ref.WeakReference
 
 
 class AchievementServiceImpl : AchievementService {
@@ -41,12 +43,12 @@ class AchievementServiceImpl : AchievementService {
         item.save()
     }
 
-    override fun checkAchievement(achievementView: AchievementView) {
+    override fun checkAchievement(achievementView: AchievementView, weakReference: WeakReference<Activity>) {
         for (i in 0..6)
-            checkAchievementById(i, achievementView)
+            checkAchievementById(i, achievementView, weakReference)
     }
 
-    private fun checkAchievementById(id: Int, achievementView: AchievementView) {
+    private fun checkAchievementById(id: Int, achievementView: AchievementView, weakReference: WeakReference<Activity>) {
         val item = getAchievementById(id)
         if (!item.hasFinished) {
             when (id) {
@@ -54,49 +56,63 @@ class AchievementServiceImpl : AchievementService {
                     if (todoService.getFinishCount() >= 1) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「新的开始」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「新的开始」", item.desc)
                     }
                 }
                 1 -> {
                     if (todoService.getFinishCount() >= 200) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「大忙人」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「大忙人」", item.desc)
                     }
                 }
                 2 -> {
                     if (stepService.getTodayStepCount() >= 20000) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「日行千里」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「日行千里」", item.desc)
                     }
                 }
                 3 -> {
                     if (todoService.getFinishCount() >= 2000) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「大忙人」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「大忙人」", item.desc)
                     }
                 }
                 4 -> {
                     if (todoService.getFinishTeamTaskCount() >= 1) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「新成员」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「新成员」", item.desc)
                     }
                 }
                 5 -> {
                     if (todoService.getFinishTeamTaskCount() >= 200) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「团队支柱」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「团队支柱」", item.desc)
                     }
                 }
                 6 -> {
                     if (attributeLevelService.getAttributeLevelByExp(attributeService.getAttributeExpByString("strength")).levelNum >= 15) {
                         item.hasFinished = true
                         item.save()
-                        achievementView.show("你完成了成就「运动达人」", item.desc)
+
+                        if (weakReference.get()?.isDestroyed == false)
+                            achievementView.show("你完成了成就「运动达人」", item.desc)
                     }
                 }
             }

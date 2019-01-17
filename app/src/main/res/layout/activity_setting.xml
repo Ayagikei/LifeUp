@@ -48,6 +48,16 @@
             android:textSize="16sp" />
 
         <Switch
+            android:id="@+id/switch_ignore_activity_submit_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="默认不发表团队动态（不显示对话框）"
+            android:textSize="16sp" />
+
+        <Switch
             android:id="@+id/switch_default_remake_overdue"
             android:layout_width="match_parent"
             android:layout_height="56dp"

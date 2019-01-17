@@ -1,7 +1,9 @@
 package net.sarasarasa.lifeup.service
 
+import android.app.Activity
 import com.cdev.achievementview.AchievementView
 import net.sarasarasa.lifeup.models.AchievementModel
+import java.lang.ref.WeakReference
 
 interface AchievementService {
 
@@ -11,6 +13,5 @@ interface AchievementService {
 
     fun finishAchievement(id: Int)
 
-    fun checkAchievement(achievementView: AchievementView)
-
+    fun checkAchievement(achievementView: AchievementView, weakReference: WeakReference<Activity>)
 }

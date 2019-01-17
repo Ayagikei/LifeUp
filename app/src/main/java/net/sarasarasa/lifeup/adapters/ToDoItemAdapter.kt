@@ -71,7 +71,11 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
             if (item.taskExpireTime != null) {
                 if (item.teamId != -1L) {
                     helper.setText(R.id.tv_time, dateAndTimeFormat.format(item.endTime) + "期限")
-                } else helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "期限")
+                } else {
+                    if (item.isUseSpecificExpireTime)
+                        helper.setText(R.id.tv_time, dateAndTimeFormat.format(item.taskExpireTime) + "期限")
+                    else helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "期限")
+                }
 
                 helper.setVisible(R.id.iv_timeIcon, true)
                         .setVisible(R.id.tv_time, true)

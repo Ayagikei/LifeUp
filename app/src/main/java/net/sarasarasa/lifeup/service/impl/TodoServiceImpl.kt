@@ -131,7 +131,7 @@ class TodoServiceImpl : TodoService {
             val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
             attributeService.increaseMultiExp(attrs, this.expReward, "完成事项「${this.content}」")
         }
-
+        WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
         return true
     }
 
@@ -270,6 +270,10 @@ class TodoServiceImpl : TodoService {
         taskModel.priority = origin.priority
         taskModel.currentTimes = origin.currentTimes + 1
         taskModel.taskTargetId = origin.taskTargetId
+        taskModel.completeReward = origin.completeReward
+        taskModel.isUseSpecificExpireTime = origin.isUseSpecificExpireTime
+        taskModel.isUserInputStartTime = origin.isUserInputStartTime
+        taskModel.isIgnoreDayOfWeek = origin.isIgnoreDayOfWeek
 
         //最后一次事项增加奖励
         if (taskModel.taskTargetId != null && taskModel.taskTargetId is Long) {
@@ -279,17 +283,19 @@ class TodoServiceImpl : TodoService {
             }
         }
 
+        val newExpireTime = Calendar.getInstance()
+        val newStartTime = Calendar.getInstance()
         if (origin.taskFrequency != -1) {
-            val newExpireTime = Calendar.getInstance()
             newExpireTime.time = origin.taskExpireTime
             newExpireTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.taskExpireTime = newExpireTime.time
 
-            val newStartTime = Calendar.getInstance()
             newStartTime.time = origin.startTime
-            newStartTime.set(Calendar.HOUR_OF_DAY, 0)
-            newStartTime.set(Calendar.MINUTE, 0)
-            newStartTime.set(Calendar.SECOND, 0)
+            if (!taskModel.isUserInputStartTime) {
+                newStartTime.set(Calendar.HOUR_OF_DAY, 0)
+                newStartTime.set(Calendar.MINUTE, 0)
+                newStartTime.set(Calendar.SECOND, 0)
+            }
             newStartTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.startTime = newStartTime.time
         }
@@ -301,6 +307,15 @@ class TodoServiceImpl : TodoService {
             taskModel.taskRemindTime = newRemindTime.time
         }
 
+        // 如果设置了忽略DayOfWeek
+        if (taskModel.isIgnoreDayOfWeek.isNotEmpty() && taskModel.isIgnoreDayOfWeek.size == 8) {
+            while (taskModel.isIgnoreDayOfWeek[DateUtil.getIntWeekOfDate(newStartTime.timeInMillis)] == 1) {
+                newStartTime.add(Calendar.DATE, 1)
+                newExpireTime.add(Calendar.DATE, 1)
+            }
+            taskModel.startTime = newStartTime.time
+            taskModel.taskExpireTime = newExpireTime.time
+        }
 
         taskModel.save()
 
@@ -486,6 +501,8 @@ class TodoServiceImpl : TodoService {
         taskModel.currentTimes = origin.currentTimes
         taskModel.taskTargetId = origin.taskTargetId
         taskModel.completeReward = origin.completeReward
+        taskModel.isUseSpecificExpireTime = origin.isUseSpecificExpireTime
+        taskModel.isUserInputStartTime = origin.isUserInputStartTime
 
 
         //重设的时候，把单次和多次事项当做每日事项处理
@@ -502,9 +519,11 @@ class TodoServiceImpl : TodoService {
 
         val newStartTime = Calendar.getInstance()
         newStartTime.time = origin.startTime
-        newStartTime.set(Calendar.HOUR_OF_DAY, 0)
-        newStartTime.set(Calendar.MINUTE, 0)
-        newStartTime.set(Calendar.SECOND, 0)
+        if (!origin.isUserInputStartTime) {
+            newStartTime.set(Calendar.HOUR_OF_DAY, 0)
+            newStartTime.set(Calendar.MINUTE, 0)
+            newStartTime.set(Calendar.SECOND, 0)
+        }
         val iStartTimes = DateUtil.getDiscrepantDays(newStartTime.time, Calendar.getInstance().time) / origin.taskFrequency
         if (iExpireTimes == 0) newStartTime.add(Calendar.DATE, origin.taskFrequency * 1)
         else newStartTime.add(Calendar.DATE, origin.taskFrequency * iStartTimes)
@@ -516,6 +535,16 @@ class TodoServiceImpl : TodoService {
             newRemindTime.time = origin.taskRemindTime
             newRemindTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.taskRemindTime = newRemindTime.time
+        }
+
+        // 如果设置了忽略DayOfWeek
+        if (taskModel.isIgnoreDayOfWeek.isNotEmpty() && taskModel.isIgnoreDayOfWeek.size == 8) {
+            while (taskModel.isIgnoreDayOfWeek[DateUtil.getIntWeekOfDate(newStartTime.timeInMillis)] == 1) {
+                newStartTime.add(Calendar.DATE, 1)
+                newExpireTime.add(Calendar.DATE, 1)
+            }
+            taskModel.startTime = newStartTime.time
+            taskModel.taskExpireTime = newExpireTime.time
         }
 
         taskModel.save()
