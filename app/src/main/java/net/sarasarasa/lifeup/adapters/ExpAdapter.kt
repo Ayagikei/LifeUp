@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.adapters
 
+import android.support.v4.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
@@ -25,10 +26,10 @@ class ExpAdapter(layoutResId: Int, data: List<ExpModel>) : BaseQuickAdapter<ExpM
 
         if (!item.isDecrease) {
             helper.setText(R.id.tv_number, "+${item.value}")
-                    .setTextColor(R.id.tv_number, mContext.resources.getColor(R.color.color_exp_increase))
+                    .setTextColor(R.id.tv_number, ContextCompat.getColor(mContext, R.color.color_exp_increase))
         } else {
             helper.setText(R.id.tv_number, "-${item.value}")
-                    .setTextColor(R.id.tv_number, mContext.resources.getColor(R.color.color_exp_decrease))
+                    .setTextColor(R.id.tv_number, ContextCompat.getColor(mContext, R.color.color_exp_decrease))
         }
 
         when {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -75,8 +76,8 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
         val isWidgetDarkThemeWhiteIconAndFonts = sharedPreferences.getBoolean("isWidgetDarkThemeWhiteIconAndFonts", false)
 
         if (isWidgetDarkTheme && isWidgetDarkThemeWhiteIconAndFonts) {
-            rv.setTextColor(R.id.tv_exp, mContext.resources.getColor(R.color.white))
-            rv.setTextColor(R.id.tv_time, mContext.resources.getColor(R.color.white))
+            rv.setTextColor(R.id.tv_exp, ContextCompat.getColor(mContext, R.color.white))
+            rv.setTextColor(R.id.tv_time, ContextCompat.getColor(mContext, R.color.white))
             rv.setImageViewResource(R.id.imageView4, R.drawable.ic_award_exp_white)
             rv.setImageViewResource(R.id.iv_time, R.drawable.ic_time_white)
         } else {

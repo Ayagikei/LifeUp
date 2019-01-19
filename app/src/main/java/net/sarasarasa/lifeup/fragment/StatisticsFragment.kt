@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,6 @@ class StatisticsFragment : Fragment() {
     private val todoServiceImpl = TodoServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private val stepService = StepServiceImpl()
-    private val todoService = TodoServiceImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_statistics, null)
@@ -76,7 +76,7 @@ class StatisticsFragment : Fragment() {
         lineDataSet.setDrawCircleHole(false)
         lineDataSet.setDrawValues(false)
         lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-        lineDataSet.color = resources.getColor(R.color.blue)
+        context?.let { lineDataSet.color = (ContextCompat.getColor(it, R.color.blue)) }
         lineDataSet.setDrawCircles(false)
         lineDataSet.lineWidth = 1.5f
         val lineData = LineData(lineDataSet)
@@ -116,7 +116,7 @@ class StatisticsFragment : Fragment() {
         lineDataSet.setDrawCircleHole(false)
         lineDataSet.setDrawValues(false)
         lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-        lineDataSet.color = resources.getColor(R.color.blue)
+        context?.let { lineDataSet.color = (ContextCompat.getColor(it, R.color.blue)) }
         lineDataSet.setDrawCircles(false)
         lineDataSet.lineWidth = 1.5f
         val lineData = LineData(lineDataSet)
@@ -127,7 +127,7 @@ class StatisticsFragment : Fragment() {
         xAxis.axisMinimum = 0f
         xAxis.granularity = 1f
         val stringDateList = DateUtil.listStringDatePastDays(7)
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
+        xAxis.valueFormatter = IAxisValueFormatter { value, _ ->
             stringDateList[value.toInt()]
         }
         val yAxis = view.line_chart_exp.axisLeft
@@ -152,7 +152,7 @@ class StatisticsFragment : Fragment() {
             barEntries.add(entry)
         }
         val barDataSet = BarDataSet(barEntries, "")
-        barDataSet.color = resources.getColor(R.color.color_bar_chart)
+        context?.let { barDataSet.color = (ContextCompat.getColor(it, R.color.color_bar_chart)) }
         barDataSet.setDrawValues(true)
         val barData = BarData(barDataSet)
         val xAxisOfBarData = view.bar_chart_step.xAxis
@@ -187,7 +187,7 @@ class StatisticsFragment : Fragment() {
         pieDataSet.valueTextSize = 9.0f
         val pieData = PieData(pieDataSet)
         pieData.setValueFormatter(PercentFormatter())
-        pieData.setValueTextColor(resources.getColor(R.color.white))
+        context?.let { pieData.setValueTextColor(ContextCompat.getColor(it, R.color.white)) }
         view.pie_chart_exp.data = pieData
         view.pie_chart_exp.setUsePercentValues(true)
         view.pie_chart_exp.setEntryLabelTextSize(10.0f)
@@ -204,29 +204,29 @@ class StatisticsFragment : Fragment() {
 
         if (attributeService.getAttribute().strengthAttribute != 0) {
             pieEntries.add(PieEntry(attributeService.getAttribute().strengthAttribute.toFloat() / totalExp, "力量"))
-            colors.add(resources.getColor(R.color.color_abbr_strength))
+            context?.let { colors.add(ContextCompat.getColor(it, R.color.color_abbr_strength)) }
         }
         if (attributeService.getAttribute().knowledgeAttribute != 0) {
             pieEntries.add(PieEntry(attributeService.getAttribute().knowledgeAttribute.toFloat() / totalExp, "学识"))
-            colors.add(resources.getColor(R.color.color_abbr_learning))
+            context?.let { colors.add(ContextCompat.getColor(it, R.color.color_abbr_learning)) }
         }
 
         if (attributeService.getAttribute().charmAttribute != 0) {
             pieEntries.add(PieEntry(attributeService.getAttribute().charmAttribute.toFloat() / totalExp, "魅力"))
-            colors.add(resources.getColor(R.color.color_abbr_charm))
+            context?.let { colors.add(ContextCompat.getColor(it, R.color.color_abbr_charm)) }
         }
         if (attributeService.getAttribute().enduranceAttribute != 0) {
             pieEntries.add(PieEntry(attributeService.getAttribute().enduranceAttribute.toFloat() / totalExp, "耐力"))
-            colors.add(resources.getColor(R.color.color_abbr_endurance))
+            context?.let { colors.add(ContextCompat.getColor(it, R.color.color_abbr_endurance)) }
         }
 
         if (attributeService.getAttribute().energyAttribute != 0) {
             pieEntries.add(PieEntry(attributeService.getAttribute().energyAttribute.toFloat() / totalExp, "活力"))
-            colors.add(resources.getColor(R.color.color_abbr_vitality))
+            context?.let { colors.add(ContextCompat.getColor(it, R.color.color_abbr_vitality)) }
         }
         if (attributeService.getAttribute().creativity != 0) {
             pieEntries.add(PieEntry(attributeService.getAttribute().creativity.toFloat() / totalExp, "创造"))
-            colors.add(resources.getColor(R.color.color_abbr_creative))
+            context?.let { colors.add(ContextCompat.getColor(it, R.color.color_abbr_creative)) }
         }
     }
 

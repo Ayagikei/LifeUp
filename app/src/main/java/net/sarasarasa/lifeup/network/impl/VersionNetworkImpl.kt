@@ -42,7 +42,7 @@ class VersionNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
 
                 if (remoteVersion != null && remoteVersion > localVersion) {
                     message.what = MSG_NEW_VERSION
-                    message.obj = versionVO.downloadUrl
+                    message.obj = versionVO
                 } else {
                     message.what = MSG_NO_NEW_VERSION
                 }

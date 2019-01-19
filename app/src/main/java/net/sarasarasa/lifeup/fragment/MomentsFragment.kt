@@ -119,7 +119,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
     private fun initView(rootView: View) {
         initRecyclerView(rootView)
 
-        rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
+        context?.let { rootView.swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(it, R.color.colorPrimary)) }
         rootView.swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
             mAdapter.setEnableLoadMore(false)

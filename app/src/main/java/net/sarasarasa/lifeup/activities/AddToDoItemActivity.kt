@@ -507,7 +507,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         val arrButton = ArrayList<FancyButton>()
         with(arrButton) {
-            // index0 不作实际使用
+            // index0 用作记录忽略的数目
             add(dialogView.button_day1)
             add(dialogView.button_day1)
             add(dialogView.button_day2)
@@ -518,6 +518,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             add(dialogView.button_day7)
         }
 
+        // 根据忽略情况设置按钮样式
         for (i in arrButton.indices) {
             if (i == 0) continue
             if (arrIgnoreDayOfWeek[i] == 0) {
@@ -530,7 +531,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
             arrButton[i].setOnClickListener {
                 if (arrIgnoreDayOfWeek[i] == 0) {
-                    // arrIgnoreDayOfWeek[0] 用作计数器，表示忽略的数量，不能让忽略所有
+                    // arrIgnoreDayOfWeek[0] 用作计数器，表示忽略的数量，不能让忽略星期一-七
                     if (arrIgnoreDayOfWeek[0] != 6) {
                         arrIgnoreDayOfWeek[i] = 1
                         arrIgnoreDayOfWeek[0]++

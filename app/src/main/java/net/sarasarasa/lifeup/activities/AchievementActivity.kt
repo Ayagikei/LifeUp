@@ -35,7 +35,6 @@ class AchievementActivity : AppCompatActivity() {
         initData()
     }
 
-
     private fun initData() {
         grid_layout.rowCount = 3
         grid_layout.columnCount = 3
@@ -139,7 +138,6 @@ class AchievementActivity : AppCompatActivity() {
         else dialogView.btn_reward.visibility = View.GONE
 
         val dialog = this.let { AlertDialog.Builder(it).create() }
-
         with(dialog) {
             this?.setView(dialogView)
             this?.show()

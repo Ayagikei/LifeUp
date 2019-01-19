@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -112,7 +113,7 @@ class BoardFragment : Fragment() {
         initRecyclerView(rootView)
 
         rootView.fab.visibility = View.GONE
-        rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
+        context?.let { rootView.swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(it, R.color.colorPrimary)) }
         rootView.swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
             mAdapter.setEnableLoadMore(false)

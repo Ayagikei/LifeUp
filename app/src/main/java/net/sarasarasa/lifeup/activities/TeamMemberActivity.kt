@@ -112,7 +112,7 @@ class TeamMemberActivity : AppCompatActivity() {
 
 
         //设置上拉刷新
-        swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
+        swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
 

@@ -106,8 +106,7 @@ class TeamListFragment : Fragment() {
 
     private fun initView(rootView: View) {
         initRecyclerView(rootView)
-
-        rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
+        context?.let { rootView.swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(it, R.color.colorPrimary)) }
         rootView.swipe_refresh_layout.setOnRefreshListener {
             mAdapter.setOnLoadMoreListener({
                 getNewList()

@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -96,7 +97,7 @@ class UserTeamActivity : AppCompatActivity() {
     private fun initView() {
         initRecyclerView()
 
-        swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
+        swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         swipe_refresh_layout.setOnRefreshListener {
             currentPage = 0L
             mAdapter.data.clear()
