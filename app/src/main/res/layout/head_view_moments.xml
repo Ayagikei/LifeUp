@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/button_all"
+        android:layout_width="42dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        app:fb_borderColor="@color/blue"
+        app:fb_borderWidth="1dp"
+        app:fb_defaultColor="@color/blue"
+        app:fb_focusColor="#b3b3b3"
+        app:fb_radius="32dp"
+        app:fb_text="所有"
+        app:fb_textColor="@color/white"
+        app:fb_textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@+id/button_follow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/button_follow"
+        android:layout_width="42dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        app:fb_borderColor="@color/blue"
+        app:fb_borderWidth="1dp"
+        app:fb_defaultColor="#FFF"
+        app:fb_focusColor="#b3b3b3"
+        app:fb_radius="32dp"
+        app:fb_text="圈子"
+        app:fb_textColor="@color/color_to_do_item_fre0"
+        app:fb_textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </mehdi.sakout.fancybuttons.FancyButton>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_all" />
+
+</android.support.constraint.ConstraintLayout>
+

@@ -55,4 +55,7 @@ interface UserNetwork {
 
     @GET("/user/moments")
     fun getMoments(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>
+
+    @GET("/user/moments/3")
+    fun getMomentsScopeAll(@Header("authenticity-token") token: String, @Query("currentPage") currentPage: Long, @Query("size") size: Long): Call<ResultVO<PageVO<TeamActivityListVO>>>
 }

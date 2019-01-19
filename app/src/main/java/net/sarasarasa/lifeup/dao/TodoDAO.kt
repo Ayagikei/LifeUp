@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.dao
 import android.content.Context
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.utils.CalendarUtil
 import org.litepal.FluentQuery
 import org.litepal.LitePal
 import java.util.*
@@ -25,18 +26,18 @@ class TodoDAO {
 
     private fun getLitePalOrder(litePalWhere: FluentQuery): FluentQuery {
         val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
-        val classBy = optionSharedPreferences.getString("sortBy", "startTime")
+        val sortBy = optionSharedPreferences.getString("sortBy", "startTime")
         val isAsc = optionSharedPreferences.getBoolean("isAsc", true)
 
         return if (isAsc)
-            when (classBy) {
+            when (sortBy) {
                 "startTime" -> litePalWhere.order("priority desc,startTime asc")
                 "deadline" -> litePalWhere.order("priority desc,taskExpireTime asc")
                 "createTime" -> litePalWhere.order("priority desc,id asc")
                 "exp" -> litePalWhere.order("priority desc,expReward asc")
                 else -> litePalWhere.order("priority desc,startTime asc")
             }
-        else when (classBy) {
+        else when (sortBy) {
             "startTime" -> litePalWhere.order("priority desc,startTime desc")
             "deadline" -> litePalWhere.order("priority desc,taskExpireTime desc")
             "createTime" -> litePalWhere.order("priority desc,id desc")
@@ -48,12 +49,8 @@ class TodoDAO {
 
     fun findUncompletedTodoItemAfterDays(days: Int): List<TaskModel> {
         val cal = Calendar.getInstance()
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            add(Calendar.DATE, days - 1)
-        }
+        CalendarUtil.setToTheLastSecondOfTheDay(cal)
+        cal.add(Calendar.DATE, days - 1)
         val lastSecOfThisDay = cal.timeInMillis
         val litePalWhere = LitePal.where("taskStatus = ? and startTime < ?", "0", lastSecOfThisDay.toString())
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
@@ -61,11 +58,7 @@ class TodoDAO {
 
     fun findAllUncompletedTodoItemWhichHaveBegun(): List<TaskModel> {
         val cal = Calendar.getInstance()
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-        }
+        CalendarUtil.setToTheLastSecondOfTheDay(cal)
         val lastSecOfThisDay = cal.timeInMillis
         val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
 
@@ -109,7 +102,7 @@ class TodoDAO {
 
     /** time应为当天最后一秒 **/
     fun getUnStartedTaskCount(time: Long): Int {
-        return LitePal.where("taskStatus = ? and startTime>?", "0", time.toString()).count(TaskModel::class.java)
+        return LitePal.where("taskStatus = ? and startTime > ?", "0", time.toString()).count(TaskModel::class.java)
     }
 
     fun getTodayFinishCount(time: Long): Int {

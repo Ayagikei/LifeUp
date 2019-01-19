@@ -13,14 +13,11 @@ class AttributeLevelDAO {
         if (exp < 0) {
             return AttributeLevelModel(0, 0, 0)
         }
-
         val lastLevel = LitePal.findLast(AttributeLevelModel::class.java)
 
         return LitePal.where("startExpValue <= ? and endExpValue > ?", exp.toString(), exp.toString())
                 .findFirst(AttributeLevelModel::class.java)
                 ?: AttributeLevelModel(100, lastLevel.endExpValue, lastLevel.endExpValue + 9999999)
-
-
     }
 
     fun getOneByLevel(level: Int): AttributeLevelModel {

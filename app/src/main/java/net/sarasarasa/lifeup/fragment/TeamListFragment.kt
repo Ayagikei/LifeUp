@@ -46,7 +46,6 @@ class TeamListFragment : Fragment() {
 
                         if (pageVO.list != null) {
                             val list = pageVO.list as List<TeamListVO>
-
                             totalPage = pageVO.totalPage
 
                             if (swipe_refresh_layout != null)
@@ -73,7 +72,6 @@ class TeamListFragment : Fragment() {
                     swipe_refresh_layout.isRefreshing = false
 
                 mAdapter.loadMoreFail()
-
                 ToastUtils.showShortToast("网络错误，请稍后重试。")
             }
             else -> {
@@ -84,12 +82,9 @@ class TeamListFragment : Fragment() {
                         swipe_refresh_layout.isEnabled = true
                 }
             }
-
         }
-
         return@Callback true
     }
-
 
     private val teamNetworkImpl = TeamNetworkImpl(uiHandler)
     private val mList: MutableList<TeamListVO> = ArrayList<TeamListVO>().toMutableList()
@@ -103,7 +98,6 @@ class TeamListFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
         setHasOptionsMenu(true)
 
-
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
 
@@ -115,12 +109,10 @@ class TeamListFragment : Fragment() {
 
         rootView.swipe_refresh_layout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
         rootView.swipe_refresh_layout.setOnRefreshListener {
-
             mAdapter.setOnLoadMoreListener({
                 getNewList()
                 swipe_refresh_layout.isEnabled = false
             }, mRecyclerView)
-
 
             currentPage = 0L
             totalPage = null
@@ -149,8 +141,6 @@ class TeamListFragment : Fragment() {
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
         mAdapter.setOnItemClickListener { adapter, view, position ->
-
-
             val item = adapter.getItem(position) as TeamListVO
 
             val intent = Intent(context, TeamActivity::class.java)
@@ -181,7 +171,6 @@ class TeamListFragment : Fragment() {
     private fun setNewData(list: MutableList<TeamListVO>) {
         mAdapter.addData(list)
 
-
         if (totalPage != null) {
             if (currentPage >= totalPage!!) {
                 mAdapter.loadMoreEnd()
@@ -211,10 +200,8 @@ class TeamListFragment : Fragment() {
                 if (swipe_refresh_layout != null)
                     swipe_refresh_layout.isEnabled = false
                 currentPage = 0L
-
                 mAdapter.data.clear()
                 getNewList(s)
-
 
                 return false
             }

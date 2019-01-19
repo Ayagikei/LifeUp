@@ -40,7 +40,7 @@ import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
-import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.IS_TEAM_TASK
+import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.IS_NOT_TEAM_TASK
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
@@ -50,10 +50,7 @@ import net.sarasarasa.lifeup.service.impl.AchievementServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
-import net.sarasarasa.lifeup.utils.DateUtil
-import net.sarasarasa.lifeup.utils.LoadingDialogUtils
-import net.sarasarasa.lifeup.utils.ToastUtils
-import net.sarasarasa.lifeup.utils.WidgetUtils
+import net.sarasarasa.lifeup.utils.*
 import net.sarasarasa.lifeup.vo.ActivityVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -236,7 +233,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                         return@setOnMenuItemClickListener true
                     }
                     R.id.edit_item -> {
-                        if (item.teamId != IS_TEAM_TASK) {
+                        if (item.teamId != IS_NOT_TEAM_TASK) {
                             ToastUtils.showShortToast("团队事项不可编辑！")
                         } else {
                             val intent = Intent(this.context, EditToDoItemActivity::class.java)
@@ -248,18 +245,18 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     R.id.delete_item -> {
                         context?.let {
                             AlertDialog.Builder(it).setTitle("删除")
-                                    .setMessage("你确定要删除该待办事项吗？你会损失一些经验值。")
+                                    .setMessage("你确定要删除该待办事项吗？")
                                     .setPositiveButton("确定") { _, _ ->
                                         // 点击“确认”后的操作
                                         if (todoService.deleteTodoItem(item.id)) {
                                             Toast.makeText(it, "成功删除待办事项",
                                                     Toast.LENGTH_SHORT).show()
+                                            mAdapter.remove(position)
                                         } else {
                                             Toast.makeText(it, "删除操作出现异常",
                                                     Toast.LENGTH_SHORT).show()
                                         }
                                         activity?.applicationContext?.let { it1 -> WidgetUtils.updateWidgets(it1) }
-                                        refreshDataSet()
                                     }
                                     .setNegativeButton("取消") { _, _ ->
                                     }.show()
@@ -276,11 +273,12 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                                         if (todoService.giveUpTodoItem(item.id)) {
                                             Toast.makeText(it, "成功放弃待办事项",
                                                     Toast.LENGTH_SHORT).show()
+                                            mAdapter.remove(position)
                                         } else {
                                             Toast.makeText(it, "放弃操作出现异常",
                                                     Toast.LENGTH_SHORT).show()
                                         }
-                                        refreshDataSet()
+                                        activity?.applicationContext?.let { it1 -> WidgetUtils.updateWidgets(it1) }
                                     }
                                     .setNegativeButton("取消") { _, _ ->
                                     }.show()
@@ -308,7 +306,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 return@setOnItemChildClickListener
             }
 
-            if (item.teamId != IS_TEAM_TASK && cal.timeInMillis > item.endTime.time) {
+            if (item.teamId != IS_NOT_TEAM_TASK && cal.timeInMillis > item.endTime.time) {
                 context?.let {
                     ToastUtils.showShortToast("该待办事项已经过了签到时间段！")
                 }
@@ -326,7 +324,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                     override fun onAnimationEnd(p0: Animator?) {
                         if (!isEverShowDialog) {
-                            showDialogAbbr(item)
+                            showDialogAbbr(item, position)
                             isEverShowDialog = true
                             refreshHeaderView(mHeaderView)
                             mView.progress = 1.0f
@@ -337,7 +335,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                     override fun onAnimationCancel(p0: Animator?) {
                         if (!isEverShowDialog) {
-                            showDialogAbbr(item)
+                            showDialogAbbr(item, position)
                             isEverShowDialog = true
                             mView.progress = 1.0f
                             mView.isClickable = false
@@ -352,7 +350,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 mView.isClickable = false
 
                 //如果不是团队事项，这里就可以处理业务逻辑
-                if (item.teamId == IS_TEAM_TASK) {
+                if (item.teamId == IS_NOT_TEAM_TASK) {
                     todoService.finishTodoItem(item.id)
                     item.taskStatus = ToDoItemConstants.COMPLETED
                 }
@@ -371,7 +369,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         }
     }
 
-    private fun showDialogAbbr(item: TaskModel) {
+    private fun showDialogAbbr(item: TaskModel, position: Int) {
 
         if (dialog != null || item.relatedAttribute1.isNullOrBlank())
             return
@@ -402,9 +400,12 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 thread?.interrupt()
                 cancel()
 
-                //本地事项才显示重复对话框
-                if (item.taskFrequency != 0 && item.teamId == IS_TEAM_TASK) {
+                if (item.taskFrequency == 0 && item.teamId == IS_NOT_TEAM_TASK) {
+                    mAdapter.remove(position)
+                }
 
+                //本地事项才显示重复对话框
+                if (item.taskFrequency != 0 && item.teamId == IS_NOT_TEAM_TASK) {
                     var needToRepeat = true
                     if (item.taskTargetId != null) {
                         val taskTarget = taskTargetDAO.getTaskTargetById(item.taskTargetId!!)
@@ -417,18 +418,17 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     }
 
                     if (needToRepeat) {
-                        val isShowRepeatDialog = optionSharedPreferences?.getBoolean("isShowRepeatDialog", true)
+                        val isShowRepeatDialog = optionSharedPreferences?.getBoolean("isShowRepeatDialog", false)
                         if (isShowRepeatDialog == true)
-                            showDialogRepeat(item)
+                            showDialogRepeat(item, position)
                         else {
-                            todoService.repeatTask(item.id)
-                            refreshDataSet()
+                            repeatTask(item, position)
                         }
                     }
                 }
 
                 //非本地事项显示动态对话框
-                if (item.teamId != IS_TEAM_TASK) {
+                if (item.teamId != IS_NOT_TEAM_TASK) {
                     val isIgnoreActivitySubmitDialog = optionSharedPreferences?.getBoolean("isIgnoreActivitySubmitDialog", false)
 
                     // 检测设置里有没有勾选“默认不发表团队动态”
@@ -438,14 +438,12 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 }
             }
         }
-
         newDialog?.show()
     }
 
-    private fun showDialogRepeat(taskModel: TaskModel) {
+    private fun showDialogRepeat(taskModel: TaskModel, position: Int) {
         val dialog = context?.let { AlertDialog.Builder(it).create() }
-
-        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
+        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
 
         if (taskModel.taskFrequency != -1) {
@@ -465,9 +463,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     setMessage("要进行重复吗？")
 
                 setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
-                    if (taskModel.id != null)
-                        todoService.repeatTask(taskModel.id)
-                    refreshDataSet()
+                    repeatTask(taskModel, position)
                     dialog.cancel()
                 }
                 setButton(AlertDialog.BUTTON_NEGATIVE, "否") { _, _ ->
@@ -476,6 +472,27 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                 show()
             }
+    }
+
+    private fun repeatTask(taskModel: TaskModel, position: Int) {
+        val newTask = todoService.repeatTask(taskModel.id)
+        if (newTask != null) {
+            mAdapter.remove(position)
+
+            when (optionSharedPreferences.getString("classBy", "all")) {
+                "all" -> mAdapter.addData(newTask)
+                "week" -> {
+                    val cal = Calendar.getInstance()
+                    with(cal) {
+                        CalendarUtil.setToTheLastSecondOfTheDay(this)
+                        add(Calendar.DATE, 6)
+                    }
+                    if (newTask.startTime.before(cal.time))
+                        mAdapter.addData(newTask)
+                }
+            }
+
+        }
     }
 
     private fun showDialogReset(taskModel: TaskModel) {
@@ -507,7 +524,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 ?: "")
         //等到前等级
         var attributeLevelBefore = when (item.teamId) {
-            IS_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+            IS_NOT_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
             else -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore)
         }
 
@@ -525,7 +542,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute2
                     ?: "")
             attributeLevelBefore = when (item.teamId) {
-                IS_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+                IS_NOT_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
                 else -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore)
             }
 
@@ -541,7 +558,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             attributeExpBefore = attributeService.getAttributeExpByString(item.relatedAttribute3
                     ?: "")
             attributeLevelBefore = when (item.teamId) {
-                IS_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
+                IS_NOT_TEAM_TASK -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore - item.expReward)
                 else -> attributeLevelService.getAttributeLevelByExp(attributeExpBefore)
             }
 
@@ -579,7 +596,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             else -> return
         }
 
-        if (item.teamId != IS_TEAM_TASK)
+        if (item.teamId != IS_NOT_TEAM_TASK)
             nowExpTotal += item.expReward
 
 

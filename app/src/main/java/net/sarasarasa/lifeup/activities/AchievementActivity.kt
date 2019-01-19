@@ -20,14 +20,12 @@ import java.util.*
 
 
 class AchievementActivity : AppCompatActivity() {
-
     private val achievementService = AchievementServiceImpl()
     private val attributeService = AttributeServiceImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievement)
-
         initView()
     }
 
@@ -143,7 +141,6 @@ class AchievementActivity : AppCompatActivity() {
         val dialog = this.let { AlertDialog.Builder(it).create() }
 
         with(dialog) {
-
             this?.setView(dialogView)
             this?.show()
         }

@@ -338,7 +338,8 @@
                         android:drawablePadding="4dp"
                         android:freezesText="false"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <TextView
@@ -372,7 +373,8 @@
                         android:drawablePadding="4dp"
                         android:freezesText="false"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <TextView
@@ -406,7 +408,8 @@
                         android:drawablePadding="4dp"
                         android:freezesText="false"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <TextView
@@ -428,7 +431,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
-                    android:onClick="expireTimeReset"
                     android:text="设置时间"
                     android:textColor="@color/colorAccent"
                     android:visibility="invisible"
@@ -452,8 +454,21 @@
                         android:drawableStart="@drawable/ic_loop_black_24dp"
                         android:drawablePadding="4dp"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
+
+                <TextView
+                    android:id="@+id/btn_repeat_set_ignore_day_of_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="设置忽略"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@id/til_repeat"
+                    app:layout_constraintTop_toTopOf="@+id/til_repeat" />
 
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_target"
@@ -473,7 +488,8 @@
                         android:drawablePadding="4dp"
                         android:inputType="number"
                         android:maxLength="4"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
@@ -492,7 +508,8 @@
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/ic_card_giftcard_black_24dp"
                         android:drawablePadding="4dp"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
 
                 <!--                <Switch

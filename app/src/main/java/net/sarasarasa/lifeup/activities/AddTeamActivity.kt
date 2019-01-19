@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ColorMatrix
@@ -45,7 +44,6 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
 import net.sarasarasa.lifeup.converter.ExpRewardConverter
 import net.sarasarasa.lifeup.converter.TodoItemConverter
-import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -122,6 +120,9 @@ open class AddTeamActivity : AppCompatActivity() {
     private var avatarOriginFileName = "teamAvatarOrigin.jpg"
     private var newTeamHeadUrl: String? = userService.getMine().userHead
 
+    val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+
     companion object {
         private const val RC_CAMERA = 200
     }
@@ -178,7 +179,6 @@ open class AddTeamActivity : AppCompatActivity() {
     /** 属性按钮选择的相关响应 **/
     fun switchBtn(view: View) {
         val index = TodoItemConverter.viewToIndex(view)
-
         //当前选中的话
         if (arrAbbrBtn[index] == ToDoItemConstants.SELECTED) {
             val cm = ColorMatrix()
@@ -379,11 +379,11 @@ open class AddTeamActivity : AppCompatActivity() {
         val items = arrayOf("不重复", "每日", "每两日", "每周", "每两周", "每月")
 
         val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
-                .setSingleChoiceItems(items, iCheckedItemIndex, DialogInterface.OnClickListener { dialog, index ->
+                .setSingleChoiceItems(items, iCheckedItemIndex) { dialog, index ->
                     iCheckedItemIndex = index
                     et_repeat.setText(items[index])
                     dialog.dismiss()
-                }).create()
+                }.create()
         dialog.show()
     }
 
@@ -413,23 +413,20 @@ open class AddTeamActivity : AppCompatActivity() {
         val taskDeadline = til_deadLine.editText?.text.toString()
         var dateStartDate: Date? = null
         if (!taskDeadline.isBlank()) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-            dateStartDate = simpleDateFormat.parse("$taskDeadline 00:00:00")
+            dateStartDate = simpleDateTimeFormat.parse("$taskDeadline 00:00:00")
 
         }
 
         val taskRemindDateAndTime = til_remindDate.editText?.text.toString() + " " + til_remindTime.editText?.text.toString()
         var dateFirstStartTime: Date? = null
         if (!taskRemindDateAndTime.isBlank()) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-            dateFirstStartTime = simpleDateFormat.parse(taskRemindDateAndTime)
+            dateFirstStartTime = simpleDateTimeFormat.parse(taskRemindDateAndTime)
         }
 
         val taskRemindDateAndTimeEnd = til_remindDate.editText?.text.toString() + " " + til_startTimeEnd.editText?.text.toString()
         var dateFirstEndTime: Date? = null
         if (!taskRemindDateAndTime.isBlank()) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-            dateFirstEndTime = simpleDateFormat.parse(taskRemindDateAndTimeEnd)
+            dateFirstEndTime = simpleDateTimeFormat.parse(taskRemindDateAndTimeEnd)
         }
 
         val taskUrgencyLevel = when (iUrgency) {
@@ -483,21 +480,6 @@ open class AddTeamActivity : AppCompatActivity() {
 
         teamNetworkImpl.addTeam(teamVO)
         LoadingDialogUtils.show(this)
-
-    }
-
-    private fun addItem(taskModel: TaskModel) {
-
-        val id = todoService.addTodoItem(taskModel)
-
-        //设置提醒
-        if (taskModel.taskRemindTime != null && id != null) {
-            todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, this)
-            ToastUtils.showShortToast("提醒设置成功！")
-        }
-
-        //结束这个Activity
-        finish()
     }
 
     /** 提交前对表单进行检测 **/
@@ -542,8 +524,7 @@ open class AddTeamActivity : AppCompatActivity() {
         val taskRemindDateAndTime = til_remindDate.editText?.text.toString() + " " + til_remindTime.editText?.text.toString()
         var dateFirstStartTime: Date? = null
         if (!taskRemindDateAndTime.isBlank()) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-            dateFirstStartTime = simpleDateFormat.parse(taskRemindDateAndTime)
+            dateFirstStartTime = simpleDateTimeFormat.parse(taskRemindDateAndTime)
         }
 
 
@@ -551,10 +532,8 @@ open class AddTeamActivity : AppCompatActivity() {
         val taskRemindDateAndTimeEnd = til_remindDate.editText?.text.toString() + " " + til_startTimeEnd.editText?.text.toString()
         var dateFirstEndTime: Date? = null
         if (!taskRemindDateAndTime.isBlank()) {
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-            dateFirstEndTime = simpleDateFormat.parse(taskRemindDateAndTimeEnd)
+            dateFirstEndTime = simpleDateTimeFormat.parse(taskRemindDateAndTimeEnd)
         }
-
 
         if (dateFirstEndTime != null) {
             if (dateFirstEndTime.before(dateFirstStartTime)) {
@@ -582,7 +561,6 @@ open class AddTeamActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
@@ -599,15 +577,9 @@ open class AddTeamActivity : AppCompatActivity() {
             when (which) {
                 0 // 选择本地照片
                 -> {
-                    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-                    //if (EasyPermissions.hasPermissions(this, *perms)) {
                     val intent = Intent(Intent.ACTION_PICK)
                     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
                     startActivityForResult(intent, CHOOSE_PICTURE)
-/*                    } else {
-                        EasyPermissions.requestPermissions(this, "需要文件写入权限", RC_CAMERA, *perms)
-                    }*/
                 }
                 1 // 拍照
                 -> {

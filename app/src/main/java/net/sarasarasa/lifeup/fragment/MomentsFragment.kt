@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
+import kotlinx.android.synthetic.main.head_view_moments.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.UserActivity
 import net.sarasarasa.lifeup.adapters.MomentsAdapter
@@ -99,6 +101,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
     private var currentPage = 0L
     private var totalPage: Long? = null
     private var mCurrentClickNpl: BGANinePhotoLayout? = null
+    private var isGetAll = true
 
     companion object {
         private const val PRC_PHOTO_PREVIEW = 1
@@ -107,8 +110,6 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_moments_list, container, false)
-
-
 
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
@@ -125,6 +126,43 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
             getNewList()
         }
 
+    }
+
+    private fun getHeaderView(): View {
+        val headerView = layoutInflater.inflate(R.layout.head_view_moments, null)
+        headerView.button_all.setOnClickListener {
+            if (context != null) {
+                headerView.button_all.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                headerView.button_all.setBackgroundColor(ContextCompat.getColor(context!!, R.color.blue))
+                headerView.button_follow.setTextColor(ContextCompat.getColor(context!!, R.color.blue))
+                headerView.button_follow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+            }
+
+            mAdapter.setEnableLoadMore(false)
+            isGetAll = true
+            if (swipe_refresh_layout != null)
+                swipe_refresh_layout.isEnabled = false
+            currentPage = 0L
+            mAdapter.data.clear()
+            getNewList()
+        }
+        headerView.button_follow.setOnClickListener {
+            if (context != null) {
+                headerView.button_all.setTextColor(ContextCompat.getColor(context!!, R.color.blue))
+                headerView.button_all.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+                headerView.button_follow.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                headerView.button_follow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.blue))
+            }
+
+            mAdapter.setEnableLoadMore(false)
+            isGetAll = false
+            if (swipe_refresh_layout != null)
+                swipe_refresh_layout.isEnabled = false
+            currentPage = 0L
+            mAdapter.data.clear()
+            getNewList()
+        }
+        return headerView
     }
 
     private fun initRecyclerView(rootView: View) {
@@ -149,6 +187,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
             startActivity(intent)
         }
+        mAdapter.setHeaderView(getHeaderView())
     }
 
     private fun getNewList() {
@@ -157,7 +196,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
         pageVO.currentPage = ++currentPage
         Log.i("PageVO", pageVO.toString())
 
-        userNetworkImpl.getMoments(pageVO)
+        userNetworkImpl.getMoments(pageVO, isGetAll)
     }
 
     private fun setNewData(list: MutableList<TeamActivityListVO>) {

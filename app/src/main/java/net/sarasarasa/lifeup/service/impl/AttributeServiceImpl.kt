@@ -4,13 +4,13 @@ import net.sarasarasa.lifeup.dao.AttributeDAO
 import net.sarasarasa.lifeup.models.AttributeModel
 import net.sarasarasa.lifeup.models.ExpModel
 import net.sarasarasa.lifeup.service.AttributeService
+import net.sarasarasa.lifeup.utils.CalendarUtil
 import net.sarasarasa.lifeup.vo.AttributionVO
 import java.util.*
 
 class AttributeServiceImpl : AttributeService {
 
     private val attributeDAO = AttributeDAO()
-
 
     override fun initAttribute() {
         if (attributeDAO.getFirstAttribute() == null) {
@@ -163,19 +163,8 @@ class AttributeServiceImpl : AttributeService {
     }
 
     override fun getDailyTotalExpByDate(cal: Calendar): Int {
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-        val firstSecOfThisDay = cal.timeInMillis
-
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-        }
-        val lastSecOfThisDay = cal.timeInMillis
+        val firstSecOfThisDay = CalendarUtil.getTimeInMillisTheFirstSecondOfTheDay(cal)
+        val lastSecOfThisDay = CalendarUtil.getTimeInMillisTheLastSecondOfTheDay(cal)
 
         return attributeDAO.sumDailyTotalExpByDate(firstSecOfThisDay, lastSecOfThisDay)
     }

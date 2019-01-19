@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:background="@color/background_color"
     android:fitsSystemWindows="true"
     tools:context=".activities.SettingActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -27,180 +23,188 @@
 
         </android.support.design.widget.AppBarLayout>
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:text="事项设置" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Switch
-            android:id="@+id/switch_default_repeat"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="默认重复事项（不询问是否重复）"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="事项设置" />
 
-        <Switch
-            android:id="@+id/switch_ignore_activity_submit_dialog"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="默认不发表团队动态（不显示对话框）"
-            android:textSize="16sp" />
+            <Switch
+                android:id="@+id/switch_default_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="默认重复事项（不询问是否重复）"
+                android:textSize="16sp" />
 
-        <Switch
-            android:id="@+id/switch_default_remake_overdue"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="自动重做逾期事项（进行下一次重复）"
-            android:textSize="16sp" />
+            <Switch
+                android:id="@+id/switch_ignore_activity_submit_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="默认不发表团队动态（不显示对话框）"
+                android:textSize="16sp" />
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#ccc" />
+            <Switch
+                android:id="@+id/switch_default_remake_overdue"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="自动重做逾期事项（进行下一次重复）"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tv_widget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:text="小部件设置" />
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#ccc" />
 
-        <Switch
-            android:id="@+id/switch_widget_dark_theme"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="暗色主题"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tv_widget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="小部件设置" />
 
-        <Switch
-            android:id="@+id/switch_widget_dark_theme_white_icon_and_fonts"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="暗色主题：白色字体和图标"
-            android:textSize="16sp" />
+            <Switch
+                android:id="@+id/switch_widget_dark_theme"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="暗色主题"
+                android:textSize="16sp" />
 
-        <Switch
-            android:id="@+id/switch_hide_item"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="隐藏非今日事项"
-            android:textSize="16sp" />
+            <Switch
+                android:id="@+id/switch_widget_dark_theme_white_icon_and_fonts"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="暗色主题：白色字体和图标"
+                android:textSize="16sp" />
 
-        <!--    <com.jeff.settingitem.SettingView
-                android:id="@+id/setting_item_change_widget_font_color"
+            <Switch
+                android:id="@+id/switch_hide_item"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="隐藏非今日事项"
+                android:textSize="16sp" />
+
+            <!--    <com.jeff.settingitem.SettingView
+                    android:id="@+id/setting_item_change_widget_font_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:item_background="@drawable/selector_item"
+                    app:item_text="设置经验值和重复周期字体颜色"
+                    app:show_dot="false"
+                    app:show_left_icon="false"
+                    app:text_color="#000"
+                    app:text_size="16sp" />-->
+
+            <View
+                android:id="@+id/v_divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#ccc" />
+
+            <TextView
+                android:id="@+id/tv_animation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="显示设置" />
+
+            <Switch
+                android:id="@+id/switch_status_play_animation"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="状态页面播放波浪动画（可能影响性能）"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/switch_hide_community"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="隐藏社区模块（需要重启）"
+                android:textSize="16sp" />
+
+
+            <View
+                android:id="@+id/v_divider_3"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#ccc" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="系统设置" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_guide"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 app:item_background="@drawable/selector_item"
-                app:item_text="设置经验值和重复周期字体颜色"
+                app:item_text="重新开启新手指引"
                 app:show_dot="false"
                 app:show_left_icon="false"
                 app:text_color="#000"
-                app:text_size="16sp" />-->
+                app:text_size="16sp" />
 
-        <View
-            android:id="@+id/v_divider_2"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#ccc" />
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_logout"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="退出登录"
+                app:show_dot="false"
+                app:show_left_icon="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
 
-        <TextView
-            android:id="@+id/tv_animation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:text="显示设置" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#ccc" />
 
-        <Switch
-            android:id="@+id/switch_status_play_animation"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="状态页面播放波浪动画（可能影响性能）"
-            android:textSize="16sp" />
-
-        <Switch
-            android:id="@+id/switch_hide_community"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="隐藏社区模块（需要重启）"
-            android:textSize="16sp" />
-
-
-        <View
-            android:id="@+id/v_divider_3"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#ccc" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:text="系统设置" />
-
-        <com.jeff.settingitem.SettingView
-            android:id="@+id/setting_item_guide"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:item_background="@drawable/selector_item"
-            app:item_text="重新开启新手指引"
-            app:show_dot="false"
-            app:show_left_icon="false"
-            app:text_color="#000"
-            app:text_size="16sp" />
-
-        <com.jeff.settingitem.SettingView
-            android:id="@+id/setting_item_logout"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:item_background="@drawable/selector_item"
-            app:item_text="退出登录"
-            app:show_dot="false"
-            app:show_left_icon="false"
-            app:text_color="#000"
-            app:text_size="16sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#ccc" />
-
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

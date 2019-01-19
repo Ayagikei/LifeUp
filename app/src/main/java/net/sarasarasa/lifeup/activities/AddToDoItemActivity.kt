@@ -22,6 +22,7 @@ import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
+import kotlinx.android.synthetic.main.dialog_ignore.view.*
 import kotlinx.android.synthetic.main.dialog_repeat.view.*
 import mehdi.sakout.fancybuttons.FancyButton
 import net.sarasarasa.lifeup.R
@@ -50,9 +51,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
     protected var iTempFrequency = 0
     protected var iFrequency = 0
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
+    protected var arrIgnoreDayOfWeek: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0)
 
     protected var isUseSpecificExpireTime = false
-
     protected val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
     protected val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
@@ -227,6 +228,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         et_repeat.setOnClickListener { showRepeaterDialog(); }
         til_repeat.visibility = View.VISIBLE
+
+        btn_repeat_set_ignore_day_of_week.setOnClickListener {
+            showIgnoreDayOfWeekDialog()
+        }
     }
 
     /** 重置期限日期 **/
@@ -440,15 +445,21 @@ open class AddToDoItemActivity : AppCompatActivity() {
                         }
                     }
 
+                    if (iFrequency == 1) {
+                        btn_repeat_set_ignore_day_of_week.visibility = View.VISIBLE
+                    } else {
+                        btn_repeat_set_ignore_day_of_week.visibility = View.INVISIBLE
+                    }
                     //ToastUtils.showShortToast("u choose:$iFrequency")
-                    til_repeat.editText?.setText(TodoItemConverter.iFrequencyToNormalString(iFrequency))
+                    if (iFrequency == 1 && arrIgnoreDayOfWeek.contains(1)) {
+                        et_repeat.setText(TodoItemConverter.iFrequencyWithIgnoreToNormalString(arrIgnoreDayOfWeek))
+                    } else et_repeat.setText(TodoItemConverter.iFrequencyToNormalString(iFrequency))
 
                 }
                 .setNegativeButton("取消") { _, _ ->
                     iTempFrequency = iFrequency
                 }
                 .create()
-
         dialog.show()
     }
 
@@ -489,6 +500,63 @@ open class AddToDoItemActivity : AppCompatActivity() {
         dialogView.button_fre30.setTextColor(getThemeColor(30))
         dialogView.button_fre_custom.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         dialogView.button_fre_custom.setTextColor(getThemeColor(-2))
+    }
+
+    private fun showIgnoreDayOfWeekDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_ignore, null)
+
+        val arrButton = ArrayList<FancyButton>()
+        with(arrButton) {
+            // index0 不作实际使用
+            add(dialogView.button_day1)
+            add(dialogView.button_day1)
+            add(dialogView.button_day2)
+            add(dialogView.button_day3)
+            add(dialogView.button_day4)
+            add(dialogView.button_day5)
+            add(dialogView.button_day6)
+            add(dialogView.button_day7)
+        }
+
+        for (i in arrButton.indices) {
+            if (i == 0) continue
+            if (arrIgnoreDayOfWeek[i] == 0) {
+                arrButton[i].setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
+                arrButton[i].setTextColor(ContextCompat.getColor(this, R.color.white))
+            } else {
+                arrButton[i].setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+                arrButton[i].setTextColor(ContextCompat.getColor(this, R.color.blue))
+            }
+
+            arrButton[i].setOnClickListener {
+                if (arrIgnoreDayOfWeek[i] == 0) {
+                    // arrIgnoreDayOfWeek[0] 用作计数器，表示忽略的数量，不能让忽略所有
+                    if (arrIgnoreDayOfWeek[0] != 6) {
+                        arrIgnoreDayOfWeek[i] = 1
+                        arrIgnoreDayOfWeek[0]++
+                        arrButton[i].setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+                        arrButton[i].setTextColor(ContextCompat.getColor(this, R.color.blue))
+                    }
+                } else {
+                    arrIgnoreDayOfWeek[i] = 0
+                    arrIgnoreDayOfWeek[0]--
+                    arrButton[i].setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
+                    arrButton[i].setTextColor(ContextCompat.getColor(this, R.color.white))
+                }
+            }
+        }
+
+        val dialog = AlertDialog.Builder(this).setTitle("设置周期忽略")
+                .setView(dialogView)
+                .setCancelable(false)
+                .setPositiveButton("确定") { _, _ ->
+                }
+                .setOnDismissListener {
+                    et_repeat.setText(TodoItemConverter.iFrequencyWithIgnoreToNormalString(arrIgnoreDayOfWeek))
+                }
+                .create()
+
+        dialog.show()
     }
 
     /** 根据[taskFrequency: String]获得[color]主题色 **/
@@ -552,16 +620,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
         var relatedAttribute = arrayOf<String>()
 
         val taskFrequency = iFrequency
-/*                when (til_repeat.editText?.text.toString()) {
-            "单次" -> 0
-            "多次" -> -1
-            "每日" -> 1
-            "每两日" -> 2
-            "每周" -> 7
-            "每两周" -> 14
-            "每月" -> 30
-            else -> 0
-        }*/
         var targetTimes = 0
 
         if (iFrequency != 0 || iFrequency != -1) {
@@ -621,16 +679,22 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         // 开始时间
         val taskStartDateAndTime = til_startTime.editText?.text.toString()
-        if (!taskStartDateAndTime.isBlank()) {
+        if (!taskStartDateAndTime.isEmpty()) {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
             taskModel.startTime = simpleDateFormat.parse(taskStartDateAndTime)
             taskModel.isUserInputStartTime = true
+        } else {
+            taskModel.isUserInputStartTime = false
         }
 
         // 完成奖励
         taskModel.completeReward = til_complete_reward.editText?.text.toString()
         // 期限具体时间
         taskModel.isUseSpecificExpireTime = isUseSpecificExpireTime
+        // 周期忽略
+        if (iFrequency == 1 && arrIgnoreDayOfWeek.contains(1)) {
+            taskModel.isIgnoreDayOfWeek = arrIgnoreDayOfWeek.toCollection(ArrayList())
+        }
 
         return taskModel
     }
@@ -699,8 +763,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         if (isUseSpecificExpireTime && !TextUtils.isEmpty(til_deadLine.editText?.text)) {
             try {
-
-
                 val dateTaskDeadline = if (isUseSpecificExpireTime)
                     simpleDateTimeFormat.parse(til_deadLine.editText?.text.toString())
                 else simpleDateFormat.parse(til_deadLine.editText?.text.toString())

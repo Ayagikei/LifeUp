@@ -54,7 +54,7 @@ interface TodoService {
 
     /** 根据[id: Long]重复该待办事项,
      * 返回[Boolean]代表操作是否成功 **/
-    fun repeatTask(id: Long?): Boolean
+    fun repeatTask(id: Long?): TaskModel?
 
     /** 检查并更新逾期情况，
      * 返回[Boolean]代表是否有逾期的待办事项 **/

@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import net.sarasarasa.lifeup.dao.StepDAO
 import net.sarasarasa.lifeup.models.StepModel
 import net.sarasarasa.lifeup.service.StepService
+import net.sarasarasa.lifeup.utils.CalendarUtil
 import java.util.*
 
 class StepServiceImpl : StepService {
@@ -15,9 +16,7 @@ class StepServiceImpl : StepService {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
+        CalendarUtil.setToTheFirstSecondOfTheDay(cal)
 
         // 第一步：先判断有没有任何一条记录
         if (theLastStepRec != null) {
@@ -80,9 +79,7 @@ class StepServiceImpl : StepService {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
+        CalendarUtil.setToTheFirstSecondOfTheDay(cal)
 
         // 第一步：先判断有没有任何一条记录
         if (theLastStepRec != null) {
@@ -114,9 +111,7 @@ class StepServiceImpl : StepService {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
+        CalendarUtil.setToTheFirstSecondOfTheDay(cal)
 
         return if (theLastStepRec != null
                 && DateUtils.isToday(theLastStepRec.date.time))
@@ -128,9 +123,7 @@ class StepServiceImpl : StepService {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
+        CalendarUtil.setToTheFirstSecondOfTheDay(cal)
 
         return theLastStepRec != null
                 && DateUtils.isToday(theLastStepRec.date.time)
@@ -142,12 +135,10 @@ class StepServiceImpl : StepService {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
+        CalendarUtil.setToTheFirstSecondOfTheDay(cal)
 
-        if (theLastStepRec != null) {
-            return if (DateUtils.isToday(theLastStepRec.date.time)) {
+        return if (theLastStepRec != null) {
+            if (DateUtils.isToday(theLastStepRec.date.time)) {
                 theLastStepRec.dailyStepCount = step
                 theLastStepRec.isUserInput = true
                 theLastStepRec.save()
@@ -159,24 +150,13 @@ class StepServiceImpl : StepService {
         } else {
             val newStepRecord = StepModel(step, step, false, cal.time)
             newStepRecord.isUserInput = true
-            return newStepRecord.save()
+            newStepRecord.save()
         }
     }
 
     override fun getDailyStepByDate(cal: Calendar): Long {
-        with(cal) {
-            set(java.util.Calendar.HOUR_OF_DAY, 0)
-            set(java.util.Calendar.MINUTE, 0)
-            set(java.util.Calendar.SECOND, 0)
-        }
-        val firstSecOfThisDay = cal.timeInMillis
-
-        with(cal) {
-            set(java.util.Calendar.HOUR_OF_DAY, 23)
-            set(java.util.Calendar.MINUTE, 59)
-            set(java.util.Calendar.SECOND, 59)
-        }
-        val lastSecOfThisDay = cal.timeInMillis
+        val firstSecOfThisDay = CalendarUtil.getTimeInMillisTheFirstSecondOfTheDay(cal)
+        val lastSecOfThisDay = CalendarUtil.getTimeInMillisTheLastSecondOfTheDay(cal)
 
         return stepDAO.getStepByStartTimeAndEndTime(firstSecOfThisDay, lastSecOfThisDay)?.dailyStepCount
                 ?: 0L

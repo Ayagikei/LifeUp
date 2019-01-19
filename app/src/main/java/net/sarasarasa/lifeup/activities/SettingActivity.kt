@@ -32,7 +32,7 @@ class SettingActivity : AppCompatActivity() {
         }*/
 
         val sharedPreferences = getSharedPreferences("options", Context.MODE_PRIVATE)
-        val isShowRepeatDialog = sharedPreferences.getBoolean("isShowRepeatDialog", true)
+        val isShowRepeatDialog = sharedPreferences.getBoolean("isShowRepeatDialog", false)
         val isIgnoreActivitySubmitDialog = sharedPreferences.getBoolean("isIgnoreActivitySubmitDialog", true)
         val isDefaultRemake = sharedPreferences.getBoolean("isDefaultRemake", true)
         val isWidgetDarkTheme = sharedPreferences.getBoolean("isWidgetDarkTheme", false)
@@ -41,7 +41,6 @@ class SettingActivity : AppCompatActivity() {
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
         val isHideCommunity = sharedPreferences.getBoolean("isHideCommunity", false)
         val editor = sharedPreferences.edit()
-
 
         switch_default_repeat.isChecked = !isShowRepeatDialog
         switch_default_repeat.setOnCheckedChangeListener { _, isChecked ->

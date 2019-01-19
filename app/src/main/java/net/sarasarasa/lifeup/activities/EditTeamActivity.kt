@@ -118,17 +118,13 @@ open class EditTeamActivity : AppCompatActivity() {
             ToastUtils.showShortToast("该团队已不存在")
             finish()
         }
-
         initView()
-
     }
 
     private fun initView() {
-
         iv_team_avatar.setOnClickListener {
             showChoosePicDialog()
         }
-
 
         val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_error)
         if (!this.isDestroyed)
@@ -176,17 +172,14 @@ open class EditTeamActivity : AppCompatActivity() {
             teamId = mTeamId
         }
 
-
         Log.i("TeamVO", teamEditVO.toString())
 
         teamNetworkImpl.editTeam(teamEditVO)
         LoadingDialogUtils.show(this)
-
     }
 
     /** 提交前对表单进行检测 **/
     protected fun check(): Boolean {
-
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
             til_toDoText.error = "不能为空"
             return false
@@ -198,7 +191,6 @@ open class EditTeamActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
@@ -215,15 +207,9 @@ open class EditTeamActivity : AppCompatActivity() {
             when (which) {
                 0 // 选择本地照片
                 -> {
-                    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-                    //if (EasyPermissions.hasPermissions(this, *perms)) {
                     val intent = Intent(Intent.ACTION_PICK)
                     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
                     startActivityForResult(intent, CHOOSE_PICTURE)
-/*                    } else {
-                        EasyPermissions.requestPermissions(this, "需要文件写入权限", RC_CAMERA, *perms)
-                    }*/
                 }
                 1 // 拍照
                 -> {
@@ -311,11 +297,10 @@ open class EditTeamActivity : AppCompatActivity() {
 
     private fun getUriByOsVersion(file: File): Uri {
         val currentApiVersion = android.os.Build.VERSION.SDK_INT
-
         return if (currentApiVersion < 24) {
             Uri.fromFile(file)
         } else {
-            FileProvider.getUriForFile(this, packageName + ".provider", file)
+            FileProvider.getUriForFile(this, "$packageName.provider", file)
         }
     }
 
@@ -326,7 +311,6 @@ open class EditTeamActivity : AppCompatActivity() {
     @Throws(IOException::class)
     fun uploadFile(data: Intent) {
         val file = getAvatarFile(avatarFileName)
-
         LoadingDialogUtils.show(this)
         uploadNetworkImpl.uploadImages(file)
     }

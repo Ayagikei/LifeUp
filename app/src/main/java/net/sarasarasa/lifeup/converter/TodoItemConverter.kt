@@ -97,6 +97,37 @@ class TodoItemConverter {
             }
         }
 
+        fun iFrequencyWithIgnoreToNormalString(arrIgnoreDayOfWeek: IntArray): String {
+            if (!arrIgnoreDayOfWeek.contains(1)) return "每日"
+            if (arrIgnoreDayOfWeek.contentEquals(intArrayOf(2, 0, 0, 0, 0, 0, 1, 1))) return "工作日"
+
+            val stringBuffer = StringBuffer("每周")
+            var isFirst = true
+            for (i in arrIgnoreDayOfWeek.indices) {
+                if (i == 0) continue
+                if (arrIgnoreDayOfWeek[i] == 0) {
+                    if (isFirst) {
+                        isFirst = false
+                    } else stringBuffer.append("、")
+                    stringBuffer.append(iNumberToStringDayForWeek(i))
+                }
+            }
+            return stringBuffer.toString()
+        }
+
+        fun iNumberToStringDayForWeek(num: Int): String {
+            return when (num) {
+                1 -> "一"
+                2 -> "二"
+                3 -> "三"
+                4 -> "四"
+                5 -> "五"
+                6 -> "六"
+                7 -> "日"
+                else -> ""
+            }
+        }
+
 
         fun strStatusToDrawableId(status: Int): Int {
             return when (status) {

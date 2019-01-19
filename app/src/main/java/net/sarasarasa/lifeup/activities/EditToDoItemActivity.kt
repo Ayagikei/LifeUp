@@ -85,27 +85,22 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 else -> sb_difficulty.setValue(0.0f)
             }
 
-
-            //还原频次的选择
-/*            checkNotNull(til_repeat.editText).text = when (taskModel.taskFrequency) {
-                0 -> Editable.Factory.getInstance().newEditable("单次")
-                -1 -> Editable.Factory.getInstance().newEditable("多次")
-                1 -> Editable.Factory.getInstance().newEditable("每日")
-                2 -> Editable.Factory.getInstance().newEditable("每两日")
-                7 -> Editable.Factory.getInstance().newEditable("每周")
-                14 -> Editable.Factory.getInstance().newEditable("每两周")
-                30 -> Editable.Factory.getInstance().newEditable("每月")
-                else -> Editable.Factory.getInstance().newEditable("不重复")
-            }*/
-
             iFrequency = taskModel.taskFrequency
-            til_repeat.editText?.setText(TodoItemConverter.iFrequencyToNormalString(iFrequency))
+            if (taskModel.isIgnoreDayOfWeek.isNotEmpty()) {
+                arrIgnoreDayOfWeek = taskModel.isIgnoreDayOfWeek.toIntArray()
+            }
+
+            if (iFrequency == 1 && taskModel.isIgnoreDayOfWeek.contains(1)) {
+                et_repeat.setText(TodoItemConverter.iFrequencyWithIgnoreToNormalString(arrIgnoreDayOfWeek))
+            } else et_repeat.setText(TodoItemConverter.iFrequencyToNormalString(iFrequency))
+
+            if (iFrequency == 1)
+                btn_repeat_set_ignore_day_of_week.visibility = View.VISIBLE
 
             //还原3个属性的选择
             restoreAbbrSelection(taskModel.relatedAttribute1)
             restoreAbbrSelection(taskModel.relatedAttribute2)
             restoreAbbrSelection(taskModel.relatedAttribute3)
-
 
             if (taskModel.taskTargetId != null) {
                 val taskTarget = taskTargetDAO.getTaskTargetById(taskModel.taskTargetId!!)
@@ -119,9 +114,6 @@ class EditToDoItemActivity : AddToDoItemActivity() {
 
             // 还原奖励
             til_complete_reward.editText?.setText(taskModel.completeReward)
-
-            //switch1.isChecked = taskModel.isShared
-
         }
     }
 

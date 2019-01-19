@@ -43,7 +43,7 @@ data class TaskModel(
     var completeReward: String? = null
 
     var isUseSpecificExpireTime: Boolean = false
-    var isUserInputStartTime: Boolean = true
+    var isUserInputStartTime: Boolean = false
     var isIgnoreDayOfWeek: ArrayList<Int> = ArrayList()
 
 

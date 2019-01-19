@@ -453,7 +453,7 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
     }
 
 
-    fun getMoments(pageVO: PageVO<TeamActivityListVO>) {
+    fun getMoments(pageVO: PageVO<TeamActivityListVO>, isGetAll: Boolean) {
         Log.i("LifeUp 成员模块", "执行[查询朋友圈]操作" + userService.getToken())
 
         val currentPage = pageVO.currentPage ?: 1
@@ -463,7 +463,8 @@ class UserNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
             return
 
 
-        val call = network.getMoments(userService.getToken(), currentPage, size)
+        val call = if (isGetAll) network.getMomentsScopeAll(userService.getToken(), currentPage, size)
+        else network.getMoments(userService.getToken(), currentPage, size)
 
         call.enqueue(object : Callback<ResultVO<PageVO<TeamActivityListVO>>> {
             override fun onFailure(call: Call<ResultVO<PageVO<TeamActivityListVO>>>?, t: Throwable?) {

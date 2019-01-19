@@ -16,6 +16,7 @@ import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
+import net.sarasarasa.lifeup.utils.CalendarUtil
 import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
@@ -27,12 +28,10 @@ import retrofit2.Response
 import java.util.*
 
 class TodoServiceImpl : TodoService {
-
     private val todoDAO = TodoDAO()
     private val taskTargetDAO = TaskTargetDAO()
     private val attributeService = AttributeServiceImpl()
     private val userService = UserServiceImpl()
-
 
     override fun addTodoItem(taskModel: TaskModel): Long? {
         taskModel.createdTime = Calendar.getInstance().timeInMillis
@@ -63,11 +62,14 @@ class TodoServiceImpl : TodoService {
             taskStatus = taskModel.taskStatus
 
             // 更新UpdatedTime
-            updatedTime = Calendar.getInstance().timeInMillis
+            updatedTime = CalendarUtil.getTimeInMillisNow()
             // 开始时间也支持修改
             startTime = taskModel.startTime
+            completeReward = taskModel.completeReward
+            isUseSpecificExpireTime = taskModel.isUseSpecificExpireTime
+            isUserInputStartTime = taskModel.isUserInputStartTime
+            isIgnoreDayOfWeek = taskModel.isIgnoreDayOfWeek
         }
-
 
         todoDAO.saveTodoItem(existTodoItem)
         return true
@@ -84,9 +86,7 @@ class TodoServiceImpl : TodoService {
         if (checkAndUpdateOverdueTask()) {
             if (isShowToast) ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
         }
-
         val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
-
         val classBy = optionSharedPreferences.getString("classBy", "all")
 
         return when (classBy) {
@@ -124,7 +124,7 @@ class TodoServiceImpl : TodoService {
         with(todoDAO.findATodoItem(id) ?: return false)
         {
             taskStatus = ToDoItemConstants.COMPLETED
-            updatedTime = Calendar.getInstance().timeInMillis
+            updatedTime = CalendarUtil.getTimeInMillisNow()
             endDate = Date()
             save()
 
@@ -178,32 +178,16 @@ class TodoServiceImpl : TodoService {
 
     override fun getTodayTaskCount(): Int {
         val cal = Calendar.getInstance()
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-        val millisTime = cal.timeInMillis
-
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-        }
-        val lastSecOfThisDay = cal.timeInMillis
-
+        val firstSecOfThisDay = CalendarUtil.getTimeInMillisTheFirstSecondOfTheDay(cal)
+        val lastSecOfThisDay = CalendarUtil.getTimeInMillisTheLastSecondOfTheDay(cal)
         //总数量为未完成的+今天已经完成的-今天未开始的任务
-        return todoDAO.getUnFinishTaskCount(millisTime) + getTodayFinishCount() - todoDAO.getUnStartedTaskCount(lastSecOfThisDay)
+        return todoDAO.getUnFinishTaskCount(firstSecOfThisDay) + getTodayFinishCount() - todoDAO.getUnStartedTaskCount(lastSecOfThisDay)
     }
 
 
     override fun getTodayFinishCount(): Int {
         val cal = Calendar.getInstance()
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
+        CalendarUtil.setToTheFirstSecondOfTheDay(cal)
         val millisTime = cal.timeInMillis
 
         return todoDAO.getTodayFinishCount(millisTime)
@@ -241,11 +225,11 @@ class TodoServiceImpl : TodoService {
         return true
     }
 
-    override fun repeatTask(id: Long?): Boolean {
-        if (id == null) return false
-        val origin = todoDAO.findATodoItem(id) ?: return false
+    override fun repeatTask(id: Long?): TaskModel? {
+        if (id == null) return null
+        val origin = todoDAO.findATodoItem(id) ?: return null
 
-        if (origin.taskFrequency == 0) return false
+        if (origin.taskFrequency == 0) return null
 
         val taskModel = TaskModel(
                 origin.content,
@@ -292,9 +276,7 @@ class TodoServiceImpl : TodoService {
 
             newStartTime.time = origin.startTime
             if (!taskModel.isUserInputStartTime) {
-                newStartTime.set(Calendar.HOUR_OF_DAY, 0)
-                newStartTime.set(Calendar.MINUTE, 0)
-                newStartTime.set(Calendar.SECOND, 0)
+                CalendarUtil.setToTheFirstSecondOfTheDay(newStartTime)
             }
             newStartTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.startTime = newStartTime.time
@@ -323,7 +305,7 @@ class TodoServiceImpl : TodoService {
         origin.nextTaskId = taskModel.id
         origin.save()
 
-        return true
+        return taskModel
     }
 
     override fun checkAndUpdateOverdueTask(): Boolean {
@@ -445,13 +427,11 @@ class TodoServiceImpl : TodoService {
 
     override fun deleteTeamTaskByTeamId(teamId: Long) {
         val teamTask = todoDAO.findTeamTodoItem(teamId)
-
         teamTask?.delete()
     }
 
     override fun resetAllRemind(context: Context) {
-        val cal = Calendar.getInstance()
-        val teamTaskList = todoDAO.findAllUncompletedAndNeedRemindTodoItem(cal.timeInMillis)
+        val teamTaskList = todoDAO.findAllUncompletedAndNeedRemindTodoItem(CalendarUtil.getTimeInMillisNow())
         for (teamTask in teamTaskList) {
             teamTask.id?.let { setOrUpdateAlarm(teamTask.taskRemindTime!!.time, it, context) }
         }
@@ -503,6 +483,7 @@ class TodoServiceImpl : TodoService {
         taskModel.completeReward = origin.completeReward
         taskModel.isUseSpecificExpireTime = origin.isUseSpecificExpireTime
         taskModel.isUserInputStartTime = origin.isUserInputStartTime
+        taskModel.isIgnoreDayOfWeek = origin.isIgnoreDayOfWeek
 
 
         //重设的时候，把单次和多次事项当做每日事项处理
@@ -555,6 +536,7 @@ class TodoServiceImpl : TodoService {
         return true
     }
 
+
     override fun addGuideTask(): Boolean {
         val task = TaskModel(
                 "开始使用人升",
@@ -580,28 +562,15 @@ class TodoServiceImpl : TodoService {
         with(todoDAO.findATodoItem(id) ?: return -1)
         {
             isDeleteRecord = 1
-
             updatedTime = Calendar.getInstance().timeInMillis
             save()
-
             return 1
         }
     }
 
     override fun getFinishTaskCountByDate(cal: Calendar): Int {
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-        val firstSecOfThisDay = cal.timeInMillis
-
-        with(cal) {
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-        }
-        val lastSecOfThisDay = cal.timeInMillis
+        val firstSecOfThisDay = CalendarUtil.getTimeInMillisTheFirstSecondOfTheDay(cal)
+        val lastSecOfThisDay = CalendarUtil.getTimeInMillisTheLastSecondOfTheDay(cal)
 
         return todoDAO.getFinishCountByStartTimeAndEndTime(firstSecOfThisDay, lastSecOfThisDay)
     }
