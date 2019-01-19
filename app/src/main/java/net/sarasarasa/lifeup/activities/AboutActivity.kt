@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
@@ -14,6 +15,7 @@ import net.sarasarasa.lifeup.network.impl.VersionNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.VersionUtil
+import net.sarasarasa.lifeup.vo.VersionVO
 
 class AboutActivity : AppCompatActivity() {
 
@@ -25,12 +27,19 @@ class AboutActivity : AppCompatActivity() {
         when (msg.what) {
             AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
             VersionConstants.MSG_NEW_VERSION -> {
-                val url = msg.obj as String
-                val uri = Uri.parse(url)
-                val intent = Intent()
-                intent.action = "android.intent.action.VIEW"
-                intent.data = uri
-                startActivity(intent)
+                val versionVO = msg.obj as VersionVO
+
+                AlertDialog.Builder(this).setTitle("检测到新版本 ${versionVO.versionName}")
+                        .setMessage("更新内容：${versionVO.versionDesc}")
+                        .setPositiveButton("更新") { _, _ ->
+                            val uri = Uri.parse(versionVO.downloadUrl)
+                            val intent = Intent()
+                            intent.action = "android.intent.action.VIEW"
+                            intent.data = uri
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("取消") { _, _ ->
+                        }.show()
             }
             VersionConstants.MSG_NO_NEW_VERSION -> {
                 ToastUtils.showShortToast("现在是最新版本了！")
