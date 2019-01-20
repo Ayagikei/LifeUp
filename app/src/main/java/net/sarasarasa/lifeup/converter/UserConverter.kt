@@ -1,6 +1,6 @@
 package net.sarasarasa.lifeup.converter
 
-class UserConverter() {
+class UserConverter {
     companion object {
         fun iSexTostrSex(sex: Int): String? {
             return when (sex) {

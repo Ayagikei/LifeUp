@@ -30,7 +30,7 @@ class AboutActivity : AppCompatActivity() {
                 val versionVO = msg.obj as VersionVO
 
                 AlertDialog.Builder(this).setTitle("检测到新版本 ${versionVO.versionName}")
-                        .setMessage("更新内容：${versionVO.versionDesc}")
+                        .setMessage("更新内容：\n ${versionVO.versionDesc}")
                         .setPositiveButton("更新") { _, _ ->
                             val uri = Uri.parse(versionVO.downloadUrl)
                             val intent = Intent()

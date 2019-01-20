@@ -328,7 +328,7 @@ class TodoServiceImpl : TodoService {
                 attributeService.decreaseMultiExp(attrs, e.expReward / 5, "逾期事项「${e.content}」")
 
                 val isDefaultRemake = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE).getBoolean("isDefaultRemake", true)
-                if (isDefaultRemake && e.taskFrequency != 0 && e.taskFrequency != -1)
+                if (isDefaultRemake && e.taskFrequency != -1)
                     if (e.teamId == -1L) {
                         e.id?.let { restartTask(it) }
                     } else {

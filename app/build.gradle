@@ -13,13 +13,14 @@ android {
         applicationId "net.sarasarasa.lifeup"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 30
-        versionName "1.50"
+        versionCode 31
+        versionName "1.51"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -90,7 +91,7 @@ dependencies {
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
     implementation 'com.dingmouren.colorpicker:colorpicker:1.0.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
-    
+    debugImplementation 'com.github.whataa:pandora:v1.3.0'
 }
 
 

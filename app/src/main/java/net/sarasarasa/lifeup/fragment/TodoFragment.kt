@@ -861,6 +861,13 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             R.id.action_sort -> {
                 val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
                 val view = layoutInflater.inflate(R.layout.dialog_sort, null)
+                view.ll_sort_alpha.setOnClickListener {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("sortBy", "alpha")
+                    editor?.commit()
+                    refreshDataSet()
+                    bottomSheetDialog?.cancel()
+                }
                 view.ll_sort_start_time.setOnClickListener {
                     val editor = optionSharedPreferences?.edit()
                     editor?.putString("sortBy", "startTime")

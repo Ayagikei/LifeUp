@@ -9,14 +9,16 @@ class CalendarUtil {
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
                 set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
             }
         }
 
         fun setToTheLastSecondOfTheDay(cal: Calendar) {
             with(cal) {
-                set(Calendar.HOUR_OF_DAY, 23)
-                set(Calendar.MINUTE, 59)
-                set(Calendar.SECOND, 59)
+                set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY))
+                set(Calendar.MINUTE, cal.getMaximum(Calendar.MINUTE))
+                set(Calendar.SECOND, cal.getMaximum(Calendar.SECOND))
+                set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND))
             }
         }
 

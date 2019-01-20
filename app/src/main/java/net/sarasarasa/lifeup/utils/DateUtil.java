@@ -14,10 +14,7 @@ public class DateUtil {
         int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
         calendar.setTime(new Date(time));
         int paramWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-        if (paramWeek == currentWeek) {
-            return true;
-        }
-        return false;
+        return paramWeek == currentWeek;
     }
 
     //判断选择的日期是否是今天

@@ -104,8 +104,6 @@ class UserTeamActivity : AppCompatActivity() {
             mAdapter.setEnableLoadMore(false)
             getNewList()
         }
-
-
     }
 
     private fun initRecyclerView() {
@@ -140,7 +138,6 @@ class UserTeamActivity : AppCompatActivity() {
 
     private fun setNewData(list: MutableList<TeamListVO>) {
         mAdapter.addData(list)
-
 
         if (totalPage != null) {
             if (currentPage >= totalPage!!) {

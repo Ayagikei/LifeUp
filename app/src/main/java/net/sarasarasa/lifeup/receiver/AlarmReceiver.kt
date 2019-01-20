@@ -30,7 +30,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)*/
 
         val msgIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, 0, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        val pendingIntent = PendingIntent.getActivity(context, 0, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).setAutoCancel(true)

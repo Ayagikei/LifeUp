@@ -18,17 +18,17 @@ public class MD5Util {
 
             int i;
 
-            StringBuffer buf = new StringBuffer("");
+            StringBuilder stringBuilder = new StringBuilder();
             for (int offset = 0; offset < b.length; offset++) {
                 i = b[offset];
                 if (i < 0)
                     i += 256;
                 if (i < 16)
-                    buf.append("0");
-                buf.append(Integer.toHexString(i));
+                    stringBuilder.append("0");
+                stringBuilder.append(Integer.toHexString(i));
             }
 
-            re_md5 = buf.toString();
+            re_md5 = stringBuilder.toString();
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

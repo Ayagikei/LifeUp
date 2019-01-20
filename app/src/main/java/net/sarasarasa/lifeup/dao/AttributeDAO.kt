@@ -15,9 +15,9 @@ class AttributeDAO {
     }
 
     fun sumDailyTotalExpByDate(startTime: Long, endTime: Long): Int {
-        return LitePal.where("createTime > ? and createTime < ? and isDecrease = 0", startTime.toString(), endTime.toString())
+        return LitePal.where("createTime >= ? and createTime <= ? and isDecrease = 0", startTime.toString(), endTime.toString())
                 .sum(ExpModel::class.java, "totalValue", Int::class.java) -
-                LitePal.where("createTime > ? and createTime < ? and isDecrease = 1", startTime.toString(), endTime.toString())
+                LitePal.where("createTime >= ? and createTime <= ? and isDecrease = 1", startTime.toString(), endTime.toString())
                         .sum(ExpModel::class.java, "totalValue", Int::class.java)
     }
 

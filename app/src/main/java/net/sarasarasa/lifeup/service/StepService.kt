@@ -18,5 +18,4 @@ interface StepService {
 
     fun listFinishTaskCountPastDays(days: Int): ArrayList<Long>
 
-
 }

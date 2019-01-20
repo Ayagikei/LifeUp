@@ -85,11 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         todoService.resetAllRemind(applicationContext)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //pedometer.unRegister()
-    }
-
     fun initToolBar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
 

@@ -31,6 +31,7 @@ class TodoDAO {
 
         return if (isAsc)
             when (sortBy) {
+                "alpha" -> litePalWhere.order("priority desc,content COLLATE LOCALIZED asc")
                 "startTime" -> litePalWhere.order("priority desc,startTime asc")
                 "deadline" -> litePalWhere.order("priority desc,taskExpireTime asc")
                 "createTime" -> litePalWhere.order("priority desc,id asc")
@@ -38,6 +39,7 @@ class TodoDAO {
                 else -> litePalWhere.order("priority desc,startTime asc")
             }
         else when (sortBy) {
+            "alpha" -> litePalWhere.order("priority desc,content COLLATE LOCALIZED desc")
             "startTime" -> litePalWhere.order("priority desc,startTime desc")
             "deadline" -> litePalWhere.order("priority desc,taskExpireTime desc")
             "createTime" -> litePalWhere.order("priority desc,id desc")
@@ -52,7 +54,7 @@ class TodoDAO {
         CalendarUtil.setToTheLastSecondOfTheDay(cal)
         cal.add(Calendar.DATE, days - 1)
         val lastSecOfThisDay = cal.timeInMillis
-        val litePalWhere = LitePal.where("taskStatus = ? and startTime < ?", "0", lastSecOfThisDay.toString())
+        val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
 
@@ -66,7 +68,7 @@ class TodoDAO {
     }
 
     fun findAllUncompletedAndNeedRemindTodoItem(time: Long): List<TaskModel> {
-        return LitePal.where("taskStatus = ? and taskRemindTime > ?", "0", time.toString()).find(TaskModel::class.java)
+        return LitePal.where("taskStatus = ? and taskRemindTime >= ?", "0", time.toString()).find(TaskModel::class.java)
     }
 
     fun findAllCompletedTodoItem(limit: Int, offset: Int): List<TaskModel> {
@@ -110,7 +112,7 @@ class TodoDAO {
     }
 
     fun getFinishCountByStartTimeAndEndTime(startTime: Long, endTime: Long): Int {
-        return LitePal.where("endDate > ? and endDate < ? and taskStatus = ?", startTime.toString(), endTime.toString(), "1").count(TaskModel::class.java)
+        return LitePal.where("endDate >= ? and endDate <= ? and taskStatus = ?", startTime.toString(), endTime.toString(), "1").count(TaskModel::class.java)
     }
 
     fun getOverdueItems(time: Long): List<TaskModel> {

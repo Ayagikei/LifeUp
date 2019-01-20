@@ -11,10 +11,10 @@ class StepDAO {
     }
 
     fun getTheLastStepRecordBeforeDate(date: Date): StepModel? {
-        return LitePal.where("date < ?", date.time.toString()).findLast(StepModel::class.java)
+        return LitePal.where("date <= ?", date.time.toString()).findLast(StepModel::class.java)
     }
 
     fun getStepByStartTimeAndEndTime(startTime: Long, endTime: Long): StepModel? {
-        return LitePal.where("date < ? and date > ?", endTime.toString(), startTime.toString()).find(StepModel::class.java).getOrNull(0)
+        return LitePal.where("date <= ? and date >= ?", endTime.toString(), startTime.toString()).find(StepModel::class.java).getOrNull(0)
     }
 }

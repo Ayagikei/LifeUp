@@ -10,5 +10,4 @@ data class StepModel(var dailyStepCount: Long,
     var id: Long? = null
     var userId: Long? = null
     var isUserInput: Boolean = false
-
 }
