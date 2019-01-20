@@ -73,36 +73,47 @@ class StatisticsFragment : Fragment() {
             lineEntries.add(entry)
         }
         val lineDataSet = LineDataSet(lineEntries, "")
-        lineDataSet.setDrawCircleHole(false)
-        lineDataSet.setDrawValues(false)
-        lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-        context?.let { lineDataSet.color = (ContextCompat.getColor(it, R.color.blue)) }
-        lineDataSet.setDrawCircles(false)
-        lineDataSet.lineWidth = 1.5f
+        lineDataSet.apply {
+            setDrawCircleHole(false)
+            setDrawValues(false)
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+            context?.let { color = (ContextCompat.getColor(it, R.color.blue)) }
+            setDrawCircles(false)
+            lineWidth = 1.5f
+        }
+
         val lineData = LineData(lineDataSet)
         lineData.setDrawValues(false)
         val xAxis = view.line_chart_task.xAxis
-        xAxis.setDrawGridLines(false)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.axisMinimum = 0f
-        xAxis.granularity = 1f
         val stringDateList = DateUtil.listStringDatePastDays(7)
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
-            stringDateList[value.toInt()]
+        xAxis.apply {
+            setDrawGridLines(false)
+            position = XAxis.XAxisPosition.BOTTOM
+            axisMinimum = 0f
+            granularity = 1f
+            xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
+                stringDateList[value.toInt()]
+            }
         }
+
         val yAxis = view.line_chart_task.axisLeft
-        yAxis.granularity = 1f
-        yAxis.axisMinimum = 0f
-        view.line_chart_task.legend.isEnabled = false
-        view.line_chart_task.setTouchEnabled(false)
-        view.line_chart_task.axisRight.isEnabled = false
-        view.line_chart_task.data = lineData
-        view.line_chart_task.description.isEnabled = false
-        view.line_chart_task.setDrawGridBackground(false)
-        view.line_chart_task.setNoDataText("暂时没有相应数据")
-        view.line_chart_task.animateY(1000, Easing.Linear)
-        view.line_chart_task.animateX(1000, Easing.Linear)
-        view.line_chart_task.invalidate()
+        yAxis.apply {
+            granularity = 1f
+            axisMinimum = 0f
+        }
+        view.line_chart_task.apply {
+            legend.isEnabled = false
+            setTouchEnabled(false)
+            axisRight.isEnabled = false
+            data = lineData
+            description.isEnabled = false
+            setDrawGridBackground(false)
+            setNoDataText("暂时没有相应数据")
+            animateY(1000, Easing.Linear)
+            animateX(1000, Easing.Linear)
+            invalidate()
+        }
+
     }
 
     private fun initExpLineChart(view: View) {
@@ -113,35 +124,44 @@ class StatisticsFragment : Fragment() {
             lineEntries.add(entry)
         }
         val lineDataSet = LineDataSet(lineEntries, "")
-        lineDataSet.setDrawCircleHole(false)
-        lineDataSet.setDrawValues(false)
-        lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-        context?.let { lineDataSet.color = (ContextCompat.getColor(it, R.color.blue)) }
-        lineDataSet.setDrawCircles(false)
-        lineDataSet.lineWidth = 1.5f
+        lineDataSet.apply {
+            setDrawCircleHole(false)
+            setDrawValues(false)
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+            context?.let { color = (ContextCompat.getColor(it, R.color.blue)) }
+            setDrawCircles(false)
+            lineWidth = 1.5f
+        }
+
         val lineData = LineData(lineDataSet)
         lineData.setDrawValues(false)
         val xAxis = view.line_chart_exp.xAxis
-        xAxis.setDrawGridLines(false)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.axisMinimum = 0f
-        xAxis.granularity = 1f
+        xAxis.apply {
+            setDrawGridLines(false)
+            position = XAxis.XAxisPosition.BOTTOM
+            axisMinimum = 0f
+            granularity = 1f
+        }
         val stringDateList = DateUtil.listStringDatePastDays(7)
         xAxis.valueFormatter = IAxisValueFormatter { value, _ ->
             stringDateList[value.toInt()]
         }
         val yAxis = view.line_chart_exp.axisLeft
         yAxis.granularity = 1f
-        view.line_chart_exp.legend.isEnabled = false
-        view.line_chart_exp.setTouchEnabled(false)
-        view.line_chart_exp.axisRight.isEnabled = false
-        view.line_chart_exp.data = lineData
-        view.line_chart_exp.description.isEnabled = false
-        view.line_chart_exp.setDrawGridBackground(false)
-        view.line_chart_exp.setNoDataText("暂时没有相应数据")
-        view.line_chart_exp.animateY(1000, Easing.Linear)
-        view.line_chart_exp.animateX(1000, Easing.Linear)
-        view.line_chart_exp.invalidate()
+
+        view.line_chart_exp.apply {
+            legend.isEnabled = false
+            setTouchEnabled(false)
+            axisRight.isEnabled = false
+            data = lineData
+            description.isEnabled = false
+            setDrawGridBackground(false)
+            setNoDataText("暂时没有相应数据")
+            animateY(1000, Easing.Linear)
+            animateX(1000, Easing.Linear)
+            invalidate()
+        }
+
     }
 
     private fun initStepBarChart(view: View) {
@@ -157,24 +177,31 @@ class StatisticsFragment : Fragment() {
         val barData = BarData(barDataSet)
         val xAxisOfBarData = view.bar_chart_step.xAxis
         val stringDateList = DateUtil.listStringDatePastDays(7)
-        xAxisOfBarData.valueFormatter = IAxisValueFormatter { value, axis ->
-            stringDateList[value.toInt()]
+        xAxisOfBarData.apply {
+            valueFormatter = IAxisValueFormatter { value, axis ->
+                stringDateList[value.toInt()]
+            }
+            position = XAxis.XAxisPosition.BOTTOM
+            //xAxisOfBarData.setDrawAxisLine(false)
+            setDrawGridLines(false)
         }
-        xAxisOfBarData.position = XAxis.XAxisPosition.BOTTOM
-        //xAxisOfBarData.setDrawAxisLine(false)
-        xAxisOfBarData.setDrawGridLines(false)
         val yAxisOfBarData = view.bar_chart_step.axisLeft
-        yAxisOfBarData.axisMinimum = 0f
-        yAxisOfBarData.setDrawGridLines(false)
-        view.bar_chart_step.legend.isEnabled = false
-        view.bar_chart_step.data = barData
-        view.bar_chart_step.description.isEnabled = false
-        view.bar_chart_step.setDrawGridBackground(false)
-        view.bar_chart_step.axisRight.isEnabled = false
-        view.bar_chart_step.animateY(1000, Easing.Linear)
-        view.bar_chart_step.animateX(1000, Easing.Linear)
-        view.bar_chart_step.setNoDataText("暂时没有相应数据")
-        view.bar_chart_step.invalidate()
+        yAxisOfBarData.apply {
+            axisMinimum = 0f
+            setDrawGridLines(false)
+        }
+
+        view.bar_chart_step.apply {
+            legend.isEnabled = false
+            data = barData
+            description.isEnabled = false
+            setDrawGridBackground(false)
+            axisRight.isEnabled = false
+            animateY(1000, Easing.Linear)
+            animateX(1000, Easing.Linear)
+            setNoDataText("暂时没有相应数据")
+            invalidate()
+        }
     }
 
     private fun initExpPieChart(view: View) {
@@ -182,21 +209,26 @@ class StatisticsFragment : Fragment() {
         val pieColors = ArrayList<Int>()
         addPieEntry(pieEntries, pieColors)
         val pieDataSet = PieDataSet(pieEntries, "")
-        pieDataSet.sliceSpace = 3.0f
-        pieDataSet.colors = pieColors
-        pieDataSet.valueTextSize = 9.0f
+        pieDataSet.apply {
+            sliceSpace = 3.0f
+            colors = pieColors
+            valueTextSize = 9.0f
+        }
+
         val pieData = PieData(pieDataSet)
         pieData.setValueFormatter(PercentFormatter())
         context?.let { pieData.setValueTextColor(ContextCompat.getColor(it, R.color.white)) }
-        view.pie_chart_exp.data = pieData
-        view.pie_chart_exp.setUsePercentValues(true)
-        view.pie_chart_exp.setEntryLabelTextSize(10.0f)
-        view.pie_chart_exp.centerText = "经验分布"
-        view.pie_chart_exp.description.isEnabled = false
-        view.pie_chart_exp.setNoDataText("暂时没有相应数据")
-        view.pie_chart_exp.animateY(1000, Easing.Linear)
-        view.pie_chart_exp.animateX(1000, Easing.Linear)
-        view.pie_chart_exp.invalidate()
+        view.pie_chart_exp.apply {
+            data = pieData
+            setUsePercentValues(true)
+            setEntryLabelTextSize(10.0f)
+            centerText = "经验分布"
+            description.isEnabled = false
+            setNoDataText("暂时没有相应数据")
+            animateY(1000, Easing.Linear)
+            animateX(1000, Easing.Linear)
+            invalidate()
+        }
     }
 
     private fun addPieEntry(pieEntries: ArrayList<PieEntry>, colors: ArrayList<Int>) {
