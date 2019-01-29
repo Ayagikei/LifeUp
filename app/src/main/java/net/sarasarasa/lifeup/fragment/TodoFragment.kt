@@ -27,14 +27,17 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.dialog_activity.view.*
+import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.dialog_sort.view.*
 import kotlinx.android.synthetic.main.fragment_todo.view.*
 import kotlinx.android.synthetic.main.head_view_to_do.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.activities.AddCategoryActivity
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.EditToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.adapters.CategoryAdapter
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.NetworkConstants
@@ -43,6 +46,7 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.IS_NOT_TEAM_TASK
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
+import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
@@ -130,9 +134,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
 
         when (optionSharedPreferences.getString("classBy", "all")) {
-            "all" -> (activity as MainActivity).supportActionBar?.title = "待办：所有"
-            "today" -> (activity as MainActivity).supportActionBar?.title = "待办：今天"
-            "week" -> (activity as MainActivity).supportActionBar?.title = "待办：近七天"
+            "all" -> (activity as MainActivity).supportActionBar?.title = "${getCategoryName()}：所有"
+            "today" -> (activity as MainActivity).supportActionBar?.title = "${getCategoryName()}：今天"
+            "week" -> (activity as MainActivity).supportActionBar?.title = "${getCategoryName()}：近七天"
         }
         toolbar = (activity as MainActivity).supportActionBar
 
@@ -191,7 +195,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun initRecyclerView(view: View) {
         //检查逾期情况
         if (todoService.checkAndUpdateOverdueTask()) {
-                ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+            ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 
         mRecyclerView = view.findViewById(R.id.rv)
@@ -719,7 +723,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun refreshDataSet() {
         //检查并更新逾期情况
         if (todoService.checkAndUpdateOverdueTask()) {
-                ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+            ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 
         mList.clear()
@@ -900,13 +904,16 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 bottomSheetDialog?.show()
                 return true
             }
+            R.id.action_category -> {
+                showCategoryBottomSheetDialog()
+                return true
+            }
             R.id.action_all -> {
                 val editor = optionSharedPreferences?.edit()
                 editor?.putString("classBy", "all")
                 editor?.commit()
                 refreshDataSet()
-                if (toolbar is ActionBar)
-                    toolbar!!.title = "待办：所有"
+                refreshToolBarTitle()
                 return true
             }
             R.id.action_today -> {
@@ -914,8 +921,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 editor?.putString("classBy", "today")
                 editor?.commit()
                 refreshDataSet()
-                if (toolbar is ActionBar)
-                    toolbar!!.title = "待办：今天"
+                refreshToolBarTitle()
                 return true
             }
             R.id.action_week -> {
@@ -923,8 +929,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 editor?.putString("classBy", "week")
                 editor?.commit()
                 refreshDataSet()
-                if (toolbar is ActionBar)
-                    toolbar!!.title = "待办：近七天"
+                refreshToolBarTitle()
                 return true
             }
             R.id.action_sort_asc_change -> {
@@ -944,5 +949,51 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         }
     }
 
+    private fun showCategoryBottomSheetDialog() {
+        val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
+        val view = layoutInflater.inflate(R.layout.dialog_category, null)
+        val list = todoService.listCategory().toMutableList()
+        list.add(0, CategoryModel("默认清单", false))
+        val adapter = CategoryAdapter(R.layout.item_category, list)
+        view.rv_category.layoutManager = LinearLayoutManager(activity)
+        view.rv_category.adapter = adapter
+        view.ll_category_add.setOnClickListener {
+            val intent = Intent(activity, AddCategoryActivity::class.java)
+            startActivity(intent)
+            if (bottomSheetDialog?.isShowing == true)
+                bottomSheetDialog.dismiss()
+        }
+        adapter.setOnItemClickListener { mAdapter, mView, position ->
+            val item = mAdapter.getItem(position) as CategoryModel
+            if (position == 0) {
+                val editor = optionSharedPreferences?.edit()
+                editor?.putLong("categoryId", 0L)
+                editor?.commit()
+            } else {
+                val editor = optionSharedPreferences?.edit()
+                editor?.putLong("categoryId", item.id ?: 0L)
+                editor?.commit()
+            }
+            refreshDataSet()
+            refreshToolBarTitle()
+            if (bottomSheetDialog?.isShowing == true)
+                bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog?.setContentView(view)
+        bottomSheetDialog?.show()
+    }
 
+    private fun getCategoryName(): String {
+        return todoService.getCategoryNameById(optionSharedPreferences.getLong("categoryId", 0L))
+    }
+
+    private fun refreshToolBarTitle() {
+        if (toolbar is ActionBar) {
+            when (optionSharedPreferences.getString("classBy", "all")) {
+                "all" -> toolbar!!.title = "${getCategoryName()}：所有"
+                "today" -> toolbar!!.title = "${getCategoryName()}：今天"
+                "week" -> toolbar!!.title = "${getCategoryName()}：近七天"
+            }
+        }
+    }
 }

@@ -223,6 +223,16 @@
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".activities.AddCategoryActivity"
+            android:label="@string/title_activity_add_category"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.AddCategoryActivity" />
+        </activity>
+
         <receiver android:name=".receiver.AlarmReceiver" />
 
         <!-- FileProvider共享文件 -->

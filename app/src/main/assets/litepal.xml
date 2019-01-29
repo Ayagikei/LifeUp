@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="LifeUpDB"></dbname>
-    <version value="29"></version>
+    <version value="31"></version>
     <list>
         <mapping class="net.sarasarasa.lifeup.models.TaskModel" />
         <mapping class="net.sarasarasa.lifeup.models.AttributeModel" />
@@ -11,5 +11,6 @@
         <mapping class="net.sarasarasa.lifeup.models.AchievementModel" />
         <mapping class="net.sarasarasa.lifeup.models.TaskTargetModel" />
         <mapping class="net.sarasarasa.lifeup.models.ExpModel" />
+        <mapping class="net.sarasarasa.lifeup.models.CategoryModel" />
     </list>
 </litepal>

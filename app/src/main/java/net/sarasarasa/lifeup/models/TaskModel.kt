@@ -46,4 +46,6 @@ data class TaskModel(
     var isUserInputStartTime: Boolean = false
     var isIgnoreDayOfWeek: ArrayList<Int> = ArrayList()
 
+    var categoryId: Long? = null
+    var isNeedToRemake: Boolean = false
 }

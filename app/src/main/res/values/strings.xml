@@ -158,4 +158,5 @@
     <string name="action_sort">Sort</string>
     <string name="title_statistics">Statistics</string>
     <string name="title_activity_exp">经验值收支详情</string>
+    <string name="title_activity_add_category">新建清单</string>
 </resources>

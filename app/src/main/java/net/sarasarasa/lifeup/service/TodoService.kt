@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.service
 
 import android.content.Context
+import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.vo.TeamTaskVO
 import java.util.*
@@ -87,4 +88,9 @@ interface TodoService {
     fun getFinishTaskCountByDate(cal: Calendar): Int
 
     fun listFinishTaskCountPastDays(days: Int): ArrayList<Int>
+
+    fun addCategory(category: CategoryModel)
+
+    fun listCategory(): List<CategoryModel>
+    fun getCategoryNameById(categoryId: Long): String
 }

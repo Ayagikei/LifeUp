@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.activities
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.dialog_ignore.view.*
 import kotlinx.android.synthetic.main.dialog_repeat.view.*
 import mehdi.sakout.fancybuttons.FancyButton
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
 import net.sarasarasa.lifeup.converter.ExpRewardConverter
@@ -290,7 +292,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
             val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
 
-            et_expire_time.setText(et_expire_time.text.toString() + " $strHourOfDay:$strMinute:00")
+            et_expire_time.setText(et_expire_time.text.toString().split(" ")[0] + " $strHourOfDay:$strMinute:00")
             isUseSpecificExpireTime = true
         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
 
@@ -696,6 +698,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
         if (iFrequency == 1 && arrIgnoreDayOfWeek.contains(1)) {
             taskModel.isIgnoreDayOfWeek = arrIgnoreDayOfWeek.toCollection(ArrayList())
         }
+
+        // 清单分类
+        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+        taskModel.categoryId = optionSharedPreferences.getLong("categoryId", 0L)
 
         return taskModel
     }

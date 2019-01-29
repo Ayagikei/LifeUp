@@ -9,9 +9,11 @@ import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.OUT_OF_DATE
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.UNCOMPLETED
+import net.sarasarasa.lifeup.dao.CategoryDAO
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.instance.RetrofitInstance
+import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
@@ -30,6 +32,7 @@ import java.util.*
 class TodoServiceImpl : TodoService {
     private val todoDAO = TodoDAO()
     private val taskTargetDAO = TaskTargetDAO()
+    private val categoryDAO = CategoryDAO()
     private val attributeService = AttributeServiceImpl()
     private val userService = UserServiceImpl()
 
@@ -587,4 +590,16 @@ class TodoServiceImpl : TodoService {
         return countList
     }
 
+    override fun addCategory(category: CategoryModel) {
+        category.save()
+    }
+
+    override fun listCategory(): List<CategoryModel> {
+        return categoryDAO.listCategory()
+    }
+
+    override fun getCategoryNameById(categoryId: Long): String {
+        if (categoryId == 0L) return "默认清单"
+        return categoryDAO.getOneCategoryById(categoryId).categoryName
+    }
 }

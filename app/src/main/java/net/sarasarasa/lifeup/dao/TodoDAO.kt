@@ -9,6 +9,8 @@ import org.litepal.LitePal
 import java.util.*
 
 class TodoDAO {
+    private val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+
     fun saveTodoItem(taskModel: TaskModel): Long? {
         taskModel.save()
         return LitePal.findLast(TaskModel::class.java).id
@@ -19,13 +21,15 @@ class TodoDAO {
     }
 
     fun findAllUncompletedTodoItem(): List<TaskModel> {
-        val litePalWhere = LitePal.where("taskStatus = ?", "0")
+        val categoryId = optionSharedPreferences.getLong("categoryId", 0L)
+        val litePalWhere = if (categoryId == 0L)
+            LitePal.where("taskStatus = ? and (categoryId = ? or categoryId is null)", "0", categoryId.toString())
+        else LitePal.where("taskStatus = ? and categoryId = ?", "0", categoryId.toString())
 
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
 
     private fun getLitePalOrder(litePalWhere: FluentQuery): FluentQuery {
-        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
         val sortBy = optionSharedPreferences.getString("sortBy", "startTime")
         val isAsc = optionSharedPreferences.getBoolean("isAsc", true)
 
@@ -46,15 +50,20 @@ class TodoDAO {
             "exp" -> litePalWhere.order("priority desc,expReward desc")
             else -> litePalWhere.order("priority desc,startTime desc")
         }
-
     }
+
 
     fun findUncompletedTodoItemAfterDays(days: Int): List<TaskModel> {
         val cal = Calendar.getInstance()
         CalendarUtil.setToTheLastSecondOfTheDay(cal)
         cal.add(Calendar.DATE, days - 1)
         val lastSecOfThisDay = cal.timeInMillis
-        val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
+        val categoryId = optionSharedPreferences.getLong("categoryId", 0L)
+
+        val litePalWhere = if (categoryId == 0L)
+            LitePal.where("taskStatus = ? and startTime <= ? and (categoryId = ? or categoryId is null)", "0", lastSecOfThisDay.toString(), categoryId.toString())
+        else LitePal.where("taskStatus = ? and startTime <= ? and categoryId = ?", "0", lastSecOfThisDay.toString(), categoryId.toString())
+
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
 
@@ -62,7 +71,11 @@ class TodoDAO {
         val cal = Calendar.getInstance()
         CalendarUtil.setToTheLastSecondOfTheDay(cal)
         val lastSecOfThisDay = cal.timeInMillis
-        val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
+        val categoryId = optionSharedPreferences.getLong("categoryId", 0L)
+
+        val litePalWhere = if (categoryId == 0L)
+            LitePal.where("taskStatus = ? and startTime <= ? and (categoryId = ? or categoryId is null)", "0", lastSecOfThisDay.toString(), categoryId.toString())
+        else LitePal.where("taskStatus = ? and startTime <= ? and categoryId = ?", "0", lastSecOfThisDay.toString(), categoryId.toString())
 
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }

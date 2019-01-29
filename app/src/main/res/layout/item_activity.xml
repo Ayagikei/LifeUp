@@ -42,18 +42,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_team_fujisan" />
 
-        <TextView
-            android:id="@+id/tv_nickname"
-            android:layout_width="283dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:text="What"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
-            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="283dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="What"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_icon" />
 
         <TextView
             android:id="@+id/tv_headerText"
