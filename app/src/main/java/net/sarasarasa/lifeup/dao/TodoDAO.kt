@@ -136,6 +136,10 @@ class TodoDAO {
                 , time.toString(), "0", "-1", "0", cal.timeInMillis.toString(), "0", "-1", cal.timeInMillis.toString(), "0", "-1", "1").find(TaskModel::class.java)
     }
 
+    fun getNeedToRemakeItems(): List<TaskModel> {
+        return LitePal.where("isNeedToRemake = ?", "true").find(TaskModel::class.java)
+    }
+
     fun getFinishCount(): Int {
         return LitePal.where("taskStatus = ?", "1").count(TaskModel::class.java)
     }
@@ -157,6 +161,10 @@ class TodoDAO {
 
     fun getFinishTeamTaskCount(): Int {
         return LitePal.where("taskStatus = ? and teamId != ?", "1", "-1").count(TaskModel::class.java)
+    }
+
+    fun countCategoryTask(categoryId: Long): Int {
+        return LitePal.where("taskStatus = ? and categoryId = ?", "0", categoryId.toString()).count(TaskModel::class.java)
     }
 
 }

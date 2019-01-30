@@ -10,6 +10,11 @@ class CategoryAdapter(layoutResId: Int, data: List<CategoryModel>) : BaseQuickAd
 
     override fun convert(helper: BaseViewHolder, item: CategoryModel) {
         helper.setText(R.id.tv_category_name, item.categoryName)
+                .addOnClickListener(R.id.iv_btn_menu)
+
+        if (item.id == null) {
+            helper.setVisible(R.id.iv_btn_menu, false)
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package net.sarasarasa.lifeup.fragment
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -235,24 +234,20 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
             return
         }
 
-        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (context?.let { EasyPermissions.hasPermissions(it, *perms) } == true) {
-            val downloadDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
-            val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(context)
-                    .saveImgDir(downloadDir) // 保存图片的目录，如果传 null，则没有保存图片功能
+        val downloadDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
 
-            if (mCurrentClickNpl!!.itemCount == 1) {
-                // 预览单张图片
-                photoPreviewIntentBuilder.previewPhoto(mCurrentClickNpl!!.currentClickItem)
-            } else if (mCurrentClickNpl!!.itemCount > 1) {
-                // 预览多张图片
-                photoPreviewIntentBuilder.previewPhotos(mCurrentClickNpl!!.data)
-                        .currentPosition(mCurrentClickNpl!!.currentClickItemPosition) // 当前预览图片的索引
-            }
-            startActivity(photoPreviewIntentBuilder.build())
-        } else {
-            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, *perms)
+        val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(context)
+                .saveImgDir(activity!!.externalMediaDirs[0]) // 保存图片的目录，如果传 null，则没有保存图片功能
+
+        if (mCurrentClickNpl!!.itemCount == 1) {
+            // 预览单张图片
+            photoPreviewIntentBuilder.previewPhoto(mCurrentClickNpl!!.currentClickItem)
+        } else if (mCurrentClickNpl!!.itemCount > 1) {
+            // 预览多张图片
+            photoPreviewIntentBuilder.previewPhotos(mCurrentClickNpl!!.data)
+                    .currentPosition(mCurrentClickNpl!!.currentClickItemPosition) // 当前预览图片的索引
         }
-    }
+        startActivity(photoPreviewIntentBuilder.build())
 
+    }
 }

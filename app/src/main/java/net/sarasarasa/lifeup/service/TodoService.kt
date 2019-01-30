@@ -92,5 +92,14 @@ interface TodoService {
     fun addCategory(category: CategoryModel)
 
     fun listCategory(): List<CategoryModel>
+
     fun getCategoryNameById(categoryId: Long): String
+
+    fun moveToCategoryById(categoryId: Long, toDoItem: TaskModel): Boolean
+
+    fun renameCategory(categoryId: Long, newName: String): Boolean
+
+    fun deleteCategory(categoryId: Long): Boolean
+    fun remakeTaskWhichIsRemakeFailed()
+    fun setOverdueItemToFinish(id: Long?): Boolean
 }

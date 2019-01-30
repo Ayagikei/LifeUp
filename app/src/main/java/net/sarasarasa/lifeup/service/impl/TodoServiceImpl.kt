@@ -87,7 +87,7 @@ class TodoServiceImpl : TodoService {
 
     override fun getUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask()) {
-            if (isShowToast) ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
         val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
         val classBy = optionSharedPreferences.getString("classBy", "all")
@@ -103,7 +103,7 @@ class TodoServiceImpl : TodoService {
 
     override fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask()) {
-            if (isShowToast) ToastUtils.showLongToast("你有代办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
@@ -135,6 +135,21 @@ class TodoServiceImpl : TodoService {
             attributeService.increaseMultiExp(attrs, this.expReward, "完成事项「${this.content}」")
         }
         WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+        return true
+    }
+
+    override fun setOverdueItemToFinish(id: Long?): Boolean {
+        if (id == null) return false
+
+        with(todoDAO.findATodoItem(id) ?: return false)
+        {
+            taskStatus = ToDoItemConstants.COMPLETED
+            updatedTime = CalendarUtil.getTimeInMillisNow()
+            save()
+
+            val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
+            attributeService.increaseMultiExp(attrs, this.expReward, "设为已经完成事项「${this.content}」")
+        }
         return true
     }
 
@@ -341,6 +356,8 @@ class TodoServiceImpl : TodoService {
 
                         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
                             override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
+                                e.isNeedToRemake = true
+                                e.save()
                             }
 
                             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
@@ -361,9 +378,38 @@ class TodoServiceImpl : TodoService {
             true
         }
 
-
     }
 
+    override fun remakeTaskWhichIsRemakeFailed() {
+        val list = todoDAO.getNeedToRemakeItems()
+        if (list.isNotEmpty()) {
+            for (e in list) {
+                val retrofit = RetrofitInstance.getInstance()
+                val network: TeamNetwork = retrofit.create(TeamNetwork::class.java)
+                val call = network.getNextTeamTask(userService.getToken(), e.teamId)
+
+                call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
+                    override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
+                        e.isNeedToRemake = true
+                        e.save()
+                    }
+
+                    override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
+                        val responseBody = response.body()
+
+                        if (responseBody?.msg.equals("success")) {
+                            val teamTaskVO = responseBody?.data
+                            if (teamTaskVO != null) {
+                                addOrUpdateTeamTask(teamTaskVO)
+                            }
+                        }
+                        e.isNeedToRemake = false
+                        e.save()
+                    }
+                })
+            }
+        }
+    }
 
     /** 加入或创建团队的时候调用 **/
     override fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO): Boolean {
@@ -600,6 +646,39 @@ class TodoServiceImpl : TodoService {
 
     override fun getCategoryNameById(categoryId: Long): String {
         if (categoryId == 0L) return "默认清单"
-        return categoryDAO.getOneCategoryById(categoryId).categoryName
+
+        return categoryDAO.getOneCategoryById(categoryId)?.categoryName ?: "默认清单"
+    }
+
+    override fun moveToCategoryById(categoryId: Long, toDoItem: TaskModel): Boolean {
+        if (categoryId == 0L) {
+            toDoItem.categoryId = 0
+            return toDoItem.save()
+        }
+        val category = categoryDAO.getOneCategoryById(categoryId)
+        if (category == null || category.isDelete) return false
+
+        toDoItem.categoryId = categoryId
+        return toDoItem.save()
+    }
+
+    override fun renameCategory(categoryId: Long, newName: String): Boolean {
+        if (categoryId == 0L) return false
+        val category = categoryDAO.getOneCategoryById(categoryId)
+        if (category == null || category.isDelete) return false
+
+        category.categoryName = newName
+        return category.save()
+    }
+
+    override fun deleteCategory(categoryId: Long): Boolean {
+        val cnt = todoDAO.countCategoryTask(categoryId)
+        if (cnt != 0)
+            return false
+        else {
+            val category = categoryDAO.getOneCategoryById(categoryId) ?: return false
+            category.isDelete = true
+            return category.save()
+        }
     }
 }

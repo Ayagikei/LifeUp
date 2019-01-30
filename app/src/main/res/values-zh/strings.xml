@@ -36,7 +36,7 @@
     <string name="login_or">或者</string>
     <string name="login_viaYiban">使用易班登录</string>
 
-    <string name="title_activity_add_to_do_item">新设待办事项</string>
+    <string name="title_activity_add_to_do_item">新建待办事项</string>
     <string name="title_me">我的</string>
 
     <string name="navigation_drawer_open">打开导航栏</string>

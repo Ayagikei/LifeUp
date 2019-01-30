@@ -99,6 +99,11 @@ class HistoryActivity : AppCompatActivity() {
                 R.id.tv_btn -> {
                     val mPopupMenu = PopupMenu(view.context, view.tv_btn)
                     mPopupMenu.menuInflater.inflate(R.menu.menu_history_item, mPopupMenu.menu)
+
+                    if (item.taskStatus != ToDoItemConstants.OUT_OF_DATE) {
+                        mPopupMenu.menu.removeItem(R.id.finish_item)
+                    }
+
                     mPopupMenu.setOnMenuItemClickListener { menuItem ->
 
                         when (menuItem.itemId) {
@@ -109,6 +114,16 @@ class HistoryActivity : AppCompatActivity() {
                                 }
                                 mAdapter.remove(position)
                                 //mAdapter.notifyItemRemoved(position)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.finish_item -> {
+                                item.id?.let {
+                                    if (todoService.setOverdueItemToFinish(it)) {
+                                        ToastUtils.showShortToast("成功设为「已经完成」")
+                                        item.taskStatus = 1
+                                        mAdapter.notifyItemChanged(position)
+                                    }
+                                }
                                 return@setOnMenuItemClickListener true
                             }
                             else -> true

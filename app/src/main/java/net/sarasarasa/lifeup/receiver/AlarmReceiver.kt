@@ -37,7 +37,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notification = builder.setContentTitle("人升")
                 .setContentText("你还有待办事项需要完成：$content")
-                .setTicker("通知到来")
+                .setTicker("待办事项提醒")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent).build()
 

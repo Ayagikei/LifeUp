@@ -1,6 +1,5 @@
 package net.sarasarasa.lifeup.activities
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -350,11 +349,11 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             return
         }
 
-        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (EasyPermissions.hasPermissions(this, *perms)) {
+/*        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(this, *perms)) {*/
             val downloadDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
             val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(this)
-                    .saveImgDir(downloadDir) // 保存图片的目录，如果传 null，则没有保存图片功能
+                    .saveImgDir(this.externalMediaDirs[0]) // 保存图片的目录，如果传 null，则没有保存图片功能
 
             if (mCurrentClickNpl!!.itemCount == 1) {
                 // 预览单张图片
@@ -365,9 +364,9 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                         .currentPosition(mCurrentClickNpl!!.currentClickItemPosition) // 当前预览图片的索引
             }
             startActivity(photoPreviewIntentBuilder.build())
-        } else {
+/*        } else {
             EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, *perms)
-        }
+        }*/
     }
 
 

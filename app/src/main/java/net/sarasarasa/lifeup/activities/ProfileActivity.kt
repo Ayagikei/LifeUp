@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
@@ -208,15 +207,9 @@ class ProfileActivity : AppCompatActivity() {
             when (which) {
                 0 // 选择本地照片
                 -> {
-                    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-                    //if (EasyPermissions.hasPermissions(this, *perms)) {
                     val intent = Intent(Intent.ACTION_PICK)
                     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
                         startActivityForResult(intent, CHOOSE_PICTURE)
-/*                    } else {
-                        EasyPermissions.requestPermissions(this, "需要文件写入权限", RC_CAMERA, *perms)
-                    }*/
                 }
                 1 // 拍照
                 -> {
@@ -292,13 +285,14 @@ class ProfileActivity : AppCompatActivity() {
      */
     private fun getAvatarFile(filename: String): File {
         // 使用 APP 内部储存空间
-        val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
+        //val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
+        val appDir = this.externalMediaDirs[0]
 
         // 这句是使用外部存储空间的
         //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
 
-        if (!appDir.exists())
-            appDir.mkdir()
+/*        if (!appDir.exists())
+            appDir.mkdir()*/
 
         return File(appDir, filename)
     }

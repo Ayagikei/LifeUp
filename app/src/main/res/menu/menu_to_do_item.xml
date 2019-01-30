@@ -7,6 +7,9 @@
         android:id="@+id/edit_item"
         android:title="编辑" />
     <item
+        android:id="@+id/move_item"
+        android:title="移至..." />
+    <item
         android:id="@+id/give_up_item"
         android:title="放弃" />
     <item

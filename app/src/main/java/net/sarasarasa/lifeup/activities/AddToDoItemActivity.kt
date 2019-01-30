@@ -389,6 +389,8 @@ open class AddToDoItemActivity : AppCompatActivity() {
     private fun showRepeaterDialog() {
 
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_repeat, null)
+        // 让光标指向最尾部
+        dialogView.editText.setSelection(1)
         val arrButton = ArrayList<FancyButton>()
         with(arrButton) {
             add(dialogView.button_fre_none)

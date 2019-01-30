@@ -15,12 +15,19 @@ import net.sarasarasa.lifeup.utils.ToastUtils
 class AddCategoryActivity : AppCompatActivity() {
 
     private val toDoService = TodoServiceImpl()
+    private var categoryId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_category)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        categoryId = intent.getLongExtra("categoryId", 0)
+        if (categoryId != 0L) {
+            ed_category_name.setText(toDoService.getCategoryNameById(categoryId))
+            ed_category_name.setSelection(ed_category_name.text.toString().length)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -33,10 +40,20 @@ class AddCategoryActivity : AppCompatActivity() {
             R.id.action_finish -> {
                 val text = ed_category_name.text.toString()
                 if (text.isNotEmpty()) {
-                    val category = CategoryModel(text, false)
-                    toDoService.addCategory(category)
-                    ToastUtils.showShortToast("成功增加清单")
-                    finish()
+                    // 新增
+                    if (categoryId == 0L) {
+                        val category = CategoryModel(text, false)
+                        toDoService.addCategory(category)
+                        ToastUtils.showShortToast("成功增加清单")
+                        finish()
+                    }
+                    // 修改
+                    else {
+                        if (toDoService.renameCategory(categoryId, text)) {
+                            ToastUtils.showShortToast("成功重命名")
+                            finish()
+                        } else ToastUtils.showShortToast("重命名出现异常")
+                    }
                 } else {
                     ToastUtils.showShortToast("清单名字不能为空")
                 }
