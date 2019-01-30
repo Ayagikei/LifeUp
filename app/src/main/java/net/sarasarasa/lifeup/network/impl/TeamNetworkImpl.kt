@@ -491,7 +491,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
     fun finishTeamTask(item: TaskModel, activityVO: ActivityVO) {
         Log.i("LifeUp 团队模块", "执行[完成团队事项]操作")
 
-        val call = network.finishTeamTask(userService.getToken(), item.teamId, activityVO)
+        val call = network.finishTeamTask(userService.getToken() + "asa", item.teamId, activityVO)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
             override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {

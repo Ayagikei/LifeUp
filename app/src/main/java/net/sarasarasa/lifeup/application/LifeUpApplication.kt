@@ -25,22 +25,10 @@ import org.litepal.LitePal
 class LifeUpApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
-        //MobSDK.init(this)
         LitePal.initialize(this)
         ToastUtils.init(this)
         DensityUtil.init(this)
-
-
-        //ApplicationCrashHandler.getInstance().init(this)
-
-        /*
-        val applicationCrashHandler = ApplicationCrashHandler()
-        applicationCrashHandler.init(this)
-        */
-
         instance = this
-
     }
 
     companion object {
@@ -53,7 +41,6 @@ class LifeUpApplication : Application() {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
-
         ACRA.init(this)
     }
 

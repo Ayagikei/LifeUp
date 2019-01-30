@@ -77,8 +77,8 @@ class AboutActivity : AppCompatActivity() {
                 .addGroup("联系")
                 .addEmail("AyagiKei@163.com")
                 .addWebsite("https://www.coolapk.com/apk/net.sarasarasa.lifeup")
-                .addGitHub("AyagiKei")
-                .addGitHub("hdonghong")
+                .addGitHub("AyagiKei", "安卓端 Github")
+                .addGitHub("hdonghong", "服务器端 Github")
                 .create()
 
         setContentView(aboutPage)

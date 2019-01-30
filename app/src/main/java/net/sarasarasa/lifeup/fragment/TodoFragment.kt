@@ -7,6 +7,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
@@ -59,6 +60,7 @@ import net.sarasarasa.lifeup.utils.*
 import net.sarasarasa.lifeup.vo.ActivityVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,7 +74,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                this.context?.let { ToastUtils.showShortToast("请重新登录") }
             }
             MSG_FINISH_TEAM_TASK -> {
                 //团队事项完成
@@ -697,20 +698,17 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         if (builder != null)
             with(builder) {
                 setTitle(title)
-
                 setView(dialogView)
 
                 setPositiveButton("发表") { _, _ ->
                     //发表动态请求
                     activityVO.activity = dialogView.editText.text.toString()
-                    LoadingDialogUtils.show(context)
 
-                    if(mPhotosSnpl!!.data.isEmpty())
-                    teamNetworkImpl.finishTeamTask(taskModel, activityVO)
-                    else {
+                    if (mPhotosSnpl!!.data.isEmpty()) {
+                        teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                    } else {
                         uploadNetworkImpl.uploadImages(mPhotosSnpl!!.data,taskModel,activityVO)
                     }
-
                     mPhotosSnpl = null
                 }
                 setNeutralButton("不发表") { _, _ ->
@@ -827,18 +825,20 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun choicePhotoWrapper() {
         if(mPhotosSnpl == null) return
 
-        val perms = arrayOf(Manifest.permission.CAMERA)
+        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
         if (context?.let { EasyPermissions.hasPermissions(it, *perms) } == true) {
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
+            val takePhotoDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
+
             val photoPickerIntent = BGAPhotoPickerActivity.IntentBuilder(activity)
-                    .cameraFileDir(activity!!.externalMediaDirs[0]) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
+                    .cameraFileDir(takePhotoDir) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
                     .maxChooseCount(3) // 图片选择张数的最大值 mPhotosSnpl!!.maxItemCount - mPhotosSnpl!!.itemCount
                     .selectedPhotos(mPhotosSnpl!!.data) // 当前已选中的图片路径集合
                     .pauseOnScroll(false) // 滚动列表时是否暂停加载图片
                     .build()
             startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO)
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n拍照", PRC_PHOTO_PICKER, *perms)
+            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, *perms)
         }
     }
 
