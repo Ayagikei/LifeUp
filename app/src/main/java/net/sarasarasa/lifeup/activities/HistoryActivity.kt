@@ -28,7 +28,7 @@ class HistoryActivity : AppCompatActivity() {
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
             }
             else -> {
                 if (msg.obj != null)

@@ -29,7 +29,7 @@ class CloudFragment : Fragment() {
 
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
-        (activity as MainActivity).supportActionBar?.title = "社区"
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.title_community)
         setHasOptionsMenu(true)
 
         // Create the adapter that will return a fragment for each of the three
@@ -102,14 +102,14 @@ class CloudFragment : Fragment() {
 
             arguments?.let {
                 if (it.getBoolean("isWithoutToken")) {
-                    rootView.tv_error2.text = "您需要登录才能使用本功能！\n点击此处登录！"
+                    rootView.tv_error2.text = getString(R.string.funcation_need_to_login)
                     rootView.setOnClickListener {
                         val intent = Intent(context, LoginActivity::class.java)
                         startActivity(intent)
                         activity?.finish()
                     }
                 } else {
-                    rootView.tv_error2.text = "本功能未开放！"
+                    rootView.tv_error2.text = getString(R.string.page_not_available)
                 }
             }
 

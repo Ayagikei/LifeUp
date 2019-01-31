@@ -98,38 +98,38 @@ class AchievementActivity : AppCompatActivity() {
                 when (achievement.achievementId) {
                     0 -> {
                         val attrs = ArrayList<String>(Arrays.asList("vitality"))
-                        attributeService.increaseMultiExp(attrs, 200, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了200点「活力」经验值！")
+                        attributeService.increaseMultiExp(attrs, 200, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus))
                     }
                     1 -> {
                         val attrs = ArrayList<String>(Arrays.asList("endurance"))
-                        attributeService.increaseMultiExp(attrs, 2000, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了2000点「耐力」经验值！")
+                        attributeService.increaseMultiExp(attrs, 2000, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus_2))
                     }
                     2 -> {
                         val attrs = ArrayList<String>(Arrays.asList("strength", "endurance"))
-                        attributeService.increaseMultiExp(attrs, 2000, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了2000点「力量」、「耐力」经验值！")
+                        attributeService.increaseMultiExp(attrs, 2000, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus_3))
                     }
                     3 -> {
                         val attrs = ArrayList<String>(Arrays.asList("vitality", "endurance"))
-                        attributeService.increaseMultiExp(attrs, 5000, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了5000点「活力」、「耐力」经验值！")
+                        attributeService.increaseMultiExp(attrs, 5000, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus_4))
                     }
                     4 -> {
                         val attrs = ArrayList<String>(Arrays.asList("charm"))
-                        attributeService.increaseMultiExp(attrs, 500, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了5000点「魅力」经验值！")
+                        attributeService.increaseMultiExp(attrs, 500, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus_5))
                     }
                     5 -> {
                         val attrs = ArrayList<String>(Arrays.asList("charm"))
-                        attributeService.increaseMultiExp(attrs, 10000, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了10000点「魅力」经验值！")
+                        attributeService.increaseMultiExp(attrs, 10000, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus_6))
                     }
                     6 -> {
                         val attrs = ArrayList<String>(Arrays.asList("strength"))
-                        attributeService.increaseMultiExp(attrs, 3000, "完成成就「${achievement.title}」")
-                        ToastUtils.showShortToast("你获得了3000点「力量」经验值！")
+                        attributeService.increaseMultiExp(attrs, 3000, "${getString(R.string.achievement_complete)}「${achievement.title}」")
+                        ToastUtils.showShortToast(getString(R.string.achievement_bonus_7))
                     }
                 }
 

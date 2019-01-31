@@ -52,18 +52,18 @@ class AddCategoryActivity : AppCompatActivity() {
                             val editor = optionSharedPreferences?.edit()
                             editor?.putLong("categoryId", newCategoryId ?: 0L)
                             editor?.commit()
-                            ToastUtils.showShortToast("成功新建清单")
+                            ToastUtils.showShortToast(getString(R.string.category_add_success))
                             finish()
                         }
                         // 修改
                         else {
                             if (toDoService.renameCategory(categoryId, text)) {
-                                ToastUtils.showShortToast("成功重命名")
+                                ToastUtils.showShortToast(getString(R.string.category_rename_success))
                                 finish()
-                            } else ToastUtils.showShortToast("重命名出现异常")
+                            } else ToastUtils.showShortToast(getString(R.string.category_rename_fail))
                         }
                     } else {
-                        ToastUtils.showShortToast("清单名字不能为空")
+                        ToastUtils.showShortToast(getString(R.string.category_edittext_empty))
                     }
                 }
                 return true

@@ -25,24 +25,24 @@ class AboutActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
+            AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast(getString(R.string.network_error))
             VersionConstants.MSG_NEW_VERSION -> {
                 val versionVO = msg.obj as VersionVO
 
-                AlertDialog.Builder(this).setTitle("检测到新版本 ${versionVO.versionName}")
-                        .setMessage("更新内容：\n ${versionVO.versionDesc}")
-                        .setPositiveButton("更新") { _, _ ->
+                AlertDialog.Builder(this).setTitle("${getString(R.string.about_new_version)} ${versionVO.versionName}")
+                        .setMessage("${getString(R.string.about_update_content_title)}：\n ${versionVO.versionDesc}")
+                        .setPositiveButton(getString(R.string.btn_update)) { _, _ ->
                             val uri = Uri.parse(versionVO.downloadUrl)
                             val intent = Intent()
                             intent.action = "android.intent.action.VIEW"
                             intent.data = uri
                             startActivity(intent)
                         }
-                        .setNegativeButton("取消") { _, _ ->
+                        .setNegativeButton(getString(R.string.btn_cancel)) { _, _ ->
                         }.show()
             }
             VersionConstants.MSG_NO_NEW_VERSION -> {
-                ToastUtils.showShortToast("现在是最新版本了！")
+                ToastUtils.showShortToast(getString(R.string.has_been_latest_version))
             }
         }
 
@@ -62,7 +62,7 @@ class AboutActivity : AppCompatActivity() {
 
         val elementCheckUpdate = Element()
         elementCheckUpdate.iconDrawable = R.drawable.ic_system_update_alt_24px
-        elementCheckUpdate.title = "检查更新（建议使用酷安更新）"
+        elementCheckUpdate.title = getString(R.string.about_check_update)
         elementCheckUpdate.setOnClickListener {
             versionNetworkImpl.checkUpdate(VersionUtil.getLocalVersion(applicationContext))
         }
@@ -70,15 +70,14 @@ class AboutActivity : AppCompatActivity() {
         val aboutPage = AboutPage(this)
                 .isRTL(false)
                 .setImage(R.mipmap.ic_launcher)
-                .setDescription("一款「人生游戏化」的待办事项管理应用。\n" +
-                        "用「游戏化」的形式让你的人生更加美好。")
-                .addItem(Element().setTitle("版本号 v1.52"))
+                .setDescription(getString(R.string.about_app_description))
+                .addItem(Element().setTitle("${getString(R.string.about_version_name)} v1.52"))
                 .addItem(elementCheckUpdate)
-                .addGroup("联系")
+                .addGroup(getString(R.string.contact_title))
                 .addEmail("AyagiKei@163.com")
                 .addWebsite("https://www.coolapk.com/apk/net.sarasarasa.lifeup")
-                .addGitHub("AyagiKei", "安卓端 Github")
-                .addGitHub("hdonghong", "服务器端 Github")
+                .addGitHub("AyagiKei", getString(R.string.github_desc1))
+                .addGitHub("hdonghong", getString(R.string.github_desc2))
                 .create()
 
         setContentView(aboutPage)

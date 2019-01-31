@@ -69,10 +69,10 @@ open class AddTeamActivity : AppCompatActivity() {
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
             }
             MSG_ADD_TEAM_SUCCESS -> {
-                ToastUtils.showShortToast("新建团队成功")
+                ToastUtils.showShortToast(getString(R.string.network_add_team_success))
                 val teamTaskVO = msg.obj as TeamTaskVO
                 val intent = Intent(this, TeamActivity::class.java)
                 intent.putExtra("teamId", teamTaskVO.teamId)
@@ -96,7 +96,7 @@ open class AddTeamActivity : AppCompatActivity() {
             }
             MSG_ADD_TEAM_FAILED -> {
                 if (msg.obj != null)
-                    ToastUtils.showShortToast("创建团队失败：" + msg.obj.toString())
+                    ToastUtils.showShortToast(getString(R.string.network_add_team_fail) + msg.obj.toString())
             }
             else -> {
                 if (msg.obj != null)
@@ -290,7 +290,7 @@ open class AddTeamActivity : AppCompatActivity() {
     /** 初始化重复频次选择 **/
     private fun initRepeater() {
         et_repeat.inputType = InputType.TYPE_NULL
-        et_repeat.setText("每日")
+        et_repeat.setText(getString(R.string.team_add_repeat_day))
         et_repeat.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showRepeaterDialog()
@@ -377,9 +377,14 @@ open class AddTeamActivity : AppCompatActivity() {
      * 展示重复频次选择对话框
      */
     private fun showRepeaterDialog() {
-        val items = arrayOf("不重复", "每日", "每两日", "每周", "每两周", "每月")
+        val items = arrayOf(getString(R.string.team_add_not_repeat),
+                getString(R.string.team_add_repeat_day),
+                getString(R.string.team_add_repeat_two_day),
+                getString(R.string.team_add_repeat_week),
+                getString(R.string.team_add_repeat_two_week),
+                getString(R.string.team_add_repeat_month))
 
-        val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
+        val dialog = AlertDialog.Builder(this).setTitle(getString(R.string.team_add_set_repeat))
                 .setSingleChoiceItems(items, iCheckedItemIndex) { dialog, index ->
                     iCheckedItemIndex = index
                     et_repeat.setText(items[index])
@@ -448,12 +453,12 @@ open class AddTeamActivity : AppCompatActivity() {
         }
 
         val taskFrequency = when (til_repeat.editText?.text.toString()) {
-            "不重复" -> 0
-            "每日" -> 1
-            "每两日" -> 2
-            "每周" -> 7
-            "每两周" -> 14
-            "每月" -> 30
+            getString(R.string.team_add_not_repeat) -> 0
+            getString(R.string.team_add_repeat_day) -> 1
+            getString(R.string.team_add_repeat_two_day) -> 2
+            getString(R.string.team_add_repeat_week) -> 7
+            getString(R.string.team_add_repeat_two_week) -> 14
+            getString(R.string.team_add_repeat_month) -> 30
             else -> 0
         }
 
@@ -489,38 +494,38 @@ open class AddTeamActivity : AppCompatActivity() {
     protected fun check(): Boolean {
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
-            til_toDoText.error = "不能为空"
+            til_toDoText.error = getString(R.string.edit_text_empty_error)
             return false
         }
 
         if (TextUtils.isEmpty(til_remindTime.editText?.text)) {
-            til_remindTime.error = "不能为空"
+            til_remindTime.error = getString(R.string.edit_text_empty_error)
             return false
         }
 
         if (TextUtils.isEmpty(til_remindDate.editText?.text)) {
-            til_remindDate.error = "不能为空"
+            til_remindDate.error = getString(R.string.edit_text_empty_error)
             return false
         }
 
         if (TextUtils.isEmpty(til_startTimeEnd.editText?.text)) {
-            til_startTimeEnd.error = "不能为空"
+            til_startTimeEnd.error = getString(R.string.edit_text_empty_error)
             return false
         }
 
         if (TextUtils.isEmpty(til_deadLine.editText?.text)) {
-            til_deadLine.error = "不能为空"
+            til_deadLine.error = getString(R.string.edit_text_empty_error)
             return false
         }
 
         if (arrAbbrBtn[SELECTED_CNT] == 0) {
-            ToastUtils.showShortToast("你至少需要选择一个相关属性！")
+            ToastUtils.showShortToast(getString(R.string.team_add_without_attr_toast))
             return false
         }
 
         if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
-            ToastUtils.showShortToast("提醒日期和时间必须填写完整！")
+            ToastUtils.showShortToast(getString(R.string.team_add_remind_time_not_complete))
             return false
         }
 
@@ -540,7 +545,7 @@ open class AddTeamActivity : AppCompatActivity() {
 
         if (dateFirstEndTime != null) {
             if (dateFirstEndTime.before(dateFirstStartTime)) {
-                til_startTimeEnd.error = "结束时间必须晚于开始时间"
+                til_startTimeEnd.error = getString(R.string.team_add_time_error)
                 til_startTimeEnd.requestFocus()
                 return false
             }
@@ -551,10 +556,10 @@ open class AddTeamActivity : AppCompatActivity() {
     }
 
     fun showDialogAttribution(view: View) {
-        val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle("属性值介绍").create()
+        val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle(getString(R.string.team_add_attr_desc_title)).create()
 
         with(dialog) {
-            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
                 cancel()
             }
             this.show()
@@ -573,9 +578,9 @@ open class AddTeamActivity : AppCompatActivity() {
     @AfterPermissionGranted(RC_CAMERA)
     fun showChoosePicDialog() {
         val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("修改头像")
-        val items = arrayOf("选择本地照片", "拍照")
-        builder.setNegativeButton("取消", null)
+        builder.setTitle(getString(R.string.team_add_change_head))
+        val items = arrayOf(getString(R.string.team_add_choose_local_photo), getString(R.string.team_add_take_photo))
+        builder.setNegativeButton(getString(R.string.team_add_cancel), null)
         builder.setItems(items) { _, which ->
             when (which) {
                 0 // 选择本地照片
@@ -603,7 +608,7 @@ open class AddTeamActivity : AppCompatActivity() {
                         openCameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                         startActivityForResult(openCameraIntent, TAKE_PICTURE)
                     } else {
-                        EasyPermissions.requestPermissions(this, "拍照需要系统摄像头权限授权", RC_CAMERA, *perms)
+                        EasyPermissions.requestPermissions(this, getString(R.string.team_add_photo_permission), RC_CAMERA, *perms)
                     }
                 }
             }

@@ -49,7 +49,7 @@ open class EditTeamActivity : AppCompatActivity() {
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
             }
             NetworkConstants.MSG_UPDATE_AVATAR_SUCCESS -> {
                 if (msg.obj != null)
@@ -66,12 +66,12 @@ open class EditTeamActivity : AppCompatActivity() {
                 })
             }
             MSG_EDIT_TEAM_SUCCESS -> {
-                ToastUtils.showShortToast("修改团队信息成功")
+                ToastUtils.showShortToast(getString(R.string.network_edit_team_success))
                 finish()
             }
             MSG_EDIT_TEAM_FAILED -> {
                 if (msg.obj != null)
-                    ToastUtils.showShortToast("修改团队信息：" + msg.obj.toString())
+                    ToastUtils.showShortToast(getString(R.string.network_edit_team_fail) + msg.obj.toString())
             }
             else -> {
                 if (msg.obj != null)
@@ -115,7 +115,7 @@ open class EditTeamActivity : AppCompatActivity() {
         mTeamId = intent.getLongExtra("teamId", -1L)
 
         if (mTeamId == -1L) {
-            ToastUtils.showShortToast("该团队已不存在")
+            ToastUtils.showShortToast(getString(R.string.edit_team_not_exist))
             finish()
         }
         initView()
@@ -181,7 +181,7 @@ open class EditTeamActivity : AppCompatActivity() {
     /** 提交前对表单进行检测 **/
     protected fun check(): Boolean {
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
-            til_toDoText.error = "不能为空"
+            til_toDoText.error = getString(R.string.edit_text_empty_error)
             return false
         }
 
@@ -200,9 +200,9 @@ open class EditTeamActivity : AppCompatActivity() {
     @AfterPermissionGranted(RC_CAMERA)
     fun showChoosePicDialog() {
         val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("修改头像")
-        val items = arrayOf("选择本地照片", "拍照")
-        builder.setNegativeButton("取消", null)
+        builder.setTitle(getString(R.string.team_add_change_head))
+        val items = arrayOf(getString(R.string.team_add_choose_local_photo), getString(R.string.team_add_take_photo))
+        builder.setNegativeButton(getString(R.string.btn_cancel), null)
         builder.setItems(items) { _, which ->
             when (which) {
                 0 // 选择本地照片
@@ -230,7 +230,7 @@ open class EditTeamActivity : AppCompatActivity() {
                         openCameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                         startActivityForResult(openCameraIntent, TAKE_PICTURE)
                     } else {
-                        EasyPermissions.requestPermissions(this, "拍照需要系统摄像头权限授权", RC_CAMERA, *perms)
+                        EasyPermissions.requestPermissions(this, getString(R.string.team_add_photo_permission), RC_CAMERA, *perms)
                     }
                 }
             }

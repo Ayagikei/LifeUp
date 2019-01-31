@@ -435,9 +435,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
         setTaskFre(clickedButton, dialogView)
 
 
-        val dialog = AlertDialog.Builder(this).setTitle("设置重复频次")
+        val dialog = AlertDialog.Builder(this).setTitle(getString(R.string.team_add_set_repeat))
                 .setView(dialogView)
-                .setPositiveButton("确定") { _, _ ->
+                .setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
                     if (iTempFrequency != -2) {
                         iFrequency = iTempFrequency
                     } else {
@@ -446,7 +446,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 Integer.valueOf(dialogView.editText.text.toString()) ?: 0
                             else 0
                         } catch (e: Exception) {
-                            ToastUtils.showShortToast("你输入的数据不合法")
+                            ToastUtils.showShortToast(getString(R.string.illegal_input))
                         }
                     }
 
@@ -552,10 +552,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
             }
         }
 
-        val dialog = AlertDialog.Builder(this).setTitle("设置周期忽略")
+        val dialog = AlertDialog.Builder(this).setTitle(getString(R.string.add_to_do_set_weekday_ignore))
                 .setView(dialogView)
                 .setCancelable(false)
-                .setPositiveButton("确定") { _, _ ->
+                .setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
                 }
                 .setOnDismissListener {
                     et_repeat.setText(TodoItemConverter.iFrequencyWithIgnoreToNormalString(arrIgnoreDayOfWeek))
@@ -638,7 +638,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                         targetTimes = timesFromText
                     }
                 } catch (e: Exception) {
-                    ToastUtils.showShortToast("目标次数数据异常")
+                    ToastUtils.showShortToast(getString(R.string.add_to_do_goal_illegal_input))
                 }
             }
         }
@@ -719,7 +719,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         //设置提醒
         if (taskModel.taskRemindTime != null && id != null) {
             todoService.setOrUpdateAlarm(taskModel.taskRemindTime!!.time, id, this)
-            ToastUtils.showShortToast("提醒设置成功！")
+            ToastUtils.showShortToast(getString(R.string.add_to_do_remind_set_success))
         }
 
         //结束这个Activity
@@ -731,7 +731,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         var isAllCheckPassed = true
 
         if (TextUtils.isEmpty(til_toDoText.editText?.text)) {
-            til_toDoText.error = "不能为空"
+            til_toDoText.error = getString(R.string.edit_text_empty_error)
 
             scroll_view.post {
                 scroll_view.scrollTo(0, til_toDoText.top)
@@ -741,7 +741,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         if (arrAbbrBtn[SELECTED_CNT] == 0) {
-            ToastUtils.showShortToast("你至少需要选择一个相关属性！")
+            ToastUtils.showShortToast(getString(R.string.add_to_do_without_attr_toast))
             isAllCheckPassed = false
         }
 
@@ -758,7 +758,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 simpleDateFormat.parse(taskRemindDateAndTime)
             }
         } catch (e: Exception) {
-            ToastUtils.showShortToast("提醒日期数据异常")
+            ToastUtils.showShortToast(getString(R.string.add_to_do_remind_illegal_input))
             isAllCheckPassed = false
         }
 
@@ -769,7 +769,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 simpleDateFormat.parse(taskStartDateAndTime)
             }
         } catch (e: Exception) {
-            ToastUtils.showShortToast("开始时间数据异常")
+            ToastUtils.showShortToast(getString(R.string.add_to_do_start_time_illegal_input))
             isAllCheckPassed = false
         }
 
@@ -780,11 +780,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 else simpleDateFormat.parse(til_deadLine.editText?.text.toString())
 
                 if (dateTaskDeadline.before(Date())) {
-                    ToastUtils.showShortToast("期限时间不能早于当前时间")
+                    ToastUtils.showShortToast(getString(R.string.add_to_do_end_time_too_early))
                     isAllCheckPassed = false
                 }
             } catch (e: Exception) {
-                ToastUtils.showShortToast("期限时间数据异常")
+                ToastUtils.showShortToast(getString(R.string.add_to_do_end_time_illegal_input))
                 isAllCheckPassed = false
             }
         }
@@ -803,24 +803,19 @@ open class AddToDoItemActivity : AppCompatActivity() {
                     deadLine.add(Calendar.DATE, 1)
 
                 if (dateStartTime.after(deadLine.time)) {
-                    ToastUtils.showShortToast("开始时间不能晚于期限日期")
+                    ToastUtils.showShortToast(getString(R.string.add_to_do_start_time_too_late))
                     isAllCheckPassed = false
                 }
             } catch (e: Exception) {
-                ToastUtils.showShortToast("开始时间数据异常")
+                ToastUtils.showShortToast(getString(R.string.add_to_do_start_time_illegal_input))
                 isAllCheckPassed = false
             }
         }
 
 
         val isNeedDDl = when (til_repeat.editText?.text.toString()) {
-            "单次" -> false
-            "多次" -> false
-            "每日" -> true
-            "每两日" -> true
-            "每周" -> true
-            "每两周" -> true
-            "每月" -> true
+            getString(R.string.add_to_do_not_repeat) -> false
+            getString(R.string.add_to_do_repeat_times) -> false
             else -> true
         }
 
@@ -840,12 +835,12 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 try {
                     val timesFromText = Integer.valueOf(til_target.editText?.text.toString())
                     if (timesFromText < 0) {
-                        til_target.error = "数据异常"
+                        til_target.error = getString(R.string.illegal_input)
                         isAllCheckPassed = false
                     }
                 } catch (e: Exception) {
-                    ToastUtils.showShortToast("目标次数数据异常")
-                    til_target.error = "数据异常"
+                    ToastUtils.showShortToast(getString(R.string.add_to_do_goal_illegal_input))
+                    til_target.error = getString(R.string.illegal_input)
                     isAllCheckPassed = false
                 }
             }
@@ -855,10 +850,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     fun showDialogAttribution(view: View) {
-        val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle("属性值介绍").create()
+        val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle(getString(R.string.add_to_do_attr_desc_title)).create()
 
         with(dialog) {
-            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
                 cancel()
             }
             this.show()

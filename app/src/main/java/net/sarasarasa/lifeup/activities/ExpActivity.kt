@@ -55,7 +55,7 @@ class ExpActivity : AppCompatActivity() {
 
     private fun getEmptyView(): View {
         val view = layoutInflater.inflate(R.layout.foot_view_to_do, null)
-        view.textView11.text = "暂时没有经验值收支情况"
+        view.textView11.text = getString(R.string.exp_empty_text)
         return view
     }
 
