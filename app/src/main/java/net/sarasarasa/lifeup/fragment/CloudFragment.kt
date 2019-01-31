@@ -30,6 +30,7 @@ class CloudFragment : Fragment() {
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
         (activity as MainActivity).supportActionBar?.title = "社区"
+        setHasOptionsMenu(true)
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

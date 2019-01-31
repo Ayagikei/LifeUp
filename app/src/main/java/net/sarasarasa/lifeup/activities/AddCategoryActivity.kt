@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
+import android.content.Context
 import android.os.Bundle
 
 import android.support.v7.app.AppCompatActivity
@@ -8,8 +9,10 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_add_category.*
 import kotlinx.android.synthetic.main.content_category.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.ClickUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 
 class AddCategoryActivity : AppCompatActivity() {
@@ -38,24 +41,30 @@ class AddCategoryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_finish -> {
-                val text = ed_category_name.text.toString()
-                if (text.isNotEmpty()) {
-                    // 新增
-                    if (categoryId == 0L) {
-                        val category = CategoryModel(text, false)
-                        toDoService.addCategory(category)
-                        ToastUtils.showShortToast("成功增加清单")
-                        finish()
-                    }
-                    // 修改
-                    else {
-                        if (toDoService.renameCategory(categoryId, text)) {
-                            ToastUtils.showShortToast("成功重命名")
+                if (ClickUtils.isNotFastClick()) {
+                    val text = ed_category_name.text.toString()
+                    if (text.isNotEmpty()) {
+                        // 新增
+                        if (categoryId == 0L) {
+                            val category = CategoryModel(text, false)
+                            val newCategoryId = toDoService.addCategory(category)
+                            val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+                            val editor = optionSharedPreferences?.edit()
+                            editor?.putLong("categoryId", newCategoryId ?: 0L)
+                            editor?.commit()
+                            ToastUtils.showShortToast("成功新建清单")
                             finish()
-                        } else ToastUtils.showShortToast("重命名出现异常")
+                        }
+                        // 修改
+                        else {
+                            if (toDoService.renameCategory(categoryId, text)) {
+                                ToastUtils.showShortToast("成功重命名")
+                                finish()
+                            } else ToastUtils.showShortToast("重命名出现异常")
+                        }
+                    } else {
+                        ToastUtils.showShortToast("清单名字不能为空")
                     }
-                } else {
-                    ToastUtils.showShortToast("清单名字不能为空")
                 }
                 return true
             }

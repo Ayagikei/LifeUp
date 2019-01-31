@@ -72,6 +72,7 @@ class TodoServiceImpl : TodoService {
             isUseSpecificExpireTime = taskModel.isUseSpecificExpireTime
             isUserInputStartTime = taskModel.isUserInputStartTime
             isIgnoreDayOfWeek = taskModel.isIgnoreDayOfWeek
+            // 编辑不会影响到清单分类
         }
 
         todoDAO.saveTodoItem(existTodoItem)
@@ -276,6 +277,7 @@ class TodoServiceImpl : TodoService {
         taskModel.isUseSpecificExpireTime = origin.isUseSpecificExpireTime
         taskModel.isUserInputStartTime = origin.isUserInputStartTime
         taskModel.isIgnoreDayOfWeek = origin.isIgnoreDayOfWeek
+        taskModel.categoryId = origin.categoryId
 
         //最后一次事项增加奖励
         if (taskModel.taskTargetId != null && taskModel.taskTargetId is Long) {
@@ -327,6 +329,7 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun checkAndUpdateOverdueTask(): Boolean {
+        remakeTaskWhichIsRemakeFailed()
         //期限当天不算逾期，第二天才算，此处做处理
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DATE, -1)
@@ -366,7 +369,7 @@ class TodoServiceImpl : TodoService {
                                 if (responseBody?.msg.equals("success")) {
                                     val teamTaskVO = responseBody?.data
                                     if (teamTaskVO != null) {
-                                        addOrUpdateTeamTask(teamTaskVO)
+                                        addOrUpdateTeamTask(teamTaskVO, e.categoryId ?: 0L)
                                     }
                                 }
                             }
@@ -400,7 +403,7 @@ class TodoServiceImpl : TodoService {
                         if (responseBody?.msg.equals("success")) {
                             val teamTaskVO = responseBody?.data
                             if (teamTaskVO != null) {
-                                addOrUpdateTeamTask(teamTaskVO)
+                                addOrUpdateTeamTask(teamTaskVO, e.categoryId ?: 0L)
                             }
                         }
                         e.isNeedToRemake = false
@@ -412,7 +415,7 @@ class TodoServiceImpl : TodoService {
     }
 
     /** 加入或创建团队的时候调用 **/
-    override fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO): Boolean {
+    override fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO, passCategoryId: Long): Boolean {
         val teamId: Long = teamTaskVO.teamId ?: -1L
 
         if (teamId == -1L)
@@ -451,6 +454,7 @@ class TodoServiceImpl : TodoService {
                 endTime = teamTaskVO.nextEndTime ?: Date()
                 expReward = teamTaskVO.rewardExp ?: 0
                 teamRecordId = teamTaskVO.teamRecordId
+                categoryId = passCategoryId
             }
 
             newTaskModel.save()
@@ -463,7 +467,6 @@ class TodoServiceImpl : TodoService {
             taskModel.taskStatus = UNCOMPLETED
             taskModel.save()
         }
-
         return false
     }
 
@@ -636,8 +639,9 @@ class TodoServiceImpl : TodoService {
         return countList
     }
 
-    override fun addCategory(category: CategoryModel) {
+    override fun addCategory(category: CategoryModel): Long? {
         category.save()
+        return category.id
     }
 
     override fun listCategory(): List<CategoryModel> {

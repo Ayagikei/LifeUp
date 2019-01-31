@@ -305,7 +305,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                     if (teamTaskVO != null) {
                         message.what = MSG_ADD_TEAM_SUCCESS
                         message.obj = teamTaskVO
-                        todoService.addOrUpdateTeamTask(teamTaskVO)
+                        todoService.addOrUpdateTeamTask(teamTaskVO, 0L)
                     } else {
                         message.what = MSG_ADD_TEAM_FAILED
                         message.obj = responseBody?.msg
@@ -433,7 +433,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                     message.obj = teamTaskVO
 
                     if (teamTaskVO != null) {
-                        todoService.addOrUpdateTeamTask(teamTaskVO)
+                        todoService.addOrUpdateTeamTask(teamTaskVO, 0L)
                     }
 
                     Log.i("LifeUp 团队模块", "[加入团队]请求成功：${teamTaskVO}")
@@ -475,7 +475,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                     if (teamTaskVO != null) {
                         //添加新的事项
-                        if (todoService.addOrUpdateTeamTask(teamTaskVO))
+                        if (todoService.addOrUpdateTeamTask(teamTaskVO, 0L))
                             message.obj = "成功领取事项"
                         else message.obj = "事项已领取，请在事项逾期的情况下领取！"
                     }
@@ -491,7 +491,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
     fun finishTeamTask(item: TaskModel, activityVO: ActivityVO) {
         Log.i("LifeUp 团队模块", "执行[完成团队事项]操作")
 
-        val call = network.finishTeamTask(userService.getToken() + "asa", item.teamId, activityVO)
+        val call = network.finishTeamTask(userService.getToken(), item.teamId, activityVO)
 
         call.enqueue(object : Callback<ResultVO<TeamTaskVO>> {
             override fun onFailure(call: Call<ResultVO<TeamTaskVO>>?, t: Throwable?) {
@@ -513,7 +513,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                     ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
-                } else {
+                } else if (responseBody?.msg == "success") {
                     message.what = MSG_FINISH_TEAM_TASK
                     val teamTaskVO = responseBody?.data
 
@@ -521,10 +521,12 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                         //完成事项
                         todoService.finishTodoItem(item.id)
                         //添加新的事项
-                        todoService.addOrUpdateTeamTask(teamTaskVO)
+                        todoService.addOrUpdateTeamTask(teamTaskVO, item.categoryId ?: 0L)
                     }
 
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求成功：${teamTaskVO}")
+                } else {
+                    ToastUtils.showShortToast(responseBody?.msg ?: "")
                 }
                 uiHandler?.handleMessage(message)
             }

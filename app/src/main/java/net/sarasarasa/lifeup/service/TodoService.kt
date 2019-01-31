@@ -65,7 +65,7 @@ interface TodoService {
 
     fun getOverdueCount(): Int
 
-    fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO): Boolean
+    fun addOrUpdateTeamTask(teamTaskVO: TeamTaskVO, passCategoryId: Long): Boolean
 
     fun getFinishTeamTaskCount(): Int
 
@@ -89,7 +89,7 @@ interface TodoService {
 
     fun listFinishTaskCountPastDays(days: Int): ArrayList<Int>
 
-    fun addCategory(category: CategoryModel)
+    fun addCategory(category: CategoryModel): Long?
 
     fun listCategory(): List<CategoryModel>
 
@@ -100,6 +100,8 @@ interface TodoService {
     fun renameCategory(categoryId: Long, newName: String): Boolean
 
     fun deleteCategory(categoryId: Long): Boolean
+
     fun remakeTaskWhichIsRemakeFailed()
+
     fun setOverdueItemToFinish(id: Long?): Boolean
 }

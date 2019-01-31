@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -132,14 +133,21 @@ class SettingActivity : AppCompatActivity() {
             ).show()
 
         }*/
-
+        if (userService.getToken() == "") {
+            setting_item_logout.setItemText("重新登录")
+        }
 
         setting_item_logout.setOnItemViewClick {
             //清空token和非本地事项
-            userService.saveToken("")
-            todoService.deleteTeamTask()
+            if (userService.getToken() == "") {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            } else {
+                userService.saveToken("")
+                todoService.deleteTeamTask()
 
-            ToastUtils.showShortToast("退出成功")
+                ToastUtils.showShortToast("退出成功")
+            }
         }
 
 /*        setting_item_account.setOnItemViewClick {

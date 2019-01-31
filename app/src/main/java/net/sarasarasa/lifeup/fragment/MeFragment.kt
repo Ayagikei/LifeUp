@@ -33,6 +33,7 @@ class MeFragment : Fragment() {
         rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
         (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
         (activity as MainActivity).supportActionBar?.title = "我的"
+        setHasOptionsMenu(false)
 
         initView(rootView)
 

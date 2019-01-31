@@ -48,6 +48,7 @@ import net.sarasarasa.lifeup.network.impl.TeamNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UploadNetworkImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.ClickUtils
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.TeamTaskVO
@@ -289,7 +290,7 @@ open class AddTeamActivity : AppCompatActivity() {
     /** 初始化重复频次选择 **/
     private fun initRepeater() {
         et_repeat.inputType = InputType.TYPE_NULL
-        et_repeat.setText("不重复")
+        et_repeat.setText("每日")
         et_repeat.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus)
                 showRepeaterDialog()
@@ -395,8 +396,10 @@ open class AddTeamActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_finish -> {
-                if (check()) {
-                    getItem()
+                if (ClickUtils.isNotFastClick()) {
+                    if (check()) {
+                        getItem()
+                    }
                 }
                 return true
             }

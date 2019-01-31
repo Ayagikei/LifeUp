@@ -8,6 +8,7 @@ class ToastUtils {
     companion object {
 
         private lateinit var contextReference: WeakReference<Context>
+        private var mToast: Toast? = null
 
         fun init(context: Context) {
             this.contextReference = WeakReference(context)
@@ -17,8 +18,12 @@ class ToastUtils {
             val context = contextReference.get()
 
             try {
-                if (context != null)
-                    Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    if (mToast == null) mToast = Toast.makeText(context, string, Toast.LENGTH_SHORT)
+                    else mToast!!.setText(string)
+                    mToast?.duration = Toast.LENGTH_SHORT
+                    mToast?.show()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -36,8 +41,12 @@ class ToastUtils {
             val context = contextReference.get()
 
             try {
-                if (context != null)
-                    Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+                if (context != null) {
+                    if (mToast == null) mToast = Toast.makeText(context, string, Toast.LENGTH_LONG)
+                    else mToast!!.setText(string)
+                    mToast?.duration = Toast.LENGTH_LONG
+                    mToast?.show()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

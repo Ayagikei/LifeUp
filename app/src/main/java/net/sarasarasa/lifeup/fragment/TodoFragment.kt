@@ -74,6 +74,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
+                (activity as MainActivity).notifyNaviDrawerUpdate()
             }
             MSG_FINISH_TEAM_TASK -> {
                 //团队事项完成
@@ -683,7 +684,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     }
 
 
-
     private fun showDialogActivity(taskModel: TaskModel) {
         // val editText = EditText(context)
         val activityVO = ActivityVO()
@@ -1002,7 +1002,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             when (menuItem.itemId) {
                 R.id.rename_item -> {
                     val intent = Intent(activity, AddCategoryActivity::class.java)
-                    intent.putExtra("categoryId", item?.id)
+                    intent.putExtra("categoryId", item.id)
                     startActivity(intent)
                     if (bottomSheetDialog?.isShowing == true) {
                         bottomSheetDialog.dismiss()
@@ -1010,7 +1010,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     return@setOnMenuItemClickListener true
                 }
                 R.id.delete_item -> {
-                    item?.id?.let {
+                    item.id?.let {
                         if (todoService.deleteCategory(it))
                             mAdapter.remove(mPosition)
                         else ToastUtils.showShortToast("该清单内还有未完成事项，不能删除。")

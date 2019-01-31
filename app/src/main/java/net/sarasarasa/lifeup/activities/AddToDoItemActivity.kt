@@ -35,6 +35,7 @@ import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.models.TaskTargetModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.ClickUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
@@ -577,8 +578,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_finish -> {
-                if (check()) {
-                    addItem(getItem(newItem = true))
+                if (ClickUtils.isNotFastClick()) {
+                    if (check()) {
+                        addItem(getItem(newItem = true))
+                    }
                 }
                 return true
             }
