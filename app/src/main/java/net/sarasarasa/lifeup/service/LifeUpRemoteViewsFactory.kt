@@ -167,9 +167,8 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
         val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
 
         return if (isHideNotBegunItem)
-            todoService.getUncompletedTodoListWhichHaveBegun(false)
-        else todoService.getUncompletedTodoList(false)
-
+            todoService.getAllUncompletedTodoListWhichHaveBegun(false)
+        else todoService.getAllUncompletedTodoList(false)
     }
 
 

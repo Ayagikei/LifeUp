@@ -99,7 +99,7 @@ class SettingActivity : AppCompatActivity() {
             val statusEditor = statusSharedPreferences.edit()
             statusEditor.putBoolean("isShowGuide", false)
             statusEditor.apply()
-            ToastUtils.showShortToast("重新开启指引成功")
+            ToastUtils.showShortToast(getString(R.string.setting_reopen_guide))
         }
 /*        setting_item_change_widget_font_color.setOnItemViewClick {
             val mOnColorPickerListener = object : OnColorPickerListener {
@@ -134,7 +134,7 @@ class SettingActivity : AppCompatActivity() {
 
         }*/
         if (userService.getToken() == "") {
-            setting_item_logout.setItemText("重新登录")
+            setting_item_logout.setItemText(getString(R.string.setting_relogin))
         }
 
         setting_item_logout.setOnItemViewClick {
@@ -146,7 +146,7 @@ class SettingActivity : AppCompatActivity() {
                 userService.saveToken("")
                 todoService.deleteTeamTask()
 
-                ToastUtils.showShortToast("退出成功")
+                ToastUtils.showShortToast(getString(R.string.setting_logout_success))
             }
         }
 

@@ -104,4 +104,6 @@ interface TodoService {
     fun remakeTaskWhichIsRemakeFailed()
 
     fun setOverdueItemToFinish(id: Long?): Boolean
+    fun getAllUncompletedTodoList(isShowToast: Boolean): List<TaskModel>
+    fun getAllUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel>
 }

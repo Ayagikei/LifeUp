@@ -69,7 +69,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="团队待办事项"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -84,7 +85,8 @@
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="团队描述" />
+                        android:hint="团队描述"
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
@@ -404,7 +406,8 @@
                         android:freezesText="false"
                         android:hint="团队截止加入日期"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -436,7 +439,8 @@
                         android:layout_height="match_parent"
                         android:hint="重复频次"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <!-- here should be til_deadLine or til_repeat -->

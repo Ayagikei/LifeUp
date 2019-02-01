@@ -94,8 +94,8 @@ class TodoServiceImpl : TodoService {
         val classBy = optionSharedPreferences.getString("classBy", "all")
 
         return when (classBy) {
-            "all" -> todoDAO.findAllUncompletedTodoItem()
-            "today" -> todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
+            "all" -> todoDAO.findAllUncompletedTodoItem(false)
+            "today" -> todoDAO.findAllUncompletedTodoItemWhichHaveBegun(false)
             else -> todoDAO.findUncompletedTodoItemAfterDays(7)
         }
 
@@ -106,8 +106,23 @@ class TodoServiceImpl : TodoService {
         if (checkAndUpdateOverdueTask()) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
+        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun(false)
+    }
 
-        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
+    override fun getAllUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
+        if (checkAndUpdateOverdueTask()) {
+            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+        }
+
+        return todoDAO.findAllUncompletedTodoItem(true)
+    }
+
+
+    override fun getAllUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
+        if (checkAndUpdateOverdueTask()) {
+            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+        }
+        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun(true)
     }
 
     override fun getCompletedTodoList(limit: Int, offset: Int): List<TaskModel> {

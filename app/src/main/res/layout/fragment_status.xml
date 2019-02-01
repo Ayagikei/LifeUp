@@ -38,12 +38,15 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/mainCardView"
-                android:layout_width="340dp"
-                android:layout_height="128dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="0dp"
+                android:layout_height="148dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
                 app:cardBackgroundColor="#e500d1c6"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -132,12 +135,14 @@
             <!-- start of copy -->
             <android.support.v7.widget.CardView
                 android:id="@+id/sportCardView"
-                android:layout_width="340dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
                 app:contentPadding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -234,9 +239,10 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/mainCardViewstatus"
-                android:layout_width="350dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"

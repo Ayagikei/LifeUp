@@ -66,13 +66,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
             }
             AttributeConstants.MSG_ATTR_GET_FAILED -> {
-                ToastUtils.showShortToast("获取信息失败，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_attr_get_fail))
             }
             AttributeConstants.MSG_ATTR_GET_SUCCESS -> {
-                ToastUtils.showShortToast("登录成功")
+                ToastUtils.showShortToast(getString(R.string.network_attr_get_success))
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -406,11 +406,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         val view = LayoutInflater.from(this).inflate(R.layout.dialog_sign_up, null)
 
         with(builder) {
-            setTitle("设置基本信息")
+            setTitle(getString(R.string.login_sign_up_information))
 
             setView(view)
 
-            setPositiveButton("确定") { _, _ ->
+            setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
                 val signUpVO = SignUpVO()
 
                 with(signUpVO) {
@@ -451,7 +451,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     inner class LoginUiListener : IUiListener {
         override fun onComplete(p0: Any?) {
-            ToastUtils.showShortToast("授权成功，正在获取注册信息")
+            ToastUtils.showShortToast(getString(R.string.login_complete_qq_auth))
 
             //取得token和openid
             val res = gson.fromJson(p0.toString(), QQLoginVO::class.java)
@@ -464,11 +464,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onCancel() {
-            ToastUtils.showShortToast("授权登录取消")
+            ToastUtils.showShortToast(getString(R.string.login_cancel_qq_auth))
         }
 
         override fun onError(p0: UiError?) {
-            ToastUtils.showShortToast("授权登录出现异常：" + p0.toString())
+            ToastUtils.showShortToast(getString(R.string.login_exception_qq_auth) + p0.toString())
         }
 
     }
@@ -482,14 +482,14 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             with(signUpVO) {
                 authIdentifier = mTencent.openId
                 authType = "qq"
-                nickname = if (res.nickname == null) {
+                nickname = if (res.nickname.isNullOrEmpty()) {
                     getQQDefaultNickname()
                 } else {
                     res.nickname
                 }
                 userAddress = res.city
 
-                userHead = if (res.figureurl_qq_2 != null) {
+                userHead = if (res.figureurl_qq_2?.isNotEmpty() == true) {
                     res.figureurl_qq_2
                 } else {
                     res.figureurl_qq_1
@@ -506,7 +506,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onCancel() {
-            ToastUtils.showShortToast("获取用户信息取消")
+            ToastUtils.showShortToast(getString(R.string.login_cancel_qq_information))
 
             val signUpVO = SignUpVO()
             with(signUpVO) {
@@ -521,7 +521,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         override fun onError(p0: UiError?) {
-            ToastUtils.showShortToast("获取用户信息出现异常：" + p0.toString())
+            ToastUtils.showShortToast(getString(R.string.login_exception_qq_information) + p0.toString())
 
             val signUpVO = SignUpVO()
             with(signUpVO) {

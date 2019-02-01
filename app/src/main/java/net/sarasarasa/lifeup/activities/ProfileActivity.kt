@@ -48,16 +48,16 @@ class ProfileActivity : AppCompatActivity() {
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            MSG_UPDATE_FAILED -> ToastUtils.showShortToast("网络错误，请稍后重试。")
+            MSG_UPDATE_FAILED -> ToastUtils.showShortToast(getString(R.string.network_connect_error))
             MSG_UPDATE_PROFILE_SUCCESS -> {
-                ToastUtils.showShortToast("修改成功")
+                ToastUtils.showShortToast(getString(R.string.profile_update_success))
                 finish()
             }
             MSG_UPDATE_AVATAR_SUCCESS -> {
-                ToastUtils.showShortToast("头像修改成功")
+                ToastUtils.showShortToast(getString(R.string.profile_head_update_success))
             }
             MSG_UPDATE_AVATAR_FAILED -> {
-                ToastUtils.showShortToast("头像修改失败：网络错误，请稍后重试。")
+                ToastUtils.showShortToast(getString(R.string.profile_head_update_fail))
             }
         }
 
@@ -96,7 +96,7 @@ class ProfileActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_finish -> {
                 if (profileVO.nickname != null && profileVO.nickname!!.isBlank()) {
-                    ToastUtils.showShortToast("用户名不能为空")
+                    ToastUtils.showShortToast(getString(R.string.profile_username_empty))
                     super.onOptionsItemSelected(item)
                 } else {
                     userNetwork.updateUserProfile(profileVO)
@@ -114,9 +114,9 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
 
         val mine = userService.getMine()
-        sv_nickname.setItemText("昵称：" + mine.nickName)
-        sv_address.setItemText("居住地（学校）:" + mine.userAddress)
-        sv_sex.setItemText("性别：" + UserConverter.iSexTostrSex(mine.userSex))
+        sv_nickname.setItemText(getString(R.string.profile_sv_nickname) + mine.nickName)
+        sv_address.setItemText(getString(R.string.profile_sv_address) + mine.userAddress)
+        sv_sex.setItemText(getString(R.string.profile_sv_gender) + UserConverter.iSexTostrSex(mine.userSex))
         //sv_phone.setItemText("手机号：" + mine.phone)
         profileVO.nickname = mine.nickName
         profileVO.userAddress = mine.userAddress
@@ -146,13 +146,13 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun showSexDialog() {
         val checkindex = profileVO.userSex ?: USER_SEX_SECRET
-        val items = arrayOf("女", "男", "保密")
+        val items = arrayOf(getString(R.string.profile_female), getString(R.string.profile_male), getString(R.string.profile_secret))
 
         val dialog = AlertDialog.Builder(this).setTitle("设置性别")
                 .setSingleChoiceItems(items, checkindex) { dialog, index ->
                     profileVO.userSex = when (items[index]) {
-                        "女" -> USER_SEX_FEMALE
-                        "男" -> USER_SEX_MALE
+                        getString(R.string.profile_female) -> USER_SEX_FEMALE
+                        getString(R.string.profile_male) -> USER_SEX_MALE
                         else -> USER_SEX_SECRET
                     }
                     sv_sex.setItemText(items[index])
@@ -166,28 +166,28 @@ class ProfileActivity : AppCompatActivity() {
         val editText = EditText(this)
         val builder = AlertDialog.Builder(this)
         val title = when (view.id) {
-            R.id.sv_nickname -> "设置昵称"
-            R.id.sv_address -> "设置居住地（学校）"
+            R.id.sv_nickname -> getString(R.string.profile_dialog_nickname_title)
+            R.id.sv_address -> getString(R.string.profile_dialog_address_title)
             else -> return
         }
         with(builder) {
             setTitle(title)
             setView(editText)
-            setPositiveButton("确定") { _, _ ->
+            setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
                 val text = when (view.id) {
                     R.id.sv_nickname -> {
                         profileVO.nickname = editText.text.toString()
-                        "昵称:" + editText.text.toString()
+                        getString(R.string.profile_sv_nickname) + editText.text.toString()
                     }
                     R.id.sv_address -> {
                         profileVO.userAddress = editText.text.toString()
-                        "居住地（学校）:" + editText.text.toString()
+                        getString(R.string.profile_sv_address) + editText.text.toString()
                     }
                     else -> ""
                 }
                 view.setItemText(text)
             }
-            setNegativeButton("取消") { _, _ ->
+            setNegativeButton(getString(R.string.btn_cancel)) { _, _ ->
             }
             show()
         }
@@ -200,9 +200,9 @@ class ProfileActivity : AppCompatActivity() {
     @AfterPermissionGranted(RC_CAMERA)
     fun showChoosePicDialog() {
         val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("修改头像")
-        val items = arrayOf("选择本地照片", "拍照")
-        builder.setNegativeButton("取消", null)
+        builder.setTitle(getString(R.string.team_add_change_head))
+        val items = arrayOf(getString(R.string.team_add_choose_local_photo), getString(R.string.team_add_take_photo))
+        builder.setNegativeButton(getString(R.string.btn_cancel), null)
         builder.setItems(items) { _, which ->
             when (which) {
                 0 // 选择本地照片
@@ -231,7 +231,7 @@ class ProfileActivity : AppCompatActivity() {
                         startActivityForResult(openCameraIntent, TAKE_PICTURE)
                     }
                     else{
-                        EasyPermissions.requestPermissions(this, "拍照需要系统摄像头权限授权", RC_CAMERA, *perms)
+                        EasyPermissions.requestPermissions(this, getString(R.string.team_add_photo_permission), RC_CAMERA, *perms)
                     }
                 }
             }

@@ -4,40 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout2"
-                android:layout_width="wrap_content"
-
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:animationCache="false"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Space
+                    android:id="@+id/space2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/TodolistCardView"
-                    android:layout_width="350dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:minHeight="64dp"
                     app:cardBackgroundColor="#FFF"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp"
+                    app:cardElevation="3dp"
                     app:cardUseCompatPadding="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/TodolistHeaderCardView">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
@@ -49,7 +46,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="20dp"
                             android:maxWidth="203dp"
                             android:text="背诵单词"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -75,7 +72,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="20dp"
                             android:src="@drawable/ic_abbr_learning"
                             app:layout_constraintStart_toEndOf="@+id/tw_name"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +82,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="20dp"
                             android:src="@drawable/ic_abbr_endurance"
                             app:layout_constraintStart_toEndOf="@+id/iv_iconSkillFrist"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +92,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="20dp"
                             android:src="@drawable/ic_abbr_charm"
                             app:layout_constraintStart_toEndOf="@+id/iv_iconSkillSecond"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -164,12 +161,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     app:cardBackgroundColor="#8BC34A"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="6dp"
-                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="false"
+                    app:layout_constraintBottom_toBottomOf="@+id/space2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.26999998">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -180,10 +180,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:paddingBottom="2dp"
                             android:paddingLeft="8dp"
-                            android:paddingRight="8dp"
                             android:paddingTop="2dp"
+                            android:paddingRight="8dp"
+                            android:paddingBottom="2dp"
                             android:text="重复任务—每日"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
@@ -192,21 +192,28 @@
                 </android.support.v7.widget.CardView>
             </android.support.constraint.ConstraintLayout>
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/av_checkBtn"
-                android:layout_width="101dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="265dp"
-                android:layout_marginTop="6dp"
-                app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="false"
-                app:lottie_cacheStrategy="none"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/checked_done" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/av_checkBtn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/space"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.029999971"
+        app:lottie_autoPlay="false"
+        app:lottie_cacheStrategy="none"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/checked_done" />
 
-        </android.support.constraint.ConstraintLayout>
-    </FrameLayout> <!-- end of one to-do item -->
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

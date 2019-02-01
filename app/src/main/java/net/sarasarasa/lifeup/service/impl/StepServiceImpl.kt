@@ -88,10 +88,10 @@ class StepServiceImpl : StepService {
                 if (!theLastStepRec.isGotReward) {
                     var exp = 0
                     when {
-                        theLastStepRec.dailyStepCount in 2500..5000 -> exp = 150
-                        theLastStepRec.dailyStepCount in 5000..10000 -> exp = 400
-                        theLastStepRec.dailyStepCount in 10000..20000 -> exp = 950
-                        theLastStepRec.dailyStepCount > 20000 -> exp = 2000
+                        theLastStepRec.dailyStepCount in 2500..5000 -> exp = 50
+                        theLastStepRec.dailyStepCount in 5000..10000 -> exp = 100
+                        theLastStepRec.dailyStepCount in 10000..20000 -> exp = 200
+                        theLastStepRec.dailyStepCount > 20000 -> exp = 400
                     }
 
                     val attrs = ArrayList<String>(Arrays.asList("strength"))

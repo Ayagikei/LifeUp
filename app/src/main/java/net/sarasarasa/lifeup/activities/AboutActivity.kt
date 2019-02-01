@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.content.Intent
+import android.didikee.donate.AlipayDonate
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +17,7 @@ import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.VersionUtil
 import net.sarasarasa.lifeup.vo.VersionVO
+
 
 class AboutActivity : AppCompatActivity() {
 
@@ -67,12 +69,20 @@ class AboutActivity : AppCompatActivity() {
             versionNetworkImpl.checkUpdate(VersionUtil.getLocalVersion(applicationContext))
         }
 
+        val elementDonate = Element()
+        elementDonate.iconDrawable = R.drawable.ic_system_update_alt_24px
+        elementDonate.title = "捐赠支持一下开发者\n谢谢:)"
+        elementDonate.setOnClickListener {
+            donateAlipay("tsx06992twgztmrmcisibbd")
+        }
+
         val aboutPage = AboutPage(this)
                 .isRTL(false)
                 .setImage(R.mipmap.ic_launcher)
                 .setDescription(getString(R.string.about_app_description))
-                .addItem(Element().setTitle("${getString(R.string.about_version_name)} v1.52"))
+                .addItem(Element().setTitle("${getString(R.string.about_version_name)} v1.53"))
                 .addItem(elementCheckUpdate)
+                .addItem(elementDonate)
                 .addGroup(getString(R.string.contact_title))
                 .addEmail("AyagiKei@163.com")
                 .addWebsite("https://www.coolapk.com/apk/net.sarasarasa.lifeup")
@@ -81,5 +91,17 @@ class AboutActivity : AppCompatActivity() {
                 .create()
 
         setContentView(aboutPage)
+    }
+
+    /**
+     * 支付宝支付
+     * @param payCode 收款码后面的字符串
+     * 注：不区分大小写
+     */
+    private fun donateAlipay(payCode: String) {
+        val hasInstalledAlipayClient = AlipayDonate.hasInstalledAlipayClient(this)
+        if (hasInstalledAlipayClient) {
+            AlipayDonate.startAlipayClient(this, payCode)
+        }
     }
 }

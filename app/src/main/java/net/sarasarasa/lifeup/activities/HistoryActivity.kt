@@ -81,7 +81,7 @@ class HistoryActivity : AppCompatActivity() {
                 R.id.btn_undo -> {
                     if (item.taskStatus == ToDoItemConstants.COMPLETED) {
                         todoService.undoFinishTodoItem(item.id)
-                        ToastUtils.showShortToast("撤销成功")
+                        ToastUtils.showShortToast(getString(R.string.history_reset_success))
                         mAdapter.remove(position)
                     } else if (item.taskStatus == ToDoItemConstants.OUT_OF_DATE) {
                         if (item.teamId == -1L) {
@@ -92,9 +92,7 @@ class HistoryActivity : AppCompatActivity() {
                             view.visibility = View.INVISIBLE
                         }
                     }
-
                     WidgetUtils.updateWidgets(applicationContext)
-
                 }
                 R.id.tv_btn -> {
                     val mPopupMenu = PopupMenu(view.context, view.tv_btn)
@@ -110,7 +108,7 @@ class HistoryActivity : AppCompatActivity() {
                             R.id.delete_item -> {
                                 item.id?.let {
                                     if (todoService.hideHistoryItem(it) == 1)
-                                        ToastUtils.showShortToast("成功删除历史记录")
+                                        ToastUtils.showShortToast(getString(R.string.history_delete_success))
                                 }
                                 mAdapter.remove(position)
                                 //mAdapter.notifyItemRemoved(position)
@@ -119,7 +117,7 @@ class HistoryActivity : AppCompatActivity() {
                             R.id.finish_item -> {
                                 item.id?.let {
                                     if (todoService.setOverdueItemToFinish(it)) {
-                                        ToastUtils.showShortToast("成功设为「已经完成」")
+                                        ToastUtils.showShortToast(getString(R.string.history_set_to_success_success))
                                         item.taskStatus = 1
                                         mAdapter.notifyItemChanged(position)
                                     }
@@ -145,7 +143,7 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun getEmptyView(): View {
         val view = layoutInflater.inflate(R.layout.foot_view_to_do, null)
-        view.textView11.text = "没有已经完成的待办事项，添加一些吧"
+        view.textView11.text = getString(R.string.history_empty)
         return view
     }
 

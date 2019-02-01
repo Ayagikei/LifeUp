@@ -52,7 +52,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
             }
             MSG_GET_TEAM_DETAIL_SUCCESS -> {
                 if (msg.obj != null) {
@@ -64,7 +64,6 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             }
             MSG_JOIN_TEAM_SUCCESS -> {
                 ToastUtils.showShortToast("加入成功")
-
                 WidgetUtils.updateWidgets(applicationContext)
             }
             MSG_GET_TEAM_ACTIVITIES_SUCCESS -> {
