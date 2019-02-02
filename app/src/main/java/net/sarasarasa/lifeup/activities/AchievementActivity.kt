@@ -5,8 +5,10 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.GridLayout
 import kotlinx.android.synthetic.main.activity_achievement.*
 import kotlinx.android.synthetic.main.dialog_achievement.view.*
@@ -27,6 +29,7 @@ class AchievementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievement)
         initView()
+
     }
 
     private fun initView() {
@@ -49,11 +52,17 @@ class AchievementActivity : AppCompatActivity() {
     }
 
     private fun addView(id: Int, resId: Int, col: Int, row: Int) {
+        val displayMetrics: DisplayMetrics = resources.displayMetrics
+        val widthPixels = displayMetrics.widthPixels
+        val heightPixels = displayMetrics.heightPixels
+
         val cm = ColorMatrix()
         cm.setSaturation(0f) // 设置饱和度
         val grayColorFilter = ColorMatrixColorFilter(cm)
 
         val view = View.inflate(this, R.layout.item_achivement_without_star, null)
+        val viewParams = ViewGroup.LayoutParams(widthPixels / 3, ViewGroup.LayoutParams.WRAP_CONTENT)
+        view.layoutParams = viewParams
         val rowSpec = GridLayout.spec(row, 1, 1.0f)
         val columnSpec = GridLayout.spec(col, 1, 1.0f)
         val params = GridLayout.LayoutParams(rowSpec, columnSpec)
