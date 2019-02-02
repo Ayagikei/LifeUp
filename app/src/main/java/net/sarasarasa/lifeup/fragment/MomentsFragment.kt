@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
-import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
 import kotlinx.android.synthetic.main.head_view_moments.view.*
 import net.sarasarasa.lifeup.R
@@ -51,16 +50,16 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
                             totalPage = pageVO.totalPage
 
-                            if (swipe_refresh_layout != null)
-                                if (swipe_refresh_layout.isRefreshing) {
-                                    swipe_refresh_layout.isRefreshing = false
+                            if (rootView.swipe_refresh_layout != null)
+                                if (rootView.swipe_refresh_layout.isRefreshing) {
+                                    rootView.swipe_refresh_layout.isRefreshing = false
                                     mAdapter.data.clear()
                                 }
 
                             setNewData(list.toMutableList())
 
-                            if (swipe_refresh_layout != null)
-                                swipe_refresh_layout.isEnabled = true
+                            if (rootView.swipe_refresh_layout != null)
+                                rootView.swipe_refresh_layout.isEnabled = true
 
                             mAdapter.setEnableLoadMore(true)
                             mAdapter.notifyDataSetChanged()
@@ -71,8 +70,8 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {
-                if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing)
-                    swipe_refresh_layout.isRefreshing = false
+                if (rootView.swipe_refresh_layout != null && rootView.swipe_refresh_layout.isRefreshing)
+                    rootView.swipe_refresh_layout.isRefreshing = false
 
                 mAdapter.loadMoreFail()
 
@@ -82,8 +81,8 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
                 if (msg.obj != null) {
                     mAdapter.loadMoreFail()
 
-                    if (swipe_refresh_layout != null)
-                        swipe_refresh_layout.isEnabled = true
+                    if (rootView.swipe_refresh_layout != null)
+                        rootView.swipe_refresh_layout.isEnabled = true
                 }
             }
 
@@ -97,6 +96,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
     private val mList: MutableList<TeamActivityListVO> = ArrayList<TeamActivityListVO>().toMutableList()
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: MomentsAdapter
+    private lateinit var rootView: View
     private var currentPage = 0L
     private var totalPage: Long? = null
     private var mCurrentClickNpl: BGANinePhotoLayout? = null
@@ -108,7 +108,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_moments_list, container, false)
+        rootView = inflater.inflate(R.layout.fragment_moments_list, container, false)
 
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
@@ -139,8 +139,8 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
             mAdapter.setEnableLoadMore(false)
             isGetAll = true
-            if (swipe_refresh_layout != null)
-                swipe_refresh_layout.isEnabled = false
+            if (rootView.swipe_refresh_layout != null)
+                rootView.swipe_refresh_layout.isEnabled = false
             currentPage = 0L
             mAdapter.data.clear()
             getNewList()
@@ -155,8 +155,8 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
 
             mAdapter.setEnableLoadMore(false)
             isGetAll = false
-            if (swipe_refresh_layout != null)
-                swipe_refresh_layout.isEnabled = false
+            if (rootView.swipe_refresh_layout != null)
+                rootView.swipe_refresh_layout.isEnabled = false
             currentPage = 0L
             mAdapter.data.clear()
             getNewList()
@@ -173,7 +173,7 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
         getNewList()
         mAdapter.setOnLoadMoreListener({
             getNewList()
-            swipe_refresh_layout.isEnabled = false
+            rootView.swipe_refresh_layout.isEnabled = false
         }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
@@ -249,5 +249,17 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
         }
         startActivity(photoPreviewIntentBuilder.build())
 
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden) {
+            if (rootView.swipe_refresh_layout != null)
+                rootView.swipe_refresh_layout.isRefreshing = true
+            currentPage = 0L
+            mAdapter.setEnableLoadMore(false)
+            mAdapter.data.clear()
+            getNewList()
+        }
+        super.onHiddenChanged(hidden)
     }
 }

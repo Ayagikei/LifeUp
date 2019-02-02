@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/before_expire_10min_item"
+        android:title="@string/add_to_do_menu_before_expire_10min_item" />
+    <item
+        android:id="@+id/before_expire_30min_item"
+        android:title="@string/add_to_do_menu_before_expire_30min_item" />
+    <item
+        android:id="@+id/before_expire_1h_item"
+        android:title="@string/add_to_do_menu_before_expire_1h_item" />
+    <item
+        android:id="@+id/custom_item"
+        android:title="@string/add_to_do_menu_before_expire_custom_item" />
+</menu>

@@ -82,6 +82,7 @@ class MeFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             initView(rootView)
+            activity?.invalidateOptionsMenu()
         }
     }
 

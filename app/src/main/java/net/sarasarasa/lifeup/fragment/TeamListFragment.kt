@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
-import kotlinx.android.synthetic.main.fragment_team_list.*
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddTeamActivity
@@ -48,16 +47,16 @@ class TeamListFragment : Fragment() {
                             val list = pageVO.list as List<TeamListVO>
                             totalPage = pageVO.totalPage
 
-                            if (swipe_refresh_layout != null)
-                                if (swipe_refresh_layout.isRefreshing) {
-                                    swipe_refresh_layout.isRefreshing = false
+                            if (rootView.swipe_refresh_layout != null)
+                                if (rootView.swipe_refresh_layout.isRefreshing) {
+                                    rootView.swipe_refresh_layout.isRefreshing = false
                                     mAdapter.data.clear()
                                 }
 
                             setNewData(list.toMutableList())
 
-                            if (swipe_refresh_layout != null)
-                                swipe_refresh_layout.isEnabled = true
+                            if (rootView.swipe_refresh_layout != null)
+                                rootView.swipe_refresh_layout.isEnabled = true
 
                             mAdapter.setEnableLoadMore(true)
                             mAdapter.notifyDataSetChanged()
@@ -68,8 +67,8 @@ class TeamListFragment : Fragment() {
                 }
             }
             AttributeConstants.MSG_CONNECT_FAILED -> {
-                if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing)
-                    swipe_refresh_layout.isRefreshing = false
+                if (rootView.swipe_refresh_layout != null && rootView.swipe_refresh_layout.isRefreshing)
+                    rootView.swipe_refresh_layout.isRefreshing = false
 
                 mAdapter.loadMoreFail()
                 ToastUtils.showShortToast("网络错误，请稍后重试。")
@@ -78,8 +77,8 @@ class TeamListFragment : Fragment() {
                 if (msg.obj != null) {
                     mAdapter.loadMoreFail()
 
-                    if (swipe_refresh_layout != null)
-                        swipe_refresh_layout.isEnabled = true
+                    if (rootView.swipe_refresh_layout != null)
+                        rootView.swipe_refresh_layout.isEnabled = true
                 }
             }
         }
@@ -90,12 +89,13 @@ class TeamListFragment : Fragment() {
     private val mList: MutableList<TeamListVO> = ArrayList<TeamListVO>().toMutableList()
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: TeamListAdapter
+    private lateinit var rootView: View
     private var currentPage = 0L
     private var totalPage: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
+        rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
         setHasOptionsMenu(true)
 
         initView(rootView)
@@ -110,7 +110,7 @@ class TeamListFragment : Fragment() {
         rootView.swipe_refresh_layout.setOnRefreshListener {
             mAdapter.setOnLoadMoreListener({
                 getNewList()
-                swipe_refresh_layout.isEnabled = false
+                rootView.swipe_refresh_layout.isEnabled = false
             }, mRecyclerView)
 
             currentPage = 0L
@@ -135,7 +135,7 @@ class TeamListFragment : Fragment() {
         getNewList()
         mAdapter.setOnLoadMoreListener({
             getNewList()
-            swipe_refresh_layout.isEnabled = false
+            rootView.swipe_refresh_layout.isEnabled = false
         }, mRecyclerView)
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
@@ -180,7 +180,6 @@ class TeamListFragment : Fragment() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_team_list, menu)
         val searchItem = menu.findItem(R.id.menu_search)
@@ -193,11 +192,11 @@ class TeamListFragment : Fragment() {
                 mAdapter.setEnableLoadMore(false)
                 mAdapter.setOnLoadMoreListener({
                     getNewList(s)
-                    swipe_refresh_layout.isEnabled = false
+                    rootView.swipe_refresh_layout.isEnabled = false
                 }, mRecyclerView)
 
-                if (swipe_refresh_layout != null)
-                    swipe_refresh_layout.isEnabled = false
+                if (rootView.swipe_refresh_layout != null)
+                    rootView.swipe_refresh_layout.isEnabled = false
                 currentPage = 0L
                 mAdapter.data.clear()
                 getNewList(s)
@@ -214,11 +213,11 @@ class TeamListFragment : Fragment() {
             mAdapter.setEnableLoadMore(false)
             mAdapter.setOnLoadMoreListener({
                 getNewList()
-                swipe_refresh_layout.isEnabled = false
+                rootView.swipe_refresh_layout.isEnabled = false
             }, mRecyclerView)
 
-            if (swipe_refresh_layout != null)
-                swipe_refresh_layout.isEnabled = false
+            if (rootView.swipe_refresh_layout != null)
+                rootView.swipe_refresh_layout.isEnabled = false
             currentPage = 0L
 
             mAdapter.data.clear()
@@ -227,12 +226,22 @@ class TeamListFragment : Fragment() {
             false
         }
 
-
         val editText = mSearchView.findViewById<EditText>(R.id.search_src_text)
         editText.setHintTextColor(ContextCompat.getColor(this.context!!, R.color.light_gray))
-
-
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden) {
+            if (rootView.swipe_refresh_layout != null)
+                rootView.swipe_refresh_layout.isRefreshing = true
+            currentPage = 0L
+            mAdapter.setEnableLoadMore(false)
+            mAdapter.data.clear()
+            getNewList()
+            activity?.invalidateOptionsMenu()
+        }
+        super.onHiddenChanged(hidden)
     }
 
 }

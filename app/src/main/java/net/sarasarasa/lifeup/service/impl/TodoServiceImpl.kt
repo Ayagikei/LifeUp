@@ -94,8 +94,8 @@ class TodoServiceImpl : TodoService {
         val classBy = optionSharedPreferences.getString("classBy", "all")
 
         return when (classBy) {
-            "all" -> todoDAO.findAllUncompletedTodoItem(false)
-            "today" -> todoDAO.findAllUncompletedTodoItemWhichHaveBegun(false)
+            "all" -> todoDAO.findAllUncompletedTodoItem()
+            "today" -> todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
             else -> todoDAO.findUncompletedTodoItemAfterDays(7)
         }
 
@@ -106,7 +106,7 @@ class TodoServiceImpl : TodoService {
         if (checkAndUpdateOverdueTask()) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
-        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun(false)
+        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
     }
 
     override fun getAllUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
@@ -114,7 +114,7 @@ class TodoServiceImpl : TodoService {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 
-        return todoDAO.findAllUncompletedTodoItem(true)
+        return todoDAO.findAllUncompletedTodoItemIgnoreCategory()
     }
 
 
@@ -122,7 +122,7 @@ class TodoServiceImpl : TodoService {
         if (checkAndUpdateOverdueTask()) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
-        return todoDAO.findAllUncompletedTodoItemWhichHaveBegun(true)
+        return todoDAO.findAllUncompletedTodoItemWhichHaveBegunIgnoreCategory()
     }
 
     override fun getCompletedTodoList(limit: Int, offset: Int): List<TaskModel> {
@@ -665,6 +665,7 @@ class TodoServiceImpl : TodoService {
 
     override fun getCategoryNameById(categoryId: Long): String {
         if (categoryId == 0L) return "默认清单"
+        if (categoryId == -1L) return "所有清单"
 
         return categoryDAO.getOneCategoryById(categoryId)?.categoryName ?: "默认清单"
     }
@@ -682,7 +683,7 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun renameCategory(categoryId: Long, newName: String): Boolean {
-        if (categoryId == 0L) return false
+        if (categoryId == 0L || categoryId == -1L) return false
         val category = categoryDAO.getOneCategoryById(categoryId)
         if (category == null || category.isDelete) return false
 
@@ -691,6 +692,7 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun deleteCategory(categoryId: Long): Boolean {
+        if (categoryId == 0L || categoryId == -1L) return false
         val cnt = todoDAO.countCategoryTask(categoryId)
         if (cnt != 0)
             return false

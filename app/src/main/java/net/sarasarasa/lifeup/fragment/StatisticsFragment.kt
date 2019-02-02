@@ -49,6 +49,7 @@ class StatisticsFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             initData(view ?: return)
+            activity?.invalidateOptionsMenu()
         }
     }
 

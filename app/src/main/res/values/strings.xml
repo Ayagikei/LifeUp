@@ -271,4 +271,8 @@
     <string name="profile_dialog_address_title">设置居住地（学校）</string>
     <string name="setting_relogin">重新登录</string>
     <string name="setting_logout_success">退出成功</string>
+    <string name="add_to_do_menu_before_expire_10min_item">期限前10分钟</string>
+    <string name="add_to_do_menu_before_expire_30min_item">期限前30分钟</string>
+    <string name="add_to_do_menu_before_expire_1h_item">期限前1小时</string>
+    <string name="add_to_do_menu_before_expire_custom_item">自定义</string>
 </resources>

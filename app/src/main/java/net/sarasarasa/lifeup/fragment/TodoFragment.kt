@@ -785,6 +785,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         if (!hidden) {
             refreshDataSet()
             refreshToolBarTitle()
+            activity?.invalidateOptionsMenu()
         }
     }
 
@@ -958,6 +959,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val view = layoutInflater.inflate(R.layout.dialog_category, null)
         val list = todoService.listCategory().toMutableList()
         list.add(0, CategoryModel("默认清单", false))
+        list.add(0, CategoryModel("所有清单", false))
         val adapter = CategoryAdapter(R.layout.item_category, list)
         view.rv_category.layoutManager = LinearLayoutManager(activity)
         view.rv_category.adapter = adapter
@@ -972,7 +974,14 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 bottomSheetDialog.dismiss()
 
             val item = mAdapter.getItem(position) as CategoryModel
+            // "所有清单"
             if (position == 0) {
+                val editor = optionSharedPreferences?.edit()
+                editor?.putLong("categoryId", -1L)
+                editor?.commit()
+            }
+            // "默认清单"
+            else if (position == 1) {
                 val editor = optionSharedPreferences?.edit()
                 editor?.putLong("categoryId", 0L)
                 editor?.commit()

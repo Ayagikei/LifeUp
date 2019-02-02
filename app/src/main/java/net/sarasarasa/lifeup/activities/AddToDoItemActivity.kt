@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.PopupMenu
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
@@ -35,6 +36,7 @@ import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.models.TaskTargetModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.CalendarUtil
 import net.sarasarasa.lifeup.utils.ClickUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
@@ -199,13 +201,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         et_remindDate.inputType = InputType.TYPE_NULL
-        et_remindDate.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        et_remindDate.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
-                showRemindDatePickerDialog()
+                showRemindTimeMenu(view)
         }
 
         et_remindDate.setOnClickListener {
-            showRemindDatePickerDialog()
+            showRemindTimeMenu(it)
         }
 
         et_startTime.inputType = InputType.TYPE_NULL
@@ -218,6 +220,36 @@ open class AddToDoItemActivity : AppCompatActivity() {
             showStartDatePickerDialog()
         }
 
+    }
+
+    private fun showRemindTimeMenu(focusView: View) {
+        val mPopupMenu = PopupMenu(this, focusView)
+        mPopupMenu.menuInflater.inflate(R.menu.menu_remind_time, mPopupMenu.menu)
+        mPopupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.before_expire_10min_item -> {
+                    et_remindDate.setText(getString(R.string.add_to_do_menu_before_expire_10min_item))
+                    btn_remind_reset.visibility = View.VISIBLE
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.before_expire_30min_item -> {
+                    et_remindDate.setText(getString(R.string.add_to_do_menu_before_expire_30min_item))
+                    btn_remind_reset.visibility = View.VISIBLE
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.before_expire_1h_item -> {
+                    et_remindDate.setText(getString(R.string.add_to_do_menu_before_expire_1h_item))
+                    btn_remind_reset.visibility = View.VISIBLE
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.custom_item -> {
+                    showRemindDatePickerDialog()
+                    return@setOnMenuItemClickListener true
+                }
+                else -> true
+            }
+        }
+        mPopupMenu.show()
     }
 
     /** 初始化重复频次选择 **/
@@ -370,7 +402,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val c = Calendar.getInstance()
         val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
             //et_startTime.setText("${hourOfDay}:${minute}:00")
-            btn_remind_reset.visibility = View.VISIBLE
+            btn_start_time_reset.visibility = View.VISIBLE
 
             val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
             val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
@@ -607,7 +639,34 @@ open class AddToDoItemActivity : AppCompatActivity() {
         var dateTaskRemindDateAndTime: Date? = null
         if (!taskRemindDateAndTime.isBlank()) {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-            dateTaskRemindDateAndTime = simpleDateFormat.parse(taskRemindDateAndTime)
+
+            when (taskRemindDateAndTime) {
+                getString(R.string.add_to_do_menu_before_expire_10min_item) -> {
+                    if (dateTaskDeadline != null) {
+                        dateTaskRemindDateAndTime = CalendarUtil.getTimeAfterSeveralMinutesTime(dateTaskDeadline, -10)
+                        if (!isUseSpecificExpireTime) {
+                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime?.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
+                        }
+                    }
+                }
+                getString(R.string.add_to_do_menu_before_expire_30min_item) -> {
+                    if (dateTaskDeadline != null) {
+                        dateTaskRemindDateAndTime = CalendarUtil.getTimeAfterSeveralMinutesTime(dateTaskDeadline, -30)
+                        if (!isUseSpecificExpireTime) {
+                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime?.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
+                        }
+                    }
+                }
+                getString(R.string.add_to_do_menu_before_expire_1h_item) -> {
+                    if (dateTaskDeadline != null) {
+                        dateTaskRemindDateAndTime = CalendarUtil.getTimeAfterSeveralMinutesTime(dateTaskDeadline, -60)
+                        if (!isUseSpecificExpireTime) {
+                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime?.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
+                        }
+                    }
+                }
+                else -> dateTaskRemindDateAndTime = simpleDateFormat.parse(taskRemindDateAndTime)
+            }
         }
 
         val taskUrgencyLevel = when (iUrgency) {
@@ -706,7 +765,10 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         // 清单分类
         val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
-        taskModel.categoryId = optionSharedPreferences.getLong("categoryId", 0L)
+        val currentCategoryId = optionSharedPreferences.getLong("categoryId", 0L)
+
+        taskModel.categoryId = if (currentCategoryId == -1L) 0L
+        else currentCategoryId
 
         return taskModel
     }
@@ -755,7 +817,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
             val taskRemindDateAndTime = til_remindDate.editText?.text.toString()
             if (!taskRemindDateAndTime.isBlank()) {
                 val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-                simpleDateFormat.parse(taskRemindDateAndTime)
+
+                if (taskRemindDateAndTime != getString(R.string.add_to_do_menu_before_expire_10min_item)
+                        && taskRemindDateAndTime != getString(R.string.add_to_do_menu_before_expire_30min_item)
+                        && taskRemindDateAndTime != getString(R.string.add_to_do_menu_before_expire_1h_item))
+                    simpleDateFormat.parse(taskRemindDateAndTime)
             }
         } catch (e: Exception) {
             ToastUtils.showShortToast(getString(R.string.add_to_do_remind_illegal_input))

@@ -215,6 +215,7 @@
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:onClick="switchBtn"
+                        android:padding="2dp"
                         app:srcCompat="@drawable/ic_abbr_strength" />
 
                     <ImageView
@@ -224,8 +225,7 @@
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:onClick="switchBtn"
-                        android:paddingBottom="6dp"
-                        android:paddingTop="6dp"
+                        android:padding="2dp"
                         app:srcCompat="@drawable/ic_abbr_learning" />
 
                     <ImageView
@@ -233,9 +233,9 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_weight="1"
-                        android:padding="2dp"
                         android:background="?attr/selectableItemBackground"
                         android:onClick="switchBtn"
+                        android:padding="2dp"
                         app:srcCompat="@drawable/ic_abbr_charm" />
 
                     <ImageView
@@ -243,9 +243,9 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_weight="1"
-                        android:padding="2dp"
                         android:background="?attr/selectableItemBackground"
                         android:onClick="switchBtn"
+                        android:padding="2dp"
                         app:srcCompat="@drawable/ic_abbr_endurance" />
 
                     <ImageView
@@ -253,9 +253,9 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_weight="1"
-                        android:padding="2dp"
                         android:background="?attr/selectableItemBackground"
                         android:onClick="switchBtn"
+                        android:padding="2dp"
                         app:srcCompat="@drawable/ic_abbr_vitality" />
 
                     <ImageView
@@ -265,6 +265,7 @@
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:onClick="switchBtn"
+                        android:padding="2dp"
                         app:srcCompat="@drawable/ic_abbr_creative" />
                 </LinearLayout>
 

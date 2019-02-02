@@ -35,5 +35,12 @@ class CalendarUtil {
         fun getTimeInMillisNow(): Long {
             return Calendar.getInstance().timeInMillis
         }
+
+        fun getTimeAfterSeveralMinutesTime(date: Date, minutes: Int): Date {
+            val cal = Calendar.getInstance()
+            cal.time = date
+            cal.add(Calendar.MINUTE, minutes)
+            return cal.time
+        }
     }
 }

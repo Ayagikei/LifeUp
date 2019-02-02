@@ -52,11 +52,12 @@ class StatusFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             initData(view ?: return)
+            activity?.invalidateOptionsMenu()
         }
     }
 
     /** 设置各项数据 **/
-    fun initData(view: View) {
+    private fun initData(view: View) {
         /** TODO：优化
          **可以每一组内部的view设置为相同的id，仅外部不同，仅传一个外部view参数即获得所有view的方法来优化此方法。
          **/
@@ -109,11 +110,11 @@ class StatusFragment : Fragment() {
 
         val arrStep = ArrayList<String>()
         with(arrStep) {
-            arrStep.add("0步")
-            arrStep.add("2500步")
-            arrStep.add("5000步")
-            arrStep.add("10000步")
-            arrStep.add("20000步")
+            add("0步")
+            add("2500步")
+            add("5000步")
+            add("10000步")
+            add("20000步")
         }
 
         view.step_view.setSteps(arrStep)

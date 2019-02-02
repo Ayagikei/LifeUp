@@ -87,6 +87,7 @@ class CloudFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             mSectionsPagerAdapter?.notifyDataSetChanged()
+            activity?.invalidateOptionsMenu()
         }
     }
 

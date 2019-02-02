@@ -70,7 +70,7 @@ class AboutActivity : AppCompatActivity() {
         }
 
         val elementDonate = Element()
-        elementDonate.iconDrawable = R.drawable.ic_system_update_alt_24px
+        elementDonate.iconDrawable = R.drawable.ic_favorite_border_black_24dp
         elementDonate.title = "捐赠支持一下开发者\n谢谢:)"
         elementDonate.setOnClickListener {
             donateAlipay("tsx06992twgztmrmcisibbd")

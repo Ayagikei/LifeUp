@@ -20,11 +20,19 @@ class TodoDAO {
         return LitePal.find(TaskModel::class.java, id)?.delete()
     }
 
-    fun findAllUncompletedTodoItem(isIgnoreCategory: Boolean): List<TaskModel> {
+    fun findAllUncompletedTodoItem(): List<TaskModel> {
         val categoryId = optionSharedPreferences.getLong("categoryId", 0L)
-        val litePalWhere = if (categoryId == 0L || isIgnoreCategory)
+        if (categoryId == -1L) return findAllUncompletedTodoItemIgnoreCategory()
+
+        val litePalWhere = if (categoryId == 0L)
             LitePal.where("taskStatus = ? and (categoryId = ? or categoryId is null)", "0", categoryId.toString())
         else LitePal.where("taskStatus = ? and categoryId = ?", "0", categoryId.toString())
+
+        return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
+    }
+
+    fun findAllUncompletedTodoItemIgnoreCategory(): List<TaskModel> {
+        val litePalWhere = LitePal.where("taskStatus = ?", "0")
 
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
@@ -59,6 +67,7 @@ class TodoDAO {
         cal.add(Calendar.DATE, days - 1)
         val lastSecOfThisDay = cal.timeInMillis
         val categoryId = optionSharedPreferences.getLong("categoryId", 0L)
+        if (categoryId == -1L) return findUncompletedTodoItemAfterDaysIgnoreCategory(days)
 
         val litePalWhere = if (categoryId == 0L)
             LitePal.where("taskStatus = ? and startTime <= ? and (categoryId = ? or categoryId is null)", "0", lastSecOfThisDay.toString(), categoryId.toString())
@@ -67,15 +76,37 @@ class TodoDAO {
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
 
-    fun findAllUncompletedTodoItemWhichHaveBegun(isIgnoreCategory: Boolean): List<TaskModel> {
+    fun findUncompletedTodoItemAfterDaysIgnoreCategory(days: Int): List<TaskModel> {
+        val cal = Calendar.getInstance()
+        CalendarUtil.setToTheLastSecondOfTheDay(cal)
+        cal.add(Calendar.DATE, days - 1)
+        val lastSecOfThisDay = cal.timeInMillis
+
+        val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
+
+        return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
+    }
+
+    fun findAllUncompletedTodoItemWhichHaveBegun(): List<TaskModel> {
         val cal = Calendar.getInstance()
         CalendarUtil.setToTheLastSecondOfTheDay(cal)
         val lastSecOfThisDay = cal.timeInMillis
         val categoryId = optionSharedPreferences.getLong("categoryId", 0L)
+        if (categoryId == -1L) return findAllUncompletedTodoItemWhichHaveBegunIgnoreCategory()
 
-        val litePalWhere = if (categoryId == 0L || isIgnoreCategory)
+        val litePalWhere = if (categoryId == 0L)
             LitePal.where("taskStatus = ? and startTime <= ? and (categoryId = ? or categoryId is null)", "0", lastSecOfThisDay.toString(), categoryId.toString())
         else LitePal.where("taskStatus = ? and startTime <= ? and categoryId = ?", "0", lastSecOfThisDay.toString(), categoryId.toString())
+
+        return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
+    }
+
+    fun findAllUncompletedTodoItemWhichHaveBegunIgnoreCategory(): List<TaskModel> {
+        val cal = Calendar.getInstance()
+        CalendarUtil.setToTheLastSecondOfTheDay(cal)
+        val lastSecOfThisDay = cal.timeInMillis
+
+        val litePalWhere = LitePal.where("taskStatus = ? and startTime <= ?", "0", lastSecOfThisDay.toString())
 
         return getLitePalOrder(litePalWhere).find(TaskModel::class.java)
     }
