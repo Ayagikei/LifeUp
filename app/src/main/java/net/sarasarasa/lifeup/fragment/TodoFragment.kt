@@ -410,7 +410,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 thread?.interrupt()
                 cancel()
 
-                if (item.taskFrequency == 0 && item.teamId == IS_NOT_TEAM_TASK) {
+                if (item.taskFrequency == 0 && item.teamId == IS_NOT_TEAM_TASK && mAdapter.getItem(position) != null) {
                     mAdapter.remove(position)
                 }
 

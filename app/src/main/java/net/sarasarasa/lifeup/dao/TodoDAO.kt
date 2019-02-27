@@ -168,7 +168,7 @@ class TodoDAO {
     }
 
     fun getNeedToRemakeItems(): List<TaskModel> {
-        return LitePal.where("isNeedToRemake = ?", "true").find(TaskModel::class.java)
+        return LitePal.where("isNeedToRemake = ?", "1").find(TaskModel::class.java)
     }
 
     fun getFinishCount(): Int {

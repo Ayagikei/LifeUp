@@ -1,7 +1,9 @@
 package net.sarasarasa.lifeup.adapters
 
+import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
+import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -10,6 +12,7 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.utils.DensityUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,6 +22,15 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
     private val taskTargetDAO = TaskTargetDAO()
 
     override fun convert(helper: BaseViewHolder, item: TaskModel) {
+
+        val tw = helper.getView(R.id.tw_name) as TextView
+        val cw = helper.getView(R.id.constraintLayout2) as ConstraintLayout
+        cw.post {
+            val newMaxWidth = cw.width - DensityUtil.dp2px(134f)
+            if (newMaxWidth > 0) {
+                tw.maxWidth = newMaxWidth
+            }
+        }
 
         val cal = Calendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())

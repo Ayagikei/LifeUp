@@ -74,7 +74,9 @@
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="20dp"
                             android:src="@drawable/ic_abbr_learning"
-                            app:layout_constraintStart_toEndOf="@+id/tw_name"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@id/tw_name"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView

@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
@@ -924,6 +925,25 @@ open class AddToDoItemActivity : AppCompatActivity() {
             }
             this.show()
 
+        }
+    }
+
+    fun showMoreOptions(view: View) {
+        val animation = TranslateAnimation(1, -1.0F, 1, 0.0F, 1, 0.0F, 1, 0.0F)
+        animation.duration = 500L
+        til_startTime.startAnimation(animation)
+        til_startTime.visibility = View.VISIBLE
+        til_target.startAnimation(animation)
+        til_target.visibility = View.VISIBLE
+        til_complete_reward.startAnimation(animation)
+        til_complete_reward.visibility = View.VISIBLE
+
+        val disappearAnimation = TranslateAnimation(1, 0.0F, 1, 0.0F, 1, 0.0F, 1, -1.0F)
+        disappearAnimation.duration = 500L
+        view.startAnimation(disappearAnimation)
+        view.visibility = View.GONE
+        scroll_view.post {
+            scroll_view.scrollTo(0, view.top)
         }
     }
 }
