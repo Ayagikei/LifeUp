@@ -32,7 +32,7 @@
     <string name="prompt_phone">手机号码</string>
     <string name="login_welcome">登录以体验更多功能</string>
     <string name="login_signIn">登录</string>
-    <string name="login_signUp">注册功能暂停使用！请使用第三方登录。\n 注意：QQ昵称含emoji可能会导致登陆失败。</string>
+    <string name="login_signUp">注册功能暂停使用！请使用第三方登录。</string>
     <string name="login_or">或者</string>
     <string name="login_viaYiban">使用易班登录</string>
 

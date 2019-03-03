@@ -928,7 +928,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
     }
 
-    fun showMoreOptions(view: View) {
+    open fun showMoreOptions(view: View) {
         val animation = TranslateAnimation(1, -1.0F, 1, 0.0F, 1, 0.0F, 1, 0.0F)
         animation.duration = 500L
         til_startTime.startAnimation(animation)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
 import net.sarasarasa.lifeup.R
@@ -29,6 +30,8 @@ class EditToDoItemActivity : AddToDoItemActivity() {
         if (id != -1L) {
             initStatus(id)
         }
+
+        showMoreOptions(btn_show_more)
 
     }
 
@@ -157,5 +160,21 @@ class EditToDoItemActivity : AddToDoItemActivity() {
         todoService.updateTodoItem(id, taskModel)
         WidgetUtils.updateWidgets(applicationContext)
         finish()
+    }
+
+    override fun showMoreOptions(view: View) {
+        val animation = TranslateAnimation(1, -1.0F, 1, 0.0F, 1, 0.0F, 1, 0.0F)
+        animation.duration = 500L
+        til_startTime.startAnimation(animation)
+        til_startTime.visibility = View.VISIBLE
+        til_target.startAnimation(animation)
+        til_target.visibility = View.VISIBLE
+        til_complete_reward.startAnimation(animation)
+        til_complete_reward.visibility = View.VISIBLE
+
+        val disappearAnimation = TranslateAnimation(1, 0.0F, 1, 0.0F, 1, 0.0F, 1, -1.0F)
+        disappearAnimation.duration = 500L
+        view.startAnimation(disappearAnimation)
+        view.visibility = View.GONE
     }
 }

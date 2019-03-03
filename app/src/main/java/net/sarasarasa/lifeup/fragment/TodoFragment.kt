@@ -283,7 +283,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                                         if (todoService.giveUpTodoItem(item.id)) {
                                             Toast.makeText(it, "成功放弃待办事项",
                                                     Toast.LENGTH_SHORT).show()
-                                            mAdapter.remove(position)
+                                            repeatTask(item, position)
                                         } else {
                                             Toast.makeText(it, "放弃操作出现异常",
                                                     Toast.LENGTH_SHORT).show()

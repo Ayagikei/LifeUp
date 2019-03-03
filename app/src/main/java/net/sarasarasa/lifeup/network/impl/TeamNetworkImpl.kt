@@ -57,7 +57,10 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
 
@@ -101,21 +104,22 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamListVO>>>, response: Response<ResultVO<PageVO<TeamListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+                Log.i("LifeUp", responseBody?.msg ?: "null")
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
-                    Log.i("LifeUp 团队模块", "[搜索团队列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
-                    userService.saveToken("")
-                    message.what = NetworkConstants.INVALID_TOKEN
-                } else {
-                    message.what = MSG_GET_TEAM_LIST_SUCCESS
-                    val list = responseBody?.data
-                    message.obj = list
-                    Log.i("LifeUp 团队模块", "[搜索团队列表]请求成功：${list}")
-                }
+                if (responseBody != null)
+                    if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                        Log.i("LifeUp 团队模块", "[搜索团队列表]请求失败：错误或失效TOKEN")
+                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        userService.saveToken("")
+                        message.what = NetworkConstants.INVALID_TOKEN
+                    } else {
+                        message.what = MSG_GET_TEAM_LIST_SUCCESS
+                        val list = responseBody?.data
+                        message.obj = list
+                        Log.i("LifeUp 团队模块", "[搜索团队列表]请求成功：${list}")
+                    }
                 uiHandler?.handleMessage(message)
             }
         })
@@ -143,21 +147,22 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamMembaerListVO>>>, response: Response<ResultVO<PageVO<TeamMembaerListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+                Log.i("LifeUp", responseBody?.msg ?: "null")
 
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
-                    Log.i("LifeUp 团队模块", "[查询团队成员列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
-                    userService.saveToken("")
-                    message.what = NetworkConstants.INVALID_TOKEN
-                } else {
-                    message.what = MSG_GET_TEAM_MEMBER_LIST_SUCCESS
-                    val list = responseBody?.data
-                    message.obj = list
-                    Log.i("LifeUp 团队模块", "[查询团队成员列表]请求成功：${list}")
-                }
+                if (responseBody != null)
+                    if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                        Log.i("LifeUp 团队模块", "[查询团队成员列表]请求失败：错误或失效TOKEN")
+                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        userService.saveToken("")
+                        message.what = NetworkConstants.INVALID_TOKEN
+                    } else {
+                        message.what = MSG_GET_TEAM_MEMBER_LIST_SUCCESS
+                        val list = responseBody?.data
+                        message.obj = list
+                        Log.i("LifeUp 团队模块", "[查询团队成员列表]请求成功：${list}")
+                    }
                 uiHandler?.handleMessage(message)
             }
         })
@@ -180,17 +185,18 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val responseBody = response.body()
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
-                    Log.i("LifeUp 团队模块", "[退出团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
-                    userService.saveToken("")
-                    message.what = NetworkConstants.INVALID_TOKEN
-                } else {
-                    message.what = MSG_QUIT_TEAM_SUCCESS
+                if (responseBody != null)
+                    if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                        Log.i("LifeUp 团队模块", "[退出团队]请求失败：错误或失效TOKEN")
+                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        userService.saveToken("")
+                        message.what = NetworkConstants.INVALID_TOKEN
+                    } else {
+                        message.what = MSG_QUIT_TEAM_SUCCESS
 
-                    todoService.deleteTeamTaskByTeamId(teamId)
-                    Log.i("LifeUp 团队模块", "[退出团队]请求成功")
-                }
+                        todoService.deleteTeamTaskByTeamId(teamId)
+                        Log.i("LifeUp 团队模块", "[退出团队]请求成功")
+                    }
                 uiHandler?.handleMessage(message)
             }
         })
@@ -213,17 +219,18 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 val responseBody = response.body()
                 val message = Message()
 
-                if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
-                    Log.i("LifeUp 团队模块", "[终止团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
-                    userService.saveToken("")
-                    message.what = NetworkConstants.INVALID_TOKEN
-                } else {
-                    message.what = MSG_END_TEAM_SUCCESS
+                if (responseBody != null)
+                    if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
+                        Log.i("LifeUp 团队模块", "[终止团队]请求失败：错误或失效TOKEN")
+                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        userService.saveToken("")
+                        message.what = NetworkConstants.INVALID_TOKEN
+                    } else {
+                        message.what = MSG_END_TEAM_SUCCESS
 
-                    todoService.deleteTeamTaskByTeamId(teamId)
-                    Log.i("LifeUp 团队模块", "[终止团队]请求成功")
-                }
+                        todoService.deleteTeamTaskByTeamId(teamId)
+                        Log.i("LifeUp 团队模块", "[终止团队]请求成功")
+                    }
                 uiHandler?.handleMessage(message)
             }
         })
@@ -250,7 +257,10 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<PageVO<TeamActivityListVO>>>, response: Response<ResultVO<PageVO<TeamActivityListVO>>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -289,7 +299,10 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<TeamTaskVO>>, response: Response<ResultVO<TeamTaskVO>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
 
@@ -338,7 +351,10 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
             override fun onResponse(call: Call<ResultVO<Any>>, response: Response<ResultVO<Any>>) {
                 val responseBody = response.body()
-                Log.i("LifeUp", responseBody?.msg)
+
+                if (responseBody?.msg != null)
+                    Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
 
@@ -383,6 +399,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -420,6 +437,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -462,6 +480,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
@@ -506,6 +525,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
+                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {

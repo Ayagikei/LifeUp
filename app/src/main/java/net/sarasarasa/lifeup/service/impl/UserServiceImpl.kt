@@ -40,7 +40,6 @@ class UserServiceImpl : UserService {
         val mine = getMine()
         mine.createTime = null
         mine.nickName = ""
-        mine.userHead = ""
         mine.userSex = 2
         mine.userAddress = ""
         mine.phone = ""

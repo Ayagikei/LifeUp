@@ -167,7 +167,7 @@
     <string name="btn_update">更新</string>
     <string name="about_new_version">检测到新版本</string>
     <string name="about_update_content_title">更新内容</string>
-    <string name="about_check_update">检查更新（建议使用酷安更新）</string>
+    <string name="about_check_update">检查更新</string>
     <string name="about_version_name">版本号</string>
     <string name="about_app_description">一款「人生游戏化」的待办事项管理应用。\n用「游戏化」的形式让你的人生更加美好。</string>
     <string name="contact_title">联系</string>

@@ -80,7 +80,7 @@ class AboutActivity : AppCompatActivity() {
                 .isRTL(false)
                 .setImage(R.mipmap.ic_launcher)
                 .setDescription(getString(R.string.about_app_description))
-                .addItem(Element().setTitle("${getString(R.string.about_version_name)} v1.53"))
+                .addItem(Element().setTitle("${getString(R.string.about_version_name)} v1.55"))
                 .addItem(elementCheckUpdate)
                 .addItem(elementDonate)
                 .addGroup(getString(R.string.contact_title))
