@@ -428,6 +428,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val arrButton = ArrayList<FancyButton>()
         with(arrButton) {
             add(dialogView.button_fre_none)
+            add(dialogView.button_fre_ebbinghaus)
             add(dialogView.button_fre0)
             add(dialogView.button_fre1)
             add(dialogView.button_fre2)
@@ -463,6 +464,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             30 -> dialogView.button_fre30
             -1 -> dialogView.button_fre_none
             -2 -> dialogView.button_fre_custom
+            -3 -> dialogView.button_fre_ebbinghaus
             else -> dialogView.button_fre0
         }
         setTaskFre(clickedButton, dialogView)
@@ -511,6 +513,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
             R.id.button_fre30 -> 30
             R.id.button_fre_none -> -1
             R.id.button_fre_custom -> -2
+            R.id.button_fre_ebbinghaus -> -3
             else -> 0
         }
 
@@ -526,6 +529,8 @@ open class AddToDoItemActivity : AppCompatActivity() {
         dialogView.button_fre0.setTextColor(getThemeColor(0))
         dialogView.button_fre_none.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         dialogView.button_fre_none.setTextColor(getThemeColor(0))
+        dialogView.button_fre_ebbinghaus.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        dialogView.button_fre_ebbinghaus.setTextColor(getThemeColor(0))
         dialogView.button_fre1.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         dialogView.button_fre1.setTextColor(getThemeColor(1))
         dialogView.button_fre2.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
@@ -687,10 +692,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val taskShared = false
         var relatedAttribute = arrayOf<String>()
 
-        val taskFrequency = iFrequency
+        val enableEbbinghausMode = (iFrequency == -3)
+        val taskFrequency = if (enableEbbinghausMode) 1 else iFrequency
         var targetTimes = 0
 
-        if (iFrequency != 0 || iFrequency != -1) {
+        if (iFrequency != 0 || iFrequency != -1 || iFrequency != -3) {
             if (til_target.editText?.text != null && !til_target.editText?.text.isNullOrEmpty()) {
                 try {
                     val timesFromText = Integer.valueOf(til_target.editText?.text.toString())
@@ -701,6 +707,11 @@ open class AddToDoItemActivity : AppCompatActivity() {
                     ToastUtils.showShortToast(getString(R.string.add_to_do_goal_illegal_input))
                 }
             }
+        }
+
+        // 艾宾浩斯记忆模式的事项应该有 6 次循环
+        if (enableEbbinghausMode) {
+            targetTimes = 6
         }
 
         for (i in arrAbbrBtn.indices) {
@@ -770,6 +781,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
         taskModel.categoryId = if (currentCategoryId == -1L) 0L
         else currentCategoryId
+
+        // 艾宾浩斯记忆法
+        taskModel.enableEbbinghausMode = enableEbbinghausMode
 
         return taskModel
     }

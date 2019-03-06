@@ -71,18 +71,18 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login"
+            android:theme="@style/AppTheme.Common"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activities.SettingActivity"
             android:label="设置"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login" />
+            android:theme="@style/AppTheme.Common" />
         <activity
             android:name=".activities.AddToDoItemActivity"
             android:label="@string/title_activity_add_to_do_item"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -91,7 +91,7 @@
             android:name=".activities.AddTeamActivity"
             android:label="@string/title_activity_add_team_item"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -99,7 +99,7 @@
         <activity
             android:name=".activities.EditTeamActivity"
             android:label="@string/title_activity_edit_team_item"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -108,7 +108,7 @@
             android:name=".activities.TeamActivity"
             android:label="@string/title_activity_team"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -117,7 +117,7 @@
             android:name=".activities.UserActivity"
             android:label="@string/title_activity_user"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -126,7 +126,7 @@
             android:name=".activities.EditToDoItemActivity"
             android:label="@string/title_activity_edit_to_do_item"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -135,7 +135,7 @@
             android:name=".activities.HistoryActivity"
             android:label="@string/title_activity_history"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -144,7 +144,7 @@
             android:name=".activities.ExpActivity"
             android:label="@string/title_activity_exp"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -153,7 +153,7 @@
             android:name=".activities.YBLoginActivity"
             android:label="@string/title_activity_YBLogin"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -162,7 +162,7 @@
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".activities.UserMineActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -171,7 +171,7 @@
             android:name=".activities.UserMineActivity"
             android:label="@string/title_activity_user_mine"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -180,7 +180,7 @@
             android:name=".activities.TeamMemberActivity"
             android:label="@string/title_activity_team_member"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -189,7 +189,7 @@
             android:name=".activities.UserTeamActivity"
             android:label="@string/title_activity_user_team"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -198,7 +198,7 @@
             android:name=".activities.AchievementActivity"
             android:label="@string/title_activity_achievement"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.MainActivity" />
@@ -217,7 +217,7 @@
             android:label="@string/title_activity_add_category"
             android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sarasarasa.lifeup.activities.AddCategoryActivity" />

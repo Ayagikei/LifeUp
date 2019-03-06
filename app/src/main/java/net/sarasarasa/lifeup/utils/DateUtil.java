@@ -22,6 +22,11 @@ public class DateUtil {
         return isThisTime(time, "yyyy-MM-dd");
     }
 
+    //判断选择的日期是否是明天
+    public static boolean isTomorrow(long time) {
+        return isThisTime(time - 86400000, "yyyy-MM-dd");
+    }
+
     //判断选择的日期是否是本月
     public static boolean isThisMonth(long time) {
         return isThisTime(time, "yyyy-MM");

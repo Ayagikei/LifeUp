@@ -48,4 +48,7 @@ data class TaskModel(
 
     var categoryId: Long? = null
     var isNeedToRemake: Boolean = false
+
+    var enableEbbinghausMode: Boolean = false
+
 }

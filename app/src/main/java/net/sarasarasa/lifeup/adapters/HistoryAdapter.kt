@@ -29,6 +29,11 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 .addOnClickListener(R.id.tv_btn)
                 .addOnLongClickListener(R.id.tv_btn)
 
+        if (item.enableEbbinghausMode) {
+            helper.setText(R.id.tv_headerText,
+                    "艾宾浩斯记忆法-${item.taskFrequency}天")
+        }
+
         if (item.taskStatus == ToDoItemConstants.COMPLETED) {
             if (DateUtils.isToday(checkNotNull(item.endDate).time)) {
                 if (item.teamId == -1L)

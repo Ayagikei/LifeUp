@@ -80,6 +80,27 @@
             app:layout_constraintTop_toTopOf="@+id/button_fre0" />
 
         <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/button_fre_ebbinghaus"
+            android:layout_width="64dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:clickable="true"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            app:fb_borderColor="@color/blue"
+            app:fb_borderWidth="1dp"
+            app:fb_defaultColor="#FFF"
+            app:fb_focusColor="#b3b3b3"
+            app:fb_radius="3dp"
+            app:fb_text="艾宾浩斯记忆法"
+            app:fb_textColor="@color/color_to_do_item_fre0"
+            app:fb_textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/button_fre_none"
+            app:layout_constraintTop_toTopOf="@+id/button_fre_none" />
+
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/button_fre1"
             android:layout_width="64dp"
             android:layout_height="36dp"

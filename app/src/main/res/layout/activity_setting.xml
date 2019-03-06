@@ -44,32 +44,32 @@
             <Switch
                 android:id="@+id/switch_default_repeat"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="默认重复事项（不询问是否重复）"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Switch
                 android:id="@+id/switch_ignore_activity_submit_dialog"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="默认不发表团队动态（不显示对话框）"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Switch
                 android:id="@+id/switch_default_remake_overdue"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="自动重做逾期事项（进行下一次重复）"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <View
                 android:id="@+id/view2"
@@ -89,43 +89,43 @@
             <Switch
                 android:id="@+id/switch_widget_dark_theme"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="暗色主题"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Switch
                 android:id="@+id/switch_widget_dark_theme_white_icon_and_fonts"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="暗色主题：白色字体和图标"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Switch
                 android:id="@+id/switch_hide_item"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="隐藏非今日事项"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <!--    <com.jeff.settingitem.SettingView
                     android:id="@+id/setting_item_change_widget_font_color"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     app:item_background="@drawable/selector_item"
                     app:item_text="设置经验值和重复周期字体颜色"
                     app:show_dot="false"
                     app:show_left_icon="false"
                     app:text_color="#000"
-                    app:text_size="16sp" />-->
+                    app:text_size="14sp" />-->
 
             <View
                 android:id="@+id/v_divider_2"
@@ -145,22 +145,22 @@
             <Switch
                 android:id="@+id/switch_status_play_animation"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="状态页面播放波浪动画（可能影响性能）"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Switch
                 android:id="@+id/switch_hide_community"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="隐藏社区模块（需要重启）"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <View
@@ -181,24 +181,24 @@
             <com.jeff.settingitem.SettingView
                 android:id="@+id/setting_item_guide"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 app:item_background="@drawable/selector_item"
                 app:item_text="重新开启新手指引"
                 app:show_dot="false"
                 app:show_left_icon="false"
                 app:text_color="#000"
-                app:text_size="16sp" />
+                app:text_size="14sp" />
 
             <com.jeff.settingitem.SettingView
                 android:id="@+id/setting_item_logout"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 app:item_background="@drawable/selector_item"
                 app:item_text="退出登录"
                 app:show_dot="false"
                 app:show_left_icon="false"
                 app:text_color="#000"
-                app:text_size="16sp" />
+                app:text_size="14sp" />
 
             <View
                 android:layout_width="match_parent"

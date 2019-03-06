@@ -300,7 +300,7 @@ open class AddTeamActivity : AppCompatActivity() {
     }
 
     /** 重置期限日期 **/
-    fun finishDateReset(view: View) {
+    fun expireTimeReset(view: View) {
         et_expire_time.setText("")
         view.visibility = View.INVISIBLE
     }

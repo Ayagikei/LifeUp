@@ -39,7 +39,9 @@
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="34dp">
+                        android:minHeight="92dp"
+                        android:paddingLeft="34dp"
+                        android:paddingBottom="16dp">
 
                         <TextView
                             android:id="@+id/tw_name"
@@ -56,14 +58,12 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tv_startDateTitle"
+                            android:id="@+id/tv_remark"
                             android:layout_width="256dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
-                            android:layout_marginBottom="16dp"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/iv_expIcon" />
 
@@ -110,7 +110,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/tw_name" />
 
                         <TextView
-                            android:id="@+id/tv_remark"
+                            android:id="@+id/tv_exp"
                             android:layout_width="wrap_content"
                             android:layout_height="16dp"
                             android:layout_marginStart="2dp"
@@ -129,7 +129,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="5dp"
                             android:src="@drawable/ic_time"
-                            app:layout_constraintStart_toEndOf="@+id/tv_remark"
+                            app:layout_constraintStart_toEndOf="@+id/tv_exp"
                             app:layout_constraintTop_toBottomOf="@+id/tw_name" />
 
                         <TextView

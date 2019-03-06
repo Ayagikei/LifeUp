@@ -293,6 +293,7 @@ class TodoServiceImpl : TodoService {
         taskModel.isUserInputStartTime = origin.isUserInputStartTime
         taskModel.isIgnoreDayOfWeek = origin.isIgnoreDayOfWeek
         taskModel.categoryId = origin.categoryId
+        taskModel.enableEbbinghausMode = origin.enableEbbinghausMode
 
         //最后一次事项增加奖励
         if (taskModel.taskTargetId != null && taskModel.taskTargetId is Long) {
@@ -300,6 +301,11 @@ class TodoServiceImpl : TodoService {
             if (taskTarget?.targetTimes == taskModel.currentTimes) {
                 taskModel.expReward += taskTarget.extraExpReward
             }
+        }
+
+        if (taskModel.enableEbbinghausMode) {
+            val iFrequencyArray = arrayOf(0, 1, 2, 4, 7, 15)
+            taskModel.taskFrequency = iFrequencyArray[origin.currentTimes]
         }
 
         val newExpireTime = Calendar.getInstance()
@@ -551,7 +557,7 @@ class TodoServiceImpl : TodoService {
         taskModel.isUseSpecificExpireTime = origin.isUseSpecificExpireTime
         taskModel.isUserInputStartTime = origin.isUserInputStartTime
         taskModel.isIgnoreDayOfWeek = origin.isIgnoreDayOfWeek
-
+        taskModel.enableEbbinghausMode = origin.enableEbbinghausMode
 
         //重设的时候，把单次和多次事项当做每日事项处理
         if (origin.taskFrequency == 0 || origin.taskFrequency == -1) {

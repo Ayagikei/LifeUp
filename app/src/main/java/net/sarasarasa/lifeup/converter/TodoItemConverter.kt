@@ -88,6 +88,7 @@ class TodoItemConverter {
             return when (taskFrequency) {
                 0 -> "单次"
                 -1 -> "多次"
+                -3 -> "艾宾浩斯记忆法"
                 1 -> "每日"
                 2 -> "每两日"
                 7 -> "每周"
@@ -141,6 +142,7 @@ class TodoItemConverter {
         fun strFrequencyToColorId(taskFrequency: Int): Int {
             return when (taskFrequency) {
                 -1 -> R.color.color_to_do_item_fre0
+                -3 -> R.color.color_to_do_item_fre0
                 0 -> R.color.color_to_do_item_fre0
                 1 -> R.color.color_to_do_item_fre1
                 2 -> R.color.color_to_do_item_fre1

@@ -39,7 +39,8 @@ class LoadingDialogUtils {
         }
 
         fun dismiss() {
-            dialog?.dismiss()
+            if (dialog?.isShowing == true)
+                dialog?.dismiss()
         }
     }
 }

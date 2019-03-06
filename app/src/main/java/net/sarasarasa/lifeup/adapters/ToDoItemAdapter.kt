@@ -12,6 +12,7 @@ import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.DensityUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,18 +51,29 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
         }
 
         helper.setText(R.id.tw_name, itemTitle)
-                .setText(R.id.tv_startDateTitle, item.remark)
-                .setText(R.id.tv_remark, "${item.expReward}经验值")
+                .setText(R.id.tv_remark, item.remark)
+                .setText(R.id.tv_exp, "${item.expReward}经验值")
                 .setImageResource(R.id.iv_iconSkillFrist, getAbbrIconDrawable(item.relatedAttribute1))
                 .setImageResource(R.id.iv_iconSkillSecond, getAbbrIconDrawable(item.relatedAttribute2))
                 .setImageResource(R.id.iv_iconSkillThird, getAbbrIconDrawable(item.relatedAttribute3))
                 .addOnClickListener(R.id.av_checkBtn)
+
+        if (item.remark.isEmpty()) {
+            helper.setGone(R.id.tv_remark, false)
+        } else {
+            helper.setGone(R.id.tv_remark, true)
+        }
 
         if (item.taskFrequency == 1 && item.isIgnoreDayOfWeek.contains(1)) {
             helper.setText(R.id.tv_headerText,
                     "周期任务-" + TodoItemConverter.iFrequencyWithIgnoreToNormalString(item.isIgnoreDayOfWeek.toIntArray()))
         } else {
             helper.setText(R.id.tv_headerText, TodoItemConverter.iFrequencyToTitleString(isTeamTask, item.taskFrequency))
+        }
+
+        if (item.enableEbbinghausMode) {
+            helper.setText(R.id.tv_headerText,
+                    "艾宾浩斯记忆法-${item.taskFrequency}天")
         }
 
         if (item.priority == 1) {
@@ -76,23 +88,26 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
                 getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getUnableColor())
                 setTextColor(R.id.tw_name, getUnableColor())
                 setTextColor(R.id.tv_time, getUnableColor())
-                setText(R.id.tv_time, dateAndTimeFormat.format(item.startTime) + "开始")
+                setText(R.id.tv_time, dateToStringWithTime(item.startTime) + "开始")
                 setVisible(R.id.iv_timeIcon, true)
                 setVisible(R.id.tv_time, true)
             }
         } else {
             //设置频次标识的颜色
-            helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
+            if (item.enableEbbinghausMode) {
+                helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(0))
+            } else helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
+
             helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
             helper.setTextColor(R.id.tv_time, getNormalTimeColor())
 
             if (item.taskExpireTime != null) {
                 if (item.teamId != -1L) {
-                    helper.setText(R.id.tv_time, dateAndTimeFormat.format(item.endTime) + "期限")
+                    helper.setText(R.id.tv_time, dateToStringWithTime(item.endTime) + "期限")
                 } else {
                     if (item.isUseSpecificExpireTime)
-                        helper.setText(R.id.tv_time, dateAndTimeFormat.format(item.taskExpireTime) + "期限")
-                    else helper.setText(R.id.tv_time, simpleDateFormat.format(item.taskExpireTime) + "期限")
+                        helper.setText(R.id.tv_time, dateToStringWithTime(item.taskExpireTime!!) + "期限")
+                    else helper.setText(R.id.tv_time, dateToStringWithoutTime(item.taskExpireTime!!) + "期限")
                 }
 
                 helper.setVisible(R.id.iv_timeIcon, true)
@@ -132,5 +147,39 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
     private fun getNormalTimeColor(): Int {
         return ContextCompat.getColor(mContext, R.color.color_to_do_item_time)
+    }
+
+    private fun dateToStringWithTime(date: Date): String {
+        if (DateUtil.isToday(date.time)) {
+            val cal = Calendar.getInstance()
+            cal.time = date
+
+            if (cal.get(Calendar.HOUR_OF_DAY) == 0 && cal.get(Calendar.MINUTE) == 0) {
+                val formatter = SimpleDateFormat("今天", Locale.getDefault())
+                return formatter.format(date)
+            } else {
+                val formatter = SimpleDateFormat("今天 HH:mm ", Locale.getDefault())
+                return formatter.format(date)
+            }
+        } else if (DateUtil.isTomorrow(date.time)) {
+            val formatter = SimpleDateFormat("明天 HH:mm ", Locale.getDefault())
+            return formatter.format(date)
+        } else {
+            val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm ", Locale.getDefault())
+            return formatter.format(date)
+        }
+    }
+
+    private fun dateToStringWithoutTime(date: Date): String {
+        if (DateUtil.isToday(date.time)) {
+            val formatter = SimpleDateFormat("今天", Locale.getDefault())
+            return formatter.format(date)
+        } else if (DateUtil.isTomorrow(date.time)) {
+            val formatter = SimpleDateFormat("明天", Locale.getDefault())
+            return formatter.format(date)
+        } else {
+            val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+            return formatter.format(date)
+        }
     }
 }
