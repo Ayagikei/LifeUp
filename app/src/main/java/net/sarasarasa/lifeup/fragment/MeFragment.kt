@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class MeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
         (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
-        (activity as MainActivity).supportActionBar?.title = "我的"
+        rootView.findViewById<Toolbar>(R.id.toolbar).title = "我的"
         setHasOptionsMenu(false)
 
         initView(rootView)

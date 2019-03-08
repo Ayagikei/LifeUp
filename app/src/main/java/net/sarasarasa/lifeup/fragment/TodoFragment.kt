@@ -16,7 +16,10 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.*
+import android.support.v7.widget.Toolbar
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
@@ -111,6 +114,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private lateinit var mHeaderView: View
     private lateinit var rootView: View
     private var toolbar: ActionBar? = null
+    private var mToolbar: Toolbar? = null
 
     private var mPhotosSnpl:BGASortableNinePhotoLayout? = null
 
@@ -130,17 +134,120 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         return view
     }
 
-    private fun initView(view: View) {
-        initRecyclerView(view)
+    private fun initToolbar(view: View) {
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
 
+        mToolbar = view.findViewById(R.id.toolbar)
+        mToolbar?.inflateMenu(R.menu.main)
+
         when (optionSharedPreferences.getString("classBy", "all")) {
-            "all" -> (activity as MainActivity).supportActionBar?.title = "${getCategoryName()}：所有"
-            "today" -> (activity as MainActivity).supportActionBar?.title = "${getCategoryName()}：今天"
-            "week" -> (activity as MainActivity).supportActionBar?.title = "${getCategoryName()}：近七天"
+            "all" -> mToolbar?.title = "${getCategoryName()}：所有"
+            "today" -> mToolbar?.title = "${getCategoryName()}：今天"
+            "week" -> mToolbar?.title = "${getCategoryName()}：近七天"
         }
-        toolbar = (activity as MainActivity).supportActionBar
+
+        setOnToolbarItemClickListener()
+
+    }
+
+    @SuppressLint("ApplySharedPref")
+    private fun setOnToolbarItemClickListener() {
+        mToolbar?.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_sort -> {
+                    val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
+                    val view = layoutInflater.inflate(R.layout.dialog_sort, null)
+                    view.ll_sort_alpha.setOnClickListener {
+                        val editor = optionSharedPreferences?.edit()
+                        editor?.putString("sortBy", "alpha")
+                        editor?.commit()
+                        refreshDataSet()
+                        bottomSheetDialog?.cancel()
+                    }
+                    view.ll_sort_start_time.setOnClickListener {
+                        val editor = optionSharedPreferences?.edit()
+                        editor?.putString("sortBy", "startTime")
+                        editor?.commit()
+                        refreshDataSet()
+                        bottomSheetDialog?.cancel()
+                    }
+                    view.ll_sort_deadline.setOnClickListener {
+                        val editor = optionSharedPreferences?.edit()
+                        editor?.putString("sortBy", "deadline")
+                        editor?.commit()
+                        refreshDataSet()
+                        bottomSheetDialog?.cancel()
+                    }
+                    view.ll_sort_create_time.setOnClickListener {
+                        val editor = optionSharedPreferences?.edit()
+                        editor?.putString("sortBy", "createTime")
+                        editor?.commit()
+                        refreshDataSet()
+                        bottomSheetDialog?.cancel()
+                    }
+                    view.ll_sort_exp.setOnClickListener {
+                        val editor = optionSharedPreferences?.edit()
+                        editor?.putString("sortBy", "exp")
+                        editor?.commit()
+                        refreshDataSet()
+                        bottomSheetDialog?.cancel()
+                    }
+                    bottomSheetDialog?.setContentView(view)
+                    bottomSheetDialog?.show()
+                    true
+                }
+                R.id.action_category -> {
+                    showCategoryBottomSheetDialog()
+                    true
+                }
+                R.id.action_all -> {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("classBy", "all")
+                    editor?.commit()
+                    refreshDataSet()
+                    refreshToolBarTitle()
+                    true
+                }
+                R.id.action_today -> {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("classBy", "today")
+                    editor?.commit()
+                    refreshDataSet()
+                    refreshToolBarTitle()
+                    true
+                }
+                R.id.action_week -> {
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putString("classBy", "week")
+                    editor?.commit()
+                    refreshDataSet()
+                    refreshToolBarTitle()
+                    true
+                }
+                R.id.action_sort_asc_change -> {
+                    val isAsc = optionSharedPreferences?.getBoolean("isAsc", true)
+                    val editor = optionSharedPreferences?.edit()
+                    editor?.putBoolean("isAsc", !isAsc!!)
+                    editor?.commit()
+                    refreshDataSet()
+
+                    if (!isAsc!!)
+                        ToastUtils.showShortToast("已经更改为正序")
+                    else
+                        ToastUtils.showShortToast("已经更改为倒序")
+
+                    true
+                }
+                else -> true
+            }
+        }
+    }
+
+    private fun initView(view: View) {
+        initRecyclerView(view)
+        //设置toolbar
+        initToolbar(view)
 
         view.fab.setOnClickListener {
             val intent = Intent(this.context, AddToDoItemActivity::class.java)
@@ -859,104 +966,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
      }
 
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    @SuppressLint("ApplySharedPref")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_sort -> {
-                val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
-                val view = layoutInflater.inflate(R.layout.dialog_sort, null)
-                view.ll_sort_alpha.setOnClickListener {
-                    val editor = optionSharedPreferences?.edit()
-                    editor?.putString("sortBy", "alpha")
-                    editor?.commit()
-                    refreshDataSet()
-                    bottomSheetDialog?.cancel()
-                }
-                view.ll_sort_start_time.setOnClickListener {
-                    val editor = optionSharedPreferences?.edit()
-                    editor?.putString("sortBy", "startTime")
-                    editor?.commit()
-                    refreshDataSet()
-                    bottomSheetDialog?.cancel()
-                }
-                view.ll_sort_deadline.setOnClickListener {
-                    val editor = optionSharedPreferences?.edit()
-                    editor?.putString("sortBy", "deadline")
-                    editor?.commit()
-                    refreshDataSet()
-                    bottomSheetDialog?.cancel()
-                }
-                view.ll_sort_create_time.setOnClickListener {
-                    val editor = optionSharedPreferences?.edit()
-                    editor?.putString("sortBy", "createTime")
-                    editor?.commit()
-                    refreshDataSet()
-                    bottomSheetDialog?.cancel()
-                }
-                view.ll_sort_exp.setOnClickListener {
-                    val editor = optionSharedPreferences?.edit()
-                    editor?.putString("sortBy", "exp")
-                    editor?.commit()
-                    refreshDataSet()
-                    bottomSheetDialog?.cancel()
-                }
-                bottomSheetDialog?.setContentView(view)
-                bottomSheetDialog?.show()
-                return true
-            }
-            R.id.action_category -> {
-                showCategoryBottomSheetDialog()
-                return true
-            }
-            R.id.action_all -> {
-                val editor = optionSharedPreferences?.edit()
-                editor?.putString("classBy", "all")
-                editor?.commit()
-                refreshDataSet()
-                refreshToolBarTitle()
-                return true
-            }
-            R.id.action_today -> {
-                val editor = optionSharedPreferences?.edit()
-                editor?.putString("classBy", "today")
-                editor?.commit()
-                refreshDataSet()
-                refreshToolBarTitle()
-                return true
-            }
-            R.id.action_week -> {
-                val editor = optionSharedPreferences?.edit()
-                editor?.putString("classBy", "week")
-                editor?.commit()
-                refreshDataSet()
-                refreshToolBarTitle()
-                return true
-            }
-            R.id.action_sort_asc_change -> {
-                val isAsc = optionSharedPreferences?.getBoolean("isAsc", true)
-                val editor = optionSharedPreferences?.edit()
-                editor?.putBoolean("isAsc", !isAsc!!)
-                editor?.commit()
-                refreshDataSet()
-
-                if (!isAsc!!)
-                    ToastUtils.showShortToast("已经更改为正序")
-                else
-                    ToastUtils.showShortToast("已经更改为倒序")
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
 
     private fun showCategoryBottomSheetDialog() {
         val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
@@ -1070,12 +1079,10 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     }
 
     private fun refreshToolBarTitle() {
-        if (toolbar is ActionBar) {
             when (optionSharedPreferences.getString("classBy", "all")) {
-                "all" -> toolbar!!.title = "${getCategoryName()}：所有"
-                "today" -> toolbar!!.title = "${getCategoryName()}：今天"
-                "week" -> toolbar!!.title = "${getCategoryName()}：近七天"
+                "all" -> mToolbar?.title = "${getCategoryName()}：所有"
+                "today" -> mToolbar?.title = "${getCategoryName()}：今天"
+                "week" -> mToolbar?.title = "${getCategoryName()}：近七天"
             }
-        }
     }
 }

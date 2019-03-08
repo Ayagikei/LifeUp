@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val userService = UserServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private lateinit var pedometer: Pedometer
+    private var currentToolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,15 +77,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun initToolBar(toolbar: Toolbar) {
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
-
+        currentToolbar = toolbar
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    fun getCurrentToolbar(): Toolbar? {
+        return currentToolbar
     }
 
 

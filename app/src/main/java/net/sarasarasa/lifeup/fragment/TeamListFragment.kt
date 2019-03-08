@@ -9,12 +9,15 @@ import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.fragment_team_list.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddTeamActivity
+import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.activities.TeamActivity
 import net.sarasarasa.lifeup.adapters.TeamListAdapter
 import net.sarasarasa.lifeup.base.RecyclerViewNoBugLinearLayoutManager
@@ -96,7 +99,6 @@ class TeamListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
-        setHasOptionsMenu(true)
 
         initView(rootView)
         activity?.let { LoadingDialogUtils.show(it) }
@@ -106,6 +108,8 @@ class TeamListFragment : Fragment() {
 
     private fun initView(rootView: View) {
         initRecyclerView(rootView)
+        initToolbar(rootView)
+
         context?.let { rootView.swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(it, R.color.colorPrimary)) }
         rootView.swipe_refresh_layout.setOnRefreshListener {
             mAdapter.setOnLoadMoreListener({
@@ -125,6 +129,60 @@ class TeamListFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+    private fun initToolbar(view: View) {
+        val toolbar = (activity as MainActivity).getCurrentToolbar()
+
+        toolbar?.inflateMenu(R.menu.menu_team_list)
+        val menu = toolbar?.menu
+        val searchItem = menu?.findItem(R.id.menu_search)
+        val mSearchView = MenuItemCompat.getActionView(searchItem) as SearchView
+        //mSearchView.setIconifiedByDefault(false)
+
+        //搜索框文字变化监听
+        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String): Boolean {
+                mAdapter.setEnableLoadMore(false)
+                mAdapter.setOnLoadMoreListener({
+                    getNewList(s)
+                    rootView.swipe_refresh_layout.isEnabled = false
+                }, mRecyclerView)
+
+                if (rootView.swipe_refresh_layout != null)
+                    rootView.swipe_refresh_layout.isEnabled = false
+                currentPage = 0L
+                mAdapter.data.clear()
+                getNewList(s)
+
+                return false
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                return false
+            }
+        })
+
+        mSearchView.setOnCloseListener {
+            mAdapter.setEnableLoadMore(false)
+            mAdapter.setOnLoadMoreListener({
+                getNewList()
+                rootView.swipe_refresh_layout.isEnabled = false
+            }, mRecyclerView)
+
+            if (rootView.swipe_refresh_layout != null)
+                rootView.swipe_refresh_layout.isEnabled = false
+            currentPage = 0L
+
+            mAdapter.data.clear()
+            getNewList()
+
+            false
+        }
+
+        val editText = mSearchView.findViewById<EditText>(R.id.search_src_text)
+        editText.setHintTextColor(ContextCompat.getColor(this.context!!, R.color.light_gray))
+    }
+
 
     private fun initRecyclerView(rootView: View) {
         mRecyclerView = rootView.rv
@@ -178,57 +236,6 @@ class TeamListFragment : Fragment() {
             }
 
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_team_list, menu)
-        val searchItem = menu.findItem(R.id.menu_search)
-        val mSearchView = MenuItemCompat.getActionView(searchItem) as SearchView
-        //mSearchView.setIconifiedByDefault(false)
-
-        //搜索框文字变化监听
-        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(s: String): Boolean {
-                mAdapter.setEnableLoadMore(false)
-                mAdapter.setOnLoadMoreListener({
-                    getNewList(s)
-                    rootView.swipe_refresh_layout.isEnabled = false
-                }, mRecyclerView)
-
-                if (rootView.swipe_refresh_layout != null)
-                    rootView.swipe_refresh_layout.isEnabled = false
-                currentPage = 0L
-                mAdapter.data.clear()
-                getNewList(s)
-
-                return false
-            }
-
-            override fun onQueryTextChange(s: String): Boolean {
-                return false
-            }
-        })
-
-        mSearchView.setOnCloseListener {
-            mAdapter.setEnableLoadMore(false)
-            mAdapter.setOnLoadMoreListener({
-                getNewList()
-                rootView.swipe_refresh_layout.isEnabled = false
-            }, mRecyclerView)
-
-            if (rootView.swipe_refresh_layout != null)
-                rootView.swipe_refresh_layout.isEnabled = false
-            currentPage = 0L
-
-            mAdapter.data.clear()
-            getNewList()
-
-            false
-        }
-
-        val editText = mSearchView.findViewById<EditText>(R.id.search_src_text)
-        editText.setHintTextColor(ContextCompat.getColor(this.context!!, R.color.light_gray))
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {

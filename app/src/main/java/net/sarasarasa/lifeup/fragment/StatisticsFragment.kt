@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class StatisticsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_statistics, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
-        (activity as MainActivity).supportActionBar?.title = "统计"
+        view.findViewById<Toolbar>(R.id.toolbar).title = "统计"
 
         initData(view)
         return view

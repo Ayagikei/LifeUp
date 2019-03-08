@@ -162,8 +162,16 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
                 return formatter.format(date)
             }
         } else if (DateUtil.isTomorrow(date.time)) {
-            val formatter = SimpleDateFormat("明天 HH:mm ", Locale.getDefault())
-            return formatter.format(date)
+            val cal = Calendar.getInstance()
+            cal.time = date
+
+            if (cal.get(Calendar.HOUR_OF_DAY) == 0 && cal.get(Calendar.MINUTE) == 0) {
+                val formatter = SimpleDateFormat("明天", Locale.getDefault())
+                return formatter.format(date)
+            } else {
+                val formatter = SimpleDateFormat("明天 HH:mm ", Locale.getDefault())
+                return formatter.format(date)
+            }
         } else {
             val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm ", Locale.getDefault())
             return formatter.format(date)

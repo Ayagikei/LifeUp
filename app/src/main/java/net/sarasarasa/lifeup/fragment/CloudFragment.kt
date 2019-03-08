@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,7 @@ class CloudFragment : Fragment() {
 
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
-        (activity as MainActivity).supportActionBar?.title = getString(R.string.title_community)
+        view.findViewById<Toolbar>(R.id.toolbar).title = getString(R.string.title_community)
         setHasOptionsMenu(true)
 
         // Create the adapter that will return a fragment for each of the three

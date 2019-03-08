@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +31,7 @@ class StatusFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_status, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
-        (activity as MainActivity).supportActionBar?.title = "状态"
-
+        view.findViewById<Toolbar>(R.id.toolbar).title = "状态"
 
         val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
