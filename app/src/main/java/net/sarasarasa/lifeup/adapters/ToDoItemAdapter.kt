@@ -96,9 +96,12 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
             //设置频次标识的颜色
             if (item.enableEbbinghausMode) {
                 helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(0))
-            } else helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
+                helper.setTextColor(R.id.tw_name, getThemeColor(0))
+            } else {
+                helper.getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getThemeColor(item.taskFrequency))
+                helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
+            }
 
-            helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
             helper.setTextColor(R.id.tv_time, getNormalTimeColor())
 
             if (item.taskExpireTime != null) {

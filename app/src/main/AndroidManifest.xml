@@ -5,8 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.LifeUpApplication"
@@ -217,6 +215,16 @@
             android:label="@string/title_activity_add_category"
             android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/AppTheme.Common">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.AddCategoryActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.BackupActivity"
+            android:label="@string/title_activity_backup"
+            android:parentActivityName=".activities.SettingActivity"
             android:theme="@style/AppTheme.Common">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

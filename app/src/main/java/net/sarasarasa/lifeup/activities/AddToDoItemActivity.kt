@@ -192,13 +192,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
         //禁用输入法输入，下同
         et_expire_time.inputType = InputType.TYPE_NULL
         //第一次点击首先响应Focus，下同
-        et_expire_time.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        et_expire_time.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
-                showDatePickerDialog()
+                showExpireTimeMenu(view)
         }
 
         et_expire_time.setOnClickListener {
-            showDatePickerDialog()
+            showExpireTimeMenu(it)
         }
 
         et_remindDate.inputType = InputType.TYPE_NULL
@@ -221,6 +221,43 @@ open class AddToDoItemActivity : AppCompatActivity() {
             showStartDatePickerDialog()
         }
 
+    }
+
+    private fun showExpireTimeMenu(focusView: View) {
+        val mPopupMenu = PopupMenu(this, focusView)
+        val cal = Calendar.getInstance()
+        mPopupMenu.menuInflater.inflate(R.menu.menu_expire_time, mPopupMenu.menu)
+        mPopupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.expire_today -> {
+                    et_expire_time.setText(simpleDateFormat.format(cal.time))
+                    btn_ddl_reset.visibility = View.VISIBLE
+                    btn_ddl_set_spec_time.visibility = View.VISIBLE
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.expire_tomorrow -> {
+                    cal.add(Calendar.DATE, 1)
+                    et_expire_time.setText(simpleDateFormat.format(cal.time))
+                    btn_ddl_reset.visibility = View.VISIBLE
+                    btn_ddl_set_spec_time.visibility = View.VISIBLE
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.expire_weekend -> {
+                    val dateShouldAdd = (8 - cal.get(Calendar.DAY_OF_WEEK)) % 7
+                    cal.add(Calendar.DATE, dateShouldAdd)
+                    et_expire_time.setText(simpleDateFormat.format(cal.time))
+                    btn_ddl_reset.visibility = View.VISIBLE
+                    btn_ddl_set_spec_time.visibility = View.VISIBLE
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.custom_item -> {
+                    showDatePickerDialog()
+                    return@setOnMenuItemClickListener true
+                }
+                else -> true
+            }
+        }
+        mPopupMenu.show()
     }
 
     private fun showRemindTimeMenu(focusView: View) {

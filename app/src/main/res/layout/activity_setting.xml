@@ -179,6 +179,17 @@
                 android:text="系统设置" />
 
             <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_backup_restore"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="数据备份/恢复"
+                app:show_dot="false"
+                app:show_left_icon="false"
+                app:text_color="#000"
+                app:text_size="14sp" />
+
+            <com.jeff.settingitem.SettingView
                 android:id="@+id/setting_item_guide"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

@@ -133,6 +133,7 @@ class TeamListFragment : Fragment() {
     private fun initToolbar(view: View) {
         val toolbar = (activity as MainActivity).getCurrentToolbar()
 
+        toolbar?.menu?.clear()
         toolbar?.inflateMenu(R.menu.menu_team_list)
         val menu = toolbar?.menu
         val searchItem = menu?.findItem(R.id.menu_search)

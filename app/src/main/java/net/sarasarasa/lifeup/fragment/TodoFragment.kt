@@ -128,7 +128,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_todo, null)
 
-        setHasOptionsMenu(true)
         initView(view)
         rootView = view
         return view
@@ -149,6 +148,18 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         setOnToolbarItemClickListener()
 
+        if (mToolbar != null) {
+            val mMenu = mToolbar!!.menu
+            if (mMenu.javaClass.simpleName.contentEquals("MenuBuilder")) {
+                try {
+                    val method = mMenu.javaClass.getDeclaredMethod("setOptionalIconsVisible", java.lang.Boolean.TYPE)
+                    method.isAccessible = true
+                    method.invoke(mMenu, true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     @SuppressLint("ApplySharedPref")

@@ -94,6 +94,11 @@ class SettingActivity : AppCompatActivity() {
             WidgetUtils.updateWidgets(applicationContext)
         }
 
+        setting_item_backup_restore.setOnItemViewClick {
+            val intent = Intent(this, BackupActivity::class.java)
+            startActivity(intent)
+        }
+
         setting_item_guide.setOnItemViewClick {
             val statusSharedPreferences = getSharedPreferences("status", Context.MODE_PRIVATE)
             val statusEditor = statusSharedPreferences.edit()

@@ -46,7 +46,7 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
-                } else {
+                } else if (responseBody?.msg.equals("success")) {
                     message.what = MSG_ATTR_GET_SUCCESS
                     val attributionVO = responseBody?.data
 
@@ -100,7 +100,7 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
-                } else {
+                } else if (responseBody?.msg.equals("success")) {
                     message.what = MSG_ATTR_UPDATE_SUCCESS
                     val attributionVO = responseBody?.data
                     Log.i("LifeUp 属性模块", "[更新用户属性]请求成功：${attributionVO}")
