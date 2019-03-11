@@ -15,6 +15,7 @@ import net.sarasarasa.lifeup.fragment.LifeUpWidget
 import net.sarasarasa.lifeup.fragment.LifeUpWidget.Companion.FINISH_TASK
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.DateUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -89,8 +90,7 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
 
 
         val cal = Calendar.getInstance()
-        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        val dateAndTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+
         val isTeamTask = when (taskModel.teamId) {
             -1L -> false
             else -> true
@@ -100,7 +100,7 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
             //还没到开始时间的时候
             rv.setViewVisibility(R.id.tv_time, View.VISIBLE)
             rv.setViewVisibility(R.id.iv_time, View.VISIBLE)
-            rv.setTextViewText(R.id.tv_time, dateAndTimeFormat.format(taskModel.startTime) + "开始  #" + TodoItemConverter.iFrequencyToTitleString(isTeamTask, taskModel.taskFrequency))
+            rv.setTextViewText(R.id.tv_time, dateToStringWithTime(taskModel.startTime) + "开始  #" + TodoItemConverter.iFrequencyToTitleString(isTeamTask, taskModel.taskFrequency))
             canBeFinish = false
         } else {
             //设置频次标识的颜色
@@ -110,8 +110,8 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
                 rv.setViewVisibility(R.id.iv_time, View.VISIBLE)
 
                 if (taskModel.teamId != -1L) {
-                    rv.setTextViewText(R.id.tv_time, dateAndTimeFormat.format(taskModel.endTime) + "期限  #" + TodoItemConverter.iFrequencyToTitleString(isTeamTask, taskModel.taskFrequency))
-                } else rv.setTextViewText(R.id.tv_time, simpleDateFormat.format(taskModel.taskExpireTime) + "期限  #" + TodoItemConverter.iFrequencyToTitleString(isTeamTask, taskModel.taskFrequency))
+                    rv.setTextViewText(R.id.tv_time, dateToStringWithTime(taskModel.endTime) + "期限  #" + TodoItemConverter.iFrequencyToTitleString(isTeamTask, taskModel.taskFrequency))
+                } else rv.setTextViewText(R.id.tv_time, dateToStringWithoutTime(taskModel.taskExpireTime!!) + "期限  #" + TodoItemConverter.iFrequencyToTitleString(isTeamTask, taskModel.taskFrequency))
             } else {
                 rv.setViewVisibility(R.id.tv_time, View.INVISIBLE)
                 rv.setViewVisibility(R.id.iv_time, View.INVISIBLE)
@@ -169,6 +169,48 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
         return if (isHideNotBegunItem)
             todoService.getAllUncompletedTodoListWhichHaveBegun(false)
         else todoService.getAllUncompletedTodoList(false)
+    }
+
+    private fun dateToStringWithTime(date: Date): String {
+        if (DateUtil.isToday(date.time)) {
+            val cal = Calendar.getInstance()
+            cal.time = date
+
+            if (cal.get(Calendar.HOUR_OF_DAY) == 0 && cal.get(Calendar.MINUTE) == 0) {
+                val formatter = SimpleDateFormat("今天", Locale.getDefault())
+                return formatter.format(date)
+            } else {
+                val formatter = SimpleDateFormat("今天 HH:mm ", Locale.getDefault())
+                return formatter.format(date)
+            }
+        } else if (DateUtil.isTomorrow(date.time)) {
+            val cal = Calendar.getInstance()
+            cal.time = date
+
+            if (cal.get(Calendar.HOUR_OF_DAY) == 0 && cal.get(Calendar.MINUTE) == 0) {
+                val formatter = SimpleDateFormat("明天", Locale.getDefault())
+                return formatter.format(date)
+            } else {
+                val formatter = SimpleDateFormat("明天 HH:mm ", Locale.getDefault())
+                return formatter.format(date)
+            }
+        } else {
+            val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm ", Locale.getDefault())
+            return formatter.format(date)
+        }
+    }
+
+    private fun dateToStringWithoutTime(date: Date): String {
+        if (DateUtil.isToday(date.time)) {
+            val formatter = SimpleDateFormat("今天", Locale.getDefault())
+            return formatter.format(date)
+        } else if (DateUtil.isTomorrow(date.time)) {
+            val formatter = SimpleDateFormat("明天", Locale.getDefault())
+            return formatter.format(date)
+        } else {
+            val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+            return formatter.format(date)
+        }
     }
 
 
