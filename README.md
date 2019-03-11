@@ -24,9 +24,17 @@ But,our English Version is NOT COMPLETED YET.
 
 https://www.coolapk.com/apk/net.sarasarasa.lifeup
 
-现在发布于酷安平台。
+http://app.meizu.com/apps/public/detail?package_name=net.sarasarasa.lifeup
 
-Now release on CoolApk.
+http://app.mi.com/details?id=net.sarasarasa.lifeup
+
+现在发布于酷安、小米应用商店以及魅族应用商店。
+
+并且总计获得超过20k下载量。
+
+Now release on CoolApk、Meizu App Store and Xiaomi App Store.
+
+And we already got 20k+ downloads :)
 
 
 
