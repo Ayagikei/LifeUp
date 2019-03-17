@@ -15,8 +15,8 @@
     <color name="smssdk_gray">#ff898989</color>
     <color name="color_to_do_item_fre0">#03b1ff</color>
     <color name="color_to_do_item_fre1">#8bc34a</color>
-    <color name="color_to_do_item_fre7">#ff511a</color>
-    <color name="color_to_do_item_fre30">#9728ff</color>
+    <color name="color_to_do_item_fre7">#F07178</color>
+    <color name="color_to_do_item_fre30">#BF5FFF</color>
     <color name="color_to_do_item_unable">#90CAF9</color>
     <color name="color_to_do_item_custom">#FBC02D</color>
 

@@ -609,7 +609,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun repeatTask(taskModel: TaskModel, position: Int) {
         val newTask = todoService.repeatTask(taskModel.id)
         if (newTask != null) {
-            mAdapter.remove(position)
+            if (mAdapter.getItem(position) != null)
+                mAdapter.remove(position)
 
             when (optionSharedPreferences.getString("classBy", "all")) {
                 "all" -> mAdapter.addData(newTask)

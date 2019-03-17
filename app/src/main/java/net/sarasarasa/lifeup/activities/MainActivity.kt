@@ -21,6 +21,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.network.impl.AttributeNetworkImpl
@@ -62,12 +63,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val attributeService = AttributeServiceImpl()
     private lateinit var pedometer: Pedometer
     private var currentToolbar: Toolbar? = null
+    private val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences = getSharedPreferences("options", Context.MODE_PRIVATE)
-        val isHideCommunity = sharedPreferences.getBoolean("isHideCommunity", false)
 
+        val isHideCommunity = sharedPreferences.getBoolean("isHideCommunity", false)
         if (!isHideCommunity)
             setContentView(R.layout.activity_main)
         else setContentView(R.layout.activity_main_without_community)
@@ -227,6 +228,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     fun getStep(): Float {
+        val isHidePedometer = sharedPreferences.getBoolean("isHidePedometer", false)
+        if (isHidePedometer) return 0f
+
         return pedometer.stepCount
     }
 

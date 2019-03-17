@@ -41,6 +41,7 @@ class SettingActivity : AppCompatActivity() {
         val isHideNotBegunItem = sharedPreferences.getBoolean("isHideNotBegunItem", false)
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
         val isHideCommunity = sharedPreferences.getBoolean("isHideCommunity", false)
+        val isHidePedometer = sharedPreferences.getBoolean("isHidePedometer", false)
         val editor = sharedPreferences.edit()
 
         switch_default_repeat.isChecked = !isShowRepeatDialog
@@ -84,6 +85,12 @@ class SettingActivity : AppCompatActivity() {
         switch_hide_community.isChecked = isHideCommunity
         switch_hide_community.setOnCheckedChangeListener { _, isChecked ->
             editor.putBoolean("isHideCommunity", isChecked)
+            editor.apply()
+        }
+
+        switch_hide_pedometer.isChecked = isHidePedometer
+        switch_hide_pedometer.setOnCheckedChangeListener { _, isChecked ->
+            editor.putBoolean("isHidePedometer", isChecked)
             editor.apply()
         }
 

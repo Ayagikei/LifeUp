@@ -310,16 +310,23 @@ class TodoServiceImpl : TodoService {
 
         val newExpireTime = Calendar.getInstance()
         val newStartTime = Calendar.getInstance()
+        val oldExpireTime = Calendar.getInstance()
         if (origin.taskFrequency != -1) {
             newExpireTime.time = origin.taskExpireTime
             newExpireTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.taskExpireTime = newExpireTime.time
-
+            oldExpireTime.time = origin.taskExpireTime
             newStartTime.time = origin.startTime
+
             if (!taskModel.isUserInputStartTime) {
                 CalendarUtil.setToTheFirstSecondOfTheDay(newStartTime)
+                newStartTime.set(Calendar.YEAR, oldExpireTime.get(Calendar.YEAR))
+                newStartTime.set(Calendar.MONTH, oldExpireTime.get(Calendar.MONTH))
+                newStartTime.set(Calendar.DATE, oldExpireTime.get(Calendar.DATE))
+                newStartTime.add(Calendar.DATE, 1)
+            } else {
+                newStartTime.add(Calendar.DATE, origin.taskFrequency)
             }
-            newStartTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.startTime = newStartTime.time
         }
 
@@ -573,14 +580,18 @@ class TodoServiceImpl : TodoService {
 
         val newStartTime = Calendar.getInstance()
         newStartTime.time = origin.startTime
+
         if (!origin.isUserInputStartTime) {
-            newStartTime.set(Calendar.HOUR_OF_DAY, 0)
-            newStartTime.set(Calendar.MINUTE, 0)
-            newStartTime.set(Calendar.SECOND, 0)
+            newStartTime.set(Calendar.YEAR, newExpireTime.get(Calendar.YEAR))
+            newStartTime.set(Calendar.MONTH, newExpireTime.get(Calendar.MONTH))
+            newStartTime.set(Calendar.DATE, newExpireTime.get(Calendar.DATE))
+            newStartTime.add(Calendar.DATE, 1 - origin.taskFrequency)
+            CalendarUtil.setToTheFirstSecondOfTheDay(newStartTime)
+        } else {
+            val iStartTimes = DateUtil.getDiscrepantDays(newStartTime.time, Calendar.getInstance().time) / origin.taskFrequency
+            if (iExpireTimes == 0) newStartTime.add(Calendar.DATE, origin.taskFrequency * 1)
+            else newStartTime.add(Calendar.DATE, origin.taskFrequency * iStartTimes)
         }
-        val iStartTimes = DateUtil.getDiscrepantDays(newStartTime.time, Calendar.getInstance().time) / origin.taskFrequency
-        if (iExpireTimes == 0) newStartTime.add(Calendar.DATE, origin.taskFrequency * 1)
-        else newStartTime.add(Calendar.DATE, origin.taskFrequency * iStartTimes)
         taskModel.startTime = newStartTime.time
 
 

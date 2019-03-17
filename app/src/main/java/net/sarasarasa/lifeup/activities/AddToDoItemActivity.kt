@@ -108,6 +108,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         initRepeater()
         initSeekBar()
         initAbbrBtn()
+        btn_ddl_set_spec_time.setOnClickListener { showExpireTimePickerDialog() }
     }
 
     /** 将技能图标初始化为灰色 **/
@@ -800,6 +801,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
             taskModel.startTime = simpleDateFormat.parse(taskStartDateAndTime)
             taskModel.isUserInputStartTime = true
         } else {
+            // 开始时间和期限时间的间隔应该为(重复频次 - 1)
+            if (taskModel.taskFrequency > 0)
+                cal.add(Calendar.DATE, (taskModel.taskFrequency * -1) + 1)
             taskModel.isUserInputStartTime = false
         }
 

@@ -37,6 +37,9 @@ class StatusFragment : Fragment() {
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
         view.waveView.setAnim(isStatusPlayAnimation)
 
+        val isHidePedometer = sharedPreferences.getBoolean("isHidePedometer", false)
+        if (isHidePedometer) view.sportCardView.visibility = View.GONE
+
         initData(view)
         return view
     }

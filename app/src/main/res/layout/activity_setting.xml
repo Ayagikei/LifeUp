@@ -159,7 +159,17 @@
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:text="隐藏社区模块（需要重启）"
+                android:text="隐藏社区模块（重启生效）"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/switch_hide_pedometer"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="隐藏状态页面的计步模块（重启生效）"
                 android:textSize="14sp" />
 
 

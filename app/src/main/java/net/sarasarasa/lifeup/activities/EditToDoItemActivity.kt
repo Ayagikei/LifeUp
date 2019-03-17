@@ -117,6 +117,8 @@ class EditToDoItemActivity : AddToDoItemActivity() {
 
             // 还原奖励
             til_complete_reward.editText?.setText(taskModel.completeReward)
+
+            isUseSpecificExpireTime = taskModel.isUseSpecificExpireTime
         }
     }
 

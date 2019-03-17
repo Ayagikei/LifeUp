@@ -67,6 +67,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="12dp"
             android:text="WHO"
+            android:ellipsize="end"
+            android:maxLength="12"
             android:textColor="@color/color_to_do_item_unable"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
