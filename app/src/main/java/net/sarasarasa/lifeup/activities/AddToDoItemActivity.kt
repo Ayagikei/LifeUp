@@ -428,8 +428,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
             showStartTimePickerDialog()
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
 
-        //最小日期限制
-        datePickerDialog.datePicker.minDate = c.timeInMillis
         datePickerDialog.show()
     }
 

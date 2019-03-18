@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="在今日步数少于2500步的时候，支持手动输入今日的计步数据。\n\n这个功能主要提供于不以手机为主要计步工具，或者不支持相应传感器的用户使用。\n每天只能手动输入一遍。"
+        android:text="手动输入今日的计步数据。\n\n这个功能主要提供于不以手机为主要计步工具，或者不支持相应传感器的用户使用。\n每天只能手动输入一遍。"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

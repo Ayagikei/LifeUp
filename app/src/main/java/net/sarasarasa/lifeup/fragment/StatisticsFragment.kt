@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_statistics.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.ExpActivity
 import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.StepServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -167,6 +169,13 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun initStepBarChart(view: View) {
+        val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+        val isHidePedometer = sharedPreferences.getBoolean("isHidePedometer", false)
+        if (isHidePedometer) {
+            view.cw_step_bar_chart.visibility = View.GONE
+            return
+        }
+
         val barEntries = ArrayList<BarEntry>()
         val stepList = stepService.listFinishTaskCountPastDays(7)
         for ((i, e) in stepList.withIndex()) {

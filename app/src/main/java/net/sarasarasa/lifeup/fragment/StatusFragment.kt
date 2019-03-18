@@ -124,7 +124,8 @@ class StatusFragment : Fragment() {
 
         val mainActivity = context as MainActivity
         val dailyStepCount = stepService.updateAndGetTodayStepCount(mainActivity.getStep())
-        if (dailyStepCount < 2500) {
+
+        if (true) {
             view.tv_input_sport_data.visibility = View.VISIBLE
             view.tv_input_sport_data.isClickable = true
             view.tv_input_sport_data.setOnClickListener {

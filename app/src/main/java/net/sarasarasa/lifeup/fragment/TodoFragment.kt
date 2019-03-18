@@ -839,6 +839,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     mPhotosSnpl = null
                 }
                 setNegativeButton("取消") { _, _ ->
+                    refreshDataSet()
                 }
 
                 show()
