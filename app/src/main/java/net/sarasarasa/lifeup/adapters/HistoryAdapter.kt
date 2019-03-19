@@ -1,12 +1,15 @@
 package net.sarasarasa.lifeup.adapters
 
+import android.support.constraint.ConstraintLayout
 import android.text.format.DateUtils
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.utils.DensityUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,6 +21,16 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
         val timeFormat = SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss", Locale.getDefault())
 
         val endDate = timeFormat.format(checkNotNull(item.endDate))
+
+        val tw = helper.getView(R.id.tv_nickname) as TextView
+        val cw = helper.getView(R.id.cl_history) as ConstraintLayout
+        val twDate = helper.getView(R.id.tv_btn) as TextView
+        cw.post {
+            val newMaxWidth = cw.width - DensityUtil.dp2px(72f) - twDate.width
+            if (newMaxWidth > 0) {
+                tw.maxWidth = newMaxWidth
+            }
+        }
 
         helper.setText(R.id.tv_nickname, item.content)
                 .setText(R.id.tv_btn, endDate)

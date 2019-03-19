@@ -181,7 +181,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
@@ -217,6 +216,10 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="16dp" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

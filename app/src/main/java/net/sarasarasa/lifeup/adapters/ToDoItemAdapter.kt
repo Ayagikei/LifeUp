@@ -27,7 +27,7 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
         val tw = helper.getView(R.id.tw_name) as TextView
         val cw = helper.getView(R.id.constraintLayout2) as ConstraintLayout
         cw.post {
-            val newMaxWidth = cw.width - DensityUtil.dp2px(134f)
+            val newMaxWidth = cw.width - DensityUtil.dp2px(138f)
             if (newMaxWidth > 0) {
                 tw.maxWidth = newMaxWidth
             }
