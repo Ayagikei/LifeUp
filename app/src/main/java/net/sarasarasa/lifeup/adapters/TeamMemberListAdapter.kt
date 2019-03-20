@@ -1,12 +1,12 @@
 package net.sarasarasa.lifeup.adapters
 
 import android.graphics.Bitmap
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatButton
 import android.util.Log
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.view.ViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget

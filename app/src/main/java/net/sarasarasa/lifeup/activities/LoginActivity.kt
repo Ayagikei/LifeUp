@@ -15,12 +15,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.ContactsContract
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.tencent.connect.UserInfo
 import com.tencent.connect.common.Constants
 import com.tencent.tauth.IUiListener

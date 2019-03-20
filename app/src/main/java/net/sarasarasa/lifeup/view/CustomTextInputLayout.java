@@ -2,8 +2,9 @@ package net.sarasarasa.lifeup.view;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.design.widget.TextInputLayout;
 import android.util.AttributeSet;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

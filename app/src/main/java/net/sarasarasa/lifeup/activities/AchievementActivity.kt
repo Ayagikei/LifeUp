@@ -3,13 +3,13 @@ package net.sarasarasa.lifeup.activities
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_achievement.*
 import kotlinx.android.synthetic.main.dialog_achievement.view.*
 import kotlinx.android.synthetic.main.item_achivement_without_star.view.*

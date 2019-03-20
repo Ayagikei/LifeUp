@@ -3,7 +3,7 @@ package net.sarasarasa.lifeup.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl

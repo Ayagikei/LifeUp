@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.webkit.WebResourceRequest
@@ -12,6 +11,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_yblogin.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.AttributeConstants

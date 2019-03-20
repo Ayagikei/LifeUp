@@ -14,11 +14,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
-import android.support.design.widget.TextInputEditText
-import android.support.v4.content.FileProvider
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.text.TextUtils
 import android.util.Log
@@ -26,9 +21,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
+import com.google.android.material.textfield.TextInputEditText
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.yalantis.ucrop.UCrop
@@ -559,7 +559,7 @@ open class AddTeamActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle(getString(R.string.team_add_attr_desc_title)).create()
 
         with(dialog) {
-            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
+            this.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
                 cancel()
             }
             this.show()

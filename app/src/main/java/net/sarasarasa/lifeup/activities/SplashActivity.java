@@ -6,7 +6,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
 import net.sarasarasa.lifeup.service.AttributeLevelService;
@@ -17,6 +16,8 @@ import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl;
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl;
 
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static org.litepal.LitePalApplication.getContext;
 

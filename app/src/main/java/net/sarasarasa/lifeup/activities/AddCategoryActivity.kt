@@ -2,10 +2,9 @@ package net.sarasarasa.lifeup.activities
 
 import android.content.Context
 import android.os.Bundle
-
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_category.*
 import kotlinx.android.synthetic.main.content_category.*
 import net.sarasarasa.lifeup.R

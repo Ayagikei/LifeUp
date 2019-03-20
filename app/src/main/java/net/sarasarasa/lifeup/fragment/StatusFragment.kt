@@ -2,12 +2,12 @@ package net.sarasarasa.lifeup.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.dialog_input_sport_data.view.*
 import kotlinx.android.synthetic.main.dialog_lifeup.view.*
 import kotlinx.android.synthetic.main.fragment_status.view.*
@@ -174,7 +174,7 @@ class StatusFragment : Fragment() {
         val dialog = context?.let { AlertDialog.Builder(it).create() }
 
         with(dialog) {
-            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
                 view?.let { initData(it) }
                 dismiss()
             }
@@ -189,7 +189,7 @@ class StatusFragment : Fragment() {
 
         with(dialog) {
             this?.setTitle("手动输入计步数据")
-            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
                 val step = dialogView.til_sport_data.editText?.text.toString().toLongOrNull()
                 if (step != null) {
                     if (stepService.userInputTodayStepData(step)) {
@@ -199,7 +199,7 @@ class StatusFragment : Fragment() {
                 }
                 dismiss()
             }
-            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "取消") { _, _ ->
+            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "取消") { _, _ ->
                 dismiss()
             }
             this?.setView(dialogView)

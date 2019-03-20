@@ -7,10 +7,6 @@ import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.PopupMenu
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
@@ -21,6 +17,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
@@ -973,7 +973,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this).setView(R.layout.dialog_abbr_desc).setTitle(getString(R.string.add_to_do_attr_desc_title)).create()
 
         with(dialog) {
-            this.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
+            this.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
                 cancel()
             }
             this.show()

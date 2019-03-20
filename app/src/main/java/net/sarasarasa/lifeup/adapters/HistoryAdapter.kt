@@ -1,8 +1,8 @@
 package net.sarasarasa.lifeup.adapters
 
-import android.support.constraint.ConstraintLayout
 import android.text.format.DateUtils
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R

@@ -9,7 +9,7 @@
     app:mrl_rippleHover="true"
     app:mrl_rippleOverlay="true">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,6 +44,6 @@
             app:layout_constraintTop_toTopOf="@+id/tv_category_name"
             app:srcCompat="@drawable/ic_menu_black_24dp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.balysv.materialripple.MaterialRippleLayout>

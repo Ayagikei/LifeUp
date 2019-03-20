@@ -2,10 +2,10 @@ package net.sarasarasa.lifeup.activities
 
 import android.Manifest
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_add_category.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_backup.*
 import kotlinx.android.synthetic.main.content_backup.*
 
 import net.sarasarasa.lifeup.R

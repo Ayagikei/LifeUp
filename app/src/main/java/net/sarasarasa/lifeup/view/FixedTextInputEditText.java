@@ -2,9 +2,10 @@ package net.sarasarasa.lifeup.view;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.design.widget.TextInputEditText;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.lang.reflect.Field;
 

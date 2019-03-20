@@ -1,10 +1,10 @@
 package net.sarasarasa.lifeup.adapters
 
 import android.graphics.Bitmap
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions

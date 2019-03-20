@@ -9,19 +9,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
-import android.support.design.widget.BottomSheetDialog
-import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
@@ -30,6 +29,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.dialog_activity.view.*
 import kotlinx.android.synthetic.main.dialog_category.view.*
@@ -516,7 +516,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         with(newDialog) {
             this?.setTitle("你获得了经验值")
             this?.setIcon(net.sarasarasa.lifeup.R.drawable.ic_award_exp)
-            this?.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
                 cancel()
             }
             this?.setView(newDialogView)
