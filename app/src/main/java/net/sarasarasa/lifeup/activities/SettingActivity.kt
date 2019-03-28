@@ -1,15 +1,24 @@
 package net.sarasarasa.lifeup.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_setting.*
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import kotlinx.android.synthetic.main.activity_setting.view.*
+import kotlinx.android.synthetic.main.activity_setting_display.view.*
+import kotlinx.android.synthetic.main.activity_setting_task.view.*
+import kotlinx.android.synthetic.main.activity_setting_widget.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import net.sarasarasa.lifeup.utils.SharedPreferencesUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
-import net.sarasarasa.lifeup.utils.WidgetUtils
 
 
 class SettingActivity : AppCompatActivity() {
@@ -19,11 +28,15 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.activity_setting_wrapper)
 
-        setSupportActionBar(setting_toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
+        if (supportFragmentManager.findFragmentById(R.id.fragment_container) == null) {
+            transaction = supportFragmentManager.beginTransaction()
+            transaction?.add(R.id.fragment_container, SettingMainFragment())
+            transaction?.commit()
+        }
+
+
 
 /*        var svReopenSplash = findViewById<SettingView>(R.id.setting_item_reopenSplash)
         svReopenSplash.setOnItemViewClick {
@@ -44,23 +57,7 @@ class SettingActivity : AppCompatActivity() {
         val isHidePedometer = sharedPreferences.getBoolean("isHidePedometer", false)
         val editor = sharedPreferences.edit()
 
-        switch_default_repeat.isChecked = !isShowRepeatDialog
-        switch_default_repeat.setOnCheckedChangeListener { _, isChecked ->
-            editor.putBoolean("isShowRepeatDialog", !isChecked)
-            editor.apply()
-        }
 
-        switch_ignore_activity_submit_dialog.isChecked = isIgnoreActivitySubmitDialog
-        switch_ignore_activity_submit_dialog.setOnCheckedChangeListener { _, isChecked ->
-            editor.putBoolean("isIgnoreActivitySubmitDialog", isChecked)
-            editor.apply()
-        }
-
-        switch_default_remake_overdue.isChecked = isDefaultRemake
-        switch_default_remake_overdue.setOnCheckedChangeListener { _, isChecked ->
-            editor.putBoolean("isDefaultRemake", isChecked)
-            editor.apply()
-        }
 
         switch_widget_dark_theme.isChecked = isWidgetDarkTheme
         switch_widget_dark_theme.setOnCheckedChangeListener { _, isChecked ->

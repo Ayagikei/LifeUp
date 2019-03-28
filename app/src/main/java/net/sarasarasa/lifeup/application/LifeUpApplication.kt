@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.utils.DensityUtil
+import net.sarasarasa.lifeup.utils.SharedPreferencesUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import org.acra.ACRA
 import org.acra.BuildConfig
@@ -28,6 +29,7 @@ class LifeUpApplication : Application() {
         LitePal.initialize(this)
         ToastUtils.init(this)
         DensityUtil.init(this)
+        SharedPreferencesUtils.init(this)
         instance = this
     }
 

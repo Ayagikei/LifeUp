@@ -199,12 +199,13 @@ class TeamListFragment : Fragment() {
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
         mAdapter.setOnItemClickListener { adapter, view, position ->
-            val item = adapter.getItem(position) as TeamListVO
+            val item = adapter.getItem(position) as? TeamListVO
+            if (item != null) {
+                val intent = Intent(context, TeamActivity::class.java)
+                intent.putExtra("teamId", item.teamId)
 
-            val intent = Intent(context, TeamActivity::class.java)
-            intent.putExtra("teamId", item.teamId)
-
-            startActivity(intent)
+                startActivity(intent)
+            }
         }
     }
 

@@ -179,12 +179,12 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
         mAdapter.isFirstOnly(true)
         mAdapter.setOnItemClickListener { adapter, view, position ->
 
-            val item = adapter.getItem(position) as TeamActivityListVO
-
-            val intent = Intent(context, UserActivity::class.java)
-            intent.putExtra("userId", item.userId)
-
-            startActivity(intent)
+            val item = adapter.getItem(position) as? TeamActivityListVO
+            if (item != null) {
+                val intent = Intent(context, UserActivity::class.java)
+                intent.putExtra("userId", item.userId)
+                startActivity(intent)
+            }
         }
         mAdapter.setHeaderView(getHeaderView())
     }

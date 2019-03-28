@@ -117,12 +117,12 @@ class UserTeamActivity : AppCompatActivity() {
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mAdapter.isFirstOnly(true)
         mAdapter.setOnItemClickListener { adapter, view, position ->
-            val item = adapter.getItem(position) as TeamListVO
-
-            val intent = Intent(this, TeamActivity::class.java)
-            intent.putExtra("teamId", item.teamId)
-
-            startActivity(intent)
+            val item = adapter.getItem(position) as? TeamListVO
+            if (item != null) {
+                val intent = Intent(this, TeamActivity::class.java)
+                intent.putExtra("teamId", item.teamId)
+                startActivity(intent)
+            }
         }
         mAdapter.emptyView = getEmptyView()
     }
