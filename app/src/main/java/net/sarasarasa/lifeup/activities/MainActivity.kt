@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+        val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_loading)
 
         if (!mine.userHead.isNullOrBlank())
             Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(headLayout.iv_avatar) {
@@ -294,7 +294,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             when {
                 mine.userAddress == null -> headLayout.tv_userDesc.text = getString(R.string.main_drawer_login_head)
-                userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress}\n${getString(R.string.main_drawer_need_to_relogin)}"
+                userService.getToken().isBlank() -> headLayout.tv_userDesc.text = getString(R.string.main_drawer_need_to_relogin)
                 else -> {
                     headLayout.tv_userDesc.text = mine.userAddress
                     headLayout.iv_avatar.setOnClickListener {
@@ -305,7 +305,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
 
-            val requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+            val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_pic_loading).error(R.drawable.ic_pic_loading)
 
             if (!mine.userHead.isNullOrBlank())
                 Glide.with(this).asBitmap().load(mine.userHead).apply(requestOptions).into(object : BitmapImageViewTarget(headLayout.iv_avatar) {

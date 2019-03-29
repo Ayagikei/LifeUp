@@ -78,7 +78,7 @@ class AboutActivity : AppCompatActivity() {
 
         val aboutPage = AboutPage(this)
                 .isRTL(false)
-                .setImage(R.drawable.ic_launcher_full)
+                .setImage(R.mipmap.ic_launcher_remake_round)
                 .setDescription(getString(R.string.about_app_description))
                 .addItem(Element().setTitle("${getString(R.string.about_version_name)} v${VersionUtil.getLocalVersionName(this)}"))
                 .addItem(elementCheckUpdate)

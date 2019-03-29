@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".activities.SettingActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/setting_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="?homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_show_task"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="事项设置"
+                app:left_icon="@drawable/ic_done_all_24dp"
+                app:show_dot="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="#f4f4f4" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_show_widget"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="桌面小部件设置"
+                app:left_icon="@drawable/ic_widgets_24dp"
+                app:show_dot="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="#f4f4f4" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_show_display"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="显示设置"
+                app:left_icon="@drawable/ic_view_list_24dp"
+                app:show_dot="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="系统设置" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_backup_restore"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="数据备份/恢复"
+                app:show_dot="false"
+                app:show_left_icon="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="#f4f4f4" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_reopen_welcome_activity"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="重新查看引导页"
+                app:show_dot="false"
+                app:show_left_icon="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="#f4f4f4" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_guide"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="重新开启新手指引"
+                app:show_dot="false"
+                app:show_left_icon="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="#f4f4f4" />
+
+            <com.jeff.settingitem.SettingView
+                android:id="@+id/setting_item_logout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:item_background="@drawable/selector_item"
+                app:item_text="退出登录"
+                app:show_dot="false"
+                app:show_left_icon="false"
+                app:text_color="#000"
+                app:text_size="16sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

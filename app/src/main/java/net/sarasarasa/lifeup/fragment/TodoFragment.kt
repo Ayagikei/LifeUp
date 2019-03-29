@@ -301,7 +301,10 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                                     .tintTarget(false)
                                     .transparentTarget(false)
                                     .targetRadius(60),
-                            TapTarget.forToolbarNavigationIcon(view.toolbar, "侧边栏", "可以进行登录，查看成就、历史、设置等功能").id(1)
+                            TapTarget.forToolbarNavigationIcon(view.toolbar, "侧边栏", "可以进行登录，查看成就、历史、设置等功能").id(1),
+                            TapTarget.forToolbarMenuItem(view.toolbar, R.id.action_category, "清单", "使用清单系统可以让你的待办事项分门别类，易于管理。"),
+                            TapTarget.forToolbarOverflow(view.toolbar, "更多选项", "时间\n在这里，你可以决定显示什么时间范围内的待办事项。\n默认是显示所有事项，你可以设置为只显示今天的事项。\n\n\n" +
+                                    "排序\n你还能设置待办事项的排序依据，切换正序/倒序。")
                     )
                     .start()
 

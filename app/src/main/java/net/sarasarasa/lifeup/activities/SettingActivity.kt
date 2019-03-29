@@ -9,11 +9,10 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import kotlinx.android.synthetic.main.activity_setting.view.*
-import kotlinx.android.synthetic.main.activity_setting_display.view.*
-import kotlinx.android.synthetic.main.activity_setting_task.view.*
-import kotlinx.android.synthetic.main.activity_setting_widget.view.*
+import kotlinx.android.synthetic.main.fragment_setting_display.view.*
+import kotlinx.android.synthetic.main.fragment_setting_main.view.*
+import kotlinx.android.synthetic.main.fragment_setting_task.view.*
+import kotlinx.android.synthetic.main.fragment_setting_widget.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
@@ -28,12 +27,12 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting_wrapper)
+        setContentView(R.layout.activity_setting)
 
         if (supportFragmentManager.findFragmentById(R.id.fragment_container) == null) {
-            transaction = supportFragmentManager.beginTransaction()
-            transaction?.add(R.id.fragment_container, SettingMainFragment())
-            transaction?.commit()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.fragment_container, SettingMainFragment())
+                    .commit()
         }
 
 
