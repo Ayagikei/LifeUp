@@ -395,24 +395,27 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                         return@setOnMenuItemClickListener true
                     }
                     R.id.give_up_item -> {
-
-                        context?.let { context ->
-                            MaterialDialog(context).show {
-                                title(text = "放弃")
-                                message(text = "你确定要放弃该待办事项吗？你会损失一些经验值。")
-                                positiveButton(R.string.btn_yes) {
-                                    if (todoService.giveUpTodoItem(item.id)) {
-                                        ToastUtils.showShortToast("成功放弃待办事项")
-                                        // 放弃事项不再中断重复事项（所以要进行下一次重复）
-                                        if (item.taskFrequency == 0) mAdapter.remove(position)
-                                        else repeatTask(item, position)
-                                    } else {
-                                        ToastUtils.showShortToast("放弃操作出现异常")
+                        if (item.teamId != IS_NOT_TEAM_TASK) {
+                            ToastUtils.showShortToast("团队事项暂不可放弃！")
+                        } else {
+                            context?.let { context ->
+                                MaterialDialog(context).show {
+                                    title(text = "放弃")
+                                    message(text = "你确定要放弃该待办事项吗？你会损失一些经验值。")
+                                    positiveButton(R.string.btn_yes) {
+                                        if (todoService.giveUpTodoItem(item.id)) {
+                                            ToastUtils.showShortToast("成功放弃待办事项")
+                                            // 放弃事项不再中断重复事项（所以要进行下一次重复）
+                                            if (item.taskFrequency == 0) mAdapter.remove(position)
+                                            else repeatTask(item, position)
+                                        } else {
+                                            ToastUtils.showShortToast("放弃操作出现异常")
+                                        }
+                                        WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
                                     }
-                                    WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+                                    negativeButton(R.string.btn_cancel)
+                                    lifecycleOwner(this@TodoFragment)
                                 }
-                                negativeButton(R.string.btn_cancel)
-                                lifecycleOwner(this@TodoFragment)
                             }
                         }
                         return@setOnMenuItemClickListener true

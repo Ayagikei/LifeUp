@@ -279,4 +279,5 @@
     <string name="add_to_do_menu_expire_tomorrow_item">明天</string>
     <string name="add_to_do_menu_expire_weekend_item">周末</string>
     <string name="title_activity_backup">备份/恢复</string>
+    <string name="title_activity_to_do_item_detail">事项详情</string>
 </resources>

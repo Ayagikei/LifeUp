@@ -231,6 +231,16 @@
                 android:value="net.sarasarasa.lifeup.activities.AddCategoryActivity" />
         </activity>
 
+        <activity
+            android:name=".activities.ToDoItemDetailActivity"
+            android:label="@string/title_activity_to_do_item_detail"
+            android:parentActivityName=".activities.SettingActivity"
+            android:theme="@style/AppTheme.Common">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.sarasarasa.lifeup.activities.MainActivity" />
+        </activity>
+
         <receiver android:name=".receiver.AlarmReceiver" />
 
         <!-- FileProvider共享文件 -->

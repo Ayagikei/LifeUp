@@ -108,6 +108,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:2.6.0'
     implementation 'com.afollestad.material-dialogs:input:2.6.0'
     implementation 'com.afollestad.material-dialogs:lifecycle:2.6.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 
 

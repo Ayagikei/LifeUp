@@ -21,6 +21,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
@@ -71,35 +73,6 @@ open class AddToDoItemActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initView()
-
-/*        scroll_view.post{
-            scroll_view.scrollTo(0,cw_extra.bottom)
-        }
-        TapTargetView.showFor(this,                 // `this` is an Activity
-    TapTarget.forView(findViewById(R.id.til_remindTime), "This is a target", "We have the best targets, believe me")
-        // All options below are optional
-        .outerCircleColor(R.color.blue)      // Specify a color for the outer circle
-	.outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-        .targetCircleColor(R.color.white)   // Specify a color for the target circle
-        .titleTextSize(20)                  // Specify the size (in sp) of the title text
-        .titleTextColor(R.color.white)      // Specify the color of the title text
-        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-        .descriptionTextColor(R.color.white)  // Specify the color of the description text
-        .textColor(R.color.white)            // Specify a color for both the title and description text
-        .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-            // If set, will dim behind the view with 30% opacity of the given color
-        .drawShadow(true)                   // Whether to draw a drop shadow or not
-        .cancelable(true)                  // Whether tapping outside the outer circle dismisses the view
-        .tintTarget(true)                   // Whether to tint the target view's color
-        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)             // Specify a custom drawable to draw as the target
-        .targetRadius(60),                  // Specify the target radius (in dp)
-    object: TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
-        override fun onTargetClick(view: TapTargetView?) {
-            super.onTargetClick(view)
-            ToastUtils.showShortToast("clicked")
-        }
-    });*/
-
     }
 
     private fun initView() {
@@ -109,6 +82,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
         initSeekBar()
         initAbbrBtn()
         btn_ddl_set_spec_time.setOnClickListener { showExpireTimePickerDialog() }
+        iv_extra_question.setOnClickListener { scrollToBottomBeforeShowGuide() }
+        iv_bouns_question.setOnClickListener { ToastUtils.showShortToast("事项的经验值奖励会由这里的设置计算得出。") }
+        iv_basic_question.setOnClickListener { scrollToTopBeforeShowGuide() }
     }
 
     /** 将技能图标初始化为灰色 **/
@@ -998,5 +974,143 @@ open class AddToDoItemActivity : AppCompatActivity() {
         scroll_view.post {
             scroll_view.scrollTo(0, view.top)
         }
+    }
+
+    private fun scrollToBottomBeforeShowGuide() {
+        if (btn_show_more.visibility == View.VISIBLE) {
+            showMoreOptions(btn_show_more)
+            scroll_view.post {
+                showExtraGuide()
+            }
+        } else {
+            scroll_view.post {
+                scroll_view.scrollTo(0, cw_extra.bottom)
+                showExtraGuide()
+            }
+        }
+
+    }
+
+    private fun showExtraGuide() {
+        TapTargetSequence(this)
+                .targets(TapTarget.forView(til_remindDate, "设置提醒", "（可选）在这里可以设置事项的提醒时间。\n注意：现在的提醒基于原生系统的提醒实现，可能需要应用后台运行才能接收到。")
+                        .outerCircleColor(R.color.blue)
+                        .outerCircleAlpha(0.96f)
+                        .titleTextSize(16)
+                        .titleTextColor(R.color.white)
+                        .descriptionTextSize(12)
+                        .descriptionTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .drawShadow(true)
+                        .cancelable(true)
+                        .tintTarget(false)
+                        .transparentTarget(false)
+                        .targetRadius(60),
+                        TapTarget.forView(til_startTime, "开始时间", "（可选）在这里你可以将事项的开始时间设到未来的一段时间。\n如果你的事项是立即开始的，留空即可。\n\n重复周期事项的开始时间会随着重复频次往后推迟，手动设置可能会影响到事项的持续时间，建议留空。")
+                                .outerCircleColor(R.color.blue)
+                                .outerCircleAlpha(0.96f)
+                                .titleTextSize(16)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(12)
+                                .descriptionTextColor(R.color.white)
+                                .textColor(R.color.white)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(false)
+                                .transparentTarget(false)
+                                .targetRadius(60),
+                        TapTarget.forView(til_deadLine, "期限日期", "（可选）在这里你可以设置事项的期限日期。\n如果是重复周期事项的话，指的就是首次事项的期限日期。\n\n你还能可选地设置期限的具体时间。")
+                                .outerCircleColor(R.color.blue)
+                                .outerCircleAlpha(0.96f)
+                                .titleTextSize(16)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(12)
+                                .descriptionTextColor(R.color.white)
+                                .textColor(R.color.white)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(false)
+                                .transparentTarget(false)
+                                .targetRadius(60),
+                        TapTarget.forView(til_repeat, "重复频次", "在这里你可以设置事项的重复频次。\n默认是单次，你可以为每日、每周、每月等。\n\n设置了重复频次后，每次完成事项，下一次事项的开始时间和期限日期都会根据你的重复频次往后推迟。\n\n当选择重复频次为「每日」的时候，你还能可选地设置忽略，比如忽略周六周日。")
+                                .outerCircleColor(R.color.blue)
+                                .outerCircleAlpha(0.96f)
+                                .titleTextSize(16)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(12)
+                                .descriptionTextColor(R.color.white)
+                                .textColor(R.color.white)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(false)
+                                .transparentTarget(false)
+                                .targetRadius(60),
+                        TapTarget.forView(et_target, "目标次数", "（可选）在这里你可以设置你的事项的目标次数。\n设置了目标次数的事项会有一个目标计数器，达成目标次数会自动结束该事项，并且你还会得到额外的经验值奖励。")
+                                .outerCircleColor(R.color.blue)
+                                .outerCircleAlpha(0.96f)
+                                .titleTextSize(16)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(12)
+                                .descriptionTextColor(R.color.white)
+                                .textColor(R.color.white)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(false)
+                                .transparentTarget(false)
+                                .targetRadius(60),
+                        TapTarget.forView(til_complete_reward, "奖励", "（可选）在这里你可以设置，当自己完成目标后给予自己的奖励。")
+                                .outerCircleColor(R.color.blue)
+                                .outerCircleAlpha(0.96f)
+                                .titleTextSize(16)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(12)
+                                .descriptionTextColor(R.color.white)
+                                .textColor(R.color.white)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(false)
+                                .transparentTarget(false)
+                                .targetRadius(60)
+                )
+                .start()
+    }
+
+    private fun scrollToTopBeforeShowGuide() {
+        scroll_view.post {
+            scroll_view.scrollTo(0, cw_basic.top)
+            showBasicGuide()
+        }
+    }
+
+    private fun showBasicGuide() {
+        TapTargetSequence(this)
+                .targets(TapTarget.forView(til_toDoText, "待办事项", "简短地描述你的待办事项吧。")
+                        .outerCircleColor(R.color.blue)
+                        .outerCircleAlpha(0.96f)
+                        .titleTextSize(16)
+                        .titleTextColor(R.color.white)
+                        .descriptionTextSize(14)
+                        .descriptionTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .drawShadow(true)
+                        .cancelable(true)
+                        .tintTarget(false)
+                        .transparentTarget(false)
+                        .targetRadius(60),
+                        TapTarget.forView(til_remark, "备注", "（可选）你可以在这里填写上一些待办事项的备注信息。")
+                                .outerCircleColor(R.color.blue)
+                                .outerCircleAlpha(0.96f)
+                                .titleTextSize(16)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(14)
+                                .descriptionTextColor(R.color.white)
+                                .textColor(R.color.white)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(false)
+                                .transparentTarget(false)
+                                .targetRadius(60)
+                )
+                .start()
     }
 }

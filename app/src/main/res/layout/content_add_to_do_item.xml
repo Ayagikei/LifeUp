@@ -31,10 +31,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tw_exp_pie_chart_header"
@@ -51,7 +50,9 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="待办事项"
-                    app:errorEnabled="true">
+                    app:errorEnabled="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tw_exp_pie_chart_header">
 
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:layout_width="match_parent"
@@ -66,14 +67,24 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:hint="备注">
+                    android:hint="备注"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_toDoText">
 
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_basic_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_question" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
 
@@ -200,6 +211,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/sb_difficulty" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
@@ -269,6 +281,68 @@
                         app:srcCompat="@drawable/ic_abbr_creative" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ly_icon_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="力量"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="学识"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="魅力"
+                        android:textSize="12sp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="耐力"
+                        android:textSize="12sp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="活力"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="创造"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
                 <ImageView
                     android:id="@+id/imageView8"
                     android:layout_width="24dp"
@@ -278,6 +352,14 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tw_skills"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tw_skills"
+                    app:srcCompat="@drawable/ic_question" />
+
+                <ImageView
+                    android:id="@+id/iv_bouns_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_question" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -305,6 +387,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_extra_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_question" />
 
                 <TextView
                     android:id="@+id/tw_extraHeader"

@@ -154,6 +154,7 @@
     <string name="add_to_do_menu_before_expire_1h_item">期限前1小时</string>
     <string name="add_to_do_menu_before_expire_custom_item">自定义</string>
     <string name="title_activity_backup">备份/恢复</string>
+    <string name="title_activity_to_do_item_detail">事项详情</string>
 
 
 </resources>

@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import net.sarasarasa.lifeup.R
 
 class ToDoItemDetailActivity : AppCompatActivity() {
 
@@ -9,7 +10,7 @@ class ToDoItemDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_to_do_item_detail)
+        setContentView(R.layout.activity_to_do_item_detail)
         val intent = intent
         id = intent.getLongExtra("id", -1)
 
