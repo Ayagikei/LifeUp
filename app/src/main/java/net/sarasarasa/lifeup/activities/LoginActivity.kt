@@ -542,7 +542,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         return "QQ用户_" + MD5Util.encryption(Calendar.getInstance().toString()).substring(0, 10)
     }
 
-/*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        super.onBackPressed()
+    }
+
+    /*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_login, menu)
         return true
     }*/

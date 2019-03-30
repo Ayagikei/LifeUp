@@ -52,7 +52,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     api 'com.airbnb.android:lottie:3.0.0-beta4'
-    /*implementation 'com.google.android.gms:play-services-plus:15.0.1'*/
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
@@ -60,7 +59,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha03'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
-    /*    implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'*/
     implementation 'me.relex:circleindicator:2.1.0'
     api 'com.jeff:settingitem:1.0'
     api 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
@@ -105,6 +103,11 @@ dependencies {
 
     /** 捐赠 **/
     implementation 'com.github.didikee:AndroidDonate:0.1.0'
+
+    /** Dialogs **/
+    implementation 'com.afollestad.material-dialogs:core:2.6.0'
+    implementation 'com.afollestad.material-dialogs:input:2.6.0'
+    implementation 'com.afollestad.material-dialogs:lifecycle:2.6.0'
 }
 
 

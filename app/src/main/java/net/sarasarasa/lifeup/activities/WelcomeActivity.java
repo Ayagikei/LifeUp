@@ -30,7 +30,6 @@ public class WelcomeActivity extends AppCompatActivity {
             {0XFF4FC3F7, 0XFFE4542F, 0XFF9575CD, 0XFFFFFFFF};
 
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private WelcomeFragment arrWelcomeFragment[];
     private ViewPager mViewPager;
 
@@ -43,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
         //设置FargmentManager、ViewPager和CircleIndicator
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = findViewById(R.id.container);
         CircleIndicator indicator = findViewById(R.id.indicator);
         mViewPager.setOffscreenPageLimit(3);

@@ -2,12 +2,11 @@ package net.sarasarasa.lifeup.activities
 
 import android.Manifest
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-
 import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import kotlinx.android.synthetic.main.activity_backup.*
 import kotlinx.android.synthetic.main.content_backup.*
-
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.utils.ExportImportDB
 import net.sarasarasa.lifeup.utils.ToastUtils
@@ -59,18 +58,21 @@ class BackupActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks 
 
     @AfterPermissionGranted(PRC_BACKUP_RESTORE)
     private fun processRestore() {
-        AlertDialog.Builder(this).setTitle("恢复")
-                .setMessage("你确定要恢复数据吗？")
-                .setPositiveButton("确定") { _, _ ->
-                    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    if (EasyPermissions.hasPermissions(this, *perms)) {
-                        ExportImportDB.importDB()
-                    } else {
-                        EasyPermissions.requestPermissions(this, "恢复备份数据需要以下权限：1. 读写外部存储空间", PRC_BACKUP_RESTORE, *perms)
-                    }
+        MaterialDialog(this).show {
+            title(text = "恢复")
+            message(text = "你确定要恢复数据吗？")
+            positiveButton(R.string.btn_yes) {
+                val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (EasyPermissions.hasPermissions(this@BackupActivity, *perms)) {
+                    ExportImportDB.importDB()
+                } else {
+                    EasyPermissions.requestPermissions(this@BackupActivity, "恢复备份数据需要以下权限：1. 读写外部存储空间", PRC_BACKUP_RESTORE, *perms)
                 }
-                .setNegativeButton("取消") { _, _ ->
-                }.show()
+            }
+            negativeButton(R.string.btn_cancel)
+            lifecycleOwner(this@BackupActivity)
+        }
+
     }
 
     @AfterPermissionGranted(PRC_BACKUP_RESTORE)

@@ -5,8 +5,9 @@ import android.didikee.donate.AlipayDonate
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 import net.sarasarasa.lifeup.R
@@ -31,17 +32,20 @@ class AboutActivity : AppCompatActivity() {
             VersionConstants.MSG_NEW_VERSION -> {
                 val versionVO = msg.obj as VersionVO
 
-                AlertDialog.Builder(this).setTitle("${getString(R.string.about_new_version)} ${versionVO.versionName}")
-                        .setMessage("${getString(R.string.about_update_content_title)}：\n ${versionVO.versionDesc}")
-                        .setPositiveButton(getString(R.string.btn_update)) { _, _ ->
-                            val uri = Uri.parse(versionVO.downloadUrl)
-                            val intent = Intent()
-                            intent.action = "android.intent.action.VIEW"
-                            intent.data = uri
-                            startActivity(intent)
-                        }
-                        .setNegativeButton(getString(R.string.btn_cancel)) { _, _ ->
-                        }.show()
+                MaterialDialog(this).show {
+                    title(text = "${getString(R.string.about_new_version)} ${versionVO.versionName}")
+                    message(text = "${getString(R.string.about_update_content_title)}：\n ${versionVO.versionDesc}")
+                    positiveButton(R.string.btn_update) { dialog ->
+                        val uri = Uri.parse(versionVO.downloadUrl)
+                        val intent = Intent()
+                        intent.action = "android.intent.action.VIEW"
+                        intent.data = uri
+                        startActivity(intent)
+                    }
+                    negativeButton(R.string.btn_cancel)
+                    lifecycleOwner(this@AboutActivity)
+                }
+
             }
             VersionConstants.MSG_NO_NEW_VERSION -> {
                 ToastUtils.showShortToast(getString(R.string.has_been_latest_version))
@@ -63,18 +67,42 @@ class AboutActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)*/
 
         val elementCheckUpdate = Element()
-        elementCheckUpdate.iconDrawable = R.drawable.ic_system_update_alt_24px
-        elementCheckUpdate.title = getString(R.string.about_check_update)
-        elementCheckUpdate.setOnClickListener {
-            versionNetworkImpl.checkUpdate(VersionUtil.getLocalVersion(applicationContext))
+        elementCheckUpdate.apply {
+            iconDrawable = R.drawable.ic_system_update_alt_24px
+            title = getString(R.string.about_check_update)
+            setOnClickListener {
+                versionNetworkImpl.checkUpdate(VersionUtil.getLocalVersion(applicationContext))
+            }
         }
 
+
         val elementDonate = Element()
-        elementDonate.iconDrawable = R.drawable.ic_favorite_border_black_24dp
-        elementDonate.title = "捐赠支持一下开发者\n谢谢:)"
-        elementDonate.setOnClickListener {
-            donateAlipay("tsx06992twgztmrmcisibbd")
+        elementDonate.apply {
+            iconDrawable = R.drawable.ic_favorite_border_black_24dp
+            title = "捐赠支持一下开发者\n谢谢:)"
+            setOnClickListener {
+                donateAlipay("tsx06992twgztmrmcisibbd")
+            }
         }
+
+
+        val elementRate = Element()
+        elementRate.apply {
+            iconDrawable = R.drawable.ic_favorite_border_black_24dp
+            title = "欢迎在应用商店给我们评分（酷安、魅族、小米）"
+            setOnClickListener {
+                intentToRate()
+            }
+        }
+
+        val elementIconDesigner = Element()
+        elementIconDesigner.apply {
+            iconDrawable = R.drawable.ic_account_circle_black_24dp
+            title = "图标设计 酷安@这是一碗麦面"
+        }
+
+
+
 
         val aboutPage = AboutPage(this)
                 .isRTL(false)
@@ -82,12 +110,14 @@ class AboutActivity : AppCompatActivity() {
                 .setDescription(getString(R.string.about_app_description))
                 .addItem(Element().setTitle("${getString(R.string.about_version_name)} v${VersionUtil.getLocalVersionName(this)}"))
                 .addItem(elementCheckUpdate)
+                .addItem(elementRate)
                 .addItem(elementDonate)
                 .addGroup(getString(R.string.contact_title))
                 .addEmail("AyagiKei@163.com")
                 .addWebsite("https://www.coolapk.com/apk/net.sarasarasa.lifeup")
                 .addGitHub("AyagiKei", getString(R.string.github_desc1))
                 .addGitHub("hdonghong", getString(R.string.github_desc2))
+                .addItem(elementIconDesigner)
                 .create()
 
         setContentView(aboutPage)
@@ -103,5 +133,18 @@ class AboutActivity : AppCompatActivity() {
         if (hasInstalledAlipayClient) {
             AlipayDonate.startAlipayClient(this, payCode)
         }
+    }
+
+    private fun intentToRate() {
+        try {
+            val uri = Uri.parse("market://details?id=$packageName")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        } catch (e: Exception) {
+            ToastUtils.showShortToast("没有检测到Android应用市场:(")
+            e.printStackTrace()
+        }
+
     }
 }

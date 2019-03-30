@@ -98,7 +98,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            // 加入防止误触退出应用
+            if (ClickUtils.isNotFastClick(2000, "QuitApp")) {
+                ToastUtils.showShortToast("再次点击退出程序")
+            } else super.onBackPressed()
         }
     }
 
@@ -196,7 +199,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         when {
             mine.userAddress == null -> headLayout.tv_userDesc.text = getString(R.string.main_drawer_login_head)
-            userService.getToken().isBlank() -> headLayout.tv_userDesc.text = "${mine.userAddress}\n${getString(R.string.main_drawer_need_to_relogin)}"
+            userService.getToken().isBlank() -> headLayout.tv_userDesc.text = getString(R.string.main_drawer_need_to_relogin)
             else -> {
                 headLayout.tv_userDesc.text = mine.userAddress
                 headLayout.iv_avatar.setOnClickListener {
@@ -319,5 +322,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             e.printStackTrace()
         }
     }
+
 
 }

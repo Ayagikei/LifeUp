@@ -195,31 +195,31 @@ open class AddToDoItemActivity : AppCompatActivity() {
         //第一次点击首先响应Focus，下同
         et_expire_time.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
-                showExpireTimeMenu(view)
+                view.post { showExpireTimeMenu(view) }
         }
 
         et_expire_time.setOnClickListener {
-            showExpireTimeMenu(it)
+            it.post { showExpireTimeMenu(it) }
         }
 
         et_remindDate.inputType = InputType.TYPE_NULL
         et_remindDate.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
-                showRemindTimeMenu(view)
+                view.post { showRemindTimeMenu(view) }
         }
 
         et_remindDate.setOnClickListener {
-            showRemindTimeMenu(it)
+            it.post { showRemindTimeMenu(it) }
         }
 
         et_startTime.inputType = InputType.TYPE_NULL
-        et_startTime.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        et_startTime.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
-                showStartDatePickerDialog()
+                view.post { showStartDatePickerDialog() }
         }
 
         et_startTime.setOnClickListener {
-            showStartDatePickerDialog()
+            it.post { showStartDatePickerDialog() }
         }
 
     }

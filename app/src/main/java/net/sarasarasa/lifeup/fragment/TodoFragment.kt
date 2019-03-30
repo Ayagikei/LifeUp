@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -24,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -374,49 +375,45 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                         return@setOnMenuItemClickListener true
                     }
                     R.id.delete_item -> {
-                        context?.let {
-                            AlertDialog.Builder(it).setTitle("删除")
-                                    .setMessage("你确定要删除该待办事项吗？")
-                                    .setPositiveButton("确定") { _, _ ->
-                                        // 点击“确认”后的操作
-                                        if (todoService.deleteTodoItem(item.id)) {
-                                            Toast.makeText(it, "成功删除待办事项",
-                                                    Toast.LENGTH_SHORT).show()
-                                            mAdapter.remove(position)
-                                        } else {
-                                            Toast.makeText(it, "删除操作出现异常",
-                                                    Toast.LENGTH_SHORT).show()
-                                        }
-                                        activity?.applicationContext?.let { it1 -> WidgetUtils.updateWidgets(it1) }
+                        context?.let { context ->
+                            MaterialDialog(context).show {
+                                title(text = "删除")
+                                message(text = "你确定要删除该待办事项吗？")
+                                positiveButton(R.string.btn_yes) {
+                                    if (todoService.deleteTodoItem(item.id)) {
+                                        ToastUtils.showShortToast("成功删除待办事项")
+                                        mAdapter.remove(position)
+                                    } else {
+                                        ToastUtils.showShortToast("删除操作出现异常")
                                     }
-                                    .setNegativeButton("取消") { _, _ ->
-                                    }.show()
+                                    WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+                                }
+                                negativeButton(R.string.btn_cancel)
+                                lifecycleOwner(this@TodoFragment)
+                            }
                         }
                         return@setOnMenuItemClickListener true
                     }
                     R.id.give_up_item -> {
-                        context?.let {
-                            AlertDialog.Builder(it).setTitle("放弃")
-                                    .setMessage("你确定要放弃该待办事项吗？你会损失一些经验值。")
-                                    .setPositiveButton("确定") { _, _ ->
-                                        // 点击“确认”后的操作
 
-                                        if (todoService.giveUpTodoItem(item.id)) {
-                                            Toast.makeText(it, "成功放弃待办事项",
-                                                    Toast.LENGTH_SHORT).show()
-
-                                            // 放弃事项不再中断重复事项
-                                            if (item.taskFrequency == 0) mAdapter.remove(position)
-                                            else repeatTask(item, position)
-
-                                        } else {
-                                            Toast.makeText(it, "放弃操作出现异常",
-                                                    Toast.LENGTH_SHORT).show()
-                                        }
-                                        activity?.applicationContext?.let { it1 -> WidgetUtils.updateWidgets(it1) }
+                        context?.let { context ->
+                            MaterialDialog(context).show {
+                                title(text = "放弃")
+                                message(text = "你确定要放弃该待办事项吗？你会损失一些经验值。")
+                                positiveButton(R.string.btn_yes) {
+                                    if (todoService.giveUpTodoItem(item.id)) {
+                                        ToastUtils.showShortToast("成功放弃待办事项")
+                                        // 放弃事项不再中断重复事项（所以要进行下一次重复）
+                                        if (item.taskFrequency == 0) mAdapter.remove(position)
+                                        else repeatTask(item, position)
+                                    } else {
+                                        ToastUtils.showShortToast("放弃操作出现异常")
                                     }
-                                    .setNegativeButton("取消") { _, _ ->
-                                    }.show()
+                                    WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+                                }
+                                negativeButton(R.string.btn_cancel)
+                                lifecycleOwner(this@TodoFragment)
+                            }
                         }
                         return@setOnMenuItemClickListener true
                     }
@@ -577,7 +574,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     }
 
     private fun showDialogRepeat(taskModel: TaskModel, position: Int) {
-        val dialog = context?.let { AlertDialog.Builder(it).create() }
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
 
@@ -588,25 +584,24 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             else calendar.add(Calendar.MONTH, 1)
         }
 
-        if (dialog != null)
-            with(dialog) {
-                setTitle("重复设置")
+        val stringMessage = if (taskModel.taskFrequency != -1)
+            "要进行重复吗？\n下一次的期限日期是 ${simpleDateFormat.format(calendar.time)}。"
+        else
+            "要进行重复吗？"
 
-                if (taskModel.taskFrequency != -1)
-                    setMessage("要进行重复吗？\n下一次的期限日期是 ${simpleDateFormat.format(calendar.time)}。")
-                else
-                    setMessage("要进行重复吗？")
-
-                setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
+        context?.let { context ->
+            MaterialDialog(context).show {
+                title(text = "重复")
+                message(text = stringMessage)
+                positiveButton(R.string.btn_yes) {
                     repeatTask(taskModel, position)
-                    dialog.cancel()
+                    WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
                 }
-                setButton(AlertDialog.BUTTON_NEGATIVE, "否") { _, _ ->
-                    dialog.cancel()
-                }
-
-                show()
+                negativeButton(R.string.btn_cancel)
+                lifecycleOwner(this@TodoFragment)
             }
+        }
+
     }
 
     private fun repeatTask(taskModel: TaskModel, position: Int) {
@@ -632,25 +627,20 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     }
 
     private fun showDialogReset(taskModel: TaskModel) {
-        val dialog = context?.let { AlertDialog.Builder(it).create() }
-
-        if (dialog != null)
-            with(dialog) {
-                setTitle("撤销")
-                setMessage("你确定要撤销完成吗？")
-                setButton(AlertDialog.BUTTON_POSITIVE, "是") { _, _ ->
+        context?.let { context ->
+            MaterialDialog(context).show {
+                title(text = "撤销")
+                message(text = "你确定要撤销吗？")
+                positiveButton(R.string.btn_yes) {
                     if (taskModel.id != null)
                         todoService.undoFinishTodoItem(taskModel.id)
                     ToastUtils.showShortToast("撤销成功")
                     refreshDataSet()
-                    dialog.cancel()
                 }
-                setButton(AlertDialog.BUTTON_NEGATIVE, "否") { _, _ ->
-                    dialog.cancel()
-                }
-
-                show()
+                negativeButton(R.string.btn_cancel)
+                lifecycleOwner(this@TodoFragment)
             }
+        }
     }
 
     private fun initDialogViewData(newDialogView: View, item: TaskModel) {

@@ -4,6 +4,7 @@ class ClickUtils {
     companion object {
         private val MIN_CLICK_DELAY_TIME = 1000
         private var lastClickTime: Long = 0
+        private var tag: String = "default"
 
         fun isNotFastClick(): Boolean {
             var flag = false
@@ -21,6 +22,17 @@ class ClickUtils {
             if (curClickTime - lastClickTime >= ms) {
                 flag = true
             }
+            lastClickTime = curClickTime
+            return flag
+        }
+
+        fun isNotFastClick(ms: Int, tag: String): Boolean {
+            var flag = false
+            val curClickTime = System.currentTimeMillis()
+            if (this.tag.equals(tag) && curClickTime - lastClickTime >= ms) {
+                flag = true
+            } else this.tag = tag
+
             lastClickTime = curClickTime
             return flag
         }

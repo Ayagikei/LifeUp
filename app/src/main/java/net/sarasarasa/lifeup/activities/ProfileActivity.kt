@@ -11,10 +11,12 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.jeff.settingitem.SettingView
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -145,51 +147,56 @@ class ProfileActivity : AppCompatActivity() {
 
 
     private fun showSexDialog() {
-        val checkindex = profileVO.userSex ?: USER_SEX_SECRET
-        val items = arrayOf(getString(R.string.profile_female), getString(R.string.profile_male), getString(R.string.profile_secret))
+        val checkedindex = profileVO.userSex ?: USER_SEX_SECRET
+        val items = listOf<String>(getString(R.string.profile_female), getString(R.string.profile_male), getString(R.string.profile_secret))
 
-        val dialog = AlertDialog.Builder(this).setTitle("设置性别")
-                .setSingleChoiceItems(items, checkindex) { dialog, index ->
-                    profileVO.userSex = when (items[index]) {
-                        getString(R.string.profile_female) -> USER_SEX_FEMALE
-                        getString(R.string.profile_male) -> USER_SEX_MALE
-                        else -> USER_SEX_SECRET
-                    }
-                    sv_sex.setItemText(items[index])
-                    dialog.dismiss()
-                }.create()
-        dialog.show()
+        MaterialDialog(this).show {
+            title(text = "选择性别")
+            listItemsSingleChoice(items = items, initialSelection = checkedindex) { dialog, index, text ->
+                profileVO.userSex = when (items[index]) {
+                    getString(R.string.profile_female) -> USER_SEX_FEMALE
+                    getString(R.string.profile_male) -> USER_SEX_MALE
+                    else -> USER_SEX_SECRET
+                }
+                sv_sex.setItemText("性别：" + items[index])
+            }
+            positiveButton(R.string.btn_yes)
+            lifecycleOwner(this@ProfileActivity)
+        }
+
     }
 
 
     private fun inputDialog(view: SettingView) {
-        val editText = EditText(this)
-        val builder = AlertDialog.Builder(this)
-        val title = when (view.id) {
+
+        val stringTitle = when (view.id) {
             R.id.sv_nickname -> getString(R.string.profile_dialog_nickname_title)
             R.id.sv_address -> getString(R.string.profile_dialog_address_title)
             else -> return
         }
-        with(builder) {
-            setTitle(title)
-            setView(editText)
-            setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
-                val text = when (view.id) {
+
+        val strPrefill = if (view.id == R.id.sv_nickname)
+            profileVO.nickname
+        else profileVO.userAddress
+
+        MaterialDialog(this).show {
+            title(text = stringTitle)
+            input(prefill = strPrefill) { _, text ->
+                val btnText = when (view.id) {
                     R.id.sv_nickname -> {
-                        profileVO.nickname = editText.text.toString()
-                        getString(R.string.profile_sv_nickname) + editText.text.toString()
+                        profileVO.nickname = text.toString()
+                        getString(R.string.profile_sv_nickname) + text
                     }
                     R.id.sv_address -> {
-                        profileVO.userAddress = editText.text.toString()
-                        getString(R.string.profile_sv_address) + editText.text.toString()
+                        profileVO.userAddress = text.toString()
+                        getString(R.string.profile_sv_address) + text
                     }
                     else -> ""
                 }
-                view.setItemText(text)
+                view.setItemText(btnText)
             }
-            setNegativeButton(getString(R.string.btn_cancel)) { _, _ ->
-            }
-            show()
+            positiveButton(R.string.btn_yes)
+
         }
     }
 

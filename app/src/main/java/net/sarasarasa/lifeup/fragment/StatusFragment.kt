@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import kotlinx.android.synthetic.main.dialog_input_sport_data.view.*
 import kotlinx.android.synthetic.main.dialog_lifeup.view.*
 import kotlinx.android.synthetic.main.fragment_status.view.*
@@ -61,9 +63,6 @@ class StatusFragment : Fragment() {
 
     /** 设置各项数据 **/
     private fun initData(view: View) {
-        /** TODO：优化
-         **可以每一组内部的view设置为相同的id，仅外部不同，仅传一个外部view参数即获得所有view的方法来优化此方法。
-         **/
 
         val attribute = attributeService.getAttribute()
         var exp = attribute.strengthAttribute
@@ -125,7 +124,7 @@ class StatusFragment : Fragment() {
         val mainActivity = context as MainActivity
         val dailyStepCount = stepService.updateAndGetTodayStepCount(mainActivity.getStep())
 
-        if (true) {
+        if (!stepService.isTodayGotReward()) {
             view.tv_input_sport_data.visibility = View.VISIBLE
             view.tv_input_sport_data.isClickable = true
             view.tv_input_sport_data.setOnClickListener {
@@ -147,16 +146,21 @@ class StatusFragment : Fragment() {
             view.tv_step_cnt_desc.text = "计步不可用："
         }
 
-        if (stepService.isTodayGotReward()) {
-            view.btn_get_reward.isEnabled = false
-            view.btn_get_reward.text = "已领取"
-        } else if (dailyStepCount in 0..2500) {
-            view.btn_get_reward.isEnabled = false
-            view.btn_get_reward.text = "暂不可领取"
-        } else {
-            view.btn_get_reward.setOnClickListener {
-                getRewardByStep()
-                it.isEnabled = false
+        when {
+            stepService.isTodayGotReward() -> {
+                view.btn_get_reward.isEnabled = false
+                view.btn_get_reward.text = "已领取"
+            }
+            dailyStepCount in 0..2500 -> {
+                view.btn_get_reward.isEnabled = false
+                view.btn_get_reward.text = "暂不可领取"
+            }
+            else -> {
+                view.btn_get_reward.setOnClickListener {
+                    getRewardByStep()
+                    it.isEnabled = false
+                }
+                view.btn_get_reward.text = "领取"
             }
         }
     }
@@ -171,45 +175,41 @@ class StatusFragment : Fragment() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_lifeup, null)
         dialogView.tv_title.text = "你获得了「力量」属性经验值！"
         dialogView.tv_content.text = " ${exp} 点"
-        val dialog = context?.let { AlertDialog.Builder(it).create() }
 
-        with(dialog) {
-            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
-                view?.let { initData(it) }
-                dismiss()
+        context?.let { context ->
+            MaterialDialog(context).show {
+                customView(view = dialogView)
+                positiveButton(R.string.btn_yes) { _ ->
+                    view?.let { initData(it) }
+                }
+                lifecycleOwner(this@StatusFragment)
             }
-            this?.setView(dialogView)
-            this?.show()
         }
+
     }
 
     private fun showDialogInputSportData(view: View) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_input_sport_data, null)
-        val dialog = context?.let { AlertDialog.Builder(it).create() }
 
-        with(dialog) {
-            this?.setTitle("手动输入计步数据")
-            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
-                val step = dialogView.til_sport_data.editText?.text.toString().toLongOrNull()
-                if (step != null) {
-                    if (stepService.userInputTodayStepData(step)) {
-                        initData(view)
-                        ToastUtils.showShortToast("手动输入计步数据成功。")
-                    } else ToastUtils.showShortToast("手动输入计步数据出现异常，请重试。")
+        context?.let { context ->
+            MaterialDialog(context).show {
+                title(text = "手动输入计步数据")
+                customView(view = dialogView)
+                positiveButton(R.string.btn_yes) { _ ->
+                    val step = dialogView.til_sport_data.editText?.text.toString().toLongOrNull()
+                    if (step != null) {
+                        if (stepService.userInputTodayStepData(step)) {
+                            initData(view)
+                            ToastUtils.showShortToast("手动输入计步数据成功。")
+                        } else ToastUtils.showShortToast("手动输入计步数据出现异常，请重试。")
+                    }
                 }
-                dismiss()
+                negativeButton(R.string.btn_cancel)
+                lifecycleOwner(this@StatusFragment)
             }
-            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "取消") { _, _ ->
-                dismiss()
-            }
-            this?.setView(dialogView)
-            this?.show()
         }
+
     }
 
-    private fun disableInputDataButton(view: View) {
-        view.tv_input_sport_data.visibility = View.INVISIBLE
-        view.tv_input_sport_data.isClickable = false
-    }
 
 }
