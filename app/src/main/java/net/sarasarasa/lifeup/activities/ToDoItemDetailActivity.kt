@@ -101,6 +101,9 @@ class ToDoItemDetailActivity : AppCompatActivity() {
 
             if (taskTarget != null && taskTarget.targetTimes != 0) {
                 tv_target.text = "目标次数已完成 ${taskModel?.currentTimes}/${taskTarget.targetTimes}"
+            } else {
+                iv_target.visibility = View.GONE
+                tv_target.visibility = View.GONE
             }
         } else {
             iv_target.visibility = View.GONE
@@ -108,13 +111,19 @@ class ToDoItemDetailActivity : AppCompatActivity() {
         }
 
         if (!taskModel?.completeReward.isNullOrEmpty())
-            tv_reward.text = taskModel?.completeReward
+            tv_reward.text = "完成奖励：${taskModel?.completeReward}"
         else {
             iv_reward.visibility = View.GONE
             tv_reward.visibility = View.GONE
         }
 
-        tv_degree.text = "紧迫程度 LV${taskModel?.taskUrgencyDegree}   困难程度 LV${taskModel?.taskDifficultyDegree}"
+        if (taskModel?.teamId == -1L)
+            tv_degree.text = "紧迫程度 LV${taskModel?.taskUrgencyDegree}   困难程度 LV${taskModel?.taskDifficultyDegree}"
+        else {
+            iv_degree.visibility = View.GONE
+            tv_degree.visibility = View.GONE
+        }
+
         tv_exp.text = "完成奖励${getAttributeString()}${taskModel?.expReward}点"
 
     }
