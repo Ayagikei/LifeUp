@@ -1,5 +1,6 @@
 package net.sarasarasa.lifeup.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -73,6 +74,16 @@ class HistoryActivity : AppCompatActivity() {
         mAdapter.setOnLoadMoreListener({
             getNewList()
         }, mRecyclerView)
+
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            //获得所选item
+            val item = adapter.getItem(position) as TaskModel
+            if (item != null) {
+                val intent = Intent(this, ToDoItemDetailActivity::class.java)
+                intent.putExtra("id", item.id)
+                startActivity(intent)
+            }
+        }
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = adapter.getItem(position) as TaskModel

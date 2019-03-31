@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.sarasarasa.lifeup.activities.AddToDoItemActivity">
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/ic_mode_edit_black_24dp"
+        android:orderInCategory="100"
+        android:title="编辑"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_give_up"
+        android:icon="@drawable/ic_give_up_menu"
+        android:orderInCategory="100"
+        android:title="放弃"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_delete_black_24dp"
+        android:orderInCategory="100"
+        android:title="删除"
+        app:showAsAction="always" />
+</menu>

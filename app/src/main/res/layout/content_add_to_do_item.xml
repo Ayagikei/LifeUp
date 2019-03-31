@@ -43,10 +43,19 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="18sp" />
 
+                <Space
+                    android:id="@+id/sp_to_do_text"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_toDoText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_toDoText" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_toDoText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="待办事项"
@@ -61,10 +70,19 @@
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Space
+                    android:id="@+id/sp_remark"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_remark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_remark" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_remark"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="备注"
@@ -347,7 +365,6 @@
                     android:id="@+id/imageView8"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
                     android:onClick="showDialogAttribution"
                     app:layout_constraintBottom_toBottomOf="@+id/tw_skills"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -407,10 +424,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <Space
+                    android:id="@+id/sp_remind_date"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_remindDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_remindDate" />
+
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_remindDate"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="提醒时间"
@@ -442,6 +468,15 @@
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
                     app:layout_constraintTop_toTopOf="@+id/til_remindDate" />
+
+                <Space
+                    android:id="@+id/sp_startTime"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_startTime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_startTime" />
 
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_startTime"
@@ -479,10 +514,19 @@
                     app:layout_constraintEnd_toEndOf="@+id/til_startTime"
                     app:layout_constraintTop_toTopOf="@+id/til_startTime" />
 
+                <Space
+                    android:id="@+id/sp_deadLine"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_deadLine"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
+
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_deadLine"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="期限日期"
@@ -526,10 +570,19 @@
                     app:layout_constraintEnd_toStartOf="@+id/btn_ddl_reset"
                     app:layout_constraintTop_toTopOf="@+id/til_deadLine" />
 
+                <Space
+                    android:id="@+id/sp_repeat"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_repeat"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_repeat" />
+
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_repeat"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="重复频次"
@@ -559,6 +612,15 @@
                     app:layout_constraintEnd_toEndOf="@id/til_repeat"
                     app:layout_constraintTop_toTopOf="@+id/til_repeat" />
 
+                <Space
+                    android:id="@+id/sp_target"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_target"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_target" />
+
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_target"
                     android:layout_width="match_parent"
@@ -581,6 +643,15 @@
                         android:singleLine="true"
                         android:textSize="16sp" />
                 </net.sarasarasa.lifeup.view.CustomTextInputLayout>
+
+                <Space
+                    android:id="@+id/sp_complete_reward"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/til_complete_reward"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/til_complete_reward" />
 
                 <net.sarasarasa.lifeup.view.CustomTextInputLayout
                     android:id="@+id/til_complete_reward"

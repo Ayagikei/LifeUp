@@ -992,8 +992,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
     }
 
     private fun showExtraGuide() {
+
         TapTargetSequence(this)
-                .targets(TapTarget.forView(til_remindDate, "设置提醒", "（可选）在这里可以设置事项的提醒时间。\n注意：现在的提醒基于原生系统的提醒实现，可能需要应用后台运行才能接收到。")
+                .targets(TapTarget.forView(sp_remind_date, "设置提醒", "（可选）在这里可以设置事项的提醒时间。\n注意：现在的提醒基于原生系统的提醒实现，可能需要应用后台运行才能接收到。")
                         .outerCircleColor(R.color.blue)
                         .outerCircleAlpha(0.96f)
                         .titleTextSize(16)
@@ -1004,9 +1005,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
                         .drawShadow(true)
                         .cancelable(true)
                         .tintTarget(false)
-                        .transparentTarget(false)
+                        .transparentTarget(true)
                         .targetRadius(60),
-                        TapTarget.forView(til_startTime, "开始时间", "（可选）在这里你可以将事项的开始时间设到未来的一段时间。\n如果你的事项是立即开始的，留空即可。\n\n重复周期事项的开始时间会随着重复频次往后推迟，手动设置可能会影响到事项的持续时间，建议留空。")
+                        TapTarget.forView(sp_startTime, "开始时间", "（可选）在这里你可以将事项的开始时间设到未来的一段时间。\n如果你的事项是立即开始的，留空即可。\n\n重复周期事项的开始时间会随着重复频次往后推迟，手动设置可能会影响到事项的持续时间，建议留空。")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.96f)
                                 .titleTextSize(16)
@@ -1017,9 +1018,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .drawShadow(true)
                                 .cancelable(true)
                                 .tintTarget(false)
-                                .transparentTarget(false)
+                                .transparentTarget(true)
                                 .targetRadius(60),
-                        TapTarget.forView(til_deadLine, "期限日期", "（可选）在这里你可以设置事项的期限日期。\n如果是重复周期事项的话，指的就是首次事项的期限日期。\n\n你还能可选地设置期限的具体时间。")
+                        TapTarget.forView(sp_deadLine, "期限日期", "（可选）在这里你可以设置事项的期限日期。\n如果是重复周期事项的话，指的就是首次事项的期限日期。\n\n你还能可选地设置期限的具体时间。")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.96f)
                                 .titleTextSize(16)
@@ -1030,9 +1031,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .drawShadow(true)
                                 .cancelable(true)
                                 .tintTarget(false)
-                                .transparentTarget(false)
+                                .transparentTarget(true)
                                 .targetRadius(60),
-                        TapTarget.forView(til_repeat, "重复频次", "在这里你可以设置事项的重复频次。\n默认是单次，你可以为每日、每周、每月等。\n\n设置了重复频次后，每次完成事项，下一次事项的开始时间和期限日期都会根据你的重复频次往后推迟。\n\n当选择重复频次为「每日」的时候，你还能可选地设置忽略，比如忽略周六周日。")
+                        TapTarget.forView(sp_repeat, "重复频次", "在这里你可以设置事项的重复频次。\n默认是单次，你可以为每日、每周、每月等。\n\n设置了重复频次后，每次完成事项，下一次事项的开始时间和期限日期都会根据你的重复频次往后推迟。\n\n当选择重复频次为「每日」的时候，你还能可选地设置忽略，比如忽略周六周日。")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.96f)
                                 .titleTextSize(16)
@@ -1043,9 +1044,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .drawShadow(true)
                                 .cancelable(true)
                                 .tintTarget(false)
-                                .transparentTarget(false)
+                                .transparentTarget(true)
                                 .targetRadius(60),
-                        TapTarget.forView(et_target, "目标次数", "（可选）在这里你可以设置你的事项的目标次数。\n设置了目标次数的事项会有一个目标计数器，达成目标次数会自动结束该事项，并且你还会得到额外的经验值奖励。")
+                        TapTarget.forView(sp_target, "目标次数", "（可选）在这里你可以设置你的事项的目标次数。\n设置了目标次数的事项会有一个目标计数器，达成目标次数会自动结束该事项，并且你还会得到额外的经验值奖励。")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.96f)
                                 .titleTextSize(16)
@@ -1056,9 +1057,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .drawShadow(true)
                                 .cancelable(true)
                                 .tintTarget(false)
-                                .transparentTarget(false)
+                                .transparentTarget(true)
                                 .targetRadius(60),
-                        TapTarget.forView(til_complete_reward, "奖励", "（可选）在这里你可以设置，当自己完成目标后给予自己的奖励。")
+                        TapTarget.forView(sp_complete_reward, "奖励", "（可选）在这里你可以设置，当自己完成目标后给予自己的奖励。")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.96f)
                                 .titleTextSize(16)
@@ -1069,7 +1070,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .drawShadow(true)
                                 .cancelable(true)
                                 .tintTarget(false)
-                                .transparentTarget(false)
+                                .transparentTarget(true)
                                 .targetRadius(60)
                 )
                 .start()
@@ -1084,7 +1085,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
     private fun showBasicGuide() {
         TapTargetSequence(this)
-                .targets(TapTarget.forView(til_toDoText, "待办事项", "简短地描述你的待办事项吧。")
+                .targets(TapTarget.forView(sp_to_do_text, "待办事项", "简短地描述你的待办事项吧。")
                         .outerCircleColor(R.color.blue)
                         .outerCircleAlpha(0.96f)
                         .titleTextSize(16)
@@ -1095,9 +1096,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
                         .drawShadow(true)
                         .cancelable(true)
                         .tintTarget(false)
-                        .transparentTarget(false)
+                        .transparentTarget(true)
                         .targetRadius(60),
-                        TapTarget.forView(til_remark, "备注", "（可选）你可以在这里填写上一些待办事项的备注信息。")
+                        TapTarget.forView(sp_remark, "备注", "（可选）你可以在这里填写上一些待办事项的备注信息。")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.96f)
                                 .titleTextSize(16)
@@ -1108,7 +1109,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .drawShadow(true)
                                 .cancelable(true)
                                 .tintTarget(false)
-                                .transparentTarget(false)
+                                .transparentTarget(true)
                                 .targetRadius(60)
                 )
                 .start()

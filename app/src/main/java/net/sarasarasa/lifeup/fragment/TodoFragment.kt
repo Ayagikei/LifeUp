@@ -39,10 +39,7 @@ import kotlinx.android.synthetic.main.fragment_todo.view.*
 import kotlinx.android.synthetic.main.head_view_to_do.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
 import net.sarasarasa.lifeup.R
-import net.sarasarasa.lifeup.activities.AddCategoryActivity
-import net.sarasarasa.lifeup.activities.AddToDoItemActivity
-import net.sarasarasa.lifeup.activities.EditToDoItemActivity
-import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.activities.*
 import net.sarasarasa.lifeup.adapters.CategoryAdapter
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.application.LifeUpApplication
@@ -332,6 +329,16 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         //mAdapter.setFooterView(getFootView())
         mRecyclerView.layoutManager = LinearLayoutManager(view.context)
         mRecyclerView.adapter = mAdapter
+
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            //获得所选item
+            val item = adapter.getItem(position) as TaskModel
+            if (item != null) {
+                val intent = Intent(activity, ToDoItemDetailActivity::class.java)
+                intent.putExtra("id", item.id)
+                startActivity(intent)
+            }
+        }
 
         //设置长按Item的长按事件
         mAdapter.setOnItemLongClickListener { adapter, mView, position ->

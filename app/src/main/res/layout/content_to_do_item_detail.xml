@@ -50,7 +50,7 @@
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content"
-            app:srcCompat="@drawable/ic_list_black_24dp" />
+            app:srcCompat="@drawable/ic_menu_black_24dp" />
 
         <TextView
             android:id="@+id/tv_remark"
@@ -71,7 +71,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView16"
+            app:layout_constraintTop_toBottomOf="@+id/iv_type"
             app:srcCompat="@drawable/ic_alarm_black_24dp" />
 
         <TextView
@@ -96,12 +96,14 @@
 
         <TextView
             android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:text="时间 2019/3/30 10:00:00 - 2019/4/30 10:00:00"
+            android:layout_marginEnd="8dp"
+            android:text="可完成于 \n2019/3/30 10:00:00 - 2019/4/30 10:00:00"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_date"
             app:layout_constraintTop_toTopOf="@+id/iv_date" />
 
@@ -112,7 +114,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date"
             app:srcCompat="@drawable/ic_loop_black_24dp" />
 
         <TextView
@@ -146,7 +148,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_target" />
 
         <ImageView
-            android:id="@+id/imageView12"
+            android:id="@+id/iv_reward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -156,54 +158,54 @@
             app:srcCompat="@drawable/ic_card_giftcard_black_24dp" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/tv_reward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="奖励：休息"
-            app:layout_constraintStart_toEndOf="@+id/imageView12"
-            app:layout_constraintTop_toTopOf="@+id/imageView12" />
+            app:layout_constraintStart_toEndOf="@+id/iv_reward"
+            app:layout_constraintTop_toTopOf="@+id/iv_reward" />
 
         <ImageView
-            android:id="@+id/imageView13"
+            android:id="@+id/iv_degree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView12"
+            app:layout_constraintTop_toBottomOf="@+id/iv_reward"
             app:srcCompat="@drawable/ic_dot" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/tv_degree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="紧迫程度LV4   困难程度LV4"
-            app:layout_constraintStart_toEndOf="@+id/imageView13"
-            app:layout_constraintTop_toTopOf="@+id/imageView13" />
+            app:layout_constraintStart_toEndOf="@+id/iv_degree"
+            app:layout_constraintTop_toTopOf="@+id/iv_degree" />
 
         <ImageView
-            android:id="@+id/imageView15"
+            android:id="@+id/iv_exp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView13"
+            app:layout_constraintTop_toBottomOf="@+id/iv_degree"
             app:srcCompat="@drawable/ic_dot" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/tv_exp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="完成奖励「力量」、「学识」200点经验值"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
-            app:layout_constraintTop_toTopOf="@+id/imageView15" />
+            app:layout_constraintStart_toEndOf="@+id/iv_exp"
+            app:layout_constraintTop_toTopOf="@+id/iv_exp" />
 
         <ImageView
             android:id="@+id/imageView16"
@@ -212,11 +214,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_remark"
+            app:layout_constraintTop_toBottomOf="@+id/tv_remark"
             app:srcCompat="@drawable/ic_dot" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -224,6 +226,26 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView16"
             app:layout_constraintStart_toEndOf="@+id/imageView16"
             app:layout_constraintTop_toTopOf="@+id/imageView16" />
+
+        <ImageView
+            android:id="@+id/iv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_status"
+            app:srcCompat="@drawable/ic_group_black_24dp" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:text="事项类型：本地/团队"
+            app:layout_constraintStart_toEndOf="@+id/iv_type"
+            app:layout_constraintTop_toTopOf="@+id/iv_type" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

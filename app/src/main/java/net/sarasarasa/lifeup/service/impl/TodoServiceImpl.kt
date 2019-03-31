@@ -624,7 +624,7 @@ class TodoServiceImpl : TodoService {
     override fun addGuideTask(): Boolean {
         val task = TaskModel(
                 "开始使用人升",
-                "点击小圆圈完成待办事项。\n长按可以进行置顶、编辑、放弃、删除等操作。",
+                "点击小圆圈完成待办事项。\n长按可以进行置顶、编辑、放弃、删除等操作。\n单击卡片可以浏览事项详情。",
                 null,
                 null,
                 "endurance",
