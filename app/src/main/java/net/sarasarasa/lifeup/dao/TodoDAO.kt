@@ -172,15 +172,15 @@ class TodoDAO {
     }
 
     fun getFinishCount(): Int {
-        return LitePal.where("taskStatus = ?", "1").count(TaskModel::class.java)
+        return LitePal.where("taskStatus = ? and (isDeleteRecord != ? or isDeleteRecord is null)", "1", "1").count(TaskModel::class.java)
     }
 
     fun getGiveUpCount(): Int {
-        return LitePal.where("taskStatus = ?", "3").count(TaskModel::class.java)
+        return LitePal.where("taskStatus = ? and (isDeleteRecord != ? or isDeleteRecord is null)", "3", "1").count(TaskModel::class.java)
     }
 
     fun getOverdueCount(): Int {
-        return LitePal.where("taskStatus = ?", "2").count(TaskModel::class.java)
+        return LitePal.where("taskStatus = ? and (isDeleteRecord != ? or isDeleteRecord is null)", "2", "1").count(TaskModel::class.java)
     }
 
     fun getOneTeamTaskById(teamId: Long, teamRecordId: Long): TaskModel? {

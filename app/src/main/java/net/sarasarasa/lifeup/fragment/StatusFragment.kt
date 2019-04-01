@@ -162,6 +162,7 @@ class StatusFragment : Fragment() {
                     it.isEnabled = false
                 }
                 view.btn_get_reward.text = "领取"
+                view.btn_get_reward.isEnabled = true
             }
         }
     }
