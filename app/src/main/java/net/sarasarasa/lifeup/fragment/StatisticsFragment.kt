@@ -23,6 +23,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.StepServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.DateUtil
+import java.lang.ref.WeakReference
 
 
 class StatisticsFragment : Fragment() {
@@ -34,7 +35,7 @@ class StatisticsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_statistics, null)
         //设置toolbar
-        (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+        (activity as MainActivity).initToolBar(WeakReference(view.findViewById(R.id.toolbar)))
         view.findViewById<Toolbar>(R.id.toolbar).title = "统计"
 
         initData(view)

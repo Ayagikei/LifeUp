@@ -32,6 +32,7 @@ import net.sarasarasa.lifeup.utils.ClickUtils
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.Pedometer
 import net.sarasarasa.lifeup.utils.ToastUtils
+import java.lang.ref.WeakReference
 import java.util.*
 
 
@@ -42,7 +43,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         LoadingDialogUtils.dismiss()
 
         when (msg.what) {
-            AttributeConstants.MSG_CONNECT_FAILED -> ToastUtils.showShortToast(getString(R.string.network_connect_error))
+            AttributeConstants.MSG_CONNECT_FAILED -> {
+                //ToastUtils.showShortToast(getString(R.string.network_connect_error))
+            }
             AttributeConstants.MSG_ATTR_UPDATE_SUCCESS -> {
                 //ToastUtils.showShortToast("数据已同步到云端")
             }
@@ -62,7 +65,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val userService = UserServiceImpl()
     private val attributeService = AttributeServiceImpl()
     private lateinit var pedometer: Pedometer
-    private var currentToolbar: Toolbar? = null
+    private var currentToolbar: WeakReference<Toolbar>? = null
     private val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,20 +80,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         todoService.resetAllRemind(applicationContext)
     }
 
-    fun initToolBar(toolbar: Toolbar) {
+    fun initToolBar(toolbarWeakRef: WeakReference<Toolbar>) {
         //setSupportActionBar(toolbar)
 
-        currentToolbar = toolbar
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        currentToolbar = toolbarWeakRef
+        if (toolbarWeakRef.get() != null) {
+            val toggle = ActionBarDrawerToggle(
+                    this, drawer_layout, toolbarWeakRef.get(), R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            drawer_layout.addDrawerListener(toggle)
+            toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)
+            nav_view.setNavigationItemSelectedListener(this)
+        }
     }
 
     fun getCurrentToolbar(): Toolbar? {
-        return currentToolbar
+        return currentToolbar?.get()
     }
 
 

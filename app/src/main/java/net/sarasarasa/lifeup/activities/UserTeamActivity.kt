@@ -22,6 +22,7 @@ import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamListVO
+import java.lang.ref.WeakReference
 
 class UserTeamActivity : AppCompatActivity() {
 
@@ -86,11 +87,16 @@ class UserTeamActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
 
         val userId = intent.getLongExtra("userId", -1)
-        LoadingDialogUtils.show(this)
+        LoadingDialogUtils.show(WeakReference(this))
 
         mUserId = userId
 
         initView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
 

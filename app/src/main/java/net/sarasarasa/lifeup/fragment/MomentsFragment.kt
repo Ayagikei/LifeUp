@@ -30,6 +30,7 @@ import net.sarasarasa.lifeup.vo.TeamActivityListVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
+import java.lang.ref.WeakReference
 
 class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
 
@@ -111,8 +112,13 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
         rootView = inflater.inflate(R.layout.fragment_moments_list, container, false)
 
         initView(rootView)
-        activity?.let { LoadingDialogUtils.show(it) }
+        activity?.let { LoadingDialogUtils.show(WeakReference(it)) }
         return rootView
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
     private fun initView(rootView: View) {

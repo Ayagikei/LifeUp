@@ -4,8 +4,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import net.sarasarasa.lifeup.application.LifeUpApplication
+import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_RE_GET_TEAM_TASK_SUCCESS
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.OUT_OF_DATE
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.UNCOMPLETED
@@ -87,7 +90,7 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun getUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
-        if (checkAndUpdateOverdueTask()) {
+        if (checkAndUpdateOverdueTask(null)) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
         val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
@@ -103,14 +106,14 @@ class TodoServiceImpl : TodoService {
 
 
     override fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
-        if (checkAndUpdateOverdueTask()) {
+        if (checkAndUpdateOverdueTask(null)) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
     }
 
     override fun getAllUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
-        if (checkAndUpdateOverdueTask()) {
+        if (checkAndUpdateOverdueTask(null)) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 
@@ -119,7 +122,7 @@ class TodoServiceImpl : TodoService {
 
 
     override fun getAllUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
-        if (checkAndUpdateOverdueTask()) {
+        if (checkAndUpdateOverdueTask(null)) {
             if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegunIgnoreCategory()
@@ -142,6 +145,11 @@ class TodoServiceImpl : TodoService {
 
         with(todoDAO.findATodoItem(id) ?: return false)
         {
+            if (this.taskStatus != 0) {
+                WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+                return false
+            }
+
             taskStatus = ToDoItemConstants.COMPLETED
             updatedTime = CalendarUtil.getTimeInMillisNow()
             endDate = Date()
@@ -356,7 +364,7 @@ class TodoServiceImpl : TodoService {
         return taskModel
     }
 
-    override fun checkAndUpdateOverdueTask(): Boolean {
+    override fun checkAndUpdateOverdueTask(uiHandler: (Handler.Callback)?): Boolean {
         remakeTaskWhichIsRemakeFailed()
         //期限当天不算逾期，第二天才算，此处做处理
         val calendar = Calendar.getInstance()
@@ -399,6 +407,10 @@ class TodoServiceImpl : TodoService {
                                     if (teamTaskVO != null) {
                                         addOrUpdateTeamTask(teamTaskVO, e.categoryId ?: 0L)
                                     }
+
+                                    val msg = Message()
+                                    msg.what = MSG_RE_GET_TEAM_TASK_SUCCESS
+                                    uiHandler?.handleMessage(msg)
                                 }
                             }
                         })
@@ -491,9 +503,13 @@ class TodoServiceImpl : TodoService {
             return true
         }
         // 如果事项是逾期状态，恢复为未完成
-        if (taskModel.taskStatus == OUT_OF_DATE) {
-            taskModel.taskStatus = UNCOMPLETED
-            taskModel.save()
+        val now = Calendar.getInstance()
+        if (taskModel.taskExpireTime?.before(now.time) == false) {
+            if (taskModel.taskStatus == OUT_OF_DATE) {
+                taskModel.taskStatus = UNCOMPLETED
+                taskModel.save()
+            }
+            // 时间不正确的时候什么都不干，防止死循环
         }
         return false
     }

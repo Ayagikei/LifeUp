@@ -21,6 +21,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.StepServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.ToastUtils
+import java.lang.ref.WeakReference
 
 class StatusFragment : Fragment() {
 
@@ -32,7 +33,7 @@ class StatusFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_status, null)
         //设置toolbar
-        (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+        (activity as MainActivity).initToolBar(WeakReference(view.findViewById(R.id.toolbar)))
         view.findViewById<Toolbar>(R.id.toolbar).title = "状态"
 
         val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)

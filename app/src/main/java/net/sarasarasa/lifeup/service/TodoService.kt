@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.service
 
 import android.content.Context
+import android.os.Handler
 import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.vo.TeamTaskVO
@@ -59,7 +60,7 @@ interface TodoService {
 
     /** 检查并更新逾期情况，
      * 返回[Boolean]代表是否有逾期的待办事项 **/
-    fun checkAndUpdateOverdueTask(): Boolean
+    fun checkAndUpdateOverdueTask(uiHandler: Handler.Callback?): Boolean
 
     fun getGiveUpCount(): Int
 

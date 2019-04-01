@@ -16,6 +16,7 @@ import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.LoginActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import java.lang.ref.WeakReference
 
 class CloudFragment : Fragment() {
 
@@ -29,7 +30,7 @@ class CloudFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_cloud, null)
 
         //设置toolbar
-        (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+        (activity as MainActivity).initToolBar(WeakReference(view.findViewById(R.id.toolbar)))
         view.findViewById<Toolbar>(R.id.toolbar).title = getString(R.string.title_community)
 
         // Create the adapter that will return a fragment for each of the three
@@ -87,7 +88,6 @@ class CloudFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             mSectionsPagerAdapter?.notifyDataSetChanged()
-            activity?.invalidateOptionsMenu()
         }
     }
 
@@ -141,5 +141,7 @@ class CloudFragment : Fragment() {
                 return fragment
             }
         }
+
+
     }
 }

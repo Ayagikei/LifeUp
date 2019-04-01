@@ -45,6 +45,7 @@ import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.QQLoginVO
 import net.sarasarasa.lifeup.vo.QQUserInfoVO
 import net.sarasarasa.lifeup.vo.SignUpVO
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -58,11 +59,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         when (msg.what) {
             MSG_QQ_LOGIN_SUCCESS -> {
-                LoadingDialogUtils.show(this@LoginActivity)
+                LoadingDialogUtils.show(WeakReference(this@LoginActivity))
                 userNetworkImpl.getUserProfile()
             }
             MSG_GET_PROFILE_SUCCESS -> {
-                LoadingDialogUtils.show(this@LoginActivity)
+                LoadingDialogUtils.show(WeakReference(this@LoginActivity))
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVALID_TOKEN -> {
@@ -78,7 +79,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 finish()
             }
             MSG_PHONE_REGISTER_SUCCESS -> {
-                LoadingDialogUtils.show(this@LoginActivity)
+                LoadingDialogUtils.show(WeakReference(this@LoginActivity))
                 userNetworkImpl.getUserProfile()
             }
             NetworkConstants.MSG_QQ_LOGIN_FAILED -> {
@@ -185,7 +186,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             authType = "phone"
         }
 
-        LoadingDialogUtils.show(this@LoginActivity)
+        LoadingDialogUtils.show(WeakReference(this@LoginActivity))
         loginNetworkImpl.loginByPhone(signUpVO)
 
     }
@@ -420,7 +421,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                     authType = "phone"
                 }
 
-                LoadingDialogUtils.show(this@LoginActivity)
+                LoadingDialogUtils.show(WeakReference(this@LoginActivity))
                 loginNetworkImpl.registerByPhone(signUpVO)
             }
 
@@ -501,7 +502,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 }
             }
 
-            LoadingDialogUtils.show(this@LoginActivity)
+            LoadingDialogUtils.show(WeakReference(this@LoginActivity))
             loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
         }
 
@@ -516,7 +517,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 userSex = 2
             }
 
-            LoadingDialogUtils.show(this@LoginActivity)
+            LoadingDialogUtils.show(WeakReference(this@LoginActivity))
             loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
         }
 
@@ -531,7 +532,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 userSex = 2
             }
 
-            LoadingDialogUtils.show(this@LoginActivity)
+            LoadingDialogUtils.show(WeakReference(this@LoginActivity))
             loginNetworkImpl.loginOrSignUpByQQ(signUpVO)
         }
 

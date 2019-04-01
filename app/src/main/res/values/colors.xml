@@ -8,6 +8,7 @@
     <color name="background_color">#86f2f2f2</color>
     <color name="white">#ffffff</color>
     <color name="blue">#03a9f4</color>
+    <color name="black">#000000</color>
     <color name="yiban_btn">#FF5722</color>
     <color name="clicked_btn">#c4c4c4</color>
     <color name="light_gray">#e9e9e9</color>

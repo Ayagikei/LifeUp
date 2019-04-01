@@ -1,6 +1,7 @@
 package net.sarasarasa.lifeup.activities
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
@@ -60,11 +61,12 @@ class BackupActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks 
     private fun processRestore() {
         MaterialDialog(this).show {
             title(text = "恢复")
-            message(text = "你确定要恢复数据吗？")
+            message(text = "你确定要恢复数据吗？\n为了应用的正常运行，需要重启应用。")
             positiveButton(R.string.btn_yes) {
                 val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (EasyPermissions.hasPermissions(this@BackupActivity, *perms)) {
                     ExportImportDB.importDB()
+                    restartApplication()
                 } else {
                     EasyPermissions.requestPermissions(this@BackupActivity, "恢复备份数据需要以下权限：1. 读写外部存储空间", PRC_BACKUP_RESTORE, *perms)
                 }
@@ -103,5 +105,13 @@ class BackupActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks 
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+    }
+
+
+    private fun restartApplication() {
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 }

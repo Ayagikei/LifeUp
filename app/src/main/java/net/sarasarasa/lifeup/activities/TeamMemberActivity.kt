@@ -106,6 +106,10 @@ class TeamMemberActivity : AppCompatActivity() {
         initView()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
+    }
 
     private fun initView() {
         initRecyclerView()

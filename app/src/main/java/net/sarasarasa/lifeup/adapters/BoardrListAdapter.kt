@@ -19,7 +19,7 @@ class BoardrListAdapter(layoutResId: Int, data: List<TeamMembaerListVO>) : BaseQ
     override fun convert(helper: BaseViewHolder, item: TeamMembaerListVO) {
 
         helper.setText(R.id.tv_nickname, item.nickname)
-                .setText(R.id.tv_exp, item.point.toString())
+                .setText(R.id.tv_exp, "${item.point.toString()}p")
                 .setText(R.id.tv_rank, item.rank.toString())
 
         when (item.rank) {
@@ -27,10 +27,12 @@ class BoardrListAdapter(layoutResId: Int, data: List<TeamMembaerListVO>) : BaseQ
                 helper.setImageResource(R.id.iv_rank, getIconDrawable(item.rank))
                         .setVisible(R.id.iv_rank, true)
                         .setVisible(R.id.tv_rank, false)
+                        .setTextColor(R.id.tv_exp, mContext.resources.getColor(R.color.color_abbr_endurance))
             }
             else -> {
                 helper.setVisible(R.id.iv_rank, false)
                         .setVisible(R.id.tv_rank, true)
+                        .setTextColor(R.id.tv_exp, mContext.resources.getColor(R.color.black))
             }
         }
 

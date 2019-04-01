@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
@@ -82,6 +81,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 refreshDataSet()
                 this.context?.let { ToastUtils.showShortToast("成功完成事项") }
             }
+            NetworkConstants.MSG_RE_GET_TEAM_TASK_SUCCESS -> {
+                refreshDataSet()
+            }
             else -> {
                 refreshDataSet()
 
@@ -102,7 +104,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private val attributeLevelService = AttributeLevelServiceImpl()
     private val achievementService = AchievementServiceImpl()
     private val mList: MutableList<TaskModel> = todoService.getUncompletedTodoList(true).toMutableList()
-    private var dialogView: View? = null
     private var dialog: AlertDialog? = null
     private var thread: Thread? = null
     private var threadRunning: Boolean = false
@@ -111,7 +112,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private lateinit var mAdapter: ToDoItemAdapter
     private lateinit var mHeaderView: View
     private lateinit var rootView: View
-    private var toolbar: ActionBar? = null
     private var mToolbar: Toolbar? = null
 
     private var mPhotosSnpl:BGASortableNinePhotoLayout? = null
@@ -133,7 +133,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     private fun initToolbar(view: View) {
         //设置toolbar
-        (activity as MainActivity).initToolBar(view.findViewById(R.id.toolbar))
+        (activity as MainActivity).initToolBar(WeakReference(view.findViewById(R.id.toolbar)))
 
         mToolbar = view.findViewById(R.id.toolbar)
         mToolbar?.inflateMenu(R.menu.main)
@@ -315,7 +315,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     private fun initRecyclerView(view: View) {
         //检查逾期情况
-        if (todoService.checkAndUpdateOverdueTask()) {
+        if (todoService.checkAndUpdateOverdueTask(uiHandler)) {
             ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 
@@ -851,7 +851,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     private fun refreshDataSet() {
         //检查并更新逾期情况
-        if (todoService.checkAndUpdateOverdueTask()) {
+        if (todoService.checkAndUpdateOverdueTask(uiHandler)) {
             ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
         }
 

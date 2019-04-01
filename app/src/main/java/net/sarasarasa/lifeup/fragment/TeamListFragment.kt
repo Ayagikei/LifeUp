@@ -29,6 +29,7 @@ import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamListVO
+import java.lang.ref.WeakReference
 
 
 class TeamListFragment : Fragment() {
@@ -101,9 +102,14 @@ class TeamListFragment : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
 
         initView(rootView)
-        activity?.let { LoadingDialogUtils.show(it) }
+        activity?.let { LoadingDialogUtils.show(WeakReference(it)) }
 
         return rootView
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
     private fun initView(rootView: View) {
@@ -248,7 +254,6 @@ class TeamListFragment : Fragment() {
             mAdapter.setEnableLoadMore(false)
             mAdapter.data.clear()
             getNewList()
-            activity?.invalidateOptionsMenu()
         }
         super.onHiddenChanged(hidden)
     }

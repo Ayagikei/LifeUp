@@ -2,16 +2,22 @@ package net.sarasarasa.lifeup.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import kotlinx.android.synthetic.main.activity_to_do_item_detail.*
 import kotlinx.android.synthetic.main.content_to_do_item_detail.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.application.LifeUpApplication
-import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.COMPLETED
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.GIVE_UP
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.OUT_OF_DATE
@@ -20,6 +26,7 @@ import net.sarasarasa.lifeup.converter.TodoItemConverter
 import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
+import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
@@ -39,7 +46,6 @@ class ToDoItemDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         val intent = intent
         id = intent.getLongExtra("id", -1)
 
@@ -56,6 +62,11 @@ class ToDoItemDetailActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         initStatus()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
     private fun initStatus() {
@@ -77,8 +88,32 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             else -> ""
         }
 
-        tv_type.text = if (taskModel?.teamId == -1L) "事项类型：本地事项"
-        else "事项类型：团队事项"
+        // 设置事项类型并且实现跳转团队页面
+        val ssbType = SpannableStringBuilder("事项类型：")
+        ssbType.append(if (taskModel?.teamId == -1L) "本地事项"
+        else "团队事项")
+
+        if (taskModel?.teamId != -1L) {
+            val clickableSpanType = object : ClickableSpan() {
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                }
+
+                override fun onClick(view: View) {
+                    val intent = Intent(this@ToDoItemDetailActivity, TeamActivity::class.java)
+                    intent.putExtra("teamId", taskModel?.teamId)
+                    startActivity(intent)
+                }
+            }
+            ssbType.setSpan(clickableSpanType, ssbType.indexOf("：") + 1, ssbType.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            val foregroundColorSpanType = ForegroundColorSpan(applicationContext.resources.getColor(R.color.colorPrimary))
+            ssbType.setSpan(foregroundColorSpanType, ssbType.indexOf("：") + 1, ssbType.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        tv_type.movementMethod = LinkMovementMethod.getInstance()
+        tv_type.text = ssbType
 
 
         if (taskModel?.taskRemindTime != null) {
@@ -165,13 +200,18 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             menu.removeItem(R.id.action_give_up)
         }
 
+
+        if (taskModel?.taskStatus == 0 || taskModel?.taskStatus == 1) {
+            menu.removeItem(R.id.action_set_to_finish)
+        }
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_delete -> {
-                if (taskModel?.taskStatus == 0) {
+                if (taskModel?.taskStatus == UNCOMPLETED) {
                     MaterialDialog(this).show {
                         title(text = "删除")
                         message(text = "你确定要删除该待办事项吗？")
@@ -181,7 +221,8 @@ class ToDoItemDetailActivity : AppCompatActivity() {
                                 finish()
                             } else ToastUtils.showShortToast("删除操作出现异常")
                         }
-                        negativeButton(R.string.btn_cancel) { }
+                        negativeButton(R.string.btn_cancel)
+                        lifecycleOwner(this@ToDoItemDetailActivity)
                     }
                 } else {
                     MaterialDialog(this).show {
@@ -194,17 +235,22 @@ class ToDoItemDetailActivity : AppCompatActivity() {
                             } else ToastUtils.showShortToast("删除历史记录操作出现异常")
                         }
                         negativeButton(R.string.btn_cancel)
+                        lifecycleOwner(this@ToDoItemDetailActivity)
                     }
                 }
                 return true
             }
             R.id.action_give_up -> {
-                if (taskModel?.taskStatus == 0)
+                if (taskModel?.teamId != -1L) {
+                    ToastUtils.showShortToast("团队事项暂不可放弃！")
+                }
+                if (taskModel?.taskStatus == UNCOMPLETED)
                     MaterialDialog(this).show {
                         title(text = "放弃")
-                        message(text = "你确定要删除该待办事项吗？\n如果是重复周期事项的话，只会放弃这一次的事项，不会影响到事项的重复。")
+                        message(text = "你确定要放弃该待办事项吗？\n如果是重复周期事项的话，只会放弃这一次的事项，不会影响到事项的重复。")
                         positiveButton(R.string.btn_yes) { if (giveUpItem()) finish() }
                         negativeButton(R.string.btn_cancel)
+                        lifecycleOwner(this@ToDoItemDetailActivity)
                     }
                 return true
             }
@@ -218,31 +264,36 @@ class ToDoItemDetailActivity : AppCompatActivity() {
                 }
                 return true
             }
+            R.id.action_set_to_finish -> {
+                if (taskModel?.taskStatus != UNCOMPLETED)
+                    MaterialDialog(this).show {
+                        title(text = "设为「已经完成」")
+                        message(text = "你实际上已经完成了该待办事项吗？")
+                        positiveButton(R.string.btn_yes) {
+                            if (todoService.setOverdueItemToFinish(taskModel?.id)) {
+                                ToastUtils.showShortToast(getString(R.string.history_set_to_success_success))
+                            }
+                        }
+                        negativeButton(R.string.btn_cancel)
+                        lifecycleOwner(this@ToDoItemDetailActivity)
+                    }
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-
     private fun giveUpItem(): Boolean {
-        if (taskModel?.teamId != ToDoItemConstants.IS_NOT_TEAM_TASK) {
-            ToastUtils.showShortToast("团队事项暂不可放弃！")
-            return false
-        } else {
-            if (todoService.giveUpTodoItem(taskModel?.id)) {
+        return if (todoService.giveUpTodoItem(taskModel?.id)) {
                 ToastUtils.showShortToast("成功放弃待办事项")
                 // 放弃事项不再中断重复事项（所以要进行下一次重复）
                 if (taskModel?.taskFrequency != 0) todoService.repeatTask(taskModel?.id)
                 WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
-                return true
+            true
             } else {
                 ToastUtils.showShortToast("放弃操作出现异常")
-                return false
+            false
             }
-        }
-        ToastUtils.showShortToast("放弃操作出现异常")
-        return false
     }
-
-
 
 }

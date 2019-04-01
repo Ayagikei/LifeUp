@@ -39,6 +39,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.IOException
+import java.lang.ref.WeakReference
 
 
 open class EditTeamActivity : AppCompatActivity() {
@@ -175,7 +176,7 @@ open class EditTeamActivity : AppCompatActivity() {
         Log.i("TeamVO", teamEditVO.toString())
 
         teamNetworkImpl.editTeam(teamEditVO)
-        LoadingDialogUtils.show(this)
+        LoadingDialogUtils.show(WeakReference(this))
     }
 
     /** 提交前对表单进行检测 **/
@@ -311,7 +312,7 @@ open class EditTeamActivity : AppCompatActivity() {
     @Throws(IOException::class)
     fun uploadFile(data: Intent) {
         val file = getAvatarFile(avatarFileName)
-        LoadingDialogUtils.show(this)
+        LoadingDialogUtils.show(WeakReference(this))
         uploadNetworkImpl.uploadImages(file)
     }
 }

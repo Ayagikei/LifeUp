@@ -27,6 +27,7 @@ import net.sarasarasa.lifeup.network.impl.LoginNetworkImpl
 import net.sarasarasa.lifeup.network.impl.UserNetworkImpl
 import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
+import java.lang.ref.WeakReference
 
 
 class YBLoginActivity : AppCompatActivity() {
@@ -43,7 +44,7 @@ class YBLoginActivity : AppCompatActivity() {
                 ToastUtils.showShortToast("加载失败，请检查你的网络！")
             }
             MSG_YB_LOGIN_SUCCESS -> {
-                LoadingDialogUtils.show(this@YBLoginActivity)
+                LoadingDialogUtils.show(WeakReference(this@YBLoginActivity))
                 userNetworkImpl.getUserProfile()
             }
             MSG_YB_LOGIN_FAILED -> {
@@ -55,7 +56,7 @@ class YBLoginActivity : AppCompatActivity() {
                 this.webView.reload()
             }
             MSG_GET_PROFILE_SUCCESS -> {
-                LoadingDialogUtils.show(this@YBLoginActivity)
+                LoadingDialogUtils.show(WeakReference(this@YBLoginActivity))
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVALID_TOKEN -> {
@@ -93,7 +94,7 @@ class YBLoginActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
-        LoadingDialogUtils.show(this)
+        LoadingDialogUtils.show(WeakReference(this))
         loginNetworkImpl.getYBLoginUrl()
 
         with(webView) {
@@ -111,7 +112,7 @@ class YBLoginActivity : AppCompatActivity() {
                             val uri = Uri.parse(url)
                             Log.e("CODE", uri.getQueryParameter("code"))
 
-                            LoadingDialogUtils.show(this@YBLoginActivity)
+                            LoadingDialogUtils.show(WeakReference(this@YBLoginActivity))
                             loginNetworkImpl.getYBLoginInfo(uri.getQueryParameter("code"))
 
                             return true
@@ -130,7 +131,7 @@ class YBLoginActivity : AppCompatActivity() {
 
                             Log.e("CODE", request.url.getQueryParameter("code"))
 
-                            LoadingDialogUtils.show(this@YBLoginActivity)
+                            LoadingDialogUtils.show(WeakReference(this@YBLoginActivity))
                             loginNetworkImpl.getYBLoginInfo(request.url.getQueryParameter("code"))
 
                             return true
@@ -143,6 +144,11 @@ class YBLoginActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
     fun retry(view: View) {

@@ -40,6 +40,7 @@ import net.sarasarasa.lifeup.vo.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -88,7 +89,6 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             MSG_GET_REPORT_TYPE_SUCCESS ->{
                 if(msg.obj != null){
                     val returnList = msg.obj as ArrayList<ReportTypeVO>
-
                     showReportDialog(returnList)
                 }
             }
@@ -136,7 +136,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         val teamId = intent.getLongExtra("teamId", -1)
 
         if (teamId != -1L) {
-            LoadingDialogUtils.show(this)
+            LoadingDialogUtils.show(WeakReference(this))
             teamNetworkImpl.getTeamDetail(teamId)
         }
 
@@ -144,6 +144,11 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
         initView()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
     private fun initData(teamDetailVO: TeamDetailVO) {
@@ -229,7 +234,6 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 }
             })
         }
-
     }
 
     /** 获得[abbr]属性图标的[Drawable Id] **/

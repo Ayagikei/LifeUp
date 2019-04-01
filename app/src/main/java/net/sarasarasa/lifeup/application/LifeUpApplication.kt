@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.application
 
 import android.app.Application
 import android.content.Context
+import com.squareup.leakcanary.LeakCanary
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.utils.DensityUtil
 import net.sarasarasa.lifeup.utils.SharedPreferencesUtils
@@ -26,6 +27,14 @@ import org.litepal.LitePal
 class LifeUpApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+        LeakCanary.install(this)
+
         LitePal.initialize(this)
         ToastUtils.init(this)
         DensityUtil.init(this)

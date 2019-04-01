@@ -20,4 +20,11 @@
         android:orderInCategory="100"
         android:title="删除"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_set_to_finish"
+        android:icon="@drawable/ic_done_white_24dp"
+        android:orderInCategory="100"
+        android:title="设为完成"
+        app:showAsAction="always" />
 </menu>

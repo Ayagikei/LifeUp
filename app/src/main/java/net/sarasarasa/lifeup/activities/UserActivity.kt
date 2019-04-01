@@ -46,6 +46,7 @@ import net.sarasarasa.lifeup.vo.UserDetailVO
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -125,13 +126,18 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
         val userId = intent.getLongExtra("userId", -1)
 
-        LoadingDialogUtils.show(this)
+        LoadingDialogUtils.show(WeakReference(this))
         userNetworkImpl.getUserDetail(userId)
-
 
         mUserId = userId
 
         initView()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
 

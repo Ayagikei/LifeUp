@@ -27,6 +27,7 @@ import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamMembaerListVO
+import java.lang.ref.WeakReference
 
 class BoardFragment : Fragment() {
 
@@ -104,7 +105,7 @@ class BoardFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_team_list, container, false)
 
         initView(rootView)
-        activity?.let { LoadingDialogUtils.show(it) }
+        activity?.let { LoadingDialogUtils.show(WeakReference(it)) }
         return rootView
     }
 
@@ -173,6 +174,11 @@ class BoardFragment : Fragment() {
                 mAdapter.loadMoreComplete()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingDialogUtils.dismissAndClearReference()
     }
 
 

@@ -20,6 +20,7 @@ import net.sarasarasa.lifeup.service.impl.AttributeLevelServiceImpl
 import net.sarasarasa.lifeup.service.impl.AttributeServiceImpl
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.service.impl.UserServiceImpl
+import java.lang.ref.WeakReference
 
 class MeFragment : Fragment() {
 
@@ -32,7 +33,7 @@ class MeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.activity_user_mine, container, false)
-        (activity as MainActivity).initToolBar(rootView.findViewById(R.id.toolbar))
+        (activity as MainActivity).initToolBar(WeakReference(rootView.findViewById(R.id.toolbar)))
         rootView.findViewById<Toolbar>(R.id.toolbar).title = "我的"
         setHasOptionsMenu(false)
 

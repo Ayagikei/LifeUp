@@ -10,19 +10,19 @@ class LoadingDialogUtils {
     companion object {
 
         var dialog: AlertDialog? = null
-        private lateinit var contextReference: WeakReference<Context>
+        private var contextReference: WeakReference<Context>? = null
 
-        fun show(context: Context) {
+        fun show(weakRefContext: WeakReference<Context>) {
 
-            this.contextReference = WeakReference(context)
+            this.contextReference = weakRefContext
 
             if (dialog != null) {
                 dialog?.dismiss()
             }
 
-            val mContext = contextReference.get()
+            val mContext = contextReference?.get()
             if (mContext != null) {
-                dialog = SpotsDialog.Builder().setMessage("加载中...").setCancelable(true).setContext(context).build()
+                dialog = SpotsDialog.Builder().setMessage("加载中...").setCancelable(true).setContext(mContext).build()
 
                 try {
                     val mActivity = mContext as Activity
@@ -41,6 +41,13 @@ class LoadingDialogUtils {
         fun dismiss() {
             if (dialog?.isShowing == true)
                 dialog?.dismiss()
+        }
+
+        fun dismissAndClearReference() {
+            if (dialog?.isShowing == true)
+                dialog?.dismiss()
+
+            contextReference = null
         }
     }
 }

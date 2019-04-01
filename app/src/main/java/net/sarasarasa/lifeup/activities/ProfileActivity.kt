@@ -41,6 +41,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.IOException
+import java.lang.ref.WeakReference
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -357,7 +358,7 @@ class ProfileActivity : AppCompatActivity() {
     fun uploadFile(data: Intent) {
         val file = getAvatarFile(avatarFileName)
 
-        LoadingDialogUtils.show(this)
+        LoadingDialogUtils.show(WeakReference(this))
         userNetwork.updateAvatar(file)
     }
 
