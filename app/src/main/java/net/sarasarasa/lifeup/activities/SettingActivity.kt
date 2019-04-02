@@ -20,10 +20,23 @@ import net.sarasarasa.lifeup.utils.SharedPreferencesUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 
 
-class SettingActivity : AppCompatActivity() {
+class SettingActivity : AppCompatActivity(), BaseSettingFragment.SettingActivityListener {
 
-    val userService = UserServiceImpl()
-    val todoService = TodoServiceImpl()
+    companion object {
+        fun setOnSwitchViewChangedListener(switch: Switch, sharedPreferences: String, contrary: Boolean, defaultValue: Boolean) {
+            var value = SharedPreferencesUtils.getOptionsPreferencesInstance()?.getBoolean(sharedPreferences, defaultValue)
+                    ?: false
+            if (contrary) value = !value
+            val editor = SharedPreferencesUtils.getOptionsPreferencesInstance()?.edit()
+
+            switch.isChecked = value
+            switch.setOnCheckedChangeListener { _, isChecked ->
+                if (contrary) editor?.putBoolean(sharedPreferences, !isChecked)
+                else editor?.putBoolean(sharedPreferences, isChecked)
+                editor?.apply()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

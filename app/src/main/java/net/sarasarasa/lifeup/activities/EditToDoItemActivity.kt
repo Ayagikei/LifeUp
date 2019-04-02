@@ -93,6 +93,9 @@ class EditToDoItemActivity : AddToDoItemActivity() {
                 arrIgnoreDayOfWeek = taskModel.isIgnoreDayOfWeek.toIntArray()
             }
 
+            if (taskModel.enableEbbinghausMode)
+                iFrequency = -3
+
             if (iFrequency == 1 && taskModel.isIgnoreDayOfWeek.contains(1)) {
                 et_repeat.setText(TodoItemConverter.iFrequencyWithIgnoreToNormalString(arrIgnoreDayOfWeek))
             } else et_repeat.setText(TodoItemConverter.iFrequencyToNormalString(iFrequency))
@@ -119,6 +122,8 @@ class EditToDoItemActivity : AddToDoItemActivity() {
             til_complete_reward.editText?.setText(taskModel.completeReward)
 
             isUseSpecificExpireTime = taskModel.isUseSpecificExpireTime
+
+
         }
     }
 

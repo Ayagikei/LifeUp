@@ -555,6 +555,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                             if (taskTarget.targetTimes == item.currentTimes) {
                                 needToRepeat = false
                                 ToastUtils.showShortToast("你完成了设定的目标次数！")
+                                mAdapter.remove(position)
                             }
                         }
                     }

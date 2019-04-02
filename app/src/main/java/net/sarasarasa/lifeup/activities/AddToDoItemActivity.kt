@@ -776,10 +776,18 @@ open class AddToDoItemActivity : AppCompatActivity() {
             taskModel.isUserInputStartTime = true
         } else {
             // 开始时间和期限时间的间隔应该为(重复频次 - 1)
-            if (taskModel.taskFrequency > 0)
-                cal.add(Calendar.DATE, (taskModel.taskFrequency * -1) + 1)
-            taskModel.isUserInputStartTime = false
+/*            if (taskModel.taskFrequency > 0)
+                cal.add(Calendar.DATE, (taskModel.taskFrequency * -1) + 1)*/
+
+            // 为了让Ebbinghaus记忆法的事项的开始时间也依照重复频次往后推移
+            if (enableEbbinghausMode) {
+                taskModel.startTime = cal.time
+                taskModel.isUserInputStartTime = true
+            } else {
+                taskModel.isUserInputStartTime = false
+            }
         }
+
 
         // 完成奖励
         taskModel.completeReward = til_complete_reward.editText?.text.toString()

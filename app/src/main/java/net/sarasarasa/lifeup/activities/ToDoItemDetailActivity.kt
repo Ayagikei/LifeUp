@@ -135,7 +135,8 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             val taskTarget = taskTargetDAO.getTaskTargetById(taskModel?.taskTargetId!!)
 
             if (taskTarget != null && taskTarget.targetTimes != 0) {
-                tv_target.text = "目标次数已完成 ${taskModel?.currentTimes}/${taskTarget.targetTimes}"
+                val currentTimes = if (taskModel?.taskStatus == 1) taskModel?.currentTimes else taskModel?.currentTimes?.minus(1)
+                tv_target.text = "目标次数已完成 ${currentTimes}/${taskTarget.targetTimes}"
             } else {
                 iv_target.visibility = View.GONE
                 tv_target.visibility = View.GONE
