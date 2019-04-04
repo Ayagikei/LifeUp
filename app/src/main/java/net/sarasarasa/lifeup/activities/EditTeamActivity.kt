@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -285,14 +284,7 @@ open class EditTeamActivity : AppCompatActivity() {
      */
     private fun getAvatarFile(filename: String): File {
         // 使用 APP 内部储存空间
-        val appDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath, "Avatar")
-
-        // 这句是使用外部存储空间的
-        //val appDir = File(Environment.getExternalStorageDirectory().absolutePath, "LifeUp")
-
-        if (!appDir.exists())
-            appDir.mkdir()
-
+        val appDir = this.externalMediaDirs[0]
         return File(appDir, filename)
     }
 

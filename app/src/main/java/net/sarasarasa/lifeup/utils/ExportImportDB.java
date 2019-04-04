@@ -1,6 +1,8 @@
 package net.sarasarasa.lifeup.utils;
 
-import android.os.Environment;
+import android.util.Log;
+
+import net.sarasarasa.lifeup.application.LifeUpApplication;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,18 +11,21 @@ import java.nio.channels.FileChannel;
 
 public class ExportImportDB {
 
-    private static String currentDBPath = "//data//" + "net.sarasarasa.lifeup"
-            + "//databases//" + "LifeUpDB.db";
+/*    private static String currentDBPath = "//data//" + "net.sarasarasa.lifeup"
+            + "//databases//" + "LifeUpDB.db";*/
+
+    private static String currentDBPath = "//databases//" + "LifeUpDB.db";
 
     public static void importDB() {
         try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
+            File backupDBDir = LifeUpApplication.Companion.getLifeUpApplication().getExternalFilesDir("backup");
+            File data = LifeUpApplication.Companion.getLifeUpApplication().getFilesDir().getParentFile();
 
-            if (sd.canWrite()) {
+            Log.d("LifeUpBackUp", "importDB: data.getAbsolutePath()");
+
+            if (backupDBDir != null && backupDBDir.canWrite()) {
 
                 File currentDB = new File(data, currentDBPath);
-                File backupDBDir = new File(sd + "//LifeUp//backup");
                 File backupDB = new File(backupDBDir, "LifeUpDB.db");
 
                 FileChannel src = new FileInputStream(backupDB).getChannel();
@@ -39,12 +44,13 @@ public class ExportImportDB {
     //exporting database
     public static void exportDB() {
         try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
+            File backupDBDir = LifeUpApplication.Companion.getLifeUpApplication().getExternalFilesDir("backup");
+            File data = LifeUpApplication.Companion.getLifeUpApplication().getFilesDir().getParentFile();
 
-            if (sd.canWrite()) {
+            Log.d("LifeUpBackUp", "importDB: " + data);
+
+            if (backupDBDir != null && backupDBDir.canWrite()) {
                 File currentDB = new File(data, currentDBPath);
-                File backupDBDir = new File(sd + "//LifeUp//backup");
 
                 if (!backupDBDir.exists())
                     backupDBDir.mkdirs();
@@ -66,23 +72,16 @@ public class ExportImportDB {
 
     public static File getBackupFile() {
         try {
-            File sd = Environment.getExternalStorageDirectory();
-
-            if (sd.canWrite()) {
-                File backupDBDir = new File(sd + "//LifeUp//backup");
-
+            File backupDBDir = LifeUpApplication.Companion.getLifeUpApplication().getExternalFilesDir("backup");
+            if (backupDBDir != null && backupDBDir.canWrite()) {
                 if (!backupDBDir.exists())
                     backupDBDir.mkdirs();
 
-                File backupDB = new File(backupDBDir, "LifeUpDB.db");
-                return backupDB;
-
+                return new File(backupDBDir, "LifeUpDB.db");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

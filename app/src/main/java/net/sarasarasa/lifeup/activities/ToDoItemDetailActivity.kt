@@ -186,7 +186,8 @@ class ToDoItemDetailActivity : AppCompatActivity() {
     }
 
     private fun getRepeatText(): String {
-        return if (taskModel?.enableEbbinghausMode == true) "艾宾浩斯记忆法 ${taskModel?.taskFrequency}天"
+        return if (taskModel?.enableEbbinghausMode == true && taskModel?.taskFrequency == 0) "艾宾浩斯记忆法-最后一天"
+        else if (taskModel?.enableEbbinghausMode == true) "艾宾浩斯记忆法-${taskModel?.taskFrequency}天"
         else if (taskModel?.taskFrequency == 1 && taskModel?.isIgnoreDayOfWeek?.contains(1) == true) {
             TodoItemConverter.iFrequencyWithIgnoreToNormalString(taskModel?.isIgnoreDayOfWeek!!.toIntArray())
         } else TodoItemConverter.iFrequencyToNormalString(taskModel?.taskFrequency)

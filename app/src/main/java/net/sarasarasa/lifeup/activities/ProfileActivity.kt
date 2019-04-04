@@ -134,7 +134,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         sv_sex.setOnItemViewClick {
-            showSexDialog()
+            showSexDialog(sv_sex)
         }
 
         sv_avatar.setOnItemViewClick {
@@ -147,7 +147,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    private fun showSexDialog() {
+    private fun showSexDialog(view: SettingView) {
         val checkedindex = profileVO.userSex ?: USER_SEX_SECRET
         val items = listOf<String>(getString(R.string.profile_female), getString(R.string.profile_male), getString(R.string.profile_secret))
 
@@ -159,7 +159,7 @@ class ProfileActivity : AppCompatActivity() {
                     getString(R.string.profile_male) -> USER_SEX_MALE
                     else -> USER_SEX_SECRET
                 }
-                sv_sex.setItemText("性别：" + items[index])
+                view.setItemText("性别：" + items[index])
             }
             positiveButton(R.string.btn_yes)
             lifecycleOwner(this@ProfileActivity)
@@ -217,7 +217,7 @@ class ProfileActivity : AppCompatActivity() {
                 -> {
                     val intent = Intent(Intent.ACTION_PICK)
                     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-                        startActivityForResult(intent, CHOOSE_PICTURE)
+                    startActivityForResult(intent, CHOOSE_PICTURE)
                 }
                 1 // 拍照
                 -> {

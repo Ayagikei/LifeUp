@@ -6,9 +6,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.dialog_activity.view.*
 import kotlinx.android.synthetic.main.dialog_category.view.*
@@ -42,6 +45,8 @@ import net.sarasarasa.lifeup.activities.*
 import net.sarasarasa.lifeup.adapters.CategoryAdapter
 import net.sarasarasa.lifeup.adapters.ToDoItemAdapter
 import net.sarasarasa.lifeup.application.LifeUpApplication
+import net.sarasarasa.lifeup.constants.CommonConstants.Companion.CHOOSE_PICTURE
+import net.sarasarasa.lifeup.constants.CommonConstants.Companion.TAKE_PICTURE
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_FINISH_TEAM_TASK
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
@@ -115,6 +120,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private var mToolbar: Toolbar? = null
 
     private var mPhotosSnpl:BGASortableNinePhotoLayout? = null
+
+    private var selectedPhotoFileName: String = ""
 
     companion object {
         private const val PRC_PHOTO_PICKER = 1
@@ -940,7 +947,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     }
 
     override fun onClickAddNinePhotoItem(sortableNinePhotoLayout: BGASortableNinePhotoLayout, view: View, position: Int, models: ArrayList<String>) {
-        choicePhotoWrapper()
+        //choicePhotoWrapper()
+        showChoosePicDialog()
     }
 
     override fun onNinePhotoItemExchanged(sortableNinePhotoLayout: BGASortableNinePhotoLayout, fromPosition: Int, toPosition: Int, models: ArrayList<String>) {
@@ -954,10 +962,11 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun choicePhotoWrapper() {
         if(mPhotosSnpl == null) return
 
-        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+        val perms = arrayOf(Manifest.permission.CAMERA)
         if (context?.let { EasyPermissions.hasPermissions(it, *perms) } == true) {
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
-            val takePhotoDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
+            // val takePhotoDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
+            val takePhotoDir = File(LifeUpApplication.getLifeUpApplication().externalCacheDir, "photos")
 
             val photoPickerIntent = BGAPhotoPickerActivity.IntentBuilder(activity)
                     .cameraFileDir(takePhotoDir) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
@@ -967,21 +976,120 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     .build()
             startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO)
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, *perms)
+            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.拍照", PRC_PHOTO_PICKER, *perms)
         }
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-         if(mPhotosSnpl != null)
+         if (mPhotosSnpl != null)
         if (resultCode == Activity.RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
             mPhotosSnpl!!.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data!!))
         } else if (requestCode == RC_PHOTO_PREVIEW) {
             mPhotosSnpl!!.data = BGAPhotoPickerPreviewActivity.getSelectedPhotos(data!!)
         }
+
+         when (requestCode) {
+             // 对拍照返回的图片进行裁剪处理
+             TAKE_PICTURE -> {
+                 //val imgUriSel = getUriByOsVersion(getAvatarFile(avatarOriginFileName))
+                 val file = getSelectedFile()
+                 mPhotosSnpl!!.addMoreData(arrayListOf(file.absolutePath))
+             }
+             // 对在图库选择的图片进行裁剪处理
+             CHOOSE_PICTURE -> {
+                 cutImageByuCrop(data?.data)
+             }
+             UCrop.REQUEST_CROP -> {
+                 val file = getSelectedFile()
+                 mPhotosSnpl!!.addMoreData(arrayListOf(file.absolutePath))
+             }
+             // 输出裁剪
+             UCrop.RESULT_ERROR -> {
+                 val cropError = data?.let { UCrop.getError(it) }
+                 ToastUtils.showShortToast(cropError.toString())
+             }
+         }
      }
 
+
+    /**
+     * 使用uCrop框架对指定[uri]的文件进行裁剪
+     */
+    private fun cutImageByuCrop(uri: Uri?) {
+        val outputImage = getNewCreateFile()
+        val outputUri = Uri.fromFile(outputImage)
+
+        uri?.let {
+            UCrop.of(it, outputUri)
+                    .start(context!!, this, UCrop.REQUEST_CROP)
+        }
+    }
+
+
+    @AfterPermissionGranted(PRC_PHOTO_PICKER)
+    fun showChoosePicDialog() {
+        val builder = android.app.AlertDialog.Builder(activity)
+        builder.setTitle("新增照片")
+        val items = arrayOf(getString(R.string.team_add_choose_local_photo), getString(R.string.team_add_take_photo))
+        builder.setNegativeButton(getString(R.string.btn_cancel), null)
+        builder.setItems(items) { _, which ->
+            when (which) {
+                0 // 选择本地照片
+                -> {
+                    val intent = Intent(Intent.ACTION_PICK)
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                    startActivityForResult(intent, CHOOSE_PICTURE)
+                }
+                1 // 拍照
+                -> {
+                    val perms = arrayOf(Manifest.permission.CAMERA)
+
+                    if (EasyPermissions.hasPermissions(context!!, *perms)) {
+                        val openCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+                        val file = getNewCreateFile()
+
+                        if (file.exists())
+                            file.delete()
+
+                        val fileUri = getUriByOsVersion(file)
+
+                        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+                        openCameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        openCameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        startActivityForResult(openCameraIntent, TAKE_PICTURE)
+                    } else {
+                        EasyPermissions.requestPermissions(this, getString(R.string.team_add_photo_permission), PRC_PHOTO_PICKER, *perms)
+                    }
+                }
+            }
+        }
+        builder.show()
+    }
+
+    private fun getNewCreateFile(): File {
+        val simpleDateFormat = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
+        selectedPhotoFileName = simpleDateFormat.format(Date())
+        val appDir = activity!!.externalCacheDir
+        return File(appDir, selectedPhotoFileName + ".jpg")
+    }
+
+    private fun getSelectedFile(): File {
+        val appDir = activity!!.externalCacheDir
+        return File(appDir, selectedPhotoFileName + ".jpg")
+    }
+
+    private fun getUriByOsVersion(file: File): Uri {
+        val currentApiVersion = android.os.Build.VERSION.SDK_INT
+
+        return if (currentApiVersion < 24) {
+            Uri.fromFile(file)
+        } else {
+            FileProvider.getUriForFile(context!!, context!!.packageName + ".provider", file)
+        }
+    }
 
 
     private fun showCategoryBottomSheetDialog() {

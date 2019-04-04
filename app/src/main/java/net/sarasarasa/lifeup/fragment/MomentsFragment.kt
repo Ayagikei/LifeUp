@@ -2,7 +2,6 @@ package net.sarasarasa.lifeup.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +18,7 @@ import kotlinx.android.synthetic.main.head_view_moments.view.*
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.UserActivity
 import net.sarasarasa.lifeup.adapters.MomentsAdapter
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.base.RecyclerViewNoBugLinearLayoutManager
 import net.sarasarasa.lifeup.constants.AttributeConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants
@@ -27,12 +27,11 @@ import net.sarasarasa.lifeup.utils.LoadingDialogUtils
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.vo.PageVO
 import net.sarasarasa.lifeup.vo.TeamActivityListVO
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.lang.ref.WeakReference
 
-class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
+class
+MomentsFragment : Fragment(), BGANinePhotoLayout.Delegate {
 
     private val uiHandler: Handler.Callback = Handler.Callback { msg ->
 
@@ -102,10 +101,6 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
     private var totalPage: Long? = null
     private var mCurrentClickNpl: BGANinePhotoLayout? = null
     private var isGetAll = true
-
-    companion object {
-        private const val PRC_PHOTO_PREVIEW = 1
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -216,34 +211,24 @@ class MomentsFragment : Fragment(), EasyPermissions.PermissionCallbacks, BGANine
         }
     }
 
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        if (requestCode == PRC_PHOTO_PREVIEW) {
-            ToastUtils.showShortToast("您拒绝了「图片预览」所需要的相关权限!")
-        }
-    }
-
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-    }
-
     override fun onClickNinePhotoItem(ninePhotoLayout: BGANinePhotoLayout, view: View, position: Int, model: String, models: MutableList<String>) {
         mCurrentClickNpl = ninePhotoLayout
         photoPreviewWrapper()
     }
 
     /**
-     * 图片预览，兼容6.0动态权限
+     * 图片预览
      */
-    @AfterPermissionGranted(PRC_PHOTO_PREVIEW)
     private fun photoPreviewWrapper() {
 
         if (mCurrentClickNpl == null) {
             return
         }
 
-        val downloadDir = File(Environment.getExternalStorageDirectory(), "LifeUp")
+        val downloadDir = File(LifeUpApplication.getLifeUpApplication().externalMediaDirs[0], "LifeUp")
 
         val photoPreviewIntentBuilder = BGAPhotoPreviewActivity.IntentBuilder(context)
-                .saveImgDir(activity!!.externalMediaDirs[0]) // 保存图片的目录，如果传 null，则没有保存图片功能
+                .saveImgDir(LifeUpApplication.getLifeUpApplication().externalMediaDirs[0]) // 保存图片的目录，如果传 null，则没有保存图片功能
 
         if (mCurrentClickNpl!!.itemCount == 1) {
             // 预览单张图片

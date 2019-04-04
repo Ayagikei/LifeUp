@@ -18,6 +18,7 @@ import net.sarasarasa.lifeup.dao.TodoDAO
 import net.sarasarasa.lifeup.instance.RetrofitInstance
 import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.models.TaskModel
+import net.sarasarasa.lifeup.models.TaskTargetModel
 import net.sarasarasa.lifeup.network.TeamNetwork
 import net.sarasarasa.lifeup.receiver.AlarmReceiver
 import net.sarasarasa.lifeup.service.TodoService
@@ -76,6 +77,15 @@ class TodoServiceImpl : TodoService {
             isUserInputStartTime = taskModel.isUserInputStartTime
             isIgnoreDayOfWeek = taskModel.isIgnoreDayOfWeek
             // 编辑不会影响到清单分类
+
+            if (!enableEbbinghausMode && taskModel.enableEbbinghausMode) {
+                val newTarget = TaskTargetModel(7, taskModel.expReward * 7 / 10)
+                newTarget.save()
+                taskTargetId = newTarget.id
+                currentTimes = 0
+            }
+
+            enableEbbinghausMode = taskModel.enableEbbinghausMode
         }
 
         todoDAO.saveTodoItem(existTodoItem)
@@ -294,7 +304,12 @@ class TodoServiceImpl : TodoService {
         taskModel.updatedTime = Calendar.getInstance().timeInMillis
         taskModel.expReward = origin.expReward
         taskModel.priority = origin.priority
-        taskModel.currentTimes = origin.currentTimes + 1
+
+        // 完成的时候才计数+1
+        if (origin.taskStatus == 1)
+            taskModel.currentTimes = origin.currentTimes + 1
+        else taskModel.currentTimes = origin.currentTimes
+
         taskModel.taskTargetId = origin.taskTargetId
         taskModel.completeReward = origin.completeReward
         taskModel.isUseSpecificExpireTime = origin.isUseSpecificExpireTime
@@ -312,7 +327,7 @@ class TodoServiceImpl : TodoService {
         }
 
         if (taskModel.enableEbbinghausMode) {
-            val iFrequencyArray = arrayOf(0, 1, 2, 4, 7, 15)
+            val iFrequencyArray = arrayOf(0, 1, 2, 4, 7, 15, 0)
             taskModel.taskFrequency = iFrequencyArray[origin.currentTimes]
         }
 
@@ -582,8 +597,8 @@ class TodoServiceImpl : TodoService {
         taskModel.isIgnoreDayOfWeek = origin.isIgnoreDayOfWeek
         taskModel.enableEbbinghausMode = origin.enableEbbinghausMode
 
-        //重设的时候，把单次和多次事项当做每日事项处理
-        if (origin.taskFrequency == 0 || origin.taskFrequency == -1) {
+        //重设的时候，把单次和多次和艾兵浩斯事项当做每日事项处理
+        if (origin.taskFrequency == 0 || origin.taskFrequency == -1 || origin.enableEbbinghausMode) {
             origin.taskFrequency = 1
         }
 

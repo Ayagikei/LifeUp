@@ -721,9 +721,9 @@ open class AddToDoItemActivity : AppCompatActivity() {
             }
         }
 
-        // 艾宾浩斯记忆模式的事项应该有 6 次循环
+        // 艾宾浩斯记忆模式的事项应该有 7 次循环
         if (enableEbbinghausMode) {
-            targetTimes = 6
+            targetTimes = 7
         }
 
         for (i in arrAbbrBtn.indices) {
