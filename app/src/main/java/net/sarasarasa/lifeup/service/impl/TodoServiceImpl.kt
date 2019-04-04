@@ -82,7 +82,7 @@ class TodoServiceImpl : TodoService {
                 val newTarget = TaskTargetModel(7, taskModel.expReward * 7 / 10)
                 newTarget.save()
                 taskTargetId = newTarget.id
-                currentTimes = 0
+                currentTimes = 1
             }
 
             enableEbbinghausMode = taskModel.enableEbbinghausMode
