@@ -36,5 +36,6 @@
     <color name="color_bar_chart">#03A9F4</color>
 
     <color name="color_to_do_item_time">#FF8A80</color>
+    <color name="color_to_do_item_exp">#FF9100</color>
 
 </resources>

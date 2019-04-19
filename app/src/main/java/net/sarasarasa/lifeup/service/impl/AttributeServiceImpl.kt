@@ -59,7 +59,7 @@ class AttributeServiceImpl : AttributeService {
     }
 
     override fun increaseMultiExp(attrs: ArrayList<String>, exp: Int, content: String): Boolean {
-        if (attrs.isEmpty()) return false
+        if (attrs.isEmpty() || attrs.getOrNull(0).isNullOrEmpty()) return false
 
         val arrayListTrueDataSize = when {
             attrs.getOrNull(1).isNullOrBlank() -> 1

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/bar_height"
     tools:context=".fragment.StatisticsFragment">
 
     <com.google.android.material.appbar.AppBarLayout

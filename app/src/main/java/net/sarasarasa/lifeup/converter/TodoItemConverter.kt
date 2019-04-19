@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.converter
 import android.view.View
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
+import net.sarasarasa.lifeup.utils.SharedPreferencesUtils
 
 class TodoItemConverter {
     companion object {
@@ -116,7 +117,7 @@ class TodoItemConverter {
             return stringBuffer.toString()
         }
 
-        fun iNumberToStringDayForWeek(num: Int): String {
+        private fun iNumberToStringDayForWeek(num: Int): String {
             return when (num) {
                 1 -> "一"
                 2 -> "二"
@@ -139,8 +140,12 @@ class TodoItemConverter {
             }
         }
 
-        fun strFrequencyToColorId(taskFrequency: Int): Int {
-            return when (taskFrequency) {
+        fun strFrequencyToColorId(taskFrequency: Int, checkPreferences: Boolean): Int {
+            val isTaskSingleColor = SharedPreferencesUtils.getOptionsPreferencesInstance()?.getBoolean("isTaskSingleColor", false)
+
+            return if (checkPreferences && isTaskSingleColor == true)
+                R.color.color_to_do_item_fre0
+            else when (taskFrequency) {
                 -1 -> R.color.color_to_do_item_fre0
                 -3 -> R.color.color_to_do_item_fre0
                 0 -> R.color.color_to_do_item_fre0

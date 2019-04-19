@@ -270,6 +270,7 @@
             android:name=".service.LifeUpRemoteViewsService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service android:name=".service.FinishTaskIntentService" />
 
     </application>
 

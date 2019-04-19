@@ -1,11 +1,13 @@
 package net.sarasarasa.lifeup.adapters
 
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseItemDraggableAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
@@ -14,11 +16,12 @@ import net.sarasarasa.lifeup.dao.TaskTargetDAO
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.utils.DateUtil
 import net.sarasarasa.lifeup.utils.DensityUtil
+import net.sarasarasa.lifeup.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter<TaskModel, BaseViewHolder>(layoutResId, data) {
+class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseItemDraggableAdapter<TaskModel, BaseViewHolder>(layoutResId, data) {
 
     private val taskTargetDAO = TaskTargetDAO()
 
@@ -34,8 +37,6 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
         }
 
         val cal = Calendar.getInstance()
-        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        val dateAndTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
         val isTeamTask = when (item.teamId) {
             -1L -> false
             else -> true
@@ -89,13 +90,15 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
         if (cal.timeInMillis < item.startTime.time) {
             //还没到开始时间的时候
-            with(helper) {
+            helper.apply {
                 getView<CardView>(R.id.TodolistHeaderCardView).setCardBackgroundColor(getUnableColor())
                 setTextColor(R.id.tw_name, getUnableColor())
                 setTextColor(R.id.tv_time, getUnableColor())
+                setTextColor(R.id.tv_exp, getUnableColor())
                 setText(R.id.tv_time, dateToStringWithTime(item.startTime) + "开始")
                 setVisible(R.id.iv_timeIcon, true)
                 setVisible(R.id.tv_time, true)
+                getView<ImageView>(R.id.iv_expIcon).setColorFilter(getUnableColor())
             }
         } else {
             //设置频次标识的颜色
@@ -107,7 +110,13 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
                 helper.setTextColor(R.id.tw_name, getThemeColor(item.taskFrequency))
             }
 
-            helper.setTextColor(R.id.tv_time, getNormalTimeColor())
+            // 设置已经开始事项的正常颜色
+            helper.apply {
+                setTextColor(R.id.tv_time, getNormalTimeColor())
+                getView<ImageView>(R.id.iv_expIcon).colorFilter = null
+                setTextColor(R.id.tv_exp, getNormalExpColor())
+            }
+
 
             if (item.taskExpireTime != null) {
                 if (item.teamId != -1L) {
@@ -146,7 +155,7 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
     /** 根据[taskFrequency: String]获得[color]主题色 **/
     private fun getThemeColor(taskFrequency: Int): Int {
-        return ContextCompat.getColor(mContext, TodoItemConverter.strFrequencyToColorId(taskFrequency))
+        return ContextCompat.getColor(mContext, TodoItemConverter.strFrequencyToColorId(taskFrequency, checkPreferences = true))
     }
 
     private fun getUnableColor(): Int {
@@ -155,6 +164,10 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
 
     private fun getNormalTimeColor(): Int {
         return ContextCompat.getColor(mContext, R.color.color_to_do_item_time)
+    }
+
+    private fun getNormalExpColor(): Int {
+        return ContextCompat.getColor(mContext, R.color.color_to_do_item_exp)
     }
 
     private fun dateToStringWithTime(date: Date): String {
@@ -197,5 +210,28 @@ class ToDoItemAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapte
             val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
             return formatter.format(date)
         }
+    }
+
+    override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder) {
+        val pos = this.getViewHolderPosition(viewHolder)
+        if (this.inRange(pos)) {
+            val cal = Calendar.getInstance()
+            if (cal.time < this.mData.get(pos).startTime) {
+                ToastUtils.showShortToast("该事项尚未到开始时间！")
+                this.notifyItemChanged(pos + 1)
+            } else {
+                this.mData.removeAt(pos)
+                this.notifyItemRemoved(viewHolder.adapterPosition)
+
+                if (this.mOnItemSwipeListener != null && this.itemSwipeEnabled) {
+                    this.mOnItemSwipeListener.onItemSwiped(viewHolder, this.getViewHolderPosition(viewHolder))
+                }
+            }
+        }
+
+    }
+
+    private fun inRange(position: Int): Boolean {
+        return position >= 0 && position < this.mData.size
     }
 }

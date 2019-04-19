@@ -42,6 +42,7 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
                 .addOnClickListener(R.id.tv_btn)
                 .addOnLongClickListener(R.id.tv_btn)
 
+
         if (item.enableEbbinghausMode) {
             if (item.taskFrequency == 0) {
                 helper.setText(R.id.tv_headerText,
@@ -78,7 +79,7 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
         return TodoItemConverter.strAbbrToDrawableId(abbr)
     }
 
-    /** 获得[taskStatus]属性图标的[Drawable Id] **/
+    /** 获得[status]属性图标的[Drawable Id] **/
     private fun getStatusIconDrawable(status: Int): Int {
         return TodoItemConverter.strStatusToDrawableId(status)
     }

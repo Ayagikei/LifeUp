@@ -34,9 +34,35 @@
             android:orientation="vertical">
 
             <Switch
+                android:id="@+id/switch_task_single_color"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="统一事项颜色"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="16dp"
+                android:text="将所有类型的事项统一为蓝色。"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="#f4f4f4" />
+
+            <Switch
                 android:id="@+id/switch_status_play_animation"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/white"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"

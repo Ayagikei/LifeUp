@@ -167,7 +167,6 @@ open class AddTeamActivity : AppCompatActivity() {
         cm.setSaturation(0f) // 设置饱和度
         val grayColorFilter = ColorMatrixColorFilter(cm)
 
-
         iv_strength.colorFilter = grayColorFilter // 如果想恢复彩色显示，设置为null即可
         iv_learning.colorFilter = grayColorFilter
         iv_charm.colorFilter = grayColorFilter

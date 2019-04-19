@@ -59,7 +59,6 @@ class HistoryActivity : AppCompatActivity() {
     private fun initView() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         initRecyclerView()
     }
 

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -19,24 +20,30 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onCancel
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
+import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.dialog_abbr.view.*
 import kotlinx.android.synthetic.main.dialog_activity.view.*
 import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.dialog_sort.view.*
+import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.android.synthetic.main.fragment_todo.view.*
 import kotlinx.android.synthetic.main.head_view_to_do.view.*
 import kotlinx.android.synthetic.main.item_to_do.view.*
@@ -337,6 +344,41 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         mRecyclerView.layoutManager = LinearLayoutManager(view.context)
         mRecyclerView.adapter = mAdapter
 
+        val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(mAdapter)
+        val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
+        itemTouchHelper.attachToRecyclerView(mRecyclerView)
+
+        mAdapter.enableSwipeItem()
+        mAdapter.setOnItemSwipeListener(object : OnItemSwipeListener {
+
+            var taskModel: TaskModel? = null
+
+            override fun clearView(viewHolder: RecyclerView.ViewHolder?, position: Int) {
+
+            }
+
+            override fun onItemSwiped(p0: RecyclerView.ViewHolder?, pos: Int) {
+                if (taskModel != null) {
+                    startFinishTask(taskModel!!, null)
+                    showDialogAbbr(taskModel!!, null)
+                    refreshHeaderView(mHeaderView)
+                }
+            }
+
+            override fun onItemSwipeStart(p0: RecyclerView.ViewHolder?, pos: Int) {
+                val item = mAdapter.getItem(pos)
+
+                if (item != null)
+                    taskModel = item
+
+
+            }
+
+            override fun onItemSwipeMoving(p0: Canvas?, p1: RecyclerView.ViewHolder?, p2: Float, p3: Float, p4: Boolean) {}
+
+        })
+
+
         mAdapter.setOnItemClickListener { adapter, view, position ->
             //获得所选item
             val item = adapter.getItem(position) as TaskModel
@@ -366,7 +408,6 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
                 //如果所选Item不是未完成状态或是团队事项，不可长按
                 //|| item.teamId != IS_TEAM_TASK
-
 
                 when (menuItem.itemId) {
                     R.id.top_item -> {
@@ -498,30 +539,40 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 mView.playAnimation()
                 mView.isClickable = false
 
-                //如果不是团队事项，这里就可以处理业务逻辑
-                if (item.teamId == IS_NOT_TEAM_TASK) {
-                    todoService.finishTodoItem(item.id)
-                    item.taskStatus = ToDoItemConstants.COMPLETED
-                }
-
-                val activity = checkNotNull(context) as MainActivity
-                activity.syncData()
-
-                //刷新HeaderView的进度显示
-                mList[position].taskStatus = ToDoItemConstants.COMPLETED
-
-                rootView.post {
-                    achievementService.checkAchievement(rootView.achievement_view, WeakReference(activity))
-                }
+                startFinishTask(item, position)
 
             } // end of the if
         }
     }
 
-    private fun showDialogAbbr(item: TaskModel, position: Int) {
+    private fun startFinishTask(item: TaskModel, position: Int?) {
+        //如果不是团队事项，这里就可以处理业务逻辑
+        if (item.teamId == IS_NOT_TEAM_TASK) {
+            todoService.finishTodoItem(item.id)
+            item.taskStatus = ToDoItemConstants.COMPLETED
+        }
 
-        if (dialog != null || item.relatedAttribute1.isNullOrBlank())
+        val activity = checkNotNull(context) as MainActivity
+        activity.syncData()
+
+        //刷新HeaderView的进度显示
+        if (position != null)
+            mList[position].taskStatus = ToDoItemConstants.COMPLETED
+
+        rootView.post {
+            achievementService.checkAchievement(rootView.achievement_view, WeakReference(activity))
+        }
+    }
+
+    private fun showDialogAbbr(item: TaskModel, position: Int?) {
+
+        if (dialog != null)
             return
+
+        if (item.relatedAttribute1.isNullOrBlank()) {
+            afterDialog(item, position)
+            return
+        }
 
         val newDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_abbr, null)
         val newDialog = context?.let { AlertDialog.Builder(it).create() }
@@ -530,7 +581,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         if (checkNotNull(newDialog?.isShowing)) return
 
 
-        with(newDialog) {
+        newDialog.apply {
             this?.setTitle("你获得了经验值")
             this?.setIcon(net.sarasarasa.lifeup.R.drawable.ic_award_exp)
             this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
@@ -549,49 +600,68 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 thread?.interrupt()
                 cancel()
 
-                if (item.taskFrequency == 0 && item.teamId == IS_NOT_TEAM_TASK && mAdapter.getItem(position) != null) {
-                    mAdapter.remove(position)
-                }
-
-                //本地事项才显示重复对话框
-                if (item.taskFrequency != 0 && item.teamId == IS_NOT_TEAM_TASK) {
-                    var needToRepeat = true
-                    if (item.taskTargetId != null) {
-                        val taskTarget = taskTargetDAO.getTaskTargetById(item.taskTargetId!!)
-                        if (taskTarget != null) {
-                            if (taskTarget.targetTimes == item.currentTimes) {
-                                needToRepeat = false
-                                ToastUtils.showShortToast("你完成了设定的目标次数！")
-                                mAdapter.remove(position)
-                            }
-                        }
-                    }
-
-                    if (needToRepeat) {
-                        val isShowRepeatDialog = optionSharedPreferences?.getBoolean("isShowRepeatDialog", false)
-                        if (isShowRepeatDialog == true)
-                            showDialogRepeat(item, position)
-                        else {
-                            repeatTask(item, position)
-                        }
-                    }
-                }
-
-                //非本地事项显示动态对话框
-                if (item.teamId != IS_NOT_TEAM_TASK) {
-                    val isIgnoreActivitySubmitDialog = optionSharedPreferences?.getBoolean("isIgnoreActivitySubmitDialog", false)
-
-                    // 检测设置里有没有勾选“默认不发表团队动态”
-                    if (isIgnoreActivitySubmitDialog == false)
-                        showDialogActivity(item)
-                    else teamNetworkImpl.finishTeamTask(item, ActivityVO())
-                }
+                afterDialog(item, position)
             }
         }
         newDialog?.show()
     }
 
-    private fun showDialogRepeat(taskModel: TaskModel, position: Int) {
+    private fun afterDialog(item: TaskModel, position: Int?) {
+        if (item.taskFrequency == 0 && item.teamId == IS_NOT_TEAM_TASK && position != null && mAdapter.getItem(position) != null) {
+            mAdapter.remove(position)
+        }
+
+        //本地事项才显示重复对话框
+        if (item.taskFrequency != 0 && item.teamId == IS_NOT_TEAM_TASK) {
+            var needToRepeat = true
+            if (item.taskTargetId != null) {
+                val taskTarget = taskTargetDAO.getTaskTargetById(item.taskTargetId!!)
+                if (taskTarget != null) {
+                    if (taskTarget.targetTimes == item.currentTimes) {
+                        needToRepeat = false
+                        ToastUtils.showShortToast("你完成了设定的目标次数！")
+                        if (position != null)
+                            mAdapter.remove(position)
+                    }
+                }
+            }
+
+            if (needToRepeat) {
+                val isShowRepeatDialog = optionSharedPreferences?.getBoolean("isShowRepeatDialog", false)
+                if (isShowRepeatDialog == true)
+                    showDialogRepeat(item, position)
+                else {
+                    repeatTask(item, position)
+                    showSnackbar(item)
+                }
+            }
+        }
+
+        if (item.taskFrequency == 0 && item.teamId == IS_NOT_TEAM_TASK) {
+            showSnackbar(item)
+        }
+
+        //非本地事项显示动态对话框
+        if (item.teamId != IS_NOT_TEAM_TASK) {
+            val isIgnoreActivitySubmitDialog = optionSharedPreferences?.getBoolean("isIgnoreActivitySubmitDialog", false)
+
+            // 检测设置里有没有勾选“默认不发表团队动态”
+            if (isIgnoreActivitySubmitDialog == false)
+                showDialogActivity(item)
+            else teamNetworkImpl.finishTeamTask(item, ActivityVO())
+        }
+    }
+
+    private fun showSnackbar(taskModel: TaskModel) {
+        Snackbar.make(coordinator_layout, "你完成了事项「${taskModel.content}」", Snackbar.LENGTH_SHORT).setAction("撤销") {
+            if (taskModel.id != null)
+                todoService.undoFinishTodoItem(taskModel.id)
+            ToastUtils.showShortToast("撤销成功")
+            refreshDataSet()
+        }.show()
+    }
+
+    private fun showDialogRepeat(taskModel: TaskModel, position: Int?) {
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
 
@@ -614,18 +684,23 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 positiveButton(R.string.btn_yes) {
                     repeatTask(taskModel, position)
                     WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+                    showSnackbar(taskModel)
                 }
-                negativeButton(R.string.btn_cancel)
+                negativeButton(R.string.btn_cancel) {
+                    showSnackbar(taskModel)
+                }
+                onCancel { showSnackbar(taskModel) }
                 lifecycleOwner(this@TodoFragment)
             }
         }
 
+
     }
 
-    private fun repeatTask(taskModel: TaskModel, position: Int) {
+    private fun repeatTask(taskModel: TaskModel, position: Int?) {
         val newTask = todoService.repeatTask(taskModel.id)
         if (newTask != null) {
-            if (mAdapter.getItem(position) != null)
+            if (position != null && mAdapter.getItem(position) != null)
                 mAdapter.remove(position)
 
             when (optionSharedPreferences.getString("classBy", "all")) {
@@ -838,7 +913,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     //发表动态请求
                     activityVO.activity = dialogView.editText.text.toString()
 
-                    if (mPhotosSnpl!!.data.isEmpty()) {
+                    if (mPhotosSnpl != null && mPhotosSnpl!!.data.isEmpty()) {
                         teamNetworkImpl.finishTeamTask(taskModel, activityVO)
                     } else {
                         uploadNetworkImpl.uploadImages(mPhotosSnpl!!.data,taskModel,activityVO)
@@ -894,7 +969,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val simpleDateFormat = SimpleDateFormat("MM月dd日", Locale.getDefault())
         val strDate = simpleDateFormat.format(calendar.time) + DateUtil.getWeekOfDate(calendar.timeInMillis)
         view.findViewById<TextView>(R.id.tv_headerText).text = strDate
-        mAdapter.notifyDataSetChanged()
+        // mAdapter.notifyDataSetChanged()
         return view
     }
 
