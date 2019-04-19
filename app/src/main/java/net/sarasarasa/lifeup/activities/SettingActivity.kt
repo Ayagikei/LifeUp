@@ -176,4 +176,6 @@ class SettingActivity : AppCompatActivity(), BaseSettingFragment.SettingActivity
         }*/
 
     }
+
+    abstract fun initView(rootView: View)
 }
