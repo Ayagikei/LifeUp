@@ -35,7 +35,7 @@ class AboutActivity : AppCompatActivity() {
                 MaterialDialog(this).show {
                     title(text = "${getString(R.string.about_new_version)} ${versionVO.versionName}")
                     message(text = "${getString(R.string.about_update_content_title)}：\n ${versionVO.versionDesc}")
-                    positiveButton(R.string.btn_update) { dialog ->
+                    positiveButton(R.string.btn_update) {
                         val uri = Uri.parse(versionVO.downloadUrl)
                         val intent = Intent()
                         intent.action = "android.intent.action.VIEW"
@@ -102,14 +102,13 @@ class AboutActivity : AppCompatActivity() {
         }
 
 
-
-
         val aboutPage = AboutPage(this)
                 .isRTL(false)
                 .setImage(R.mipmap.ic_launcher_remake_round)
                 .setDescription(getString(R.string.about_app_description))
                 .addItem(Element().setTitle("${getString(R.string.about_version_name)} v${VersionUtil.getLocalVersionName(this)}"))
                 .addItem(elementCheckUpdate)
+                .addWebsite("https://green-android.org/","已通过《Android 绿色应用公约》认证")
                 .addItem(elementRate)
                 .addItem(elementDonate)
                 .addGroup(getString(R.string.contact_title))
