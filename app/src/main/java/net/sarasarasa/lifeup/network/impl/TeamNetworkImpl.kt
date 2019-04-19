@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.network.impl
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_FAILED
 import net.sarasarasa.lifeup.constants.NetworkConstants
@@ -507,7 +508,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
     }
 
 
-    fun finishTeamTask(item: TaskModel, activityVO: ActivityVO) {
+    fun finishTeamTask(item: TaskModel, activityVO: ActivityVO, needFinishToast: Boolean) {
         Log.i("LifeUp 团队模块", "执行[完成团队事项]操作")
 
         val call = network.finishTeamTask(userService.getToken(), item.teamId, activityVO)
@@ -545,7 +546,13 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                         todoService.finishTodoItem(item.id)
                         //添加新的事项
                         todoService.addOrUpdateTeamTask(teamTaskVO, item.categoryId ?: 0L)
+
+                        if (needFinishToast) {
+                            ToastUtils.showShortToast("成功完成事项", LifeUpApplication.getLifeUpApplication())
+                        }
                     }
+
+
 
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求成功：${teamTaskVO}")
                 } else {

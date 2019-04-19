@@ -188,6 +188,13 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                         refreshDataSet()
                         bottomSheetDialog?.cancel()
                     }
+                    view.ll_sort_frequency.setOnClickListener {
+                        val editor = optionSharedPreferences?.edit()
+                        editor?.putString("sortBy", "frequency")
+                        editor?.commit()
+                        refreshDataSet()
+                        bottomSheetDialog?.cancel()
+                    }
                     view.ll_sort_start_time.setOnClickListener {
                         val editor = optionSharedPreferences?.edit()
                         editor?.putString("sortBy", "startTime")
@@ -648,7 +655,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             // 检测设置里有没有勾选“默认不发表团队动态”
             if (isIgnoreActivitySubmitDialog == false)
                 showDialogActivity(item)
-            else teamNetworkImpl.finishTeamTask(item, ActivityVO())
+            else teamNetworkImpl.finishTeamTask(item, ActivityVO(), false)
         }
     }
 
@@ -914,14 +921,14 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     activityVO.activity = dialogView.editText.text.toString()
 
                     if (mPhotosSnpl != null && mPhotosSnpl!!.data.isEmpty()) {
-                        teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                        teamNetworkImpl.finishTeamTask(taskModel, activityVO, false)
                     } else {
                         uploadNetworkImpl.uploadImages(mPhotosSnpl!!.data,taskModel,activityVO)
                     }
                     mPhotosSnpl = null
                 }
                 setNeutralButton("不发表") { _, _ ->
-                    teamNetworkImpl.finishTeamTask(taskModel, activityVO)
+                    teamNetworkImpl.finishTeamTask(taskModel, activityVO, false)
                     mPhotosSnpl = null
                 }
                 setNegativeButton("取消") { _, _ ->

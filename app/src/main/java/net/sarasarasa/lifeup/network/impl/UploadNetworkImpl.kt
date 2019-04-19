@@ -66,7 +66,7 @@ class UploadNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                     message.what = MSG_UPDATE_AVATAR_SUCCESS
                     val returnList = response.body()?.data
                     activityVO.activityImages = returnList
-                    teamNetworkImpl.finishTeamTask(taskModel,activityVO)
+                    teamNetworkImpl.finishTeamTask(taskModel, activityVO, false)
 
                     Log.i("LifeUp 上传模块", "[上传图片]请求成功 " + returnList.toString())
                 }

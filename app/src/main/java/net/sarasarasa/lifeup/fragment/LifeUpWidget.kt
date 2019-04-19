@@ -10,6 +10,7 @@ import android.widget.RemoteViews
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.service.FinishTaskIntentService
 import net.sarasarasa.lifeup.service.LifeUpRemoteViewsService
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.ToastUtils
@@ -40,11 +41,20 @@ class LifeUpWidget : AppWidgetProvider() {
         super.onReceive(context, intent)
 
         if (intent.hasExtra(WIDGET_IDS_KEY)) {
-            val ids = intent.extras.getIntArray(WIDGET_IDS_KEY)
-            this.onUpdate(context, AppWidgetManager.getInstance(context), ids)
+            if (intent.extras != null) {
+                val ids = intent.extras!!.getIntArray(WIDGET_IDS_KEY)
+                this.onUpdate(context, AppWidgetManager.getInstance(context), ids)
 
-            if (intent.getBooleanExtra("isShowToast", false))
-                ToastUtils.showShortToast("成功刷新", context)
+                if (intent.getBooleanExtra("isShowToast", false))
+                    ToastUtils.showShortToast("成功刷新", context)
+            }
+        } else if (intent.action == FINISH_TASK) {
+            // 将耗时操作交给IntentService完成
+            val finishIntent = Intent(context, FinishTaskIntentService::class.java)
+            if (intent.extras != null) {
+                finishIntent.putExtras(intent.extras!!)
+            }
+            context.startService(finishIntent)
         }
 
     }

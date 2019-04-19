@@ -132,12 +132,12 @@ class LifeUpRemoteViewsFactory(context: Context, intent: Intent?) : RemoteViewsS
         fillInIntent.putExtra("NUMBER", position)
         fillInIntent.setClass(mContext, LifeUpWidget::class.java)
         fillInIntent.putExtras(extras)
-        // rv.setOnClickFillInIntent(R.id.btn, fillInIntent)
+        rv.setOnClickFillInIntent(R.id.btn, fillInIntent)
 
-        val finishIntent = Intent(mContext, FinishTaskIntentService::class.java)
+/*        val finishIntent = Intent(mContext, FinishTaskIntentService::class.java)
         finishIntent.putExtra("NUMBER", position)
         finishIntent.putExtras(extras)
-        rv.setOnClickFillInIntent(R.id.btn, finishIntent)
+        rv.setOnClickFillInIntent(R.id.btn, finishIntent)*/
 
         return rv
     }

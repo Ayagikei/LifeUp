@@ -44,6 +44,7 @@ class TodoDAO {
         return if (isAsc)
             when (sortBy) {
                 "alpha" -> litePalWhere.order("priority desc,content COLLATE LOCALIZED asc")
+                "frequency" -> litePalWhere.order("priority desc,taskFrequency asc")
                 "startTime" -> litePalWhere.order("priority desc,startTime asc")
                 "deadline" -> litePalWhere.order("priority desc,taskExpireTime asc")
                 "createTime" -> litePalWhere.order("priority desc,id asc")
@@ -52,6 +53,7 @@ class TodoDAO {
             }
         else when (sortBy) {
             "alpha" -> litePalWhere.order("priority desc,content COLLATE LOCALIZED desc")
+            "frequency" -> litePalWhere.order("priority desc,taskFrequency desc")
             "startTime" -> litePalWhere.order("priority desc,startTime desc")
             "deadline" -> litePalWhere.order("priority desc,taskExpireTime desc")
             "createTime" -> litePalWhere.order("priority desc,id desc")
