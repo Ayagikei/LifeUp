@@ -6,10 +6,12 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.widget.RemoteViews
 import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.service.FinishTaskIntentService
 import net.sarasarasa.lifeup.service.LifeUpRemoteViewsService
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
@@ -54,7 +56,19 @@ class LifeUpWidget : AppWidgetProvider() {
             if (intent.extras != null) {
                 finishIntent.putExtras(intent.extras!!)
             }
-            context.startService(finishIntent)
+
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(finishIntent)
+                } else {
+                    context.startService(finishIntent)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtils.showShortToast("完成事项似乎出现了一些问题，请尝试刷新下。", LifeUpApplication.getLifeUpApplication())
+            }
+
+
         }
 
     }

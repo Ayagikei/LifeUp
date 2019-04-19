@@ -1,7 +1,12 @@
 package net.sarasarasa.lifeup.service
 
 import android.app.IntentService
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -25,6 +30,21 @@ class FinishTaskIntentService : IntentService("FinishTaskIntentService") {
 
 
     override fun onHandleIntent(intent: Intent?) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val NOTIFICATION_CHANNEL_ID = "net.sarasarasa.lifeup"
+            val channelName = "FinishTaskIntentService"
+            val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName,
+                    NotificationManager.IMPORTANCE_MIN)
+
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+
+            val notification = Notification.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).build()
+
+            startForeground(1001, notification)        //context.startForeground(SERVICE_ID, builder.getNotification());
+        }
+
 
         val extras = intent?.extras
 
