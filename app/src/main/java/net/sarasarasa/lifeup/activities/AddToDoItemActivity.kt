@@ -21,26 +21,34 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.activity_add_to_do_item.*
 import kotlinx.android.synthetic.main.content_add_to_do_item.*
+import kotlinx.android.synthetic.main.dialog_category.view.*
 import kotlinx.android.synthetic.main.dialog_ignore.view.*
 import kotlinx.android.synthetic.main.dialog_repeat.view.*
 import mehdi.sakout.fancybuttons.FancyButton
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.adapters.CategoryAdapter
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.constants.ToDoItemConstants.Companion.SELECTED_CNT
 import net.sarasarasa.lifeup.converter.ExpRewardConverter
 import net.sarasarasa.lifeup.converter.TodoItemConverter
+import net.sarasarasa.lifeup.models.CategoryModel
 import net.sarasarasa.lifeup.models.TaskModel
 import net.sarasarasa.lifeup.models.TaskTargetModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.CalendarUtil
 import net.sarasarasa.lifeup.utils.ClickUtils
+import net.sarasarasa.lifeup.utils.DensityUtil.Companion.context
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
@@ -58,12 +66,15 @@ open class AddToDoItemActivity : AppCompatActivity() {
     //没按下确定键时候的频次选择
     protected var iTempFrequency = 0
     protected var iFrequency = 0
+    protected var lCategoryId = 0L
     protected var arrAbbrBtn: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
     protected var arrIgnoreDayOfWeek: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0)
 
     protected var isUseSpecificExpireTime = false
     protected val simpleDateTimeFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
     protected val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+
+    protected var isSelectedAttrs = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,10 +92,20 @@ open class AddToDoItemActivity : AppCompatActivity() {
         initRepeater()
         initSeekBar()
         initAbbrBtn()
+        initCategoryTextView()
         btn_ddl_set_spec_time.setOnClickListener { showExpireTimePickerDialog() }
         iv_extra_question.setOnClickListener { scrollToBottomBeforeShowGuide() }
         iv_bouns_question.setOnClickListener { ToastUtils.showShortToast("事项的经验值奖励会由这里的设置计算得出。") }
         iv_basic_question.setOnClickListener { scrollToTopBeforeShowGuide() }
+        tv_category.setOnClickListener { showCategorySheetDialog() }
+    }
+
+    private fun initCategoryTextView() {
+        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+        val currentCategoryId = optionSharedPreferences.getLong("categoryId", 0L)
+        lCategoryId = currentCategoryId
+        if (lCategoryId == -1L) lCategoryId = 0L
+        tv_category.text = todoService.getCategoryNameById(lCategoryId)
     }
 
     /** 将技能图标初始化为灰色 **/
@@ -335,7 +356,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun showExpireTimePickerDialog() {
         val c = Calendar.getInstance()
-        val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minute ->
+        val datePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
 
             val strHourOfDay: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
             val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
@@ -617,7 +638,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
 
     /** 根据[taskFrequency: String]获得[color]主题色 **/
     private fun getThemeColor(taskFrequency: Int): Int {
-        return ContextCompat.getColor(this, TodoItemConverter.strFrequencyToColorId(taskFrequency))
+        return ContextCompat.getColor(this, TodoItemConverter.strFrequencyToColorId(taskFrequency, checkPreferences = false))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -630,7 +651,16 @@ open class AddToDoItemActivity : AppCompatActivity() {
             R.id.action_finish -> {
                 if (ClickUtils.isNotFastClick()) {
                     if (check()) {
-                        addItem(getItem(newItem = true))
+                        if (!isSelectedAttrs) {
+                            MaterialDialog(context).show {
+                                title(text = "提醒")
+                                message(text = "你没有选择相关属性，该事项完成后不会获得经验值奖励，是否继续？")
+                                positiveButton(R.string.btn_yes) { _ ->
+                                    addItem(getItem(newItem = true))
+                                }
+                                lifecycleOwner(this@AddToDoItemActivity)
+                            }
+                        } else addItem(getItem(newItem = true))
                     }
                 }
                 return true
@@ -663,7 +693,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                     if (dateTaskDeadline != null) {
                         dateTaskRemindDateAndTime = CalendarUtil.getTimeAfterSeveralMinutesTime(dateTaskDeadline, -10)
                         if (!isUseSpecificExpireTime) {
-                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime?.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
+                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
                         }
                     }
                 }
@@ -671,7 +701,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                     if (dateTaskDeadline != null) {
                         dateTaskRemindDateAndTime = CalendarUtil.getTimeAfterSeveralMinutesTime(dateTaskDeadline, -30)
                         if (!isUseSpecificExpireTime) {
-                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime?.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
+                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
                         }
                     }
                 }
@@ -679,7 +709,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
                     if (dateTaskDeadline != null) {
                         dateTaskRemindDateAndTime = CalendarUtil.getTimeAfterSeveralMinutesTime(dateTaskDeadline, -60)
                         if (!isUseSpecificExpireTime) {
-                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime?.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
+                            dateTaskRemindDateAndTime = dateTaskRemindDateAndTime.let { CalendarUtil.getTimeAfterSeveralMinutesTime(it, 1440) }
                         }
                     }
                 }
@@ -799,11 +829,8 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         // 清单分类
-        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
-        val currentCategoryId = optionSharedPreferences.getLong("categoryId", 0L)
-
-        taskModel.categoryId = if (currentCategoryId == -1L) 0L
-        else currentCategoryId
+        taskModel.categoryId = if (lCategoryId == -1L) 0L
+        else lCategoryId
 
         // 艾宾浩斯记忆法
         taskModel.enableEbbinghausMode = enableEbbinghausMode
@@ -840,10 +867,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
             isAllCheckPassed = false
         }
 
+        // 允许不选择属性
         if (arrAbbrBtn[SELECTED_CNT] == 0) {
-            ToastUtils.showShortToast(getString(R.string.add_to_do_without_attr_toast))
-            isAllCheckPassed = false
+            isSelectedAttrs = false
+            // ToastUtils.showShortToast(getString(R.string.add_to_do_without_attr_toast))
+            // isAllCheckPassed = false
         }
+        isSelectedAttrs = true
 
 /*        if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {
@@ -1121,5 +1151,34 @@ open class AddToDoItemActivity : AppCompatActivity() {
                                 .targetRadius(60)
                 )
                 .start()
+    }
+
+
+    private fun showCategorySheetDialog() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.dialog_category, null)
+        val list = todoService.listCategory().toMutableList()
+        list.add(0, CategoryModel("默认清单", false))
+        val adapter = CategoryAdapter(R.layout.item_category, list)
+        view.rv_category.layoutManager = LinearLayoutManager(this)
+        view.rv_category.adapter = adapter
+        view.ll_category_add.visibility = View.GONE
+        adapter.setOnItemClickListener { mAdapter, _, position ->
+            val item = mAdapter.getItem(position) as CategoryModel
+            if (position == 0) {
+                lCategoryId = 0L
+            } else {
+                item.id?.let {
+                    lCategoryId = it
+                }
+            }
+
+            tv_category.text = todoService.getCategoryNameById(lCategoryId)
+
+            if (bottomSheetDialog.isShowing)
+                bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.setContentView(view)
+        bottomSheetDialog.show()
     }
 }
