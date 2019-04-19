@@ -534,7 +534,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                     ToastUtils.showShortToast("登录已失效，请重新登录！")
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
-                } else if (responseBody?.msg?.contains("未到签到时间") != null) {
+                } else if (responseBody?.msg?.contains("未到签到时间") == true) {
                     this@TeamNetworkImpl.getNextTeamTask(item.teamId)
                     todoService.finishTodoItem(item.id)
                 } else if (responseBody?.msg == "success") {
