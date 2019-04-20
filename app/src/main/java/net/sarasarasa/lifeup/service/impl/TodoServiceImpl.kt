@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_RE_GET_TEAM_TASK_SUCCESS
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
@@ -39,6 +40,10 @@ class TodoServiceImpl : TodoService {
     private val categoryDAO = CategoryDAO()
     private val attributeService = AttributeServiceImpl()
     private val userService = UserServiceImpl()
+
+    private val context by lazy {
+        LifeUpApplication.getLifeUpApplication()
+    }
 
     override fun addTodoItem(taskModel: TaskModel): Long? {
         taskModel.createdTime = Calendar.getInstance().timeInMillis
@@ -101,9 +106,9 @@ class TodoServiceImpl : TodoService {
 
     override fun getUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask(null)) {
-            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast(context.getString(R.string.to_do_item_overdue))
         }
-        val optionSharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
+        val optionSharedPreferences = context.getSharedPreferences("options", Context.MODE_PRIVATE)
         val classBy = optionSharedPreferences.getString("classBy", "all")
 
         return when (classBy) {
@@ -117,14 +122,14 @@ class TodoServiceImpl : TodoService {
 
     override fun getUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask(null)) {
-            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast(context.getString(R.string.to_do_item_overdue))
         }
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegun()
     }
 
     override fun getAllUncompletedTodoList(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask(null)) {
-            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast(context.getString(R.string.to_do_item_overdue))
         }
 
         return todoDAO.findAllUncompletedTodoItemIgnoreCategory()
@@ -133,7 +138,7 @@ class TodoServiceImpl : TodoService {
 
     override fun getAllUncompletedTodoListWhichHaveBegun(isShowToast: Boolean): List<TaskModel> {
         if (checkAndUpdateOverdueTask(null)) {
-            if (isShowToast) ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+            if (isShowToast) ToastUtils.showLongToast(context.getString(R.string.to_do_item_overdue))
         }
         return todoDAO.findAllUncompletedTodoItemWhichHaveBegunIgnoreCategory()
     }
@@ -156,7 +161,7 @@ class TodoServiceImpl : TodoService {
         with(todoDAO.findATodoItem(id) ?: return false)
         {
             if (this.taskStatus != 0) {
-                WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+                WidgetUtils.updateWidgets(context)
                 return false
             }
 
@@ -166,9 +171,9 @@ class TodoServiceImpl : TodoService {
             save()
 
             val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
-            attributeService.increaseMultiExp(attrs, this.expReward, "完成事项「${this.content}」")
+            attributeService.increaseMultiExp(attrs, this.expReward, "${context.getString(R.string.finish_task)}「${this.content}」")
         }
-        WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+        WidgetUtils.updateWidgets(context)
         return true
     }
 
@@ -182,7 +187,7 @@ class TodoServiceImpl : TodoService {
             save()
 
             val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
-            attributeService.increaseMultiExp(attrs, this.expReward, "设为已经完成事项「${this.content}」")
+            attributeService.increaseMultiExp(attrs, this.expReward, "${context.getString(R.string.set_to_finish)}「${this.content}」")
         }
         return true
     }
@@ -199,7 +204,7 @@ class TodoServiceImpl : TodoService {
 
             //撤销经验
             val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
-            attributeService.decreaseMultiExp(attrs, this.expReward, "撤销完成事项「${this.content}」")
+            attributeService.decreaseMultiExp(attrs, this.expReward, "${context.getString(R.string.undo_finish)}「${this.content}」")
 
             if (this.nextTaskId != null && this.nextTaskId is Long && this.nextTaskId != 0L && this.nextTaskId != -1L) {
                 val nextTask = todoDAO.findATodoItem(this.nextTaskId!!)
@@ -222,7 +227,7 @@ class TodoServiceImpl : TodoService {
 
             //放弃任务损失经验值
             val attrs = ArrayList<String>(Arrays.asList(this.relatedAttribute1, this.relatedAttribute2, this.relatedAttribute3))
-            attributeService.decreaseMultiExp(attrs, this.expReward / 5, "放弃完成事项「${this.content}」")
+            attributeService.decreaseMultiExp(attrs, this.expReward / 5, "${context.getString(R.string.give_up_item)}「${this.content}」")
         }
 
         return true
@@ -397,9 +402,9 @@ class TodoServiceImpl : TodoService {
 
                 //经验值惩罚
                 val attrs = ArrayList<String>(Arrays.asList(e.relatedAttribute1, e.relatedAttribute2, e.relatedAttribute3))
-                attributeService.decreaseMultiExp(attrs, e.expReward / 5, "逾期事项「${e.content}」")
+                attributeService.decreaseMultiExp(attrs, e.expReward / 5, "${context.getString(R.string.out_of_date)}「${e.content}」")
 
-                val isDefaultRemake = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE).getBoolean("isDefaultRemake", true)
+                val isDefaultRemake = context.getSharedPreferences("options", Context.MODE_PRIVATE).getBoolean("isDefaultRemake", true)
                 if (isDefaultRemake && e.taskFrequency != -1)
                     if (e.teamId == -1L) {
                         e.id?.let { restartTask(it) }
@@ -513,7 +518,7 @@ class TodoServiceImpl : TodoService {
             }
 
             newTaskModel.save()
-            WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
+            WidgetUtils.updateWidgets(context)
 
             return true
         }
@@ -654,8 +659,8 @@ class TodoServiceImpl : TodoService {
 
     override fun addGuideTask(): Boolean {
         val task = TaskModel(
-                "开始使用人升",
-                "点击小圆圈或者向右滑动可以完成待办事项。\n长按可以进行置顶、编辑、放弃、删除等操作。\n单击卡片可以浏览事项详情。",
+                context.getString(R.string.starter_task_content),
+                context.getString(R.string.starter_task_remark),
                 null,
                 null,
                 "endurance",
@@ -712,10 +717,11 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun getCategoryNameById(categoryId: Long): String {
-        if (categoryId == 0L) return "默认清单"
-        if (categoryId == -1L) return "所有清单"
+        if (categoryId == 0L) return context.getString(R.string.category_default)
+        if (categoryId == -1L) return context.getString(R.string.category_all)
 
-        return categoryDAO.getOneCategoryById(categoryId)?.categoryName ?: "默认清单"
+        return categoryDAO.getOneCategoryById(categoryId)?.categoryName
+                ?: context.getString(R.string.category_default)
     }
 
     override fun moveToCategoryById(categoryId: Long, toDoItem: TaskModel): Boolean {

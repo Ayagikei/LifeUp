@@ -2,6 +2,7 @@ package net.sarasarasa.lifeup.converter
 
 import android.view.View
 import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.constants.ToDoItemConstants
 import net.sarasarasa.lifeup.utils.SharedPreferencesUtils
 
@@ -21,12 +22,12 @@ class TodoItemConverter {
 
         fun strAbbrToStrTitle(string: String?): String {
             return when (string) {
-                "strength" -> "力量"
-                "learning" -> "学识"
-                "charm" -> "魅力"
-                "endurance" -> "耐力"
-                "vitality" -> "活力"
-                "creative" -> "创造"
+                "strength" -> LifeUpApplication.getLifeUpApplication().getString(R.string.attr_strength)
+                "learning" -> LifeUpApplication.getLifeUpApplication().getString(R.string.attr_learning)
+                "charm" -> LifeUpApplication.getLifeUpApplication().getString(R.string.attr_charm)
+                "endurance" -> LifeUpApplication.getLifeUpApplication().getString(R.string.attr_endurance)
+                "vitality" -> LifeUpApplication.getLifeUpApplication().getString(R.string.attr_vitality)
+                "creative" -> LifeUpApplication.getLifeUpApplication().getString(R.string.attr_creative)
                 else -> ""
             }
         }

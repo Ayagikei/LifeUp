@@ -58,7 +58,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
         when (msg.what) {
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
             }
             MSG_GET_USER_DETAIL_SUCCESS -> {
                 if (msg.obj != null) {
@@ -197,7 +197,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             val intent = Intent(this, TeamMemberActivity::class.java)
             intent.putExtra("typeId", mUserId)
                     .putExtra("memberType", FOLLOWING_MEMBER)
-                    .putExtra("title", "关注列表")
+                    .putExtra("title", getString(R.string.user_follow_list))
             startActivity(intent)
         }
 
@@ -205,7 +205,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             val intent = Intent(this, TeamMemberActivity::class.java)
             intent.putExtra("typeId", mUserId)
                     .putExtra("memberType", FOLLOWER_MEMBER)
-                    .putExtra("title", "粉丝列表")
+                    .putExtra("title", getString(R.string.user_follower_list))
             startActivity(intent)
         }
 
@@ -224,12 +224,12 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             0 -> {
             }
             1 -> {
-                btn_follow.text = "已关注"
+                btn_follow.text = getString(R.string.team_member_followed)
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.clicked_btn)
                 ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
             }
             2 -> {
-                btn_follow.text = "互相关注"
+                btn_follow.text = getString(R.string.team_member_follow_together)
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.clicked_btn)
                 ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
             }
@@ -238,19 +238,19 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         btn_follow.setOnClickListener {
             if (userDetailVO.isFollow == 0) {
                 userDetailVO.userId?.let { it1 -> userNetworkImpl.followUserById(it1) }
-                btn_follow.text = "已关注"
+                btn_follow.text = getString(R.string.team_member_followed)
                 userDetailVO.isFollow = 1
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.clicked_btn)
                 ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
             } else if (userDetailVO.isFollow == 1) {
                 userDetailVO.userId?.let { it1 -> userNetworkImpl.unfollowUserById(it1) }
-                btn_follow.text = "关注"
+                btn_follow.text = getString(R.string.user_follow)
                 userDetailVO.isFollow = 0
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
                 ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
             } else if (userDetailVO.isFollow == 2) {
                 userDetailVO.userId?.let { it1 -> userNetworkImpl.unfollowUserById(it1) }
-                btn_follow.text = "关注"
+                btn_follow.text = getString(R.string.user_follow)
                 userDetailVO.isFollow = 1
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
                 ViewCompat.setBackgroundTintList(btn_follow, colorStateList)
@@ -317,7 +317,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     private fun getEmptyView(): View {
         val view = layoutInflater.inflate(R.layout.foot_view_to_do, null)
-        view.textView11.text = "该用户暂时没有动态"
+        view.textView11.text = getString(R.string.user_not_found_activites)
         return view
     }
 
@@ -333,7 +333,7 @@ class UserActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if (requestCode == PRC_PHOTO_PREVIEW) {
-            ToastUtils.showShortToast("您拒绝了「图片预览」所需要的相关权限!")
+            ToastUtils.showShortToast(getString(R.string.permission_photo_preview_need))
         }
     }
 

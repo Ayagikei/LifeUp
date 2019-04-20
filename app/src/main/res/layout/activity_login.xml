@@ -193,7 +193,7 @@
                     android:onClick="loginByQQ"
                     android:paddingStart="16dp"
                     android:paddingEnd="40dp"
-                    android:text="使用QQ登录"
+                    android:text="@string/sign_in_with_qq"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 

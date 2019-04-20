@@ -1,7 +1,9 @@
 package net.sarasarasa.lifeup.utils;
 
+import android.app.Activity;
 import android.util.Log;
 
+import net.sarasarasa.lifeup.R;
 import net.sarasarasa.lifeup.application.LifeUpApplication;
 
 import java.io.File;
@@ -16,7 +18,7 @@ public class ExportImportDB {
 
     private static String currentDBPath = "//databases//" + "LifeUpDB.db";
 
-    public static void importDB() {
+    public static void importDB(Activity context) {
         try {
             File backupDBDir = LifeUpApplication.Companion.getLifeUpApplication().getExternalFilesDir("backup");
             File data = LifeUpApplication.Companion.getLifeUpApplication().getFilesDir().getParentFile();
@@ -34,15 +36,15 @@ public class ExportImportDB {
                 src.close();
                 dst.close();
 
-                ToastUtils.Companion.showShortToast("恢复成功");
+                ToastUtils.Companion.showShortToast(context.getString(R.string.backup_restore_success));
             }
         } catch (Exception e) {
-            ToastUtils.Companion.showShortToast("恢复失败" + e.toString());
+            ToastUtils.Companion.showShortToast(context.getString(R.string.backup_restore_failed) + e.toString());
         }
     }
 
     //exporting database
-    public static void exportDB() {
+    public static void exportDB(Activity context) {
         try {
             File backupDBDir = LifeUpApplication.Companion.getLifeUpApplication().getExternalFilesDir("backup");
             File data = LifeUpApplication.Companion.getLifeUpApplication().getFilesDir().getParentFile();
@@ -63,10 +65,10 @@ public class ExportImportDB {
                 src.close();
                 dst.close();
 
-                ToastUtils.Companion.showShortToast("备份成功：" + backupDB.getAbsolutePath());
+                ToastUtils.Companion.showShortToast(context.getString(R.string.backup_success) + backupDB.getAbsolutePath());
             }
         } catch (Exception e) {
-            ToastUtils.Companion.showShortToast("备份失败：" + e.toString());
+            ToastUtils.Companion.showShortToast(context.getString(R.string.backup_failed) + e.toString());
         }
     }
 

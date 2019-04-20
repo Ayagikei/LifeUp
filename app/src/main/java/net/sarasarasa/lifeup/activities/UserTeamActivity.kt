@@ -55,7 +55,7 @@ class UserTeamActivity : AppCompatActivity() {
 
                 mAdapter.loadMoreFail()
 
-                ToastUtils.showShortToast("网络错误，请稍后重试。")
+                ToastUtils.showShortToast(getString(R.string.network_error))
             }
             else -> {
                 if (msg.obj != null) {
@@ -156,7 +156,7 @@ class UserTeamActivity : AppCompatActivity() {
 
     private fun getEmptyView(): View {
         val view = layoutInflater.inflate(R.layout.foot_view_to_do, null)
-        view.textView11.text = "该用户暂时没有团队"
+        view.textView11.text = getString(R.string.user_not_found_team)
         return view
     }
 }

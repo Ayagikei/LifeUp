@@ -81,17 +81,17 @@ class ToDoItemDetailActivity : AppCompatActivity() {
         }
 
         tv_status.text = when (taskModel?.taskStatus) {
-            UNCOMPLETED -> "事项状态：尚未完成"
-            COMPLETED -> "事项状态：已完成（${timeFormatter.format(taskModel?.endDate)}）"
-            OUT_OF_DATE -> "事项状态：逾期（${timeFormatter.format(taskModel?.endDate)}）"
-            GIVE_UP -> "事项状态：放弃（${timeFormatter.format(taskModel?.endDate)}）"
+            UNCOMPLETED -> getString(R.string.to_do_detail_status_uncompleted)
+            COMPLETED -> "${getString(R.string.to_do_detail_status_completed)}（${timeFormatter.format(taskModel?.endDate)}）"
+            OUT_OF_DATE -> "${getString(R.string.to_do_detail_status_out_of_date)}（${timeFormatter.format(taskModel?.endDate)}）"
+            GIVE_UP -> "${getString(R.string.to_do_detail_status_gave_up)}（${timeFormatter.format(taskModel?.endDate)}）"
             else -> ""
         }
 
         // 设置事项类型并且实现跳转团队页面
-        val ssbType = SpannableStringBuilder("事项类型：")
-        ssbType.append(if (taskModel?.teamId == -1L) "本地事项"
-        else "团队事项")
+        val ssbType = SpannableStringBuilder(getString(R.string.to_do_detail_type))
+        ssbType.append(if (taskModel?.teamId == -1L) getString(R.string.to_do_detail_type_local)
+        else getString(R.string.to_do_detail_type_team))
 
         if (taskModel?.teamId != -1L) {
             val clickableSpanType = object : ClickableSpan() {
@@ -117,16 +117,16 @@ class ToDoItemDetailActivity : AppCompatActivity() {
 
 
         if (taskModel?.taskRemindTime != null) {
-            tv_alarm.text = "提醒定于 ${timeFormatter.format(taskModel?.taskRemindTime)}"
+            tv_alarm.text = "${getString(R.string.to_do_detail_remind)}${timeFormatter.format(taskModel?.taskRemindTime)}"
         } else {
             iv_alarm.visibility = View.GONE
             tv_alarm.visibility = View.GONE
         }
 
         if (getEndTime() == null) {
-            tv_date.text = "开始于 ${timeFormatter.format(taskModel?.startTime)}"
+            tv_date.text = "${getString(R.string.to_do_detail_start)} ${timeFormatter.format(taskModel?.startTime)}"
         } else {
-            tv_date.text = "可完成于\n${timeFormatter.format(taskModel?.startTime)} - ${timeFormatter.format(getEndTime())}"
+            tv_date.text = "${getString(R.string.to_do_detail_end_at)}\n${timeFormatter.format(taskModel?.startTime)} - ${timeFormatter.format(getEndTime())}"
         }
 
         tv_repeat.text = getRepeatText()
@@ -136,7 +136,7 @@ class ToDoItemDetailActivity : AppCompatActivity() {
 
             if (taskTarget != null && taskTarget.targetTimes != 0) {
                 val currentTimes = if (taskModel?.taskStatus == 1) taskModel?.currentTimes else taskModel?.currentTimes?.minus(1)
-                tv_target.text = "目标次数已完成 ${currentTimes}/${taskTarget.targetTimes}"
+                tv_target.text = "${getString(R.string.to_do_detail_target_times)} $currentTimes/${taskTarget.targetTimes}"
             } else {
                 iv_target.visibility = View.GONE
                 tv_target.visibility = View.GONE
@@ -147,20 +147,20 @@ class ToDoItemDetailActivity : AppCompatActivity() {
         }
 
         if (!taskModel?.completeReward.isNullOrEmpty())
-            tv_reward.text = "完成奖励：${taskModel?.completeReward}"
+            tv_reward.text = "${getString(R.string.to_do_detail_reward)}${taskModel?.completeReward}"
         else {
             iv_reward.visibility = View.GONE
             tv_reward.visibility = View.GONE
         }
 
         if (taskModel?.teamId == -1L)
-            tv_degree.text = "紧迫程度 LV${taskModel?.taskUrgencyDegree}   困难程度 LV${taskModel?.taskDifficultyDegree}"
+            tv_degree.text = "${getString(R.string.urgency_degree)} LV${taskModel?.taskUrgencyDegree}   ${getString(R.string.difficult_degree)} LV${taskModel?.taskDifficultyDegree}"
         else {
             iv_degree.visibility = View.GONE
             tv_degree.visibility = View.GONE
         }
 
-        tv_exp.text = "完成奖励${getAttributeString()}${taskModel?.expReward}点"
+        tv_exp.text = "完成奖励${getAttributeString()}${taskModel?.expReward}${getString(R.string.point)}"
 
     }
 
@@ -186,8 +186,8 @@ class ToDoItemDetailActivity : AppCompatActivity() {
     }
 
     private fun getRepeatText(): String {
-        return if (taskModel?.enableEbbinghausMode == true && taskModel?.taskFrequency == 0) "艾宾浩斯记忆法-最后一天"
-        else if (taskModel?.enableEbbinghausMode == true) "艾宾浩斯记忆法-${taskModel?.taskFrequency}天"
+        return if (taskModel?.enableEbbinghausMode == true && taskModel?.taskFrequency == 0) getString(R.string.ebbinghaus_the_last_day)
+        else if (taskModel?.enableEbbinghausMode == true) "${getString(R.string.ebbinghaus)}-${taskModel?.taskFrequency}${getString(R.string.day)}"
         else if (taskModel?.taskFrequency == 1 && taskModel?.isIgnoreDayOfWeek?.contains(1) == true) {
             TodoItemConverter.iFrequencyWithIgnoreToNormalString(taskModel?.isIgnoreDayOfWeek!!.toIntArray())
         } else TodoItemConverter.iFrequencyToNormalString(taskModel?.taskFrequency)
@@ -215,26 +215,26 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             R.id.action_delete -> {
                 if (taskModel?.taskStatus == UNCOMPLETED) {
                     MaterialDialog(this).show {
-                        title(text = "删除")
-                        message(text = "你确定要删除该待办事项吗？")
+                        title(R.string.to_do_detail_delete_title)
+                        message(R.string.to_do_detail_delete_message)
                         positiveButton(R.string.btn_yes) {
                             if (todoService.deleteTodoItem(taskModel?.id)) {
-                                ToastUtils.showShortToast("删除成功")
+                                ToastUtils.showShortToast(getString(R.string.to_do_detail_delete_success))
                                 finish()
-                            } else ToastUtils.showShortToast("删除操作出现异常")
+                            } else ToastUtils.showShortToast(getString(R.string.to_do_detail_delete_failed))
                         }
                         negativeButton(R.string.btn_cancel)
                         lifecycleOwner(this@ToDoItemDetailActivity)
                     }
                 } else {
                     MaterialDialog(this).show {
-                        title(text = "删除")
-                        message(text = "你确定要删除该事项的历史记录吗？")
+                        title(R.string.to_do_detail_delete_title)
+                        message(text = getString(R.string.to_do_detail_delete_history))
                         positiveButton(R.string.btn_yes) {
                             if (taskModel?.id?.let { it1 -> todoService.hideHistoryItem(it1) } == 1) {
-                                ToastUtils.showShortToast("删除历史记录成功")
+                                ToastUtils.showShortToast(getString(R.string.to_do_detail_delete_history_success))
                                 finish()
-                            } else ToastUtils.showShortToast("删除历史记录操作出现异常")
+                            } else ToastUtils.showShortToast(getString(R.string.to_do_detail_delete_history_failed))
                         }
                         negativeButton(R.string.btn_cancel)
                         lifecycleOwner(this@ToDoItemDetailActivity)
@@ -244,12 +244,12 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             }
             R.id.action_give_up -> {
                 if (taskModel?.teamId != -1L) {
-                    ToastUtils.showShortToast("团队事项暂不可放弃！")
+                    ToastUtils.showShortToast(getString(R.string.to_do_item_detail_give_up_team_task))
                 }
                 if (taskModel?.taskStatus == UNCOMPLETED)
                     MaterialDialog(this).show {
-                        title(text = "放弃")
-                        message(text = "你确定要放弃该待办事项吗？\n如果是重复周期事项的话，只会放弃这一次的事项，不会影响到事项的重复。")
+                        title(R.string.to_do_item_detail_give_up_title)
+                        message(R.string.to_do_item_detail_give_up_message)
                         positiveButton(R.string.btn_yes) { if (giveUpItem()) finish() }
                         negativeButton(R.string.btn_cancel)
                         lifecycleOwner(this@ToDoItemDetailActivity)
@@ -258,7 +258,7 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             }
             R.id.action_edit -> {
                 if (taskModel?.teamId != -1L) {
-                    ToastUtils.showShortToast("团队事项不可编辑！")
+                    ToastUtils.showShortToast(getString(R.string.to_do_item_detail_edit_team_task))
                 } else {
                     val intent = Intent(this, EditToDoItemActivity::class.java)
                     intent.putExtra("id", taskModel?.id)
@@ -269,8 +269,8 @@ class ToDoItemDetailActivity : AppCompatActivity() {
             R.id.action_set_to_finish -> {
                 if (taskModel?.taskStatus != UNCOMPLETED)
                     MaterialDialog(this).show {
-                        title(text = "设为「已经完成」")
-                        message(text = "你实际上已经完成了该待办事项吗？")
+                        title(text = getString(R.string.to_do_detail_set_to_finish))
+                        message(text = getString(R.string.to_do_detail_set_to_finish_message))
                         positiveButton(R.string.btn_yes) {
                             if (todoService.setOverdueItemToFinish(taskModel?.id)) {
                                 ToastUtils.showShortToast(getString(R.string.history_set_to_success_success))
@@ -287,13 +287,13 @@ class ToDoItemDetailActivity : AppCompatActivity() {
 
     private fun giveUpItem(): Boolean {
         return if (todoService.giveUpTodoItem(taskModel?.id)) {
-                ToastUtils.showShortToast("成功放弃待办事项")
+            ToastUtils.showShortToast(getString(R.string.give_up_success))
                 // 放弃事项不再中断重复事项（所以要进行下一次重复）
                 if (taskModel?.taskFrequency != 0) todoService.repeatTask(taskModel?.id)
                 WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
             true
             } else {
-                ToastUtils.showShortToast("放弃操作出现异常")
+            ToastUtils.showShortToast(getString(R.string.give_up_failed))
             false
             }
     }

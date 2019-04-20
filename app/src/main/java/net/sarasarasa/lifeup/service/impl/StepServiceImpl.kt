@@ -1,6 +1,8 @@
 package net.sarasarasa.lifeup.service.impl
 
 import android.text.format.DateUtils
+import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.dao.StepDAO
 import net.sarasarasa.lifeup.models.StepModel
 import net.sarasarasa.lifeup.service.StepService
@@ -11,6 +13,9 @@ class StepServiceImpl : StepService {
 
     private val stepDAO = StepDAO()
     val attributeService = AttributeServiceImpl()
+    private val context by lazy {
+        LifeUpApplication.getLifeUpApplication()
+    }
 
     override fun updateAndGetTodayStepCount(step: Float): Long {
         val theLastStepRec = stepDAO.getTheLastStepRecord()
@@ -95,7 +100,7 @@ class StepServiceImpl : StepService {
                     }
 
                     val attrs = ArrayList<String>(Arrays.asList("strength"))
-                    attributeService.increaseMultiExp(attrs, exp, "步数兑换力量经验值")
+                    attributeService.increaseMultiExp(attrs, exp, context.getString(R.string.step_to_str))
 
                     theLastStepRec.isGotReward = true
                     theLastStepRec.save()

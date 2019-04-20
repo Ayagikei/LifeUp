@@ -64,7 +64,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 }
             }
             MSG_JOIN_TEAM_SUCCESS -> {
-                ToastUtils.showShortToast("加入成功")
+                ToastUtils.showShortToast(getString(R.string.team_toast_join_success))
                 WidgetUtils.updateWidgets(applicationContext)
             }
             MSG_GET_TEAM_ACTIVITIES_SUCCESS -> {
@@ -93,10 +93,10 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                 }
             }
             NetworkConstants.MSG_QUIT_TEAM_SUCCESS -> {
-                ToastUtils.showShortToast("退出团队成功")
+                ToastUtils.showShortToast(getString(R.string.team_toast_quit_success))
             }
             NetworkConstants.MSG_END_TEAM_SUCCESS -> {
-                ToastUtils.showShortToast("终止团队成功")
+                ToastUtils.showShortToast(getString(R.string.team_toast_end_success))
             }
             else -> {
                 if (msg.obj != null)
@@ -171,19 +171,19 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
         if (nowCal.after(ddl)) {
             btn_join.isEnabled = false
-            btn_join.setText("已截止")
+            btn_join.setText(getString(R.string.team_end))
         } else {
             if (teamDetailVO.isMember != 0) {
                 btn_join.isEnabled = false
-                btn_join.setText("已加入")
+                btn_join.setText(getString(R.string.team_joined))
             } else {
                 btn_join.setOnClickListener {
                     teamNetworkImpl.joinTheTeam(teamDetailVO)
                     btn_join.isEnabled = false
-                    btn_join.setText("已加入")
+                    btn_join.setText(getString(R.string.team_joined))
 
                     val memberAmount = teamDetailVO.memberAmount?.plus(1)
-                    btn_members.setText("成员 | $memberAmount")
+                    btn_members.setText("${getString(R.string.team_member)} | $memberAmount")
                 }
             }
 
@@ -193,33 +193,34 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             btn_sign_next.setOnClickListener {
                 teamNetworkImpl.getNextTeamTask(mTeamId)
                 it.isEnabled = false
-                btn_sign_next.setText("已领取")
+                btn_sign_next.setText(getString(R.string.team_task_got))
             }
             btn_sign_next.isEnabled = true
-            btn_sign_next.setText("领取")
+            btn_sign_next.setText(getString(R.string.team_task_get))
         } else {
             btn_sign_next.isEnabled = false
-            btn_sign_next.setText("不可领取")
+            btn_sign_next.setText(getString(R.string.team_task_can_not_get))
         }
 
 
         if (teamDetailVO.nextStartTime != null && teamDetailVO.nextEndTime != null) {
             tv_startDateText.text = dateFormat.format(teamDetailVO.nextStartTime)
             tv_finishTimeText.text = "${timeFormat.format(teamDetailVO.nextStartTime
-                    ?: "已经结束")} - ${timeFormat.format(teamDetailVO.nextEndTime ?: "")}"
+                    ?: getString(R.string.team_time_end))} - ${timeFormat.format(teamDetailVO.nextEndTime
+                    ?: "")}"
         } else {
-            tv_startDateText.text = "已经结束"
-            tv_finishTimeText.text = "已经结束"
+            tv_startDateText.text = getString(R.string.team_time_end)
+            tv_finishTimeText.text = getString(R.string.team_time_end)
 
             btn_sign_next.isEnabled = false
-            btn_sign_next.setText("已结束")
+            btn_sign_next.setText(getString(R.string.team_sign_end))
         }
 
         iv_iconSkillFrist.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(0)))
         iv_iconSkillSecond.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(1)))
         iv_iconSkillThird.setImageResource(getAbbrIconDrawable(teamDetailVO.rewardAttrs.getOrNull(2)))
 
-        tw_expText.text = "${teamDetailVO.rewardExp.toString()}点"
+        tw_expText.text = teamDetailVO.rewardExp.toString() + getString(R.string.point)
         tw_repeatText.text = TodoItemConverter.iFrequencyToNormalString(teamDetailVO.teamFreq)
         tw_ddlText.text = dateFormat.format(teamDetailVO.startDate)
 
@@ -320,7 +321,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
         } else {
             if (mTeamDetailVO.isOwner == 1) {
                 mMenu?.removeItem(R.id.action_report)
-                mMenu?.findItem(R.id.action_quit)?.title = "终止"
+                mMenu?.findItem(R.id.action_quit)?.title = getString(R.string.team_menu_end)
             }
         }
     }
@@ -362,7 +363,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if (requestCode == PRC_PHOTO_PREVIEW) {
-            ToastUtils.showShortToast("您拒绝了「图片预览」所需要的相关权限!")
+            ToastUtils.showShortToast(getString(R.string.permission_photo_preview_need))
         }
     }
 
@@ -407,7 +408,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
             arrTypeName = arrTypeName.plus(reportTypeVO.typeName.toString())
 
         val reportDetailVO = ReportDetailVO()
-        val dialog = AlertDialog.Builder(this).setTitle("举报")
+        val dialog = AlertDialog.Builder(this).setTitle(getString(R.string.team_dialog_report_title))
                 .setSingleChoiceItems(arrTypeName, 0) { dialog, index ->
 
                     with(reportDetailVO){
@@ -417,7 +418,7 @@ class TeamActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, B
                         reportTypeId = index.toLong() + 1
                     }
 
-                }.setPositiveButton("确定") { _, _ ->
+                }.setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
                     reportNetworkImpl.report(reportDetailVO)
                 }.create()
         dialog.show()

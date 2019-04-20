@@ -38,18 +38,18 @@ class BackupActivity : AppCompatActivity() {
     }
 
     private fun processBackup() {
-            ExportImportDB.exportDB()
+        ExportImportDB.exportDB(this)
             // 备份成功后更新备份信息
             updateRestoreInfo()
     }
 
     private fun processRestore() {
         MaterialDialog(this).show {
-            title(text = "恢复")
-            message(text = "你确定要恢复数据吗？\n为了应用的正常运行，需要重启应用。")
+            title(text = getString(R.string.backup_restore_title))
+            message(text = getString(R.string.backup_restore_message))
             positiveButton(R.string.btn_yes) {
 
-                ExportImportDB.importDB()
+                ExportImportDB.importDB(this@BackupActivity)
                     restartApplication()
             }
             negativeButton(R.string.btn_cancel)
@@ -61,14 +61,14 @@ class BackupActivity : AppCompatActivity() {
     private fun updateRestoreInfo() {
             val backupDB = ExportImportDB.getBackupFile()
             if (backupDB != null) {
-                tv_backup_tint.text = "备份路径：${backupDB.absolutePath}"
+                tv_backup_tint.text = "${getString(R.string.backup_path)}${backupDB.absolutePath}"
                 if (!backupDB.exists()) {
-                    tv_restore_tint.text = "未检测到备份文件！"
+                    tv_restore_tint.text = getString(R.string.backup_not_found_file)
                 } else {
                     val lastModifiedDate = Date()
                     lastModifiedDate.time = backupDB.lastModified()
                     val formatter = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-                    tv_restore_tint.text = "检测到备份文件：${formatter.format(lastModifiedDate)}"
+                    tv_restore_tint.text = "${getString(R.string.backup_found_file)}${formatter.format(lastModifiedDate)}"
                 }
             }
 

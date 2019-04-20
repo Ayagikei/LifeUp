@@ -1,5 +1,7 @@
 package net.sarasarasa.lifeup.service.impl
 
+import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.dao.UserDAO
 import net.sarasarasa.lifeup.models.UserModel
 import net.sarasarasa.lifeup.service.UserService
@@ -9,11 +11,14 @@ class UserServiceImpl : UserService {
 
 
     private val userDAO = UserDAO()
+    private val context by lazy {
+        LifeUpApplication.getLifeUpApplication()
+    }
 
     override fun initMine() {
         val mine = UserModel()
         mine.token = ""
-        mine.nickName = "试用用户"
+        mine.nickName = context.getString(R.string.guest)
         mine.save()
     }
 

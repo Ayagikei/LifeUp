@@ -75,7 +75,7 @@ MomentsFragment : Fragment(), BGANinePhotoLayout.Delegate {
 
                 mAdapter.loadMoreFail()
 
-                ToastUtils.showShortToast("网络错误，请稍后重试。")
+                ToastUtils.showShortToast(getString(R.string.network_error))
             }
             else -> {
                 if (msg.obj != null) {

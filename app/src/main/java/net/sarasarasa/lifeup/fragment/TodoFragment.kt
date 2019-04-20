@@ -91,7 +91,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
             MSG_FINISH_TEAM_TASK -> {
                 //团队事项完成
                 refreshDataSet()
-                this.context?.let { ToastUtils.showShortToast("成功完成事项") }
+                this.context?.let { ToastUtils.showShortToast(getString(R.string.to_do_team_task_finish_success)) }
             }
             NetworkConstants.MSG_RE_GET_TEAM_TASK_SUCCESS -> {
                 refreshDataSet()
@@ -153,9 +153,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         mToolbar?.inflateMenu(R.menu.main)
 
         when (optionSharedPreferences.getString("classBy", "all")) {
-            "all" -> mToolbar?.title = "${getCategoryName()}：所有"
-            "today" -> mToolbar?.title = "${getCategoryName()}：今天"
-            "week" -> mToolbar?.title = "${getCategoryName()}：近七天"
+            "all" -> mToolbar?.title = "${getCategoryName()}：${getString(R.string.to_do_all_time)}"
+            "today" -> mToolbar?.title = "${getCategoryName()}：${getString(R.string.today)}"
+            "week" -> mToolbar?.title = "${getCategoryName()}：${getString(R.string.to_do_next_7_days)}"
         }
 
         setOnToolbarItemClickListener()
@@ -263,9 +263,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     refreshDataSet()
 
                     if (!isAsc!!)
-                        ToastUtils.showShortToast("已经更改为正序")
+                        ToastUtils.showShortToast(getString(R.string.sort_asc))
                     else
-                        ToastUtils.showShortToast("已经更改为倒序")
+                        ToastUtils.showShortToast(getString(R.string.sort_desc))
 
                     true
                 }
@@ -289,7 +289,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
         if (!isShowGuide) {
             TapTargetSequence(activity)
-                    .targets(TapTarget.forView(view.fab, "新建待办事项", "点击这里可以新建待办事项！")
+                    .targets(TapTarget.forView(view.fab, getString(R.string.to_do_taptarget_new), getString(R.string.to_do_taptarget_content))
                             .outerCircleColor(R.color.blue)
                             .outerCircleAlpha(0.96f)
                             .titleTextSize(20)
@@ -302,12 +302,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                             .tintTarget(false)
                             .transparentTarget(false)
                             .targetRadius(60),
-                            TapTarget.forView((activity as MainActivity).findViewById(R.id.navigation), "导航栏", "告示板：如同RPG游戏中接受任务和完成任务的地方\n" +
-                                    "状态：查看你的各项属性的等级。\n\n" +
-                                    "社区：加入社区建立的团队，领取公共事项（需要登录）\n\n" +
-                                    "统计：查看你的各项数据统计：事项完成情况、经验值获取情况、经验值分布、步数统计等。\n\n\n" +
-                                    "除了社区以外的功能都支持离线使用哦~\n" +
-                                    "目前大部分数据保存在本地，谨慎进行清除数据、卸载等操作。")
+                            TapTarget.forView((activity as MainActivity).findViewById(R.id.navigation), getString(R.string.to_do_taptarget_nav), getString(R.string.to_do_taptarget_nav_content))
                                     .outerCircleColor(R.color.blue)
                                     .outerCircleAlpha(0.96f)
                                     .titleTextSize(20)
@@ -320,10 +315,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                                     .tintTarget(false)
                                     .transparentTarget(false)
                                     .targetRadius(60),
-                            TapTarget.forToolbarNavigationIcon(view.toolbar, "侧边栏", "可以进行登录，查看成就、历史、设置等功能").id(1),
-                            TapTarget.forToolbarMenuItem(view.toolbar, R.id.action_category, "清单", "使用清单系统可以让你的待办事项分门别类，易于管理。"),
-                            TapTarget.forToolbarOverflow(view.toolbar, "更多选项", "时间\n在这里，你可以决定显示什么时间范围内的待办事项。\n默认是显示所有事项，你可以设置为只显示今天的事项。\n\n\n" +
-                                    "排序\n你还能设置待办事项的排序依据，切换正序/倒序。")
+                            TapTarget.forToolbarNavigationIcon(view.toolbar, getString(R.string.to_do_slide_bar), getString(R.string.to_do_slide_bar_content)).id(1),
+                            TapTarget.forToolbarMenuItem(view.toolbar, R.id.action_category, getString(R.string.to_do_list), getString(R.string.to_do_list_content)),
+                            TapTarget.forToolbarOverflow(view.toolbar, getString(R.string.to_do_more), getString(R.string.to_do_more_content))
                     )
                     .start()
 
@@ -337,7 +331,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun initRecyclerView(view: View) {
         //检查逾期情况
         if (todoService.checkAndUpdateOverdueTask(uiHandler)) {
-            ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+            ToastUtils.showLongToast(getString(R.string.to_do_item_overdue))
         }
 
         mRecyclerView = view.findViewById(R.id.rv)
@@ -424,7 +418,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     }
                     R.id.edit_item -> {
                         if (item.teamId != IS_NOT_TEAM_TASK) {
-                            ToastUtils.showShortToast("团队事项不可编辑！")
+                            ToastUtils.showShortToast(getString(R.string.team_task_uneditable))
                         } else {
                             val intent = Intent(this.context, EditToDoItemActivity::class.java)
                             intent.putExtra("id", item.id)
@@ -439,14 +433,14 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     R.id.delete_item -> {
                         context?.let { context ->
                             MaterialDialog(context).show {
-                                title(text = "删除")
-                                message(text = "你确定要删除该待办事项吗？")
+                                title(R.string.to_do_detail_delete_title)
+                                message(R.string.to_do_detail_delete_message)
                                 positiveButton(R.string.btn_yes) {
                                     if (todoService.deleteTodoItem(item.id)) {
-                                        ToastUtils.showShortToast("成功删除待办事项")
+                                        ToastUtils.showShortToast(getString(R.string.to_do_detail_delete_success))
                                         mAdapter.remove(position)
                                     } else {
-                                        ToastUtils.showShortToast("删除操作出现异常")
+                                        ToastUtils.showShortToast(getString(R.string.to_do_detail_delete_failed))
                                     }
                                     WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
                                 }
@@ -458,20 +452,20 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     }
                     R.id.give_up_item -> {
                         if (item.teamId != IS_NOT_TEAM_TASK) {
-                            ToastUtils.showShortToast("团队事项暂不可放弃！")
+                            ToastUtils.showShortToast(getString(R.string.to_do_item_detail_give_up_team_task))
                         } else {
                             context?.let { context ->
                                 MaterialDialog(context).show {
-                                    title(text = "放弃")
-                                    message(text = "你确定要放弃该待办事项吗？你会损失一些经验值。")
+                                    title(R.string.to_do_item_detail_give_up_title)
+                                    message(R.string.to_do_item_detail_give_up_message)
                                     positiveButton(R.string.btn_yes) {
                                         if (todoService.giveUpTodoItem(item.id)) {
-                                            ToastUtils.showShortToast("成功放弃待办事项")
+                                            ToastUtils.showShortToast(getString(R.string.give_up_success))
                                             // 放弃事项不再中断重复事项（所以要进行下一次重复）
                                             if (item.taskFrequency == 0) mAdapter.remove(position)
                                             else repeatTask(item, position)
                                         } else {
-                                            ToastUtils.showShortToast("放弃操作出现异常")
+                                            ToastUtils.showShortToast(getString(R.string.give_up_failed))
                                         }
                                         WidgetUtils.updateWidgets(LifeUpApplication.getLifeUpApplication())
                                     }
@@ -498,14 +492,14 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
             if (cal.timeInMillis < item.startTime.time) {
                 context?.let {
-                    ToastUtils.showShortToast("该待办事项尚未到开始时间！")
+                    ToastUtils.showShortToast(getString(R.string.to_do_adapter_not_start_yet))
                 }
                 return@setOnItemChildClickListener
             }
 
             if (item.teamId != IS_NOT_TEAM_TASK && cal.timeInMillis > item.endTime.time) {
                 context?.let {
-                    ToastUtils.showShortToast("该待办事项已经过了签到时间段！")
+                    ToastUtils.showShortToast(getString(R.string.to_do_passed_finishable_time))
                 }
                 return@setOnItemChildClickListener
             }
@@ -589,9 +583,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
 
         newDialog.apply {
-            this?.setTitle("你获得了经验值")
+            this?.setTitle(getString(R.string.to_do_got_exp))
             this?.setIcon(net.sarasarasa.lifeup.R.drawable.ic_award_exp)
-            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "确定") { _, _ ->
+            this?.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.btn_yes)) { _, _ ->
                 cancel()
             }
             this?.setView(newDialogView)
@@ -626,7 +620,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 if (taskTarget != null) {
                     if (taskTarget.targetTimes == item.currentTimes) {
                         needToRepeat = false
-                        ToastUtils.showShortToast("你完成了设定的目标次数！")
+                        ToastUtils.showShortToast(getString(R.string.to_do_finish_target_times))
                         if (position != null)
                             mAdapter.remove(position)
                     }
@@ -659,14 +653,13 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         }
     }
 
-    private fun showSnackbar(taskModel: TaskModel) {
-        Snackbar.make(coordinator_layout, "你完成了事项「${taskModel.content}」", Snackbar.LENGTH_SHORT).setAction("撤销") {
-            if (taskModel.id != null)
-                todoService.undoFinishTodoItem(taskModel.id)
-            ToastUtils.showShortToast("撤销成功")
-            refreshDataSet()
-        }.show()
-    }
+    private fun showSnackbar(taskModel: TaskModel) =
+            Snackbar.make(coordinator_layout, "${getString(R.string.u_finished)}「${taskModel.content}」", Snackbar.LENGTH_SHORT).setAction(getString(R.string.undo)) {
+                if (taskModel.id != null)
+                    todoService.undoFinishTodoItem(taskModel.id)
+                ToastUtils.showShortToast(getString(R.string.undo_success))
+                refreshDataSet()
+            }.show()
 
     private fun showDialogRepeat(taskModel: TaskModel, position: Int?) {
         val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
@@ -680,13 +673,15 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         }
 
         val stringMessage = if (taskModel.taskFrequency != -1)
-            "要进行重复吗？\n下一次的期限日期是 ${simpleDateFormat.format(calendar.time)}。"
+            "${getString(R.string.to_do_ask_repeat)}\n${getString(R.string.to_do_ask_repeat_next_deadline)} ${simpleDateFormat.format(calendar.time)}。"
         else
-            "要进行重复吗？"
+            getString(R.string.to_do_ask_repeat)
+
+
 
         context?.let { context ->
             MaterialDialog(context).show {
-                title(text = "重复")
+                title(text = getString(R.string.repeat_title))
                 message(text = stringMessage)
                 positiveButton(R.string.btn_yes) {
                     repeatTask(taskModel, position)
@@ -729,12 +724,12 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun showDialogReset(taskModel: TaskModel) {
         context?.let { context ->
             MaterialDialog(context).show {
-                title(text = "撤销")
-                message(text = "你确定要撤销吗？")
+                title(R.string.undo)
+                message(text = getString(R.string.dialog_repeat_message))
                 positiveButton(R.string.btn_yes) {
                     if (taskModel.id != null)
                         todoService.undoFinishTodoItem(taskModel.id)
-                    ToastUtils.showShortToast("撤销成功")
+                    ToastUtils.showShortToast(getString(R.string.undo_success))
                     refreshDataSet()
                 }
                 negativeButton(R.string.btn_cancel)
@@ -905,7 +900,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val activityVO = ActivityVO()
         val builder = context?.let { AlertDialog.Builder(it) }
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_activity, null)
-        val title = "动态"
+        val title = getString(R.string.activity)
         mPhotosSnpl = dialogView.snpl_moment_add_photos
         mPhotosSnpl!!.setDelegate(this)
         mPhotosSnpl!!.setOnClickListener { choicePhotoWrapper() }
@@ -916,7 +911,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                 setTitle(title)
                 setView(dialogView)
 
-                setPositiveButton("发表") { _, _ ->
+                setPositiveButton(R.string.submit) { _, _ ->
                     //发表动态请求
                     activityVO.activity = dialogView.editText.text.toString()
 
@@ -927,11 +922,11 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     }
                     mPhotosSnpl = null
                 }
-                setNeutralButton("不发表") { _, _ ->
+                setNeutralButton(R.string.no_submit) { _, _ ->
                     teamNetworkImpl.finishTeamTask(taskModel, activityVO, false)
                     mPhotosSnpl = null
                 }
-                setNegativeButton("取消") { _, _ ->
+                setNegativeButton(R.string.btn_cancel) { _, _ ->
                     refreshDataSet()
                 }
 
@@ -942,7 +937,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     private fun refreshDataSet() {
         //检查并更新逾期情况
         if (todoService.checkAndUpdateOverdueTask(uiHandler)) {
-            ToastUtils.showLongToast("你有待办事项逾期了！请前往[历史]查看。")
+            ToastUtils.showLongToast(getString(R.string.to_do_item_overdue))
         }
 
         mList.clear()
@@ -965,7 +960,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val finishCnt = todoService.getTodayFinishCount()
         val taskCnt = todoService.getTodayTaskCount()
 
-        view.findViewById<TextView>(R.id.tw_finishCounter).text = "今天已经完成${finishCnt}个待办事项（共${taskCnt}个）"
+        view.findViewById<TextView>(R.id.tw_finishCounter).text = getString(R.string.today_finished) + finishCnt + getString(R.string.today_finish_task) + taskCnt + getString(R.string.today_finish_task_back)
         if (taskCnt == 0) {
             view.pgb_lifeLevel.progress = 0
         } else {
@@ -973,7 +968,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         }
 
         val calendar = Calendar.getInstance()
-        val simpleDateFormat = SimpleDateFormat("MM月dd日", Locale.getDefault())
+        val simpleDateFormat = SimpleDateFormat(getString(R.string.month_and_day), Locale.getDefault())
         val strDate = simpleDateFormat.format(calendar.time) + DateUtil.getWeekOfDate(calendar.timeInMillis)
         view.findViewById<TextView>(R.id.tv_headerText).text = strDate
         // mAdapter.notifyDataSetChanged()
@@ -1008,7 +1003,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if (requestCode == PRC_PHOTO_PICKER) {
-            ToastUtils.showShortToast("您拒绝了「图片选择」所需要的相关权限!")
+            ToastUtils.showShortToast(getString(R.string.permission_photo_preview_need))
         }
     }
 
@@ -1058,7 +1053,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     .build()
             startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO)
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.拍照", PRC_PHOTO_PICKER, *perms)
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_camera_need), PRC_PHOTO_PICKER, *perms)
         }
     }
 
@@ -1113,7 +1108,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
     @AfterPermissionGranted(PRC_PHOTO_PICKER)
     fun showChoosePicDialog() {
         val builder = android.app.AlertDialog.Builder(activity)
-        builder.setTitle("新增照片")
+        builder.setTitle(getString(R.string.add_photo))
         val items = arrayOf(getString(R.string.team_add_choose_local_photo), getString(R.string.team_add_take_photo))
         builder.setNegativeButton(getString(R.string.btn_cancel), null)
         builder.setItems(items) { _, which ->
@@ -1178,8 +1173,8 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
         val view = layoutInflater.inflate(R.layout.dialog_category, null)
         val list = todoService.listCategory().toMutableList()
-        list.add(0, CategoryModel("默认清单", false))
-        list.add(0, CategoryModel("所有清单", false))
+        list.add(0, CategoryModel(getString(R.string.category_default), false))
+        list.add(0, CategoryModel(getString(R.string.category_all), false))
         val adapter = CategoryAdapter(R.layout.item_category, list)
         view.rv_category.layoutManager = LinearLayoutManager(activity)
         view.rv_category.adapter = adapter
@@ -1242,7 +1237,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
                     item.id?.let {
                         if (todoService.deleteCategory(it))
                             mAdapter.remove(mPosition)
-                        else ToastUtils.showShortToast("该清单内还有未完成事项，不能删除。")
+                        else ToastUtils.showShortToast(getString(R.string.list_undeleteable))
                     }
                     return@setOnMenuItemClickListener true
                 }
@@ -1256,7 +1251,7 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
         val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
         val view = layoutInflater.inflate(R.layout.dialog_category, null)
         val list = todoService.listCategory().toMutableList()
-        list.add(0, CategoryModel("默认清单", false))
+        list.add(0, CategoryModel(getString(R.string.category_default), false))
         val adapter = CategoryAdapter(R.layout.item_category, list)
         view.rv_category.layoutManager = LinearLayoutManager(activity)
         view.rv_category.adapter = adapter
@@ -1287,9 +1282,9 @@ class TodoFragment : Fragment() , EasyPermissions.PermissionCallbacks , BGASorta
 
     private fun refreshToolBarTitle() {
             when (optionSharedPreferences.getString("classBy", "all")) {
-                "all" -> mToolbar?.title = "${getCategoryName()}：所有"
-                "today" -> mToolbar?.title = "${getCategoryName()}：今天"
-                "week" -> mToolbar?.title = "${getCategoryName()}：近七天"
+                "all" -> mToolbar?.title = "${getCategoryName()}：${getString(R.string.to_do_all_time)}"
+                "today" -> mToolbar?.title = "${getCategoryName()}：${getString(R.string.today)}"
+                "week" -> mToolbar?.title = "${getCategoryName()}：${getString(R.string.to_do_next_7_days)}"
             }
     }
 }

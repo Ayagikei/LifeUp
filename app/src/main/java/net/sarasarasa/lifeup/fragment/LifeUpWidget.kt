@@ -48,7 +48,7 @@ class LifeUpWidget : AppWidgetProvider() {
                 this.onUpdate(context, AppWidgetManager.getInstance(context), ids)
 
                 if (intent.getBooleanExtra("isShowToast", false))
-                    ToastUtils.showShortToast("成功刷新", context)
+                    ToastUtils.showShortToast(context.getString(R.string.widget_refresh_success), context)
             }
         } else if (intent.action == FINISH_TASK) {
             // 将耗时操作交给IntentService完成
@@ -65,7 +65,7 @@ class LifeUpWidget : AppWidgetProvider() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtils.showShortToast("完成事项似乎出现了一些问题，请尝试刷新下。", LifeUpApplication.getLifeUpApplication())
+                ToastUtils.showShortToast(context.getString(R.string.widget_refresh_failed), LifeUpApplication.getLifeUpApplication())
             }
 
 
@@ -87,7 +87,6 @@ class LifeUpWidget : AppWidgetProvider() {
 
 
             val views = RemoteViews(context.packageName, getMainLayoutByPreferences(context))
-            views.setTextViewText(R.id.appwidget_text, "今日事项 0/0")
 
             val intent = Intent(context, LifeUpRemoteViewsService::class.java)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -121,7 +120,7 @@ class LifeUpWidget : AppWidgetProvider() {
 
             val finishCnt = todoService.getTodayFinishCount()
             val taskCnt = todoService.getTodayTaskCount()
-            views.setTextViewText(R.id.appwidget_text, "今日事项 ${finishCnt}/${taskCnt}")
+            views.setTextViewText(R.id.appwidget_text, "${context.getString(R.string.widget_today_progress)} $finishCnt/$taskCnt")
 
 
             // Instruct the widget manager to update the widget

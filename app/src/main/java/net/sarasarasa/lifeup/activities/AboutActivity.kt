@@ -79,7 +79,7 @@ class AboutActivity : AppCompatActivity() {
         val elementDonate = Element()
         elementDonate.apply {
             iconDrawable = R.drawable.ic_favorite_border_black_24dp
-            title = "捐赠支持一下开发者\n谢谢:)"
+            title = getString(R.string.about_donate_element)
             setOnClickListener {
                 donateAlipay("tsx06992twgztmrmcisibbd")
             }
@@ -89,7 +89,7 @@ class AboutActivity : AppCompatActivity() {
         val elementRate = Element()
         elementRate.apply {
             iconDrawable = R.drawable.ic_favorite_border_black_24dp
-            title = "欢迎在应用商店给我们评分（酷安、魅族、小米）"
+            title = getString(R.string.about_rate_us_element)
             setOnClickListener {
                 intentToRate()
             }
@@ -98,7 +98,7 @@ class AboutActivity : AppCompatActivity() {
         val elementIconDesigner = Element()
         elementIconDesigner.apply {
             iconDrawable = R.drawable.ic_account_circle_black_24dp
-            title = "图标设计 酷安@这是一碗麦面"
+            title = getString(R.string.about_icon_designer_element)
         }
 
 
@@ -108,7 +108,7 @@ class AboutActivity : AppCompatActivity() {
                 .setDescription(getString(R.string.about_app_description))
                 .addItem(Element().setTitle("${getString(R.string.about_version_name)} v${VersionUtil.getLocalVersionName(this)}"))
                 .addItem(elementCheckUpdate)
-                .addWebsite("https://green-android.org/","已通过《Android 绿色应用公约》认证")
+                .addWebsite("https://green-android.org/", getString(R.string.about_green_android_website))
                 .addItem(elementRate)
                 .addItem(elementDonate)
                 .addGroup(getString(R.string.contact_title))
@@ -141,7 +141,7 @@ class AboutActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         } catch (e: Exception) {
-            ToastUtils.showShortToast("没有检测到Android应用市场:(")
+            ToastUtils.showShortToast(getString(R.string.about_not_found_android_store))
             e.printStackTrace()
         }
 

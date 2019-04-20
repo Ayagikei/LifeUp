@@ -155,9 +155,9 @@ class TeamMemberActivity : AppCompatActivity() {
             if (item.isFollow == 0) {
                 item.userId?.let { userNetworkImpl.followUserById(it) }
                 if (mMemberType == FOLLOWER_MEMBER) {
-                    mView.text = "互相关注"
+                    mView.text = getString(R.string.team_member_follow_together)
                 } else {
-                    mView.text = "已关注"
+                    mView.text = getString(R.string.team_member_followed)
                 }
                 mView.isClickable = false
                 item.isFollow = 1
@@ -165,14 +165,14 @@ class TeamMemberActivity : AppCompatActivity() {
                 ViewCompat.setBackgroundTintList(mView, colorStateList)
             } else if (item.isFollow == 1) {
                 item.userId?.let { userNetworkImpl.unfollowUserById(it) }
-                mView.text = "关注"
+                mView.text = getString(R.string.team_member_follow)
                 mView.isClickable = true
                 item.isFollow = 0
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)
                 ViewCompat.setBackgroundTintList(mView, colorStateList)
             } else if (item.isFollow == 2) {
                 item.userId?.let { userNetworkImpl.unfollowUserById(it) }
-                mView.text = "关注"
+                mView.text = getString(R.string.team_member_follow)
                 mView.isClickable = true
                 item.isFollow = 1
                 val colorStateList = ContextCompat.getColorStateList(this, R.color.blue)

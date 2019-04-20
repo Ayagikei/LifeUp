@@ -3,6 +3,7 @@ package net.sarasarasa.lifeup.network.impl
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_CONNECT_FAILED
@@ -61,13 +62,13 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -112,7 +113,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 if (responseBody != null)
                     if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                         Log.i("LifeUp 团队模块", "[搜索团队列表]请求失败：错误或失效TOKEN")
-                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                         userService.saveToken("")
                         message.what = NetworkConstants.INVALID_TOKEN
                     } else {
@@ -155,7 +156,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 if (responseBody != null)
                     if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                         Log.i("LifeUp 团队模块", "[查询团队成员列表]请求失败：错误或失效TOKEN")
-                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                         userService.saveToken("")
                         message.what = NetworkConstants.INVALID_TOKEN
                     } else {
@@ -189,7 +190,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 if (responseBody != null)
                     if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                         Log.i("LifeUp 团队模块", "[退出团队]请求失败：错误或失效TOKEN")
-                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                         userService.saveToken("")
                         message.what = NetworkConstants.INVALID_TOKEN
                     } else {
@@ -223,7 +224,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                 if (responseBody != null)
                     if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                         Log.i("LifeUp 团队模块", "[终止团队]请求失败：错误或失效TOKEN")
-                        ToastUtils.showShortToast("登录已失效，请重新登录！")
+                        ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                         userService.saveToken("")
                         message.what = NetworkConstants.INVALID_TOKEN
                     } else {
@@ -261,12 +262,12 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[查询团队动态列表]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -303,13 +304,13 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[新建团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -355,13 +356,13 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
 
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[修改团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -400,12 +401,12 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[团队信息]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -438,12 +439,12 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[加入团队]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -481,12 +482,12 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[领取团队事项]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else {
@@ -496,8 +497,8 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                     if (teamTaskVO != null) {
                         //添加新的事项
                         if (todoService.addOrUpdateTeamTask(teamTaskVO, 0L))
-                            message.obj = "成功领取事项"
-                        else message.obj = "事项已领取，请在事项逾期的情况下领取！"
+                            message.obj = LifeUpApplication.getLifeUpApplication().getString(R.string.team_get_next_task_success)
+                        else message.obj = LifeUpApplication.getLifeUpApplication().getString(R.string.team_get_next_task_already)
                     }
 
                     Log.i("LifeUp 团队模块", "[领取团队事项]请求成功：${teamTaskVO}")
@@ -526,12 +527,12 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
 
                 if (responseBody?.msg != null)
                     Log.i("LifeUp", responseBody.msg)
-                else ToastUtils.showShortToast("服务器可能宕机了，请稍后再试。")
+                else ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_server_dead))
 
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 团队模块", "[完成团队事项]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else if (responseBody?.msg?.contains("未到签到时间") == true) {
@@ -548,7 +549,7 @@ class TeamNetworkImpl(var uiHandler: Handler.Callback?) : BaseNetwork() {
                         todoService.addOrUpdateTeamTask(teamTaskVO, item.categoryId ?: 0L)
 
                         if (needFinishToast) {
-                            ToastUtils.showShortToast("成功完成事项", LifeUpApplication.getLifeUpApplication())
+                            ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.to_do_team_task_finish_success), LifeUpApplication.getLifeUpApplication())
                         }
                     }
 

@@ -3,6 +3,8 @@ package net.sarasarasa.lifeup.network.impl
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_ATTR_GET_SUCCESS
 import net.sarasarasa.lifeup.constants.AttributeConstants.Companion.MSG_ATTR_UPDATE_SUCCESS
@@ -43,7 +45,7 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 属性模块", "[获取用户属性]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else if (responseBody?.msg.equals("success")) {
@@ -97,7 +99,7 @@ class AttributeNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 属性模块", "[更新用户属性]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     userService.saveToken("")
                     message.what = NetworkConstants.INVALID_TOKEN
                 } else if (responseBody?.msg.equals("success")) {

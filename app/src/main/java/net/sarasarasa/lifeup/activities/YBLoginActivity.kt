@@ -41,18 +41,18 @@ class YBLoginActivity : AppCompatActivity() {
             MSG_URL_SUCCESS -> this.webView.loadUrl(msg.obj as String)
             MSG_URL_FAILED -> {
                 layout_error.visibility = View.VISIBLE
-                ToastUtils.showShortToast("加载失败，请检查你的网络！")
+                ToastUtils.showShortToast(getString(R.string.network_error))
             }
             MSG_YB_LOGIN_SUCCESS -> {
                 LoadingDialogUtils.show(WeakReference(this@YBLoginActivity))
                 userNetworkImpl.getUserProfile()
             }
             MSG_YB_LOGIN_FAILED -> {
-                ToastUtils.showShortToast("出现错误：" + msg.obj as String)
+                ToastUtils.showShortToast(getString(R.string.network_unknown_error) + msg.obj as String)
                 this.webView.reload()
             }
             MSG_YB_LOGIN_CONNECT_FAILED -> {
-                ToastUtils.showShortToast("注册失败，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_yb_failed))
                 this.webView.reload()
             }
             MSG_GET_PROFILE_SUCCESS -> {
@@ -60,15 +60,15 @@ class YBLoginActivity : AppCompatActivity() {
                 attributeNetworkImpl.getAttribute()
             }
             NetworkConstants.INVALID_TOKEN -> {
-                ToastUtils.showShortToast("授权失效，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_invalid_token))
                 this.webView.reload()
             }
             AttributeConstants.MSG_ATTR_GET_FAILED -> {
-                ToastUtils.showShortToast("获取信息失败，请重试")
+                ToastUtils.showShortToast(getString(R.string.network_attr_get_fail))
                 this.webView.reload()
             }
             AttributeConstants.MSG_ATTR_GET_SUCCESS -> {
-                ToastUtils.showShortToast("登录成功")
+                ToastUtils.showShortToast(getString(R.string.network_attr_get_success))
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -107,7 +107,7 @@ class YBLoginActivity : AppCompatActivity() {
 
                     if (url != null)
                         if (url.toString().contains("net.sarasarasa.lifeup/redirect?code=")) {
-                            Toast.makeText(context, "授权成功，正在注册信息", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.network_yb_redirect_success), Toast.LENGTH_LONG).show()
 
                             val uri = Uri.parse(url)
                             Log.e("CODE", uri.getQueryParameter("code"))
@@ -127,7 +127,7 @@ class YBLoginActivity : AppCompatActivity() {
 
                     if (request != null)
                         if (request.url.toString().contains("net.sarasarasa.lifeup/redirect?code=")) {
-                            Toast.makeText(context, "授权成功，正在注册信息", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.login_complete_qq_auth), Toast.LENGTH_LONG).show()
 
                             Log.e("CODE", request.url.getQueryParameter("code"))
 

@@ -62,7 +62,7 @@
                 android:layout_marginStart="8dp"
                 android:clickable="true"
                 android:onClick="retry"
-                android:text="页面加载失败，请检查你的网络连接！点击重试。"
+                android:text="@string/yb_network_problem"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

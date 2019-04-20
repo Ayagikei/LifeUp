@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             // 加入防止误触退出应用
             if (ClickUtils.isNotFastClick(2000, "QuitApp")) {
-                ToastUtils.showShortToast("再次点击退出程序")
+                ToastUtils.showShortToast(getString(R.string.main_click_one_more_quit))
             } else super.onBackPressed()
         }
     }

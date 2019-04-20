@@ -3,6 +3,8 @@ package net.sarasarasa.lifeup.network.impl
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import net.sarasarasa.lifeup.base.BaseNetwork
 import net.sarasarasa.lifeup.constants.NetworkConstants
 import net.sarasarasa.lifeup.constants.NetworkConstants.Companion.MSG_GET_REPORT_TYPE_FAILED
@@ -42,7 +44,7 @@ class ReportNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 举报模块", "[获取举报类型]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     message.what = MSG_GET_REPORT_TYPE_FAILED
                     userService.saveToken("")
                     message.obj = responseBody.msg
@@ -77,7 +79,7 @@ class ReportNetworkImpl(var uiHandler: Handler.Callback) : BaseNetwork() {
                 val message = Message()
                 if (responseBody?.code == NetworkConstants.INVALID_TOKEN) {
                     Log.i("LifeUp 举报模块", "[举报]请求失败：错误或失效TOKEN")
-                    ToastUtils.showShortToast("登录已失效，请重新登录！")
+                    ToastUtils.showShortToast(LifeUpApplication.getLifeUpApplication().getString(R.string.network_login_invaild))
                     message.what = MSG_REPORT_FAILED
                     userService.saveToken("")
                     message.obj = responseBody.msg

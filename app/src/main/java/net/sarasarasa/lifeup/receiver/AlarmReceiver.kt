@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import net.sarasarasa.lifeup.R
 import net.sarasarasa.lifeup.activities.AddToDoItemActivity
 import net.sarasarasa.lifeup.activities.MainActivity
 
@@ -34,9 +35,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).setAutoCancel(true)
 
-        val notification = builder.setContentTitle("人升")
-                .setContentText("你还有待办事项需要完成：$content")
-                .setTicker("待办事项提醒")
+        val notification = builder.setContentTitle(context.getString(R.string.lifeup))
+                .setContentText(context.getString(R.string.notification_content) + content)
+                .setTicker(context.getString(R.string.notification_ticker))
                 //.setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setSmallIcon(context.applicationInfo.icon)
                 .setContentIntent(pendingIntent).build()

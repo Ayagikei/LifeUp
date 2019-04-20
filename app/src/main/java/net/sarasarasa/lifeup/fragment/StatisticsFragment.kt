@@ -36,7 +36,7 @@ class StatisticsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_statistics, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(WeakReference(view.findViewById(R.id.toolbar)))
-        view.findViewById<Toolbar>(R.id.toolbar).title = "统计"
+        view.findViewById<Toolbar>(R.id.toolbar).title = getString(R.string.statistics_toolbar_title)
 
         initData(view)
         return view
@@ -113,7 +113,7 @@ class StatisticsFragment : Fragment() {
             data = lineData
             description.isEnabled = false
             setDrawGridBackground(false)
-            setNoDataText("暂时没有相应数据")
+            setNoDataText(getString(R.string.statistics_no_data))
             animateY(1000, Easing.Linear)
             animateX(1000, Easing.Linear)
             invalidate()
@@ -161,7 +161,7 @@ class StatisticsFragment : Fragment() {
             data = lineData
             description.isEnabled = false
             setDrawGridBackground(false)
-            setNoDataText("暂时没有相应数据")
+            setNoDataText(getString(R.string.statistics_no_data))
             animateY(1000, Easing.Linear)
             animateX(1000, Easing.Linear)
             invalidate()
@@ -211,7 +211,7 @@ class StatisticsFragment : Fragment() {
             axisRight.isEnabled = false
             animateY(1000, Easing.Linear)
             animateX(1000, Easing.Linear)
-            setNoDataText("暂时没有相应数据")
+            setNoDataText(getString(R.string.statistics_no_data))
             invalidate()
         }
     }
@@ -234,9 +234,9 @@ class StatisticsFragment : Fragment() {
             data = pieData
             setUsePercentValues(true)
             setEntryLabelTextSize(10.0f)
-            centerText = "经验分布"
+            centerText = getString(R.string.exp_pie_chart)
             description.isEnabled = false
-            setNoDataText("暂时没有相应数据")
+            setNoDataText(getString(R.string.statistics_no_data))
             animateY(1000, Easing.Linear)
             animateX(1000, Easing.Linear)
             invalidate()

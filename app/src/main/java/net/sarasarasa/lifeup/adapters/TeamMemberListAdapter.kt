@@ -23,11 +23,11 @@ class TeamMemberListAdapter(layoutResId: Int, data: List<TeamMembaerListVO>) : B
 
     override fun convert(helper: BaseViewHolder, item: TeamMembaerListVO) {
 
-        val timeFormat = SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault())
+        val timeFormat = SimpleDateFormat(mContext.getString(R.string.date), Locale.getDefault())
 
 
         helper.setText(R.id.tv_nickname, item.nickname)
-                .setText(R.id.tv_remark, timeFormat.format(item.createTime) + "加入")
+                .setText(R.id.tv_remark, timeFormat.format(item.createTime) + mContext.getString(R.string.joined))
 
         when (item.isFollow) {
             -1 -> helper.setVisible(R.id.btn_follow, false)

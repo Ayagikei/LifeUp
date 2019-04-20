@@ -46,10 +46,10 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
         if (item.enableEbbinghausMode) {
             if (item.taskFrequency == 0) {
                 helper.setText(R.id.tv_headerText,
-                        "艾宾浩斯记忆法-最后一天")
+                        mContext.getString(R.string.ebbinghaus_the_last_day))
             } else {
                 helper.setText(R.id.tv_headerText,
-                        "艾宾浩斯记忆法-${item.taskFrequency}天")
+                        "${mContext.getString(R.string.ebbinghaus)}-${item.taskFrequency}天")
             }
         }
 
@@ -65,7 +65,7 @@ class HistoryAdapter(layoutResId: Int, data: List<TaskModel>) : BaseQuickAdapter
         } else if (item.taskStatus == ToDoItemConstants.OUT_OF_DATE) {
             if (item.nextTaskId == null || item.nextTaskId == 0L) {
                 helper.setVisible(R.id.btn_undo, true)
-                        .setText(R.id.btn_undo, "重做")
+                        .setText(R.id.btn_undo, mContext.getString(R.string.task_restart))
                         .addOnClickListener(R.id.btn_undo)
             } else helper.setVisible(R.id.btn_undo, false)
         } else {

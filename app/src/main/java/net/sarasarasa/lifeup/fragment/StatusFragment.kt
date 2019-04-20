@@ -34,7 +34,7 @@ class StatusFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_status, null)
         //设置toolbar
         (activity as MainActivity).initToolBar(WeakReference(view.findViewById(R.id.toolbar)))
-        view.findViewById<Toolbar>(R.id.toolbar).title = "状态"
+        view.findViewById<Toolbar>(R.id.toolbar).title = getString(R.string.status_toolbar_title)
 
         val sharedPreferences = LifeUpApplication.getLifeUpApplication().getSharedPreferences("options", Context.MODE_PRIVATE)
         val isStatusPlayAnimation = sharedPreferences.getBoolean("isStatusPlayAnimation", false)
@@ -109,7 +109,7 @@ class StatusFragment : Fragment() {
         view.tv_lifeLevel.text = "LV${levelModel.levelNum}"
         view.pgb_lifeLevel.progress = (exp - levelModel.startExpValue) * 100 / (levelModel.endExpValue - levelModel.startExpValue)
 
-        view.tv_finishCount.text = "到目前为止，你一共完成了${todoService.getFinishCount()}个待办事项！\n继续努力！"
+        view.tv_finishCount.text = getString(R.string.status_finish_fore) + todoService.getFinishCount() + getString(R.string.status_finish_back)
 
         val arrStep = ArrayList<String>()
         with(arrStep) {
@@ -141,27 +141,27 @@ class StatusFragment : Fragment() {
             dailyStepCount >= 20000 -> view.step_view.go(4, true)
         }
 
-        view.tv_step_cnt_num.text = "${dailyStepCount}步"
+        view.tv_step_cnt_num.text = dailyStepCount.toString() + getString(R.string.step)
 
         if (!mainActivity.getPedometerIsAvailable()) {
-            view.tv_step_cnt_desc.text = "计步不可用："
+            view.tv_step_cnt_desc.text = getString(R.string.pedometer_not_available)
         }
 
         when {
             stepService.isTodayGotReward() -> {
                 view.btn_get_reward.isEnabled = false
-                view.btn_get_reward.text = "已领取"
+                view.btn_get_reward.text = getString(R.string.team_task_got)
             }
             dailyStepCount in 0..2500 -> {
                 view.btn_get_reward.isEnabled = false
-                view.btn_get_reward.text = "暂不可领取"
+                view.btn_get_reward.text = getString(R.string.team_task_can_not_get)
             }
             else -> {
                 view.btn_get_reward.setOnClickListener {
                     getRewardByStep()
                     it.isEnabled = false
                 }
-                view.btn_get_reward.text = "领取"
+                view.btn_get_reward.text = getString(R.string.team_task_get)
                 view.btn_get_reward.isEnabled = true
             }
         }
@@ -175,8 +175,8 @@ class StatusFragment : Fragment() {
     private fun showDialogLifeUp(exp: Long) {
 
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_lifeup, null)
-        dialogView.tv_title.text = "你获得了「力量」属性经验值！"
-        dialogView.tv_content.text = " ${exp} 点"
+        dialogView.tv_title.text = getString(R.string.gain_str_exp)
+        dialogView.tv_content.text = " ${exp} ${getString(R.string.point)}"
 
         context?.let { context ->
             MaterialDialog(context).show {
@@ -195,15 +195,15 @@ class StatusFragment : Fragment() {
 
         context?.let { context ->
             MaterialDialog(context).show {
-                title(text = "手动输入计步数据")
+                title(text = getString(R.string.status_input_steps))
                 customView(view = dialogView)
                 positiveButton(R.string.btn_yes) { _ ->
                     val step = dialogView.til_sport_data.editText?.text.toString().toLongOrNull()
                     if (step != null) {
                         if (stepService.userInputTodayStepData(step)) {
                             initData(view)
-                            ToastUtils.showShortToast("手动输入计步数据成功。")
-                        } else ToastUtils.showShortToast("手动输入计步数据出现异常，请重试。")
+                            ToastUtils.showShortToast(getString(R.string.status_input_steps_success))
+                        } else ToastUtils.showShortToast(getString(R.string.status_input_steps_failed))
                     }
                 }
                 negativeButton(R.string.btn_cancel)

@@ -33,15 +33,15 @@ class TeamActivityListAdapter(layoutResId: Int, data: List<TeamActivityListVO>) 
 
         if (item.activityIcon == 2) {
             if (item.userActivity.isNullOrEmpty()) {
-                helper.setText(R.id.tv_nickname, "完成了本次事项")
+                helper.setText(R.id.tv_nickname, mContext.getString(R.string.team_activity_finish))
                         .setText(R.id.tv_remark, "")
             } else {
-                helper.setText(R.id.tv_nickname, "完成了本次事项并发表了动态：")
+                helper.setText(R.id.tv_nickname, mContext.getString(R.string.team_activity_finish_and_submit))
                         .setText(R.id.tv_remark, item.userActivity + "\n")
             }
         } else {
             if (item.activityIcon == 1) {
-                helper.setText(R.id.tv_nickname, "欢迎${item.nickname}加入团队「${item.teamTitle}」")
+                helper.setText(R.id.tv_nickname, mContext.getString(R.string.welcome) + item.nickname + mContext.getString(R.string.join_team) + "「" + item.teamTitle + "」")
                         .setText(R.id.tv_remark, "")
             } else {
                 helper.setText(R.id.tv_nickname, item.userActivity)

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import dmax.dialog.SpotsDialog
+import net.sarasarasa.lifeup.R
+import net.sarasarasa.lifeup.application.LifeUpApplication
 import java.lang.ref.WeakReference
 
 class LoadingDialogUtils {
@@ -22,7 +24,11 @@ class LoadingDialogUtils {
 
             val mContext = contextReference?.get()
             if (mContext != null) {
-                dialog = SpotsDialog.Builder().setMessage("加载中...").setCancelable(true).setContext(mContext).build()
+                dialog = SpotsDialog.Builder()
+                        .setMessage(LifeUpApplication.getLifeUpApplication().getString(R.string.loading))
+                        .setCancelable(true)
+                        .setContext(mContext)
+                        .build()
 
                 try {
                     val mActivity = mContext as Activity
