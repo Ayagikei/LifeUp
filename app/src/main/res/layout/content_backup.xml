@@ -22,7 +22,7 @@
             android:id="@+id/tv_backup_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="备份"
+            android:text="@string/xml_backup_backup"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -38,7 +38,7 @@
             android:id="@+id/tv_backup_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="将你的数据备份到外部存储空间。\n备份的内容包括：待办事项、计步数据、经验值等级等数据。"
+            android:text="@string/xml_backup_desc"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -65,7 +65,7 @@
             android:id="@+id/tv_restore_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="恢复"
+            android:text="@string/xml_backup_restore"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
-            android:text="从你的外部存储空间中恢复数据。\n注意：现在的数据将会被覆盖，谨慎操作。"
+            android:text="@string/xml_backup_restore_desc"
             android:textSize="12sp" />
 
     </LinearLayout>

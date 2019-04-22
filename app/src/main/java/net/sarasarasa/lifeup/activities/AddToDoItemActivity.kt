@@ -48,7 +48,6 @@ import net.sarasarasa.lifeup.models.TaskTargetModel
 import net.sarasarasa.lifeup.service.impl.TodoServiceImpl
 import net.sarasarasa.lifeup.utils.CalendarUtil
 import net.sarasarasa.lifeup.utils.ClickUtils
-import net.sarasarasa.lifeup.utils.DensityUtil.Companion.context
 import net.sarasarasa.lifeup.utils.ToastUtils
 import net.sarasarasa.lifeup.utils.WidgetUtils
 import java.text.SimpleDateFormat
@@ -652,12 +651,13 @@ open class AddToDoItemActivity : AppCompatActivity() {
                 if (ClickUtils.isNotFastClick()) {
                     if (check()) {
                         if (!isSelectedAttrs) {
-                            MaterialDialog(context).show {
+                            MaterialDialog(this).show {
                                 title(text = getString(R.string.add_to_do_not_seleced_attrs_alarm))
                                 message(text = getString(R.string.add_to_do_not_seleced_attrs_alarm_message))
-                                positiveButton(R.string.btn_yes) { _ ->
+                                positiveButton(R.string.btn_yes) {
                                     addItem(getItem(newItem = true))
                                 }
+                                negativeButton(R.string.btn_cancel)
                                 lifecycleOwner(this@AddToDoItemActivity)
                             }
                         } else addItem(getItem(newItem = true))
@@ -868,12 +868,7 @@ open class AddToDoItemActivity : AppCompatActivity() {
         }
 
         // 允许不选择属性
-        if (arrAbbrBtn[SELECTED_CNT] == 0) {
-            isSelectedAttrs = false
-            // ToastUtils.showShortToast(getString(R.string.add_to_do_without_attr_toast))
-            // isAllCheckPassed = false
-        }
-        isSelectedAttrs = true
+        isSelectedAttrs = arrAbbrBtn[SELECTED_CNT] != 0
 
 /*        if ((TextUtils.isEmpty(til_remindDate.editText?.text) && !TextUtils.isEmpty(til_remindTime.editText?.text))
                 || (!TextUtils.isEmpty(til_remindDate.editText?.text) && TextUtils.isEmpty(til_remindTime.editText?.text))) {

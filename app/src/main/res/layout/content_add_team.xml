@@ -49,7 +49,7 @@
                     android:id="@+id/tw_exp_pie_chart_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="团队基础信息"
+                    android:text="@string/xml_team_basic_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="团队待办事项"
+                        android:hint="@string/xml_team_to_do"
                         android:singleLine="true"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -85,7 +85,7 @@
                     <net.sarasarasa.lifeup.view.FixedTextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="团队描述"
+                        android:hint="@string/xml_team_remark"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -117,7 +117,7 @@
                     android:id="@+id/tw_abbrHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="团队奖励设置"
+                    android:text="@string/xml_team_bouns_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +130,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
-                    android:text="紧迫程度"
+                    android:text="@string/xml_team_urgency"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="困难程度"
+                    android:text="@string/xml_team_difficulty"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="相关属性（请选择1~3个）"
+                    android:text="@string/xml_team_attrs"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -324,7 +324,7 @@
                     android:id="@+id/tw_extraHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="额外设置"
+                    android:text="@string/xml_team_extra_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -344,7 +344,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
-                        android:hint="开始日期"
+                        android:hint="@string/xml_team_start_date"
                         android:inputType="date"
                         android:singleLine="true"
                         android:textSize="14sp" />
@@ -364,7 +364,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
-                        android:hint="首次开始时间"
+                        android:hint="@string/xml_team_first_start_time"
                         android:inputType="date"
                         android:singleLine="true"
                         android:textSize="14sp" />
@@ -384,7 +384,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
-                        android:hint="首次结束时间"
+                        android:hint="@string/xml_team_first_end_time"
                         android:inputType="date"
                         android:singleLine="true"
                         android:textSize="14sp" />
@@ -404,7 +404,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:freezesText="false"
-                        android:hint="团队截止加入日期"
+                        android:hint="@string/xml_team_join_end_time"
                         android:inputType="date"
                         android:singleLine="true"
                         android:textSize="16sp" />
@@ -417,7 +417,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:onClick="expireTimeReset"
-                    android:text="重置"
+                    android:text="@string/xml_reset"
                     android:textColor="@color/colorAccent"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="@+id/til_deadLine"
@@ -437,7 +437,7 @@
                         android:id="@+id/et_repeat"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="重复频次"
+                        android:hint="@string/xml_repeat"
                         android:inputType="date"
                         android:singleLine="true"
                         android:textSize="16sp" />

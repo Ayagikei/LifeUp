@@ -381,6 +381,9 @@ class TodoServiceImpl : TodoService {
         origin.nextTaskId = taskModel.id
         origin.save()
 
+        if (origin.taskRemindTime != null)
+            taskModel.id?.let { setOrUpdateAlarm(taskModel.taskRemindTime!!.time, it, LifeUpApplication.getLifeUpApplication()) }
+
         return taskModel
     }
 
@@ -636,6 +639,8 @@ class TodoServiceImpl : TodoService {
             newRemindTime.time = origin.taskRemindTime
             newRemindTime.add(Calendar.DATE, origin.taskFrequency)
             taskModel.taskRemindTime = newRemindTime.time
+
+
         }
 
         // 如果设置了忽略DayOfWeek
@@ -652,6 +657,9 @@ class TodoServiceImpl : TodoService {
 
         origin.nextTaskId = taskModel.id
         origin.save()
+
+        if (origin.taskRemindTime != null)
+            taskModel.id?.let { setOrUpdateAlarm(taskModel.taskRemindTime!!.time, it, LifeUpApplication.getLifeUpApplication()) }
 
         return true
     }
