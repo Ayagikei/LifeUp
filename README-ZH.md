@@ -1,6 +1,6 @@
 # 人升
 
-![](https://img.shields.io/badge/license-Apache%202-blue.svg) ![](https://img.shields.io/badge/platform-android-green.svg) 
+![](https://img.shields.io/badge/license-Closed Source-blue.svg) ![](https://img.shields.io/badge/platform-android-green.svg) 
 
 ![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/header.png?raw=true)
 
@@ -9,6 +9,10 @@
 在待办事项的基础上，我们加入了人生数值化的属性体系、等级体系等，并且打算以这种方式激励用户的使用激情。
 
 
+
+**因为出现了恶意打包，植入广告，篡改权限的现象（现在华为应用市场上的版本就是被恶意更改的），暂时将仓库改为Private权限。**
+
+暂时将这里定位于发布版本、收集反馈的地方。
 
 # 文档
 - [English](https://github.com/Ayagikei/LifeUp/blob/master/README.md)
