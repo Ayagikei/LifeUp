@@ -1,6 +1,6 @@
 # 人升
 
-![](https://img.shields.io/badge/license-Closed Source-blue.svg) ![](https://img.shields.io/badge/platform-android-green.svg) 
+![](https://img.shields.io/badge/license-Closed%20Source-blue.svg) ![](https://img.shields.io/badge/platform-android-green.svg) 
 
 ![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/header.png?raw=true)
 
