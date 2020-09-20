@@ -10,6 +10,16 @@ Based on a To-Do List function,our app adds attribute system ,experience and lev
 
 
 
+LifeUp is not open source anymore since 17 May 2019 when someone package it with inserting some harmful ads.
+
+
+
+We're planning to *partially* open source in the future.
+
+Here, You can open issues to give us advice.
+
+
+
 # Guide
 - [English](https://github.com/Ayagikei/LifeUp/blob/master/README.md)
 - [中文](https://github.com/Ayagikei/LifeUp/blob/master/README-ZH.md)
@@ -20,12 +30,6 @@ Based on a To-Do List function,our app adds attribute system ,experience and lev
 ## Download
 
 Now it support English and [release on Google Play Store](https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup) as a paid application.
-
-
-But you still can try it out for free by getting a full publish here or other app markets like: 
-- [CoolApk](https://www.coolapk.com/apk/net.sarasarasa.lifeup)
-- [Meizu App Store](http://app.meizu.com/apps/public/detail?package_name=net.sarasarasa.lifeup)
-- [Xiaomi App Store](http://app.mi.com/details?id=net.sarasarasa.lifeup)
 
 
 
@@ -40,29 +44,3 @@ But you still can try it out for free by getting a full publish here or other ap
 - Offline Using
 - Widgets
 - Keep updating
-
-
-
-## TODO
-
-- More Gamification Element
-
-
-
-## License
-
-```
-Copyright 2018 AyagiKei
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```

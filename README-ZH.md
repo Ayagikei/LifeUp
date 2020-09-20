@@ -10,9 +10,13 @@
 
 
 
-**因为出现了恶意打包，植入广告，篡改权限的现象（现在华为应用市场上的版本就是被恶意更改的），暂时将仓库改为Private权限。**
+**因为出现了恶意打包，植入广告，篡改权限的现象，目前已经将源码仓库修改为闭源状态。**
 
 暂时将这里定位于发布版本、收集反馈的地方。
+
+
+
+后续可能会开放部分源码。
 
 # 文档
 - [English](https://github.com/Ayagikei/LifeUp/blob/master/README.md)
@@ -23,9 +27,9 @@
 
 ## 下载页面 
 
-目前应用已经在 [Google Play Store 上架](https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup) ，并且是付费应用。
+目前应用已经在 [Google Play Store 上架](https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup) ，作为付费应用，购买后即可获取所有会员权益。
 
-但是，你仍然能从其他渠道获得完整版本进行试用，比如这里或者下面的一些应用市场：
+国内渠道下载的版本，可免费使用，购买会员兑换后即可获取完整功能：
 
 - [CoolApk](https://www.coolapk.com/apk/net.sarasarasa.lifeup)
 - [Meizu App Store](http://app.meizu.com/apps/public/detail?package_name=net.sarasarasa.lifeup)
@@ -45,29 +49,3 @@
 - 桌面小部件
 - 持续更新
 
-
-
-## 待实现的功能
-
-- 实现更多的「游戏化」互动
-- 多语言支持
-
-
-
-## 开源协议
-
-```
-Copyright 2018 AyagiKei
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
