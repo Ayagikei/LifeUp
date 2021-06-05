@@ -30,12 +30,13 @@ Some other reasons:
 
 We're planning to *partially* open source in the future.
 
-
+<br/>
 
 ### Issues
 
 **Please feel free to open issues about your questions, the problem you encountered and feature requests.**
 
+</br>
 
 
 ### Transitions
@@ -49,7 +50,7 @@ If you are interested in translating or proofreading, you can check here:
 
 [Ayagikei/LifeUp-Translation: The raw text resource of LifeUp. Welcome to contribute more language! (github.com)](https://github.com/Ayagikei/LifeUp-Translation)
 
-
+<br/>
 
 ### Documents
 
@@ -59,7 +60,7 @@ The content is still relatively small, and contributions are welcome.
 
 [Ayagikei/LifeUp-Wiki: The documents of LifeUp. (github.com)](https://github.com/Ayagikei/LifeUp-Wiki)
 
-
+---
 
 
 ## Timeline
@@ -74,67 +75,83 @@ The content is still relatively small, and contributions are welcome.
 
 ## Features 
 
-<b>No Ads, No In-App Purchase related to the features, You can enjoy all the functional modules at once.</b>
+**No Ads, No In-App Purchase related to the features, You can enjoy all the functional modules at once.**
 
-<b>Beautiful Material Design UI</b>
+**Beautiful Material Design UI**
 
-<b>Full basic To-Do Functions</b>
+**Full basic To-Do Functions**
+
 Remark, Reminder, Start Time, Deadline, Repeat, Target Times, History, and List.
 
-✨ <b>Gamification Functions</b>
+✨ **Gamification Functions**
+
 6 Attributes (Including Strength, Intelligence, Charm, Endurance, Vitality and Creative), EXP, Level, Coin, Random Coin.
 
 What's more, You can customize the Attributes Icon and Text as you like.
 
-🎨 <b>Easy-to-Use</b>
+🎨 **Easy-to-Use**
+
 EXP and Coin reward can be auto calculated by Urgency and Difficulty Degree that you set up.
 
-🏆 <b>Achievements</b>
+🏆 **Achievements**
+
 Up to 57 built-in Achievements waiting for you to unlock.
 What's more, you can create your achievements which can be set up to auto calculate the progress.
 
-🎁 <b>Shop</b>
+🎁 **Shop**
+
 Put items you want with the price you decide on shelves. Earn the coin by finishing tasks. Purchase the items and then USE them in your Inventory.
 Items can be customized with various effects, such as increasing or decreasing experience points, synthesizing other items, and starting a countdown.
 
-⏰ <b>Pomodoro</b>
+⏰ **Pomodoro**
+
 As a Pomodoro timer is completed, you can receive a virtual tomato reward.
 Decide whether to eat or sell tomatoes?
 
-🎲 <b>Custom item effects: loot boxes</b>
+🎲 **Custom item effects: loot boxes**
+
 You can customize the effect of the shop item.
 For example, you can create your Loot boxes to get rewards randomly.
 
-⚗️ <b>Custom item effects: synthesis</b>
+⚗️ **Custom item effects: synthesis**
+
 Create your synthetic formula and synthesize some items into others.
 So you can realize the multi-currency function. More ways to play with loot boxes.
 
-⚽ <b>Various Ways to Gain EXP</b>
+⚽ **Various Ways to Gain EXP**
+
 You can even gain STRENGTH EXP by your daily steps,
 or maybe get ENDURANCE EXP by eating your tomatoes gained from the Pomodoro timer.
 
-🤝 <b>Community</b>
+🤝 **Community**
+
 Join the team you like, complete team tasks, submit your activity, and so on.
 
-<b>Feelings</b>
+**Feelings**
+
 Record your feelings of completion by text and pictures.
 
-<b>Widget</b>
+**Widget**
+
 App Widget is available, tasks can be managed from the Home Screen.
 
-<b>Theme Color</b>
+**Theme Color**
+
 23 built-in color themes
 
-<b>Dark Theme</b>
+**Dark Theme**
 
-<b>Lots of Settings</b>
+**Lots of Settings**
+
 Such as the EXP punishment factor/coin punishment factor.
 Hiding any module that you don't need.
 
-<b>Local, WebDAV and Dropbox Backup/Restore</b>
+**Local, WebDAV and Dropbox Backup/Restore**
+
 Most of the data is stored offline, you have complete control over your data.
 
 **Network is Unneeded**
+
 Most features of LifeUp can be used without network connections.
 
 **Keep Updating New Functions**
