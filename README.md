@@ -39,7 +39,7 @@ We're planning to *partially* open source in the future.
 </br>
 
 
-### Transitions
+### Translations
 
 We expect to publish the application in multiple languages, but due to limited resources, it is difficult to request a professional translation.
 
