@@ -17,6 +17,8 @@ At the beginning of development, **a set of RPG attribute experience value featu
 
 **It is worth mentioning that each feature supports both collaborative use and independent use.**
 
+> This is an independent application and is currently only maintained by two developers and one tester in their spare time.
+
 ## Repository
 
 ### Closed source
@@ -44,7 +46,7 @@ We're planning to *partially* open source in the future.
 We expect to publish the application in multiple languages, but due to limited resources, it is difficult to request a professional translation.
 
 Therefore, the translation of the application has always been contributed by community users.
-We recently hosted the translation of the application on the crowdin platform.
+We recently hosted the translation of the application on the Crowdin platform.
 
 If you are interested in translating or proofreading, you can check here:
 
