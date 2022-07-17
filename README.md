@@ -134,6 +134,8 @@ Or browse and import a variety of shop item rewards settings and random tasks.
 
 ## More screenshots
 
+<p align="center">
+
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_02.png?raw=true" style="height:600px" />
 
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_03.png?raw=true" style="height:600px" />>
@@ -148,6 +150,7 @@ Or browse and import a variety of shop item rewards settings and random tasks.
 
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_08.png?raw=true" style="height:600px" />
 
+</p>
 
 ---
 
