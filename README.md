@@ -20,8 +20,8 @@
     <img src="https://img.shields.io/static/v1?labelColor=56595b&color=f9de81&logo=amazon&logoColor=ffffff&label=amazon appstore&style=for-the-badge&message=get"/>
   </a>
 
-  <a href="https://wiki.lifeupapp.fun/en/#/introduction/download">
-    <img src="https://img.shields.io/github/v/release/Delta-Icons/android?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge&message=7 Days"/>
+  <a href="https://github.com/Ayagikei/LifeUp/releases">
+    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge&message=7 days"/>
   </a>
 </p>
 
@@ -135,21 +135,13 @@ Or browse and import a variety of shop item rewards settings and random tasks.
 ## More screenshots
 
 <p align="center">
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_02.png?raw=true" style="height:600px" />
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_03.png?raw=true" style="height:600px" />>
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_04.png?raw=true" style="height:600px" />
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_05.png?raw=true" style="height:600px" />
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_06.png?raw=true" style="height:600px" />
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_07.png?raw=true" style="height:600px" />
-
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_08.png?raw=true" style="height:600px" />
-
 </p>
 
 ---
