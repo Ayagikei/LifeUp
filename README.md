@@ -21,7 +21,7 @@
   </a>
 
   <a href="https://wiki.lifeupapp.fun/en/#/introduction/download">
-    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge&message=7 days"/>
+    <img src="https://img.shields.io/github/v/release/Delta-Icons/android?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge"/>
   </a>
 </p>
 
