@@ -1,29 +1,163 @@
 # LifeUp
 
+<p align="center">
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_01.png?raw=true" style="height:600px" />
+</p>
+
+<h2 align="center" padding="100">LifeUp</h2>
+
+<p align="center">Custom your own gamify list with attribute, exp, coin, reward to stay productive!</p>
+
+
+### Installation
+
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup">
+    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=97db99&logo=google-play&logoColor=ffffff&label=google play&style=for-the-badge&message=get"/>
+  </a>
+
+  <a href="https://www.amazon.com/dp/B0B22DYCYX">
+    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=f9de81&logo=amazon&logoColor=ffffff&label=amazon appstore&style=for-the-badge&message=get"/>
+  </a>
+
+  <a href="https://wiki.lifeupapp.fun/en/#/introduction/download">
+    <img src="https://img.shields.io/github/v/release/Delta-Icons/android?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge"/>
+  </a>
+</p>
+
+
+### Description
+
 ![](https://img.shields.io/badge/license-Closed%20Source-blue.svg) ![](https://img.shields.io/badge/platform-android-green.svg) 
 [![Crowdin](https://badges.crowdin.net/lifeup/localized.svg)](https://crowdin.com/project/lifeup)
 
-![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_01.png?raw=true)
+**Want a gamified , unique and fun to-do & habit-tracking app to stay motivated, organized, and focused?**
 
-## Introduction
+LifeUp is a unique gamify to To-Do list & habit app.
 
-[![GET IT ON Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
+- Record and complete tasks to gain exp and coins, just like turn your life into an RPG and productivity game.
 
-**LifeUp**,  whose name means UPGRADE YOUR LIFE, is a gamification To-Do List (Tasks List) application with many interesting gamified features.
+- Exp can improve your attributes and skill levels. And it will reflect your self-improvement.
 
-It's is inspired by [Level Up Life](https://lvluplife.com/) and [a question on Zhihu.](https://www.zhihu.com/question/25365158) at the beginning of development, but then **a unique and high degree of freedom reward (shop items), achievement, and synthesis system was formed.**
+- Use coins to buy the item you want to reward yourself. This can be used for you to balance your work and rewards, and to improve your focus.
 
-At the beginning of development, **a set of RPG attribute experience value feature is provided out of the box, and it is perfectly integrated with achievements, rewards, and Pomodoro features.**
+- Set up achievements to auto-track your task progress and goals.
 
-**It is worth mentioning that each feature supports both collaborative use and independent use.**
+- More! Pomodoro, Feelings, custom loot boxes and there's even a crafting feature!
 
-> This is an independent application and is currently only maintained by two developers and one tester in their spare time.
+This is the gamification of your life, and you can customize your own gamification list and reward/penalty syetem for optimal motivation, which may be helpful for ADHD.
+
+
+---
+
+
+## Timeline
+
+![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/timeline.png?raw=true)
+
+---
+
+## Incentive system
+
+![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/incentive_system.png?raw=true)
+
+---
+
+
+## Features 
+
+🎨 **Attribute or skills**
+
+Instad of build-in attibutres such as strength, knowledge, etc.
+You can also create your own skills such as fishing, writing.
+Try adding tasks to your skills and leveling them up!
+Track your level with achievements to unlock exclusive rewards when you reach the goal.
+The growth of attributes and skills in the application is also equivalent to digitally reflecting your growth, prompting you to stay more motivated and powerful.
+
+🎁 **Shop**
+
+Abstract your task reward into the app as a shop item, whether it is a realistic reward, a reward for rest and entertainment time, or a stat reward in the app, such as taking a 30 mins break, watching a movie, or getting a random coin reward.
+
+🏆 **Achievements**
+
+In addition to dozens of built-in achievements waiting for you to unlock, you can create your own to track your progress: such as auto tracking the number of task completions, levels, and item usage times.
+Or create your realistic milestones like arrived in a city!
+
+
+⏰ **Pomodoro**
+
+Use the Pomodoro to stay connected and stay motivated.
+As a Pomodoro timer is completed, you can receive a virtual 🍅 reward.
+Decide whether to eat or sell 🍅? Or exchange 🍅 for other item rewards?
+
+🎲 **Loot boxes**
+
+You can set the Loot boxes effect for the shop item to receive a random reward.
+Are you wondering if the reward for completing a task is 🍔 or 🥗 ?
+
+⚗️ **Crafting**
+
+Create your custom crafting recipe.
+In addition to being able to make sticks out of wood, you can try 🔑+lcoked chests= reward chests, or create your own currency.
+
+🎉 **One-time payment, No IAPs releated to features, No Ads**
+
+🔒️ **Offline first, but supports multiple backup methods**
+
+We value your privacy!
+The data is basically only stored locally on your phone and will not be transmitted to our server.   And there is an offline mode.
+You can use Google Drive/Dropbox/WebDAV to sync your data, or export data locally for backup.
+
+📎 **Complete to-do basic functions**
+
+Repeats, reminders, notes, deadlines, history, checklists, attachments, and more.
+Write down your to-dos and LifeUp will help you keep track of them.
+
+What's more, you can gamify your routine to-do list in LifeUp with tons of custom reward options.
+
+
+🤝 **World module**
+
+You can browse or join task teams created by others.
+Complete tasks together and post your updates!
+Or browse and import a variety of shop item rewards settings and random tasks.
+
+
+🚧 **More features!**
+
+- App widgets
+- Dozens of theme colors
+- Night mode(dark theme)
+- Lots of statistic
+- Feelings
+- Keep updating...
+
+## More screenshots
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_02.png?raw=true" style="height:600px" />
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_03.png?raw=true" style="height:600px" />>
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_04.png?raw=true" style="height:600px" />
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_05.png?raw=true" style="height:600px" />
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_06.png?raw=true" style="height:600px" />
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_07.png?raw=true" style="height:600px" />
+
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_08.png?raw=true" style="height:600px" />
+
+
+---
+
+
 
 ## Repository
 
 ### Closed source
 
-Sorry about that *LifeUp* is not open source anymore since 17 May 2019 when someone package it with inserting some harmful ads and put the tampered version on some app market.
+Sorry about that *LifeUp* is not open sourced anymore since 17 May 2019 when someone package it with inserting some harmful ads and put the tampered version on some app market.
 
 Some other reasons:
 - There is still a lot of old code that has not been refactored
@@ -58,103 +192,6 @@ If you are interested in translating or proofreading, you can check here:
 
 With the addition of application functions and the increased usage costs brought about by the high degree of freedom, we plan to maintain a usage document.
 
-The content is still relatively small, and contributions are welcome.
+The content is still rough, and contributions are welcome.
 
 [Ayagikei/LifeUp-Wiki: The documents of LifeUp. (github.com)](https://github.com/Ayagikei/LifeUp-Wiki)
-
----
-
-
-## Timeline
-
-![](https://github.com/Ayagikei/LifeUp/blob/master/screenshots/timeline.png?raw=true)
-
-
-
----
-
-
-
-## Features 
-
-**No Ads, No In-App Purchase related to the features, You can enjoy all the functional modules at once.**
-
-**Beautiful Material Design UI**
-
-**Full basic To-Do Functions**
-
-Remark, Reminder, Start Time, Deadline, Repeat, Target Times, History, and List.
-
-✨ **Gamification Functions**
-
-6 Attributes (Including Strength, Intelligence, Charm, Endurance, Vitality and Creative), EXP, Level, Coin, Random Coin.
-
-What's more, You can customize the Attributes Icon and Text as you like.
-
-🎨 **Easy-to-Use**
-
-EXP and Coin reward can be auto calculated by Urgency and Difficulty Degree that you set up.
-
-🏆 **Achievements**
-
-Up to 57 built-in Achievements waiting for you to unlock.
-What's more, you can create your achievements which can be set up to auto calculate the progress.
-
-🎁 **Shop**
-
-Put items you want with the price you decide on shelves. Earn the coin by finishing tasks. Purchase the items and then USE them in your Inventory.
-Items can be customized with various effects, such as increasing or decreasing experience points, synthesizing other items, and starting a countdown.
-
-⏰ **Pomodoro**
-
-As a Pomodoro timer is completed, you can receive a virtual tomato reward.
-Decide whether to eat or sell tomatoes?
-
-🎲 **Custom item effects: loot boxes**
-
-You can customize the effect of the shop item.
-For example, you can create your Loot boxes to get rewards randomly.
-
-⚗️ **Custom item effects: synthesis**
-
-Create your synthetic formula and synthesize some items into others.
-So you can realize the multi-currency function. More ways to play with loot boxes.
-
-⚽ **Various Ways to Gain EXP**
-
-You can even gain STRENGTH EXP by your daily steps,
-or maybe get ENDURANCE EXP by eating your tomatoes gained from the Pomodoro timer.
-
-🤝 **Community**
-
-Join the team you like, complete team tasks, submit your activity, and so on.
-
-**Feelings**
-
-Record your feelings of completion by text and pictures.
-
-**Widget**
-
-App Widget is available, tasks can be managed from the Home Screen.
-
-**Theme Color**
-
-23 built-in color themes
-
-**Dark Theme**
-
-**Lots of Settings**
-
-Such as the EXP punishment factor/coin punishment factor.
-Hiding any module that you don't need.
-
-**Local, WebDAV and Dropbox Backup/Restore**
-
-Most of the data is stored offline, you have complete control over your data.
-
-**Network is Unneeded**
-
-Most features of LifeUp can be used without network connections.
-
-**Keep Updating New Functions**
-
