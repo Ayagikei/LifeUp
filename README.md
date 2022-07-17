@@ -21,7 +21,7 @@
   </a>
 
   <a href="https://wiki.lifeupapp.fun/en/#/introduction/download">
-    <img src="https://img.shields.io/github/v/release/Delta-Icons/android?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge"/>
+    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge&message=7 days"/>
   </a>
 </p>
 
@@ -68,7 +68,7 @@ This is the gamification of your life, and you can customize your own gamificati
 
 🎨 **Attribute or skills**
 
-Instad of build-in attibutres such as strength, knowledge, etc.
+Instead of build-in attributes such as strength, knowledge, etc.
 You can also create your own skills such as fishing, writing.
 Try adding tasks to your skills and leveling them up!
 Track your level with achievements to unlock exclusive rewards when you reach the goal.
