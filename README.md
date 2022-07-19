@@ -16,9 +16,6 @@
     <img src="https://img.shields.io/static/v1?labelColor=56595b&color=97db99&logo=google-play&logoColor=ffffff&label=google play&style=for-the-badge&message=get"/>
   </a>
 
-  <a href="https://www.amazon.com/dp/B0B22DYCYX">
-    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=f9de81&logo=amazon&logoColor=ffffff&label=amazon appstore&style=for-the-badge&message=get"/>
-  </a>
 
   <a href="https://github.com/Ayagikei/LifeUp/releases">
     <img src="https://img.shields.io/static/v1?labelColor=56595b&color=a6c6ff&logo=github&logoColor=ffffff&label=free trial&style=for-the-badge&message=7 days"/>
