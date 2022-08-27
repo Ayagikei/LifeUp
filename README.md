@@ -1,5 +1,3 @@
-# LifeUp
-
 <p align="center">
  <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_01.png?raw=true" style="height:600px" />
 </p>
