@@ -45,17 +45,31 @@ LifeUp is a unique gamify to To-Do list & habit app.
 
 - Exp can improve your attributes and skill levels. And it will reflect your self-improvement.
 
-- Use coins to buy the item you want to reward yourself. This can be used for you to balance your work and rewards, and to improve your focus.
+- Use coins to buy the item you want to reward yourself. This can be used for you to balance your
+  work and rewards, and to improve your focus.
 
 - Set up achievements to auto-track your task progress and goals.
 
 - More! Pomodoro, Feelings, custom loot boxes and there's even a crafting feature!
 
-This is the gamification of your life, and you can customize your own gamification list and reward/penalty syetem for optimal motivation, which may be helpful for ADHD.
-
+This is the gamification of your life, and you can customize your own gamification list and
+reward/penalty syetem for optimal motivation, which may be helpful for ADHD.
 
 ---
 
+## SDKs
+
+We're developing an SDK so you can integrate with LifeUp.
+
+Currently we have open-sourced "LifeUp Cloud" - it turns your phone into a server so you can
+integrate with LifeUp from other devices (like your computer).
+
+For example, you can use Python to write software to call LifeUp to complete the task. Or write a
+simple web page to create a new task.
+
+In the future, we will also provide an interface for querying data.
+
+---
 
 ## Timeline
 
