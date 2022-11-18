@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Title">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Item_Title">
+        <item name="android:textColor">@color/color_title_black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Item_Desc">
+        <item name="android:textColor">#999999</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

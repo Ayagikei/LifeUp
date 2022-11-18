@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">云人升</string>
+    <string name="server_status">服务未启动...</string>
+    <string name="serverStartedMessage">服务器已开启</string>
+    <string name="ipAddressUnknown">未获取到 IP 地址 (没有连接到 WIFI?)</string>
+    <string name="localIpAddressMessage">本机IP地址 %1$s\n服务启动后，你可以尝试用处于相同 WIFI 下的电脑（浏览器）访问该链接了！</string>
+    <string name="overlay_permission">悬浮窗权限</string>
+    <string name="overlay_permission_desc">授予权限以后台执行API（Android 10+）</string>
+    <string name="title_config">配置</string>
+    <string name="btn_config">配置</string>
+    <string name="ignore_battery_optimizations">忽略电池优化</string>
+    <string name="ignore_battery_optimizations_desc">为了服务能保持稳定后台运行，你需要关闭电池优化。
+        \n\n并且除了该设置外，你还需要检查各个厂商的额外电池优化手段。</string>
+    <string name="notification_channel_server">服务运行中</string>
+    <string name="title_server">服务</string>
+    <string name="switch_start_service">启动服务</string>
+    <string name="title_about">关于</string>
+    <string name="about_text"><![CDATA[这是个能让你的手机变成一台 HTTP 服务器的小工具。从而使得你能从局域网电脑上发送API命令（URL Scheme）到手机上，来触发<a href="https://www.lifeupapp.fun/">《人升》</a>应用的各种动作。
+<br/><br/>这可以实现以下效果：
+<br/>1. 判断电脑上的使用时长、输入文本量、绘画时长来触发LifeUp应用的完成任务、奖励或者惩罚。<br/>还有你能通过电脑编程实现的一切！
+<br/>
+<br/>2. 实现简单的网页版本，从电脑网页上创建任务。
+<br/>
+<br/>3. 无限其他可能性…
+<br/>
+<br/><br/>待办项：
+<br/>目前它仍缺少查询接口，因此只能以触发动作为主，无法实现查询手机上的任务列表、属性经验值。
+<br/><br/>
+<br/>这是开源项目 <a href="https://github.com/Ayagikei/LifeUp">https://github.com/Ayagikei/LifeUp</a>，欢迎向我们贡献代码。]]></string>
+</resources>

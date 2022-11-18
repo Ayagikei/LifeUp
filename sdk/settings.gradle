@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
+    }
+}
+rootProject.name = "lifeup-http-api"
+include ':http'
+include ':core'

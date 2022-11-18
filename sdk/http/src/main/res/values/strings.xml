@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">LifeUp Cloud</string>
+    <string name="server_status">Service is not running...</string>
+    <string name="serverStartedMessage">Server started</string>
+    <string name="ipAddressUnknown">No IP address (connected to WiFi?)</string>
+    <string name="localIpAddressMessage">Connect to [%1$s]\nWhen service started, you can open it on your computer which connected to the same WIFI</string>
+    <string name="overlay_permission">Overlay Permission</string>
+    <string name="overlay_permission_desc">Grant permission to execute API in background (Android 10+)</string>
+    <string name="title_config">Config</string>
+    <string name="btn_config">CONFIG</string>
+    <string name="ignore_battery_optimizations">Ignore battery optimizations</string>
+    <string name="ignore_battery_optimizations_desc">In order for the service to keep running in the background stably, you need to turn off battery optimization.
+        \n\nAnd in addition to this setting, you also need to check the additional battery optimization methods of various manufacturers.</string>
+    <string name="notification_channel_server">Server Running</string>
+    <string name="title_server">Server</string>
+    <string name="switch_start_service">Start Service</string>
+    <string name="title_about">About</string>
+    <string name="about_text"><![CDATA[This is a small tool that can turn your mobile phone into an HTTP server, so that you can send API commands (URL Scheme) from the LAN computer to trigger various actions of the <a href="https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup">LifeUp application</a>.
+<br/><br/>This can achieve the following effects:
+<br/>1. Judging the usage time on the computer, the amount of text input, and the drawing time to trigger the completion of tasks, rewards or punishments of the LifeUp application.<br/>And everything you can do with computer programming!
+<br/>
+<br/>2. Implement a simple web page version to create tasks from the computer web page.
+<br/>
+<br/>3. Infinite other possibilities…
+<br/>
+<br/>To-do item:
+<br/>At present, it still lacks a query interface, so it can only focus on triggering actions, and cannot query the task list and attribute experience value on the mobile phone.
+<br/>
+<br/>
+<br/>This is an open source project <a href="https://github.com/Ayagikei/LifeUp">https://github.com/Ayagikei/LifeUp</a>, welcome to contribute code to us.]]></string>
+</resources>
