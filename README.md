@@ -69,6 +69,8 @@ simple web page to create a new task.
 
 In the future, we will also provide an interface for querying data.
 
+Please check [Ayagikei/LifeUp-SDK (github.com)](https://github.com/Ayagikei/LifeUp-SDK) for details.
+
 ---
 
 ## Timeline
