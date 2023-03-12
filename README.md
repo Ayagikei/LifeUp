@@ -29,6 +29,18 @@
   />  
 </a>
 </p>
+<br/>
+
+### What is this repository for?
+
+| Purpose                                    | Description                                                  | Links                                                        |
+| ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 📱 Introducing the app                      | This README will briefly introduce the LifeUp application.   | -                                                            |
+| 🐛 Collect feedback and issues for the app. | We collect bugs and suggestions in the issues of this repository. | [Issues · GitHub](https://github.com/Ayagikei/LifeUp/issues) |
+| 🚀 Release the trial version                | We will release a free trial version of LifeUp on the Release page. This is suitable for devices that do not support Google Play. | [Releases · GitHub](https://github.com/Ayagikei/LifeUp/releases) |
+| 💬 Discussions                              | You can participate in discussions in our discussion forum.  | [Discussions · GitHub](https://github.com/Ayagikei/LifeUp/discussions) |
+| 📌 Link to related repositories             | There are some open source projects around *LifeUp*, such as our SDK, desktop client, documentation library, and translation. | [LifeUp SDK/LifeUp Cloud](https://github.com/Ayagikei/LifeUp-SDK)<br/>[LifeUp Desktop🖥](https://github.com/Ayagikei/LifeUp-Desktop) <br/>[LifeUp Documents📄](https://github.com/Ayagikei/LifeUp-Wiki) |
+| 🌐 Link to community translation site       | LifeUp's multilingual text translation is contributed by community users, and we host the text on Crowdin. | https://crowdin.com/project/lifeup                           |
 
 <br/>
 
