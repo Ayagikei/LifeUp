@@ -23,7 +23,7 @@
 <p align="center">
 <a href="https://rootpk.com/lifeup-gamify-to-do-and-habit-free-trial-2edb13667cb">
   <img
-  src="https://rootpk.com/images/rootpk-badge-light.png"
+  src="https://rootpk.com/images/rootpk-badge.png"
   width="300"
   height="87.5"
   />  
