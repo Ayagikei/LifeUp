@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_01.png?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_01.jpg?raw=true" style="height:600px" />
 </p>
 
 <h2 align="center" padding="100">LifeUp</h2>
@@ -169,13 +169,13 @@ Or browse and import a variety of shop item rewards settings and random tasks.
 ## More screenshots
 
 <p align="center">
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_02.png?raw=true" style="height:600px" />
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_03.png?raw=true" style="height:600px" />>
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_04.png?raw=true" style="height:600px" />
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_05.png?raw=true" style="height:600px" />
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_06.png?raw=true" style="height:600px" />
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_07.png?raw=true" style="height:600px" />
- <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_08.png?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_02.jpg?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_03.jpg?raw=true" style="height:600px" />>
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_04.jpg?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_05.jpg?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_06.jpg?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_07.jpg?raw=true" style="height:600px" />
+ <img src="https://github.com/Ayagikei/LifeUp/blob/master/screenshots/en_pic_08.jpg?raw=true" style="height:600px" />
 </p>
 
 ---
