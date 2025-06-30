@@ -11,7 +11,8 @@
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup">
-    <img src="https://img.shields.io/static/v1?labelColor=56595b&color=97db99&logo=google-play&logoColor=ffffff&label=google play&style=for-the-badge&message=get"/>
+    <img src="https://img.shields.io/badge/get_it_on-Google_Play-blue?style=flat&logo=google-play
+    "/>
   </a>
 
 
@@ -20,15 +21,14 @@
   </a>
 </p>
 
+🍎 We have also launched an alternative app for the iOS platform called `ulives`.
+
 <p align="center">
-<a href="https://rootpk.com/lifeup-gamify-to-do-and-habit-free-trial-2edb13667cb">
-  <img
-  src="https://rootpk.com/images/rootpk-badge.png"
-  width="300"
-  height="87.5"
-  />  
-</a>
+  <a href="https://apps.apple.com/us/app/ulives-gamify-your-tasks/id6743084261">
+    <img src="https://img.shields.io/badge/Download_on_the-App_Store-blue?style=flat&logo=apple&logoColor=white" alt="Download on the App Store"/>
+  </a>
 </p>
+
 <br/>
 
 ### What is this repository for?
