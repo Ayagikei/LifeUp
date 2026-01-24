@@ -11,8 +11,7 @@
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=net.sarasarasa.lifeup">
-    <img src="https://img.shields.io/badge/get_it_on-Google_Play-blue?style=flat&logo=google-play
-    "/>
+    <img src="https://img.shields.io/badge/get_it_on-Google_Play-blue?style=flat&logo=google-play"/>
   </a>
 
 
